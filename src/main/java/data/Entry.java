@@ -2,6 +2,9 @@ package data;
 
 import java.util.Date;
 
+/**
+ * @author Liam Wachter
+ */
 public class Entry {
     private String action;
     private Date date;
