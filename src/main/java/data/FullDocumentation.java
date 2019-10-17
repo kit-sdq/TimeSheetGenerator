@@ -1,32 +1,55 @@
 package data;
 
+import java.util.Calendar;
+
 /**
  * @author Liam Wachter
  */
 public class FullDocumentation {
     private String departmentName;
-    private int month;
+    private int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+    private int year = Calendar.getInstance().get(Calendar.YEAR);
     private int id;
     private boolean gfub;
-    private int year;
-    private int maxWorkTime;
+    private int maxWorkTime = 40;
+    /**
+     * Not intended to use for calculation just for ==
+     */
     private double wage = 10.31;
-    private int sum;
     private Entry[] entries;
 
-    public FullDocumentation(String departmentName, int month, int id, boolean gfub, int year, int maxWorkTime, int sum, Entry[] entries) {
+    /**
+     * <code>year</code>, <code>month</code> are by default set to current
+     * <code>wage</code> is by default 10.31
+     * <code>maxWorkTime</code> is by default 40
+     * those values can be set via setters of this class
+     *
+     * @param departmentName e.g IDP Prof. Reusner
+     * @param id "Personalnummer"
+     * @param gfub Checkbox GF or UB, <code>true</code> for GF
+     * @param entries
+     */
+    public FullDocumentation(String departmentName, int id, boolean gfub, Entry[] entries) {
         this.departmentName = departmentName;
-        this.month = month;
         this.id = id;
         this.gfub = gfub;
-        this.year = year;
-        this.maxWorkTime = maxWorkTime;
-        this.sum = sum;
         this.entries = entries;
     }
 
-    public int getSum() {
-        return sum;
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public void setWage(double wage) {
+        this.wage = wage;
+    }
+
+    public void setMaxWorkTime(int maxWorkTime) {
+        this.maxWorkTime = maxWorkTime;
     }
 
     public double getWage() {
