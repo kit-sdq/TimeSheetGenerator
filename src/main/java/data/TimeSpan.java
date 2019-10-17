@@ -29,7 +29,10 @@ public class TimeSpan {
      * @param toAdd
      */
     public void add(TimeSpan toAdd) {
-//TODO
+        minute += toAdd.getMinute();
+        minute %= 60;
+        hour += toAdd.getMinute() / 60;
+        hour += toAdd.getHour();
     }
 
     @Override
