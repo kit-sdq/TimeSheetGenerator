@@ -27,7 +27,7 @@ public class FullDocumentation {
      * @param departmentName e.g IDP Prof. Reusner
      * @param id "Personalnummer"
      * @param gfub Checkbox GF or UB, <code>true</code> for GF
-     * @param entries
+     * @param entries the rows of the documentation sheet
      */
     public FullDocumentation(String departmentName, int id, boolean gfub, Entry[] entries) {
         this.departmentName = departmentName;
