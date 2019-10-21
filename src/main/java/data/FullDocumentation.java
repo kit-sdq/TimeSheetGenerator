@@ -6,6 +6,7 @@ import java.util.Calendar;
  * @author Liam Wachter
  */
 public class FullDocumentation {
+    private String employeeName;
     private String departmentName;
     private int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
     private int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -24,12 +25,14 @@ public class FullDocumentation {
      * <code>maxWorkTime</code> is by default 40
      * those values can be set via setters of this class
      *
+     * @param employeeName e.g Max Mustermann
      * @param departmentName e.g IDP Prof. Reusner
      * @param id "Personalnummer"
      * @param gfub Checkbox GF or UB, <code>true</code> for GF
      * @param entries the rows of the documentation sheet
      */
-    public FullDocumentation(String departmentName, int id, boolean gfub, Entry[] entries) {
+    public FullDocumentation(String employeeName, String departmentName, int id, boolean gfub, Entry[] entries) {
+        this.employeeName = employeeName;
         this.departmentName = departmentName;
         this.id = id;
         this.gfub = gfub;
