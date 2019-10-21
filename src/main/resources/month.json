@@ -1,5 +1,6 @@
 {
-  "month": "11-2019",
+  "month": 11,
+  "year": 2019,
   "entries": [{"action": "Korrektur", "date": "01.11.2019", "start": "10:00", "end": "11:00", "pause": "00:00"},
     {"action": "Fragen beantworten", "date": "03.11.2019", "start": "01:31", "end": "05:11", "pause": "00:30"}]
 }
