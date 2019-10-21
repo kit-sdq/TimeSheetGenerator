@@ -64,7 +64,7 @@ public class Parser implements IParser {
         
         // check if the global config file contains all required elements
         String[] requiredElements = Stream.of(Global_Required.values()).map(Global_Required::toString).toArray(String[]::new);
-        checkRequiredElements(json, requiredElements);
+        checkRequiredElements("global", json, requiredElements);
         
         // read the values from the config file
         this.name = json.getString("name");
@@ -85,7 +85,7 @@ public class Parser implements IParser {
         
         // check if month config file contains all required elements
         String[] requiredElements = Stream.of(Month_Required.values()).map(Month_Required::toString).toArray(String[]::new);
-        checkRequiredElements(json, requiredElements);
+        checkRequiredElements("month", json, requiredElements);
         
         // read the values from the config file
         this.month = json.getInt("month");
@@ -94,7 +94,7 @@ public class Parser implements IParser {
         //TODO parse entries
     }
     
-    private void checkRequiredElements(JSONObject json, String[] requiredElements) throws ParseException {
+    private void checkRequiredElements(String configName, JSONObject json, String[] requiredElements) throws ParseException {
         
         StringJoiner missingEntries = new StringJoiner(",");
         for(String element: requiredElements) {
@@ -104,7 +104,7 @@ public class Parser implements IParser {
             }
         }
         if (missingEntries.length() > 0) {
-            throw new ParseException("Error in global config: missing required element(s): " + missingEntries.toString());
+            throw new ParseException("Error in " + configName + " config: missing required element(s): " + missingEntries.toString());
         }
     }
 }

@@ -27,7 +27,7 @@ public class Main {
         
         try {
             global = readFile(args[0], StandardCharsets.UTF_8);
-            month = readFile(args[0], StandardCharsets.UTF_8);
+            month = readFile(args[1], StandardCharsets.UTF_8);
         } catch (IOException exception) {
             System.out.println("Error reading file");
             return;
