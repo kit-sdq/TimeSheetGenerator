@@ -35,8 +35,8 @@
                 <configuration>
                     <mainClass>input.Main</mainClass>
                     <arguments>
-                        <argument>.\src\main\resources\global.json</argument>
-                        <argument>.\src\main\resources\month.json</argument>
+                        <argument>./src/main/resources/global.json</argument>
+                        <argument>./src/main/resources/month.json</argument>
                     </arguments>
                 </configuration>
             </plugin>
