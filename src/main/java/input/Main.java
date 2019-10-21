@@ -5,8 +5,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+
 import data.FullDocumentation;
 import parser.IParser;
+import parser.ParseException;
 import parser.Parser;
 
 public class Main {
@@ -34,7 +36,13 @@ public class Main {
         // TODO send to parser and get back FullDocumentation object o
         // Work in Progress
         IParser jsonParser = new Parser();
-        FullDocumentation doc = jsonParser.parse(global, month);
+        
+        try {
+            FullDocumentation doc = jsonParser.parse(global, month);            
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
 
         
         // TODO send o to checker
