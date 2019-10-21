@@ -18,6 +18,7 @@ public class Main {
     public static void main(String[] args) {
         if (args.length != 2) {
             System.out.println("Provide two json files.");
+            System.exit(-1);
         }
         //TODO check input further
         
