@@ -7,15 +7,15 @@ import org.json.*;
  * @author Liam Wachter
  */
 public class Parser implements IParser {
-    
-    String name;
-    String personnelNumber;
-    String institute;
-    int workingHours;
-    double wage;
-    boolean gf;
-    boolean ub;    
-    
+
+    private String name;
+    private String personnelNumber;
+    private String institute;
+    private int workingHours;
+    private double wage;
+    private boolean gf;
+    private boolean ub;
+
     @Override
     public FullDocumentation parse(String global, String month) throws IllegalArgumentException {
         
