@@ -8,15 +8,14 @@ import java.util.Date;
 public class Entry {
     private String action;
     private Date date;
-    private TimeSpan start, end, pause, workingTime;
+    private TimeSpan start, end, pause;
 
-    public Entry(String action, Date date, TimeSpan start, TimeSpan end, TimeSpan pause, TimeSpan workingTime) {
+    public Entry(String action, Date date, TimeSpan start, TimeSpan end, TimeSpan pause) {
         this.action = action;
         this.date = date;
         this.start = start;
         this.end = end;
         this.pause = pause;
-        this.workingTime = workingTime;
     }
 
     public String getAction() {
@@ -40,6 +39,7 @@ public class Entry {
     }
 
     public TimeSpan getWorkingTime() {
-        return workingTime;
+        // TODO calculate this, it's bad to store duplicate data
+        return null;
     }
 }
