@@ -1,0 +1,9 @@
+{
+	"name": "Max Mustermann",
+	"personnelnumber": "1234567",
+	"institute": "Fakultät für Informatik",
+	"workinghours": 40,
+	"wage": 10.01,
+	"gf": false,
+	"ub": true
+}

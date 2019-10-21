@@ -5,10 +5,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import data.FullDocumentation;
+import parser.IParser;
+import parser.Parser;
 
-/**
- * @author Liam Wachter
- */
 public class Main {
     /**
      * @param args first argument global.json and second argument month.json, just use UTF8
@@ -18,15 +18,25 @@ public class Main {
             System.out.println("Provide two json files.");
         }
         //TODO check input further
+        
+        
+        String global;
+        String month;
+        
         try {
-            String global = readFile(args[0], StandardCharsets.UTF_8);
-            String month = readFile(args[0], StandardCharsets.UTF_8);
+            global = readFile(args[0], StandardCharsets.UTF_8);
+            month = readFile(args[0], StandardCharsets.UTF_8);
         } catch (IOException exception) {
             System.out.println("Error reading file");
             return;
         }
+        
         // TODO send to parser and get back FullDocumentation object o
+        // Work in Progress
+        IParser jsonParser = new Parser();
+        FullDocumentation doc = jsonParser.parse(global, month);
 
+        
         // TODO send o to checker
 
         // TODO if valid send o to pdf generation in the output package
