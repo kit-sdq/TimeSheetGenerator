@@ -1,5 +1,8 @@
 package checker;
 
+/**
+ * @author Liam Wachter
+ */
 public class ErrorMessages {
     public static final String none = "";
     public static final String workedToMuch = "Zu viel gearbeitet.";

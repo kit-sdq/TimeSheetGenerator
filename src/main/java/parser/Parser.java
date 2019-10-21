@@ -3,6 +3,9 @@ package parser;
 import data.FullDocumentation;
 import org.json.*;
 
+/**
+ * @author Liam Wachter
+ */
 public class Parser implements IParser {
     @Override
     public FullDocumentation parse(String global, String month) throws IllegalArgumentException {

@@ -2,6 +2,9 @@ package output;
 
 import data.FullDocumentation;
 
+/**
+ * @author Liam Wachter
+ */
 public interface IOutput {
     /**
      * @param documentation the checked documentation

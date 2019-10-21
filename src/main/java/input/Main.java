@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * @author Liam Wachter
+ */
 public class Main {
     /**
      * @param args first argument global.json and second argument month.json, just use UTF8
@@ -30,8 +32,7 @@ public class Main {
         // TODO if valid send o to pdf generation in the output package
     }
 
-    private static String readFile(String path, Charset encoding) throws IOException
-    {
+    private static String readFile(String path, Charset encoding) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
     }
