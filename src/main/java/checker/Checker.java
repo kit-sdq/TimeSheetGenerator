@@ -31,6 +31,10 @@ public class Checker {
             return errorMessage;
         if (!(errorMessage = checkSundays(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
+        if (!(errorMessage = toManyEntries(toCheck)).equals(ErrorMessages.none))
+            return errorMessage;
+        if (!(errorMessage = checkDayTotal(toCheck)).equals(ErrorMessages.none))
+            return errorMessage;
 
 
         return ErrorMessages.none;
@@ -85,5 +89,9 @@ public class Checker {
      */
     private String toManyEntries(FullDocumentation toCheck) {
         return (toCheck.getEntries().length > MAX_ROWS) ? ErrorMessages.maxRows : ErrorMessages.none;
+    }
+
+    private String checkHoliday(FullDocumentation toCheck) {
+        throw new NotImplementedException();
     }
 }
