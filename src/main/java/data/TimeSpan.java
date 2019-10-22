@@ -25,14 +25,17 @@ public class TimeSpan implements Comparable {
 
     /**
      * add toAdd to this time span in the sense of time arithmetic. e.g 0:59 + 0:01  = 1:0
-     *
-     * @param toAdd
      */
     public void add(TimeSpan toAdd) {
         minute += toAdd.getMinute();
         minute %= 60;
         hour += toAdd.getMinute() / 60;
         hour += toAdd.getHour();
+    }
+
+    public void subtract(TimeSpan toSub) throws IllegalArgumentException {
+        //TODO subtract
+        //TODO check result if negative throw exception
     }
 
     @Override
