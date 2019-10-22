@@ -5,6 +5,7 @@ import data.FullDocumentation;
 import data.TimeSpan;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.Calendar;
 
@@ -57,7 +58,7 @@ public class Checker {
     /**
      * looks at all work done at one day and checks if enough break was taken
      */
-    private String checkDay(FullDocumentation toCheck) {
+    private String checkDayTotal(FullDocumentation toCheck) {
         throw new NotImplementedException();
     }
 
