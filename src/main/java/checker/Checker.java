@@ -1,17 +1,19 @@
 package checker;
 
+import data.Entry;
 import data.FullDocumentation;
 import data.TimeSpan;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 /**
  * @author Liam Wachter
  */
 public class Checker {
-    private static final TimeSpan EARLIEST = ??;
-    private static final TimeSpan LATEST = ??;
+    private static final TimeSpan EARLIEST = new TimeSpan(6, 0);
+    private static final TimeSpan LATEST = new TimeSpan(22, 0);
 
     /**
      * Perform the actual checking.
@@ -21,9 +23,11 @@ public class Checker {
      */
     public String check(FullDocumentation toCheck) {
         String errorMessage;
-        if ((errorMessage = checkSum(toCheck)).equals(ErrorMessages.none))
+        if (!(errorMessage = checkSum(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
-        if ((errorMessage = nameNotEmpty(toCheck)).equals(ErrorMessages.none))
+        if (!(errorMessage = nameNotEmpty(toCheck)).equals(ErrorMessages.none))
+            return errorMessage;
+        if (!(errorMessage = checkSundays(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
 
 
@@ -56,9 +60,20 @@ public class Checker {
     }
 
     /**
-     * checks if work was done outside allowed working hours
+     * checks if work was done outside allowed working hours.
      */
     private String checkTime(FullDocumentation toCheck) {
         throw new NotImplementedException();
+    }
+
+    private String checkSundays(FullDocumentation toCheck) {
+        Calendar calendar = Calendar.getInstance();
+        for (Entry e : toCheck.getEntries()) {
+            calendar.setTime(e.getDate());
+            int day = calendar.get(Calendar.DAY_OF_WEEK);
+            if (day == Calendar.SUNDAY)
+                return ErrorMessages.sunday;
+        }
+        return ErrorMessages.none;
     }
 }
