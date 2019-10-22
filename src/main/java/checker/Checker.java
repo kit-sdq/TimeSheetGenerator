@@ -14,6 +14,7 @@ import java.util.Calendar;
 public class Checker {
     private static final TimeSpan EARLIEST = new TimeSpan(6, 0);
     private static final TimeSpan LATEST = new TimeSpan(22, 0);
+    private static final int MAX_ROWS = 22;
 
     /**
      * Perform the actual checking.
@@ -33,6 +34,7 @@ public class Checker {
 
         return ErrorMessages.none;
     }
+
     /**
      * Check if sum is correct and less or equal max working hours per month
      */
@@ -48,7 +50,7 @@ public class Checker {
     /**
      * There should be at least some text in the institution field
      */
-    private String nameNotEmpty(FullDocumentation toCheck)  {
+    private String nameNotEmpty(FullDocumentation toCheck) {
         return toCheck.getDepartmentName().equals("") ? ErrorMessages.nameMissing : ErrorMessages.none;
     }
 
@@ -75,5 +77,12 @@ public class Checker {
                 return ErrorMessages.sunday;
         }
         return ErrorMessages.none;
+    }
+
+    /**
+     * check if entries wont fit on pdf. this is more of an practical check than an regulatory check.
+     */
+    private String toManyEntries(FullDocumentation toCheck) {
+        return (toCheck.getEntries().length > MAX_ROWS) ? ErrorMessages.maxRows : ErrorMessages.none;
     }
 }
