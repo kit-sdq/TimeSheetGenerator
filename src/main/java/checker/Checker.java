@@ -36,7 +36,6 @@ public class Checker {
         if (!(errorMessage = checkDayTotal(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
 
-
         return ErrorMessages.none;
     }
 
@@ -70,7 +69,11 @@ public class Checker {
      * checks if work was done outside allowed working hours.
      */
     private String checkTime(FullDocumentation toCheck) {
-        throw new NotImplementedException();
+        for (Entry entry : toCheck.getEntries()) {
+            if (entry.getStart().compareTo(EARLIEST) < 0 || entry.getEnd().compareTo(LATEST) > 0)
+                return ErrorMessages.outside;
+        }
+        return ErrorMessages.none;
     }
 
     private String checkSundays(FullDocumentation toCheck) {

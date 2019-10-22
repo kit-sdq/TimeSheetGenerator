@@ -11,4 +11,5 @@ class ErrorMessages {
     static final String nameMissing = "Kein Institutsname angegeben";
     static final String sunday = "Keine Arbeit am Sonntag";
     static final String maxRows = "Zu viele Einträge für PDF";
+    static final String outside = "Zu früh oder zu spät am Tag gearbeitet.";
 }
