@@ -24,7 +24,7 @@ public class Output implements IOutput {
         StringBuilder stringBuilder = new StringBuilder();
         String ls = System.getProperty("line.separator");
 
-        try (BufferedReader reader = new BufferedReader(new FileReader("checker/src/main/resources/MiLoG_Arbeitszeitdokumentation.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("checker/src/main/resources/MiLoG_Arbeitszeitdokumentation.tex"))) {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 stringBuilder.append(ls);
