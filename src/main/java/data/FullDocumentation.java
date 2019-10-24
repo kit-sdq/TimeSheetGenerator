@@ -13,6 +13,7 @@ public class FullDocumentation {
     private int id;
     private boolean gfub;
     private int maxWorkTime = 40;
+    private TimeSpan vacation, succTransfer, predTransfer;
     /**
      * Not intended to use for calculation just for ==
      */
@@ -54,7 +55,19 @@ public class FullDocumentation {
     public void setMaxWorkTime(int maxWorkTime) {
         this.maxWorkTime = maxWorkTime;
     }
+    
+    public void setVacation(TimeSpan vacation) {
+        this.vacation = vacation;
+    }
 
+    public void setPredTranfer(TimeSpan predTransfer) {
+        this.predTransfer = predTransfer;
+    }
+    
+    public void setSuccTransfer(TimeSpan succTransfer) {
+        this.succTransfer = succTransfer;
+    }
+    
     public double getWage() {
         return wage;
     }
@@ -85,5 +98,17 @@ public class FullDocumentation {
 
     public Entry[] getEntries() {
         return entries;
+    }
+    
+    public TimeSpan getVacation() {
+        return this.vacation;
+    }
+
+    public TimeSpan getPredTranfer() {
+        return this.predTransfer;
+    }
+    
+    public TimeSpan getSuccTransfer() {
+        return this.succTransfer;
     }
 }

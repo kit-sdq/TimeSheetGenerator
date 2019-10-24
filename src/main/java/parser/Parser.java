@@ -47,6 +47,9 @@ public class Parser implements IParser {
     
     private int month;
     private int year;
+    private TimeSpan vacation;
+    private TimeSpan pred_transfer;
+    private TimeSpan succ_transfer;
     private Entry[] entries;
     
 
@@ -58,10 +61,13 @@ public class Parser implements IParser {
         
         FullDocumentation doc = new FullDocumentation(name, institute, personnelNumber, gf, entries);
         
-        //TODO übertrag?? we don't need to check it, but it would be good to have the option to create documents with values in these fields
         doc.setWage(wage);
         doc.setMonth(month);
         doc.setYear(year);
+        doc.setMaxWorkTime(workingHours);
+        doc.setVacation(vacation);
+        doc.setPredTranfer(pred_transfer);
+        doc.setSuccTransfer(succ_transfer);
         
         return doc;
     }
@@ -108,6 +114,30 @@ public class Parser implements IParser {
         }
 
         entries = entriesList.toArray(new Entry[entriesJSONArray.length()]);
+        
+        
+        //optinal values
+        
+        String vacationString = "0:00";
+        String succ_transferString = "0:00";
+        String pred_transferString = "0:00";
+        
+        if (json.has("vacation")) {
+            vacationString = json.getString("vacation");
+        }
+        
+        if (json.has("pred_transfer")) {
+            pred_transferString = json.getString("pred_transfer");
+        }
+        
+        if (json.has("succ_transfer")) {
+            succ_transferString = json.getString("succ_transfer");
+        }
+        
+        // TODO: Error message does not fit for the following elements
+        vacation = parseTimeSpan(vacationString, -1);
+        pred_transfer = parseTimeSpan(pred_transferString, -1);
+        succ_transfer = parseTimeSpan(succ_transferString, -1);
     }
     
     private Entry parseEntry(JSONObject json, int entryNumber) throws ParseException {
