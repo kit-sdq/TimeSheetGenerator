@@ -100,6 +100,10 @@ public class FullDocumentation {
         return entries;
     }
     
+    public String getEmployeeName() {
+        return employeeName;
+    }
+    
     public TimeSpan getVacation() {
         return this.vacation;
     }
