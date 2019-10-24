@@ -127,26 +127,26 @@ url=false,
 \multicolumn{1}{p{3.22in}}{{\fontsize{18pt}{19.2pt}\selectfont \textbf{Arbeitszeitdokumentation}}} & 
 \multicolumn{1}{p{0.49in}}{} & 
 \multicolumn{3}{p{1.16in}}{\textbf{Monat / Jahr: }} & 
-\multicolumn{2}{p{1.48in}}{     \ \ \  /\tab      } \\
+\multicolumn{2}{p{1.48in}}{null \ \ \  /\tab null} \\
 \hhline{~~~~---}
 %row no:2
-\multicolumn{1}{p{3.22in}}{\textbf{Name des Mitarbeiters/der Mitarbeiterin:}} & 
-\multicolumn{6}{p{3.53in}}{     } \\
+\multicolumn{1}{p{3.22in}}{\textbf{Name des Mitarbeiters/der Mitarbeiterin:}} &
+\multicolumn{6}{p{3.53in}}{null} \\
 \hhline{~------}
 %row no:3
-\multicolumn{1}{p{3.22in}}{\textbf{Personalnummer: }} & 
-\multicolumn{3}{p{1.4in}}{     } & 
-\multicolumn{3}{p{1.93in}}{\textbf{GF:\tab  \tab UB: }} \\
+\multicolumn{1}{p{3.22in}}{\textbf{Personalnummer: }} &
+\multicolumn{3}{p{1.4in}}{null} &
+\multicolumn{3}{p{1.93in}}{\textbf{GF: null  \tab UB: }} \\
 \hhline{~------}
 %row no:4
-\multicolumn{1}{p{3.22in}}{\textbf{Institut/Organisationseinheit:}} & 
-\multicolumn{6}{p{3.53in}}{     } \\
+\multicolumn{1}{p{3.22in}}{\textbf{Institut/Organisationseinheit:}} &
+\multicolumn{6}{p{3.53in}}{null} \\
 \hhline{~------}
 %row no:5
-\multicolumn{1}{p{3.22in}}{\textbf{Vertraglich vereinbarte Arbeitszeit:}} & 
-\multicolumn{2}{p{0.79in}}{      \tabto{1.3in} } & 
-\multicolumn{3}{p{1.48in}}{\textbf{Stundensatz:}} & 
-\multicolumn{1}{p{0.85in}}{     \textbf{\  €}} \\
+\multicolumn{1}{p{3.22in}}{\textbf{Vertraglich vereinbarte Arbeitszeit:}} &
+\multicolumn{2}{p{0.79in}}{null \tabto{1.3in} } &
+\multicolumn{3}{p{1.48in}}{\textbf{Stundensatz:}} &
+\multicolumn{1}{p{0.85in}}{null \textbf{\  €}} \\
 \hhline{~--~~~-}
 
 \end{tabular}
@@ -172,200 +172,200 @@ url=false,
 \endhead\hline
 \multicolumn{6}{r}{\textit{continued on next page}} \\
 \endfoot
-\hline 
+\hline
 \endlastfoot\hline
 %row no:1
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{8pt}{8.4pt}\selectfont \textbf{Tätigkeit (Stichwort, Projekt)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Datum}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Beginn}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Ende}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Pause}}} & 
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{8pt}{8.4pt}\selectfont \textbf{T\"atigkeit (Stichwort, Projekt)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Datum}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Beginn}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Ende}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Pause}}} &
 \multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{Arbeitszeit}}} \\
 \hhline{------}
 %row no:2
-\multicolumn{1}{|p{1.87in}}{} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tt.mm.jj)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} & 
+\multicolumn{1}{|p{1.87in}}{} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tt.mm.jj)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} &
 \multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(hh:mm)}}} \\
 \hhline{------}
 %row no:3
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:4
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:5
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:6
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:7
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:8
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:9
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:10
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:11
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:12
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:13
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:14
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:15
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:16
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:17
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:18
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:19
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:20
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:21
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:22
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:23
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
 \hhline{------}
 %row no:24
-\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(tätigkeit1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(datum1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(beginn1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(ende1)}}} & 
-\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(pause1)}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(Arbeitszeit1)}}} \\
-%\hhline{------}
+\multicolumn{1}{|p{1.87in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering {\fontsize{10pt}{8.4pt}\selectfont \textbf{(null)}}} \\
+\hhline{------}
 \end{longtable}}
 
 %%%%%%%%%%%%%%%%%%%% Table No: 2 ends here %%%%%%%%%%%%%%%%%%%%
@@ -373,30 +373,29 @@ url=false,
 %%%%%%%%%%%%%%%%%%%% Table No: 3 starts here %%%%%%%%%%%%%%%%%%%%
 
 \begin{table}[Ht]
-  
+
  \renewcommand{\arraystretch}{1}
-%Problem Here ->
 \begin{tabular}{ |s|p{5in}|p{5in}|  }
 \hline
 %row no:1
-\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{Urlaub anteilig:}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering      } \\
+\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{Urlaub anteilig:}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering null} \\
 \hhline{--}
 %row no:2
-\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{Summe:}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering      } \\
+\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{Summe:}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering null} \\
 \hhline{--}
 %row no:3
-\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{monatliche Soll-Arbeitszeit: }}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering      } \\
+\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{monatliche Soll-Arbeitszeit: }}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering null} \\
 \hhline{--}
 %row no:4
-\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{Übertrag vom Vormonat:}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering      } \\
+\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{\"Ubertrag vom Vormonat:}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering null} \\
 \hhline{--}
 %row no:5
-\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{Übertrag in den Folgemonat:}}} & 
-\multicolumn{1}{|p{0.82in}|}{\Centering      } \\
+\multicolumn{1}{|p{1.94in}}{\Centering {\fontsize{9pt}{12.0pt}\selectfont \textbf{\"Ubertrag in den Folgemonat:}}} &
+\multicolumn{1}{|p{0.82in}|}{\Centering null} \\
 \hhline{--}
 \end{tabular}
  \end{table}
@@ -405,14 +404,15 @@ url=false,
 
 %%%%%%%%%%%%%%%%%%%% Table No: 3 ends here %%%%%%%%%%%%%%%%%%%%
 
+
 \vspace{\baselineskip}
 \vspace{\baselineskip}
-{\fontsize{10pt}{12.0pt}\selectfont Ich bestätige die Richtigkeit der Angaben: \tabto{4.23in} \tab \tab \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\par}\par
+{\fontsize{10pt}{12.0pt}\selectfont Ich best\"atige die Richtigkeit der Angaben: \tabto{4.23in} \tab \tab \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\par}\par
 
- \tabto{4.23in} \tab \tab {\fontsize{9pt}{10.8pt}\selectfont Datum, Beschäftigte/r\par}\par
+ \tabto{4.23in} \tab \tab {\fontsize{9pt}{10.8pt}\selectfont Datum, Besch\"aftigte/r\par}\par
 
 
-\vspace{\baselineskip}{\fontsize{10pt}{12.0pt}\selectfont Nach \textbf{§ 17 Mindestlohngesetz (MiLoG)} müssen für geringfügig entlohnte und kurzfristig beschäftigte Arbeitnehmer/innen u.a. Beginn, Ende und Dauer der täglichen Arbeitszeit aufgezeichnet und für Kontrollzwecke mindestens 2 Jahre am Ort der Beschäftigung aufbewahrt werden!\par}\par
+\vspace{\baselineskip}{\fontsize{10pt}{12.0pt}\selectfont Nach \textbf{§ 17 Mindestlohngesetz (MiLoG)} m\"ussen für geringf\"ugig entlohnte und kurzfristig besch\"aftigte Arbeitnehmer/innen u.a. Beginn, Ende und Dauer der t\"aglichen Arbeitszeit aufgezeichnet und für Kontrollzwecke mindestens 2 Jahre am Ort der Besch\"aftigung aufbewahrt werden!\par}\par
 
 
 \vspace{\baselineskip}\begin{adjustwidth}{3.45in}{0.0in}
