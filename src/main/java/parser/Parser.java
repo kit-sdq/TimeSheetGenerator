@@ -1,7 +1,6 @@
 package parser;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -134,10 +133,9 @@ public class Parser implements IParser {
             succ_transferString = json.getString("succ_transfer");
         }
         
-        // TODO: Error message does not fit for the following elements
-        vacation = parseTimeSpan(vacationString, -1);
-        pred_transfer = parseTimeSpan(pred_transferString, -1);
-        succ_transfer = parseTimeSpan(succ_transferString, -1);
+        vacation = parseTimeSpan(vacationString, "Vacation Time");
+        pred_transfer = parseTimeSpan(pred_transferString, "Predecessor Transfer Time");
+        succ_transfer = parseTimeSpan(succ_transferString, "Successor Transfer Time");
     }
     
     private Entry parseEntry(JSONObject json, int entryNumber) throws ParseException {
@@ -146,7 +144,7 @@ public class Parser implements IParser {
                 !json.has("action") ||
                 !json.has("start") ||
                 !json.has("end")) {
-            throw new ParseException("Error in line definition: reqired element is missing in entry number " + entryNumber);
+            throw new ParseException("Error in line definition: required element is missing in entry number " + entryNumber);
         }
         
         String dateString = json.getString("date");
@@ -162,6 +160,18 @@ public class Parser implements IParser {
             pauseString = "00:00";
         }
         
+        // Fix Date String (ugly, but it works)
+        String[] split = dateString.split("\\.");
+        int year;
+        try {
+            year = Integer.parseInt(split[2]);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Error in line definition: Date format error im entry number " + entryNumber + ". Usage: dd.MM.YYYY");
+        }
+        if (year < 2000) {
+            dateString = split[0] + "." + split[1] + ".20" + split[2]; 
+        }
+        
         TimeSpan start, end, pause;
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
         Date date;
@@ -171,25 +181,17 @@ public class Parser implements IParser {
             throw new ParseException("Error in line definition: Date format error im entry number " + entryNumber + ". Usage: dd.MM.YYYY");
         }
         
-        //LocalDate date2 = LocalDate.of(arg0, arg1, arg2)
-
-        // TODO the solution above does not work with short year, like 01.11.19. can be tested with prints below
-        
-        //System.out.println(dateString);
-        //System.out.println(date);
-        //System.out.println(sdf.format(date));
-        
-        start = parseTimeSpan(startString, entryNumber);
-        end = parseTimeSpan(endString, entryNumber);
-        pause = parseTimeSpan(pauseString, entryNumber);
+        start = parseTimeSpan(startString, "Start Time. Entry number " + entryNumber);
+        end = parseTimeSpan(endString, "End Time. Entry number " + entryNumber);
+        pause = parseTimeSpan(pauseString, "Pause Time. Entry number " + entryNumber);
         
         return new Entry(action, date, start, end, pause);
     }
     
-    private TimeSpan parseTimeSpan (String s, int entryNumber) throws ParseException {
+    private TimeSpan parseTimeSpan (String s, String position) throws ParseException {
         
         String[] split = s.split(":");
-        if (split.length != 2) throw new ParseException("Error in line definition: Time format error in entry number " + entryNumber + ". Usage: (X)X:XX");
+        if (split.length != 2) throw new ParseException("Time format error. Usage: (X)X:XX. Position: " + position);
         
         int hour, minute;
         
@@ -197,7 +199,7 @@ public class Parser implements IParser {
             hour = Integer.parseInt(split[0]);
             minute = Integer.parseInt(split[1]);
         } catch (NumberFormatException e) {
-            throw new ParseException("Error in line definition: Time format error, not a Number in entry number " + entryNumber);
+            throw new ParseException("Time format error, not a Number. Position: " + position);
         }
         
         // Info: validity check of hour and minutes is done by the TimeSpan class
