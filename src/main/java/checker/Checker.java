@@ -3,10 +3,13 @@ package checker;
 import data.Entry;
 import data.FullDocumentation;
 import data.TimeSpan;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Liam Wachter
@@ -15,6 +18,7 @@ public class Checker {
     private static final TimeSpan EARLIEST = new TimeSpan(6, 0);
     private static final TimeSpan LATEST = new TimeSpan(22, 0);
     private static final int MAX_ROWS = 22;
+    private PublicHolidayFetcher holidayFetcher = new PublicHolidayFetcher(State.BW);
 
     /**
      * Perform the actual checking.
@@ -23,6 +27,7 @@ public class Checker {
      * @return error message that may be outputted to the user. Or an empty String if no error was found
      */
     public String check(FullDocumentation toCheck) {
+        // maybe this would be better to read if there were || used
         String errorMessage;
         if (!(errorMessage = checkSum(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
@@ -33,6 +38,10 @@ public class Checker {
         if (!(errorMessage = toManyEntries(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
         if (!(errorMessage = checkDayTotal(toCheck)).equals(ErrorMessages.none))
+            return errorMessage;
+        if (!(errorMessage = checkTime(toCheck)).equals(ErrorMessages.none))
+            return errorMessage;
+        if (!(errorMessage = checkHoliday(toCheck)).equals(ErrorMessages.none))
             return errorMessage;
 
         return ErrorMessages.none;
@@ -61,7 +70,7 @@ public class Checker {
      * looks at all work done at one day and checks if enough break was taken
      */
     private String checkDayTotal(FullDocumentation toCheck) {
-        throw new NotImplementedException();
+        return "";
     }
 
     /**
@@ -94,6 +103,18 @@ public class Checker {
     }
 
     private String checkHoliday(FullDocumentation toCheck) {
-        throw new NotImplementedException();
+        List<Holiday> list = holidayFetcher.getHolidaysByYear(Calendar.getInstance().get(Calendar.YEAR));
+        for (Entry entry : toCheck.getEntries()) {
+            LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            for (Holiday holiday : list) {
+                if (sameDay(date, holiday.getDate()))
+                    return ErrorMessages.holiday + " " + holiday.getName() + date.toString();
+            }
+        }
+        return ErrorMessages.none;
+    }
+
+    private boolean sameDay(LocalDate a, LocalDate b) {
+        return (a.getDayOfYear() == b.getDayOfYear() && a.getYear() == b.getDayOfYear());
     }
 }
