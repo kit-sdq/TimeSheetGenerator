@@ -115,4 +115,26 @@ public class FullDocumentation {
     public TimeSpan getSuccTransfer() {
         return this.succTransfer;
     }
+    
+    /**
+     * Calculates the overall working time of all entries.
+     * @return The overall, summed up working time
+     */
+    public TimeSpan getTotalWorkTime() {
+        TimeSpan totalWorkTime = new TimeSpan(0, 0);
+        
+        //Sums up the working times entry per entry
+        for (Entry entry : this.getEntries()) {
+            totalWorkTime.add(entry.getWorkingTime());
+        }
+        return totalWorkTime;
+    }
 }
+
+
+
+
+
+
+
+
