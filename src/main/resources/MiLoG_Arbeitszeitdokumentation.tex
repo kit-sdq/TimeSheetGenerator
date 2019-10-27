@@ -7,13 +7,7 @@
 \usepackage{array}
 \usepackage{amssymb}
 \usepackage{graphicx}
-\usepackage[backend=biber,
-style=numeric,
-sorting=none,
-isbn=false,
-doi=false,
-url=false,
-]{biblatex}\addbibresource{bibliography.bib}
+\usepackage[official]{eurosym}
 
 \usepackage{subfig}
 \usepackage{wrapfig}
@@ -127,7 +121,7 @@ url=false,
 \multicolumn{1}{p{3.22in}}{{\fontsize{18pt}{19.2pt}\selectfont \textbf{Arbeitszeitdokumentation}}} & 
 \multicolumn{1}{p{0.49in}}{} & 
 \multicolumn{3}{p{1.16in}}{\textbf{Monat / Jahr: }} & 
-\multicolumn{2}{p{1.48in}}{<month> \ \ \  /\tab <year>} \\
+\multicolumn{2}{p{1.48in}}{<month>  \ \  /\tab <year>} \\
 \hhline{~~~~---}
 %row no:2
 \multicolumn{1}{p{3.22in}}{\textbf{Name des Mitarbeiters/der Mitarbeiterin:}} &
@@ -136,7 +130,7 @@ url=false,
 %row no:3
 \multicolumn{1}{p{3.22in}}{\textbf{Personalnummer: }} &
 \multicolumn{3}{p{1.4in}}{<employeeNumber>} &
-\multicolumn{3}{p{1.93in}}{\textbf{GF: null  \tab UB: }} \\
+\multicolumn{3}{p{1.93in}}{\textbf{GF/UB:\tab <gfub> }} \\
 \hhline{~------}
 %row no:4
 \multicolumn{1}{p{3.22in}}{\textbf{Institut/Organisationseinheit:}} &
@@ -144,9 +138,9 @@ url=false,
 \hhline{~------}
 %row no:5
 \multicolumn{1}{p{3.22in}}{\textbf{Vertraglich vereinbarte Arbeitszeit:}} &
-\multicolumn{2}{p{0.79in}}{<maxHours> \tabto{1.3in} } &
+\multicolumn{2}{p{0.79in}}{<maxHours>h \tabto{1.3in} } &
 \multicolumn{3}{p{1.48in}}{\textbf{Stundensatz:}} &
-\multicolumn{1}{p{0.85in}}{<wage> \textbf{\  €}} \\
+\multicolumn{1}{p{0.85in}}{\EUR{<wage>}} \\
 \hhline{~--~~~-}
 
 \end{tabular}
