@@ -10,7 +10,16 @@ public class Entry {
     private Date date;
     private TimeSpan start, end, pause;
 
+    //TODO Document
+    
+    //TODO Validity check - working time less than zero case
     public Entry(String action, Date date, TimeSpan start, TimeSpan end, TimeSpan pause) {
+        if (start.getHour() > 23 || end.getHour() > 23) {
+            throw new IllegalArgumentException("Start and end time may not be greater than 23:59.");
+        } else if (end.compareTo(start) < 0) {
+            throw new IllegalArgumentException("Start time may not be greater than end time.");
+        }
+        
         this.action = action;
         this.date = date;
         this.start = start;
@@ -38,8 +47,16 @@ public class Entry {
         return pause;
     }
 
+    /**
+     * Calculates the working time.
+     * Working time defines the difference between start time and end time without break time.
+     * @return The working time
+     */
     public TimeSpan getWorkingTime() {
-        // TODO calculate this, it's bad to store duplicate data
-        return null;
+        TimeSpan workingTime = new TimeSpan(this.getEnd().getHour(), this.getEnd().getMinute());
+        workingTime.subtract(this.getStart());
+        workingTime.subtract(this.getPause());
+        
+        return workingTime;
     }
 }
