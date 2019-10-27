@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import data.FullDocumentation;
+import output.IOutput;
+import output.Output;
 import parser.IParser;
 import parser.ParseException;
 import parser.Parser;
@@ -37,9 +39,9 @@ public class Main {
         // TODO send to parser and get back FullDocumentation object o
         // Work in Progress
         IParser jsonParser = new Parser();
-        
+        FullDocumentation doc = null;
         try {
-            FullDocumentation doc = jsonParser.parse(global, month);            
+            doc = jsonParser.parse(global, month);            
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             System.exit(-1);
@@ -49,6 +51,8 @@ public class Main {
         // TODO send o to checker
 
         // TODO if valid send o to pdf generation in the output package
+        IOutput output = new Output();
+        System.out.println(output.generateLaTeX(doc));
     }
 
     private static String readFile(String path, Charset encoding) throws IOException {

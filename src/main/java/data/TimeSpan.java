@@ -40,7 +40,7 @@ public class TimeSpan implements Comparable {
 
     @Override
     public String toString() {
-        return String.format("%d:%2d", hour, minute);
+        return String.format("%02d:%02d", hour, minute);
     }
 
     @Override
