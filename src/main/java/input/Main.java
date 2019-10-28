@@ -52,7 +52,12 @@ public class Main {
 
         // TODO if valid send o to pdf generation in the output package
         IOutput output = new Output();
-        System.out.println(output.generateLaTeX(doc));
+        try {
+            System.out.println(output.generateLaTeX(doc));
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(-1);
+        }
     }
 
     private static String readFile(String path, Charset encoding) throws IOException {

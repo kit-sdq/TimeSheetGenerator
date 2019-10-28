@@ -16,13 +16,10 @@ public class Output implements IOutput {
     
     //TODO Documentation of the methods
     @Override
-    public String generateLaTeX(FullDocumentation documentation) {
+    public String generateLaTeX(FullDocumentation documentation) throws IOException {
         String filledTex = null;
-        try {
             filledTex = readLaTeXTemplate();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
  
         /*
          * This loop replaces the document-public placeholders in the TeX template with the correct data.
