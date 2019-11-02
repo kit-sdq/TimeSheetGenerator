@@ -65,7 +65,7 @@ enum DocumentPlaceholder implements IPlaceholder {
                 substitute = doc.getVacation().toString();
                 break;
             case HOURS_SUM:
-                substitute = "<sum>"; //TODO Implement not NULL method in FullDoc
+                substitute = doc.getTotalWorkTime().toString();
                 break;
             case TRANSFER_PRED:
                 substitute = doc.getPredTranfer().toString();

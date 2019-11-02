@@ -49,7 +49,7 @@ enum TablePlaceholder implements IPlaceholder {
                 substitute = entry.getPause().toString();
                 break;
             case TABLE_TIME:
-                substitute = "00:00"; //TODO Implement in TimeSpan
+                substitute = entry.getWorkingTime().toString();
                 break;
             default:
                 substitute = null;
