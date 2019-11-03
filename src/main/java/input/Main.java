@@ -1,10 +1,10 @@
 package input;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import data.FullDocumentation;
 import output.IOutput;
@@ -18,19 +18,21 @@ public class Main {
      * @param args first argument global.json and second argument month.json, just use UTF8
      */
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Provide two json files.");
-            System.exit(-1);
-        }
-        //TODO check input further
         
+        UserInput userInput = null;
+        try {
+          userInput = new UserInput(args);
+        } catch (org.apache.commons.cli.ParseException e) {
+          System.out.println(e.getMessage());
+          System.exit(-1);
+        }  
         
         String global;
         String month;
         
         try {
-            global = readFile(args[0], StandardCharsets.UTF_8);
-            month = readFile(args[1], StandardCharsets.UTF_8);
+            global = readFile(userInput.getFile(UserInputFile.JSON_GLOBAL), StandardCharsets.UTF_8);
+            month = readFile(userInput.getFile(UserInputFile.JSON_MONTH), StandardCharsets.UTF_8);
         } catch (IOException exception) {
             System.out.println("Error reading file");
             return;
@@ -60,8 +62,8 @@ public class Main {
         }
     }
 
-    private static String readFile(String path, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
+    private static String readFile(File file, Charset encoding) throws IOException {
+        byte[] encoded = Files.readAllBytes(file.toPath());
         return new String(encoded, encoding);
     }
 }
