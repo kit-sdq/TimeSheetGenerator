@@ -3,6 +3,7 @@ package data;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
@@ -14,7 +15,11 @@ public class EntryCommonTest {
         TimeSpan start = new TimeSpan(14, 0);
         TimeSpan end = new TimeSpan(18, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Date date = new Date(2019, 11, 16);
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.set(2019, 11, 16);
+        Date date = gc.getTime();
+        
         Entry entry = new Entry(action, date, start, end, pause);
         
         TimeSpan workingTime = entry.getWorkingTime();
@@ -34,7 +39,11 @@ public class EntryCommonTest {
         TimeSpan start = new TimeSpan(14, 0);
         TimeSpan end = new TimeSpan(42, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Date date = new Date(2019, 11, 16);
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.set(2019, 11, 16);
+        Date date = gc.getTime();
+        
         new Entry(action, date, start, end, pause);
     }
     
@@ -44,7 +53,11 @@ public class EntryCommonTest {
         TimeSpan start = new TimeSpan(23, 59);
         TimeSpan end = new TimeSpan(24, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Date date = new Date(2019, 11, 16);
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.set(2019, 11, 16);
+        Date date = gc.getTime();
+        
         new Entry(action, date, start, end, pause);
     }
     
@@ -54,7 +67,11 @@ public class EntryCommonTest {
         TimeSpan start = new TimeSpan(23, 00);
         TimeSpan end = new TimeSpan(22, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Date date = new Date(2019, 11, 16);
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.set(2019, 11, 16);
+        Date date = gc.getTime();
+        
         new Entry(action, date, start, end, pause);
     }
     
@@ -64,7 +81,11 @@ public class EntryCommonTest {
         TimeSpan start = new TimeSpan(25, 00);
         TimeSpan end = new TimeSpan(26, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Date date = new Date(2019, 11, 16);
+        
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.set(2019, 11, 16);
+        Date date = gc.getTime();
+        
         new Entry(action, date, start, end, pause);
     }
 }
