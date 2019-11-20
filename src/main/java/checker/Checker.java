@@ -4,121 +4,174 @@ import data.Entry;
 import data.FullDocumentation;
 import data.TimeSpan;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 
 /**
+ * TODO Documentation of class
  * @author Liam Wachter
  */
 public class Checker {
-    private static final TimeSpan EARLIEST = new TimeSpan(6, 0);
-    private static final TimeSpan LATEST = new TimeSpan(22, 0);
-    private static final int MAX_ROWS = 22;
-    private PublicHolidayFetcher holidayFetcher = new PublicHolidayFetcher(State.BW);
+    private static final TimeSpan WORKDAY_LOWER_BOUND = new TimeSpan(6, 0);
+    private static final TimeSpan WORKDAY_UPPER_BOUND = new TimeSpan(22, 0);
+    
+    //TODO Replace with enum
+    private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
+    private static final int MAX_ROW_NUM = 22;
+    
+    //TODO Summer and winter time (UTC+1 , UTC+2)
+    private static final ZoneId TIME_ZONE = ZoneId.of("UTC+1");
+    private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(State.BW);
 
     /**
-     * Perform the actual checking.
-     *
-     * @param toCheck object to check
-     * @return error message that may be outputted to the user. Or an empty String if no error was found
+     * Runs all of the needed tests in order to validate the {@link FullDocumentation} instance.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value with error or validity message
      */
-    public String check(FullDocumentation toCheck) {
-        // maybe this would be better to read if there were || used
-        String errorMessage;
-        if (!(errorMessage = checkSum(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-        if (!(errorMessage = nameNotEmpty(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-        if (!(errorMessage = checkSundays(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-        if (!(errorMessage = toManyEntries(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-        if (!(errorMessage = checkDayTotal(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-        if (!(errorMessage = checkTime(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-        if (!(errorMessage = checkHoliday(toCheck)).equals(ErrorMessages.none))
-            return errorMessage;
-
-        return ErrorMessages.none;
-    }
-
-    /**
-     * Check if sum is correct and less or equal max working hours per month
-     */
-    private String checkSum(FullDocumentation toCheck) {
-        TimeSpan sum = new TimeSpan(0, 0);
-        Arrays.stream(toCheck.getEntries()).forEach(e -> sum.add(e.getWorkingTime()));
-        // worked more than max work hours
+    public CheckerReturn check(FullDocumentation fullDoc) {
+        CheckerReturn result = CheckerReturn.VALID;
+        result = (result.equals(CheckerReturn.VALID)) ? checkTotalTimeExceedance(fullDoc) : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeExceedances(fullDoc) : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeBounds(fullDoc) : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkNoWorkingDays(fullDoc) : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkRowNumExceedance(fullDoc) : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkDepartmentName(fullDoc) : result;
         
-        ////NON valid cast!
-        //if (sum.compareTo(toCheck.getMaxWorkTime()) > 0)
-        //    return ErrorMessages.workedToMuch;
-        ////TODO Method has to be corrected!
+        //Always returns the last error that occurred.
+        return result;
+    }
+
+    /**
+     * Checks whether maximum working time was exceeded.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value for time exceedance or validity
+     */
+    protected CheckerReturn checkTotalTimeExceedance(FullDocumentation fullDoc) {
+        TimeSpan maxWorkingTime = new TimeSpan(fullDoc.getMaxWorkTime(), 0);
         
-        return ErrorMessages.none;
-    }
-
-    /**
-     * There should be at least some text in the institution field
-     */
-    private String nameNotEmpty(FullDocumentation toCheck) {
-        return toCheck.getDepartmentName().equals("") ? ErrorMessages.nameMissing : ErrorMessages.none;
-    }
-
-    /**
-     * looks at all work done at one day and checks if enough break was taken
-     */
-    private String checkDayTotal(FullDocumentation toCheck) {
-        return "";
-    }
-
-    /**
-     * checks if work was done outside allowed working hours.
-     */
-    private String checkTime(FullDocumentation toCheck) {
-        for (Entry entry : toCheck.getEntries()) {
-            if (entry.getStart().compareTo(EARLIEST) < 0 || entry.getEnd().compareTo(LATEST) > 0)
-                return ErrorMessages.outside;
+        if (fullDoc.getTotalWorkTime().compareTo(maxWorkingTime) > 0) {
+            return CheckerReturn.TIME_EXCEEDANCE;
         }
-        return ErrorMessages.none;
+        
+        return CheckerReturn.VALID;
     }
-
-    private String checkSundays(FullDocumentation toCheck) {
-        Calendar calendar = Calendar.getInstance();
-        for (Entry e : toCheck.getEntries()) {
-            calendar.setTime(e.getDate());
-            int day = calendar.get(Calendar.DAY_OF_WEEK);
-            if (day == Calendar.SUNDAY)
-                return ErrorMessages.sunday;
-        }
-        return ErrorMessages.none;
-    }
-
+    
     /**
-     * check if entries wont fit on pdf. this is more of an practical check than an regulatory check.
+     * Checks whether the working time per day meets all legal pause rules.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value for missing pause or validity
      */
-    private String toManyEntries(FullDocumentation toCheck) {
-        return (toCheck.getEntries().length > MAX_ROWS) ? ErrorMessages.maxRows : ErrorMessages.none;
-    }
-
-    private String checkHoliday(FullDocumentation toCheck) {
-        List<Holiday> list = holidayFetcher.getHolidaysByYear(Calendar.getInstance().get(Calendar.YEAR));
-        for (Entry entry : toCheck.getEntries()) {
-            LocalDate date = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            for (Holiday holiday : list) {
-                if (sameDay(date, holiday.getDate()))
-                    return ErrorMessages.holiday + " " + holiday.getName() + date.toString();
+    protected CheckerReturn checkDayTimeExceedances(FullDocumentation fullDoc) {    
+        //This map contains all dates associated with their working times
+        HashMap<Date,TimeSpan[]> workingDays = new HashMap<Date, TimeSpan[]>();
+        
+        for (Entry entry : fullDoc.getEntries()) {
+            //This deep copy allows us arithmetic operations without changing the fullDoc
+            TimeSpan clonedWorkingTime = new TimeSpan(entry.getWorkingTime().getHour(), entry.getWorkingTime().getMinute());
+            TimeSpan clonedPause = new TimeSpan(entry.getPause().getHour(), entry.getPause().getMinute());
+            Date date = entry.getDate();
+            
+            //If a day appears more than once this logic sums all of the working times
+            if (workingDays.containsKey(date)) {
+                TimeSpan oldWorkingTime = workingDays.get(date)[0];
+                clonedWorkingTime.add(oldWorkingTime);
+                
+                TimeSpan oldPause = workingDays.get(date)[1];
+                clonedPause.add(oldPause);
+            }
+            
+            //Adds the day to the map, replaces the old entry respectively
+            TimeSpan[] mapTimeEntry = {clonedWorkingTime, clonedPause};
+            workingDays.put(date, mapTimeEntry);
+        }
+        
+        //Check for every mapTimeEntry (first for), whether all Pause Rules (second for) where met.
+        for (TimeSpan[] mapTimeEntry : workingDays.values()) {
+            for (TimeSpan[] pauseRule : PAUSE_RULES) {
+                
+                //Checks whether time of entry is greater than or equal pause rule "activation" time
+                //and pause time is less than the needed time.
+                if (mapTimeEntry[0].compareTo(pauseRule[0]) >= 0
+                        && mapTimeEntry[1].compareTo(pauseRule[1]) < 0) {
+                    
+                    return CheckerReturn.TIME_PAUSE;
+                }
             }
         }
-        return ErrorMessages.none;
+        
+        return CheckerReturn.VALID;
+    }
+    
+    /**
+     * Checks whether the working time per day is inside the legal bounds.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value for time out of bounds or validity
+     */
+    protected CheckerReturn checkDayTimeBounds(FullDocumentation fullDoc) {
+        for (Entry entry : fullDoc.getEntries()) {
+            if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
+                    || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
+                
+                return CheckerReturn.TIME_OUTOFBOUNDS;
+            }
+        }
+        return CheckerReturn.VALID;
+    }
+    
+    /**
+     * Checks whether all of the days are valid working days.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value for Sunday, holiday or validity
+     */
+    protected CheckerReturn checkNoWorkingDays(FullDocumentation fullDoc) {
+        //TODO What happens to non-valid days like 32snd of January?
+        for (Entry entry : fullDoc.getEntries()) {
+            LocalDate localDate = entry.getDate().toInstant().atZone(TIME_ZONE).toLocalDate();
+            
+            //Checks whether the day of the entry is Sunday
+            if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+                return CheckerReturn.TIME_SUNDAY;
+            }
+            
+            //Check for each entry whether it is a holiday
+            for (Holiday holiday : HOLIDAY_FETCHER.getHolidaysByYear(fullDoc.getYear())) {
+                if (holiday.getDate().equals(localDate)) {
+                    return CheckerReturn.TIME_HOLIDAY;
+                }
+            }
+        }
+        
+        return CheckerReturn.VALID;
+    }
+    
+    /**
+     * Checks whether the number of entries exceeds the maximum number of rows of the template document.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value for row number exceedance or validity
+     */
+    protected CheckerReturn checkRowNumExceedance(FullDocumentation fullDoc) {
+        if (fullDoc.getEntries().length > MAX_ROW_NUM) {
+            return CheckerReturn.ROWNUM_EXCEEDENCE;
+        }
+        return CheckerReturn.VALID;
     }
 
-    private boolean sameDay(LocalDate a, LocalDate b) {
-        return (a.getDayOfYear() == b.getDayOfYear() && a.getYear() == b.getDayOfYear());
+    /**
+     * Checks whether the department name is empty.
+     * 
+     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @return {@link CheckerReturn} value for missing department name or validity
+     */
+    protected static CheckerReturn checkDepartmentName(FullDocumentation fullDoc) {
+        return fullDoc.getDepartmentName().equals("") ? CheckerReturn.NAME_MISSING : CheckerReturn.VALID;
     }
 }

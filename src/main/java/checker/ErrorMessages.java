@@ -5,6 +5,8 @@ package checker;
  */
 
 // TODO better error messages. These are a bit to colloquial and only used for testing
+//TODO English for more consistent style? 
+@Deprecated
 class ErrorMessages {
     static final String none = "";
     static final String workedToMuch = "Zu viel gearbeitet.";
