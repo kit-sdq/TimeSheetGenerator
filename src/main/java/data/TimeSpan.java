@@ -5,7 +5,7 @@ package data;
  *
  * @author Liam Wachter
  */
-public class TimeSpan implements Comparable {
+public class TimeSpan implements Comparable<TimeSpan> {
     private int minute;
     private int hour;
 
@@ -75,12 +75,11 @@ public class TimeSpan implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        TimeSpan timeSpan = (TimeSpan) o;
-        if (hour > timeSpan.getHour()) {
+    public int compareTo(TimeSpan other) {
+        if (this.hour > other.getHour()) {
             return 1;
-        } else if (hour == timeSpan.getHour()) {
-            return Integer.compare(minute, timeSpan.getMinute());
+        } else if (this.hour == other.getHour()) {
+            return Integer.compare(this.minute, other.getMinute());
         } else {
             return -1;
         }

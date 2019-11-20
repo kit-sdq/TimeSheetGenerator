@@ -54,8 +54,12 @@ public class Checker {
         TimeSpan sum = new TimeSpan(0, 0);
         Arrays.stream(toCheck.getEntries()).forEach(e -> sum.add(e.getWorkingTime()));
         // worked more than max work hours
-        if (sum.compareTo(toCheck.getMaxWorkTime()) > 0)
-            return ErrorMessages.workedToMuch;
+        
+        ////NON valid cast!
+        //if (sum.compareTo(toCheck.getMaxWorkTime()) > 0)
+        //    return ErrorMessages.workedToMuch;
+        ////TODO Method has to be corrected!
+        
         return ErrorMessages.none;
     }
 
