@@ -21,9 +21,6 @@ public class Checker {
     //TODO Replace with enum
     private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
     private static final int MAX_ROW_NUM = 22;
-    
-    //TODO Summer and winter time (UTC+1 , UTC+2)
-    private static final ZoneId TIME_ZONE = ZoneId.of("UTC+1");
     private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(State.BW);
 
     /**
@@ -134,7 +131,7 @@ public class Checker {
     protected CheckerReturn checkNoWorkingDays(FullDocumentation fullDoc) {
         //TODO What happens to non-valid days like 32snd of January?
         for (Entry entry : fullDoc.getEntries()) {
-            LocalDate localDate = entry.getDate().toInstant().atZone(TIME_ZONE).toLocalDate();
+            LocalDate localDate = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
