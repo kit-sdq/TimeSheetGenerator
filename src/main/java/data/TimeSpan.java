@@ -84,4 +84,9 @@ public class TimeSpan implements Comparable<TimeSpan> {
             return -1;
         }
     }
+    
+    @Override
+    public TimeSpan clone() {
+        return new TimeSpan(this.hour, this.minute);
+    }
 }

@@ -5,6 +5,7 @@ import data.FullDocumentation;
 import data.TimeSpan;
 
 import java.time.DayOfWeek;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.HashMap;
  * @author Liam Wachter
  */
 public class Checker {
+    //TODO Are those static constant values better than attributes?
     private static final TimeSpan WORKDAY_LOWER_BOUND = new TimeSpan(6, 0);
     private static final TimeSpan WORKDAY_UPPER_BOUND = new TimeSpan(22, 0);
     
@@ -40,7 +42,7 @@ public class Checker {
         result = (result.equals(CheckerReturn.VALID)) ? checkTotalTimeExceedance() : result;
         result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeExceedances() : result;
         result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeBounds() : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkNoWorkingDays() : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkValidWorkingDays() : result;
         result = (result.equals(CheckerReturn.VALID)) ? checkRowNumExceedance() : result;
         result = (result.equals(CheckerReturn.VALID)) ? checkDepartmentName() : result;
         
@@ -134,10 +136,14 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for Sunday, holiday or validity
      */
-    protected CheckerReturn checkNoWorkingDays() {
+    protected CheckerReturn checkValidWorkingDays() {
         //TODO What happens to non-valid days like 32snd of January?
         for (Entry entry : fullDoc.getEntries()) {
-            LocalDate localDate = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            //entry.getDate().toInstant() caused problems on some jre versions
+            //because the util.date child sql.date does not support this operation, but gets called from time to time.
+            //TODO Change Date in entry to LocalDate!
+            LocalDate localDate = Instant.ofEpochMilli(entry.getDate().getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
+            
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
@@ -176,5 +182,39 @@ public class Checker {
      */
     protected CheckerReturn checkDepartmentName() {
         return fullDoc.getDepartmentName().equals("") ? CheckerReturn.NAME_MISSING : CheckerReturn.VALID;
+    }
+    
+    
+    ////Following methods are primarily for testing purposes.
+    /**
+     * This method gets the maximally allowed number of entries inside a {@link FullDocumentation}.
+     * @return The maximum number of {@link Entry entries}.
+     */
+    protected static int getMaxEntries() {
+        return MAX_ROW_NUM;
+    }
+    
+    /**
+     * This method gets the legal lower bound of time to start a working day.
+     * @return The legal lower bound of time to start a working day.
+     */
+    protected static TimeSpan getWorkdayLowerBound() {
+        return WORKDAY_LOWER_BOUND;
+    }
+    
+    /**
+     * This method gets the legal upper bound of time to end a working day.
+     * @return The legal upper bound of time to end a working day.
+     */
+    protected static TimeSpan getWorkdayUpperBound() {
+        return WORKDAY_UPPER_BOUND;
+    }
+    
+    /**
+     * This method gets the legal pause rules to conform to laws.
+     * @return The legal pause rules.
+     */
+    protected static TimeSpan[][] getPauseRules() {
+        return PAUSE_RULES;
     }
 }

@@ -26,4 +26,5 @@ public class FullDocumentationArithmeticTest {
         assertEquals(fullDoc.getTotalWorkTime().toString(), "21:30");
     }
 
+    //TODO Create random tests
 }
