@@ -23,22 +23,28 @@ public class Checker {
     private static final int MAX_ROW_NUM = 22;
     private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(State.BW);
 
+    private final FullDocumentation fullDoc;
+    
+    public Checker(FullDocumentation fullDoc) {
+        this.fullDoc = fullDoc;
+    }
+    
     /**
      * Runs all of the needed tests in order to validate the {@link FullDocumentation} instance.
      * 
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value with error or validity message
      */
-    public CheckerReturn check(FullDocumentation fullDoc) {
+    public CheckerReturn check() {
         CheckerReturn result = CheckerReturn.VALID;
-        result = (result.equals(CheckerReturn.VALID)) ? checkTotalTimeExceedance(fullDoc) : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeExceedances(fullDoc) : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeBounds(fullDoc) : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkNoWorkingDays(fullDoc) : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkRowNumExceedance(fullDoc) : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkDepartmentName(fullDoc) : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkTotalTimeExceedance() : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeExceedances() : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeBounds() : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkNoWorkingDays() : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkRowNumExceedance() : result;
+        result = (result.equals(CheckerReturn.VALID)) ? checkDepartmentName() : result;
         
-        //Always returns the last error that occurred.
+        //Always returns the first error that occurred.
         return result;
     }
 
@@ -48,7 +54,7 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for time exceedance or validity
      */
-    protected CheckerReturn checkTotalTimeExceedance(FullDocumentation fullDoc) {
+    protected CheckerReturn checkTotalTimeExceedance() {
         TimeSpan maxWorkingTime = new TimeSpan(fullDoc.getMaxWorkTime(), 0);
         
         if (fullDoc.getTotalWorkTime().compareTo(maxWorkingTime) > 0) {
@@ -64,7 +70,7 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for missing pause or validity
      */
-    protected CheckerReturn checkDayTimeExceedances(FullDocumentation fullDoc) {    
+    protected CheckerReturn checkDayTimeExceedances() {    
         //This map contains all dates associated with their working times
         HashMap<Date,TimeSpan[]> workingDays = new HashMap<Date, TimeSpan[]>();
         
@@ -111,7 +117,7 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for time out of bounds or validity
      */
-    protected CheckerReturn checkDayTimeBounds(FullDocumentation fullDoc) {
+    protected CheckerReturn checkDayTimeBounds() {
         for (Entry entry : fullDoc.getEntries()) {
             if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
                     || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
@@ -128,7 +134,7 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for Sunday, holiday or validity
      */
-    protected CheckerReturn checkNoWorkingDays(FullDocumentation fullDoc) {
+    protected CheckerReturn checkNoWorkingDays() {
         //TODO What happens to non-valid days like 32snd of January?
         for (Entry entry : fullDoc.getEntries()) {
             LocalDate localDate = entry.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -155,7 +161,7 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for row number exceedance or validity
      */
-    protected CheckerReturn checkRowNumExceedance(FullDocumentation fullDoc) {
+    protected CheckerReturn checkRowNumExceedance() {
         if (fullDoc.getEntries().length > MAX_ROW_NUM) {
             return CheckerReturn.ROWNUM_EXCEEDENCE;
         }
@@ -168,7 +174,7 @@ public class Checker {
      * @param fullDoc - {@link FullDocumentation} instance to get checked
      * @return {@link CheckerReturn} value for missing department name or validity
      */
-    protected static CheckerReturn checkDepartmentName(FullDocumentation fullDoc) {
+    protected CheckerReturn checkDepartmentName() {
         return fullDoc.getDepartmentName().equals("") ? CheckerReturn.NAME_MISSING : CheckerReturn.VALID;
     }
 }
