@@ -51,7 +51,6 @@ public class CheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        //FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
         FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         

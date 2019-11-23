@@ -77,22 +77,23 @@ public class Checker {
         HashMap<Date,TimeSpan[]> workingDays = new HashMap<Date, TimeSpan[]>();
         
         for (Entry entry : fullDoc.getEntries()) {
-            //This deep copy allows us arithmetic operations without changing the fullDoc
-            TimeSpan clonedWorkingTime = new TimeSpan(entry.getWorkingTime().getHour(), entry.getWorkingTime().getMinute());
-            TimeSpan clonedPause = new TimeSpan(entry.getPause().getHour(), entry.getPause().getMinute());
+            //EndToStart is the number of hours at this work shift.
+            TimeSpan endToStart = entry.getEnd().clone();
+            endToStart.subtract(entry.getStart());
+            TimeSpan pause = entry.getPause().clone();
             Date date = entry.getDate();
             
             //If a day appears more than once this logic sums all of the working times
             if (workingDays.containsKey(date)) {
                 TimeSpan oldWorkingTime = workingDays.get(date)[0];
-                clonedWorkingTime.add(oldWorkingTime);
+                endToStart.add(oldWorkingTime);
                 
                 TimeSpan oldPause = workingDays.get(date)[1];
-                clonedPause.add(oldPause);
+                pause.add(oldPause);
             }
             
             //Adds the day to the map, replaces the old entry respectively
-            TimeSpan[] mapTimeEntry = {clonedWorkingTime, clonedPause};
+            TimeSpan[] mapTimeEntry = {endToStart, pause};
             workingDays.put(date, mapTimeEntry);
         }
         
