@@ -3,22 +3,34 @@ package checker;
 import static org.junit.Assert.*;
 
 import java.sql.Date;
+import java.time.Month;
+import java.time.YearMonth;
 import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import data.Employee;
 import data.Entry;
 import data.FullDocumentation;
+import data.Profession;
 import data.TimeSpan;
+import data.WorkingArea;
 
 public class CheckerDayTimeBounds {
 
     private static TimeSpan CHECKER_WORKDAY_LOWER_BOUND;
     private static TimeSpan CHECKER_WORKDAY_UPPER_BOUND;
-    private static final int RANDOM_HOUR_BOUND = 24;
+    
     //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
+    private static final int RANDOM_HOUR_BOUND = 24;
     private static final int RANDOM_MINUTES_BOUND = 60;
+    
+    ////Placeholder for documentation construction
+    private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
+    private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, 40, 10.31);
+    private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
+    private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
     @Before
     public void init() {
@@ -39,7 +51,8 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        //FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -62,7 +75,7 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -82,7 +95,7 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -105,7 +118,7 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -122,7 +135,7 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -142,7 +155,7 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -166,7 +179,7 @@ public class CheckerDayTimeBounds {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation("Max Mustermann", "Fakultät für Informatik", 123456, true, entries);
+        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions

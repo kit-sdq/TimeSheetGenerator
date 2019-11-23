@@ -57,7 +57,7 @@ public class Checker {
      * @return {@link CheckerReturn} value for time exceedance or validity
      */
     protected CheckerReturn checkTotalTimeExceedance() {
-        TimeSpan maxWorkingTime = new TimeSpan(fullDoc.getMaxWorkTime(), 0);
+        TimeSpan maxWorkingTime = new TimeSpan(fullDoc.getProfession().getMaxWorkingHours(), 0);
         
         if (fullDoc.getTotalWorkTime().compareTo(maxWorkingTime) > 0) {
             return CheckerReturn.TIME_EXCEEDANCE;
@@ -181,7 +181,7 @@ public class Checker {
      * @return {@link CheckerReturn} value for missing department name or validity
      */
     protected CheckerReturn checkDepartmentName() {
-        return fullDoc.getDepartmentName().equals("") ? CheckerReturn.NAME_MISSING : CheckerReturn.VALID;
+        return fullDoc.getProfession().getDepartmentName().equals("") ? CheckerReturn.NAME_MISSING : CheckerReturn.VALID;
     }
     
     

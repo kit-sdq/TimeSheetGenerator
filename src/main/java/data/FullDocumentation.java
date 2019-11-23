@@ -1,107 +1,55 @@
 package data;
 
-import java.util.Calendar;
+import java.time.Month;
+import java.time.YearMonth;
 
 /**
  * @author Liam Wachter
  */
 public class FullDocumentation {
-    private String employeeName;
-    private String departmentName;
-    private int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
-    private int year = Calendar.getInstance().get(Calendar.YEAR);
-    private int id;
-    private boolean gfub;
-    private int maxWorkTime = 40;
-    private TimeSpan vacation, succTransfer, predTransfer;
+    private final Employee employee;
+    private final Profession profession;
+    private final YearMonth yearMonth;
+    private final TimeSpan vacation, succTransfer, predTransfer;
+    private final Entry[] entries;
+    
     /**
-     * Not intended to use for calculation just for ==
-     */
-    private double wage = 10.31;
-    private Entry[] entries;
-
-    /**
-     * <code>year</code>, <code>month</code> are by default set to current
-     * <code>wage</code> is by default 10.31
-     * <code>maxWorkTime</code> is by default 40
-     * those values can be set via setters of this class
+     * Constructs a new instance of {@code FullDocumentation}.
      *
-     * @param employeeName e.g Max Mustermann
-     * @param departmentName e.g IDP Prof. Reusner
-     * @param id "Personalnummer"
-     * @param gfub Checkbox GF or UB, <code>true</code> for GF
-     * @param entries the rows of the documentation sheet
+     * @param employee - The {@link Employee employee} this documentation is associated with.
+     * @param profession - The {@link Profession profession} of the {@link Employee employee}.
+     * @param yearMonth - The year and month this documentation is associated with.
+     * @param entries - The {@link Entry entries} this documentation should consist of.
+     * @param vacation - The vacation time that should get taken into account.
+     * @param succTransfer - The time that should be carried over to the next documentation.
+     * @param predTransfer - The time that got carried over from the last documentation.
      */
-    public FullDocumentation(String employeeName, String departmentName, int id, boolean gfub, Entry[] entries) {
-        this.employeeName = employeeName;
-        this.departmentName = departmentName;
-        this.id = id;
-        this.gfub = gfub;
+    public FullDocumentation(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries, TimeSpan vacation,
+            TimeSpan succTransfer, TimeSpan predTransfer) {
+        this.employee = employee;
+        this.profession = profession;
+        this.yearMonth = yearMonth;
+        this.vacation = vacation;
+        this.succTransfer = succTransfer;
+        this.predTransfer = predTransfer;
         this.entries = entries;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public void setWage(double wage) {
-        this.wage = wage;
-    }
-
-    public void setMaxWorkTime(int maxWorkTime) {
-        this.maxWorkTime = maxWorkTime;
+    //TODO JavaDoc for Getter
+    public YearMonth getYearMonth() {
+        return yearMonth;
     }
     
-    public void setVacation(TimeSpan vacation) {
-        this.vacation = vacation;
-    }
-
-    public void setPredTranfer(TimeSpan predTransfer) {
-        this.predTransfer = predTransfer;
-    }
-    
-    public void setSuccTransfer(TimeSpan succTransfer) {
-        this.succTransfer = succTransfer;
-    }
-    
-    public double getWage() {
-        return wage;
-    }
-
-    public int getMaxWorkTime() {
-        return maxWorkTime;
-    }
-
     public int getYear() {
-        return year;
+        return yearMonth.getYear();
     }
-
-    public boolean isGfub() {
-        return gfub;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
+    
+    public Month getMonth() {
+        return yearMonth.getMonth();
     }
 
     public Entry[] getEntries() {
         return entries;
-    }
-    
-    public String getEmployeeName() {
-        return employeeName;
     }
     
     public TimeSpan getVacation() {
@@ -114,6 +62,14 @@ public class FullDocumentation {
     
     public TimeSpan getSuccTransfer() {
         return this.succTransfer;
+    }
+    
+    public Employee getEmployee() {
+        return this.employee;
+    }
+    
+    public Profession getProfession() {
+        return this.profession;
     }
     
     /**

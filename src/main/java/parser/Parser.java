@@ -1,15 +1,19 @@
 package parser;
 
 import java.text.SimpleDateFormat;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Stream;
 
+import data.Employee;
 import data.Entry;
 import data.FullDocumentation;
+import data.Profession;
 import data.TimeSpan;
+import data.WorkingArea;
 
 import org.json.*;
 
@@ -58,15 +62,11 @@ public class Parser implements IParser {
         parseGlobal(globalConfig);
         parseMonth(monthConfig);
         
-        FullDocumentation doc = new FullDocumentation(name, institute, personnelNumber, gf, entries);
+        Employee employee = new Employee(name, personnelNumber);
         
-        doc.setWage(wage);
-        doc.setMonth(month);
-        doc.setYear(year);
-        doc.setMaxWorkTime(workingHours);
-        doc.setVacation(vacation);
-        doc.setPredTranfer(pred_transfer);
-        doc.setSuccTransfer(succ_transfer);
+        WorkingArea workingArea = gf ? WorkingArea.GF : WorkingArea.UB;
+        Profession profession = new Profession(institute, workingArea, workingHours, wage);
+        FullDocumentation doc = new FullDocumentation(employee, profession, YearMonth.of(year, month), entries, vacation, succ_transfer, pred_transfer);
         
         return doc;
     }

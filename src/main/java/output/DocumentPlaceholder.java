@@ -41,25 +41,25 @@ enum DocumentPlaceholder implements IPlaceholder {
                 substitute = Integer.toString(doc.getYear());
                 break;
             case MONTH:
-                substitute = Integer.toString(doc.getMonth());
+                substitute = Integer.toString(doc.getMonth().getValue());
                 break;
             case EMPLOYEE_NAME:
-                substitute = doc.getEmployeeName();
+                substitute = doc.getEmployee().getName();
                 break;
             case EMPLOYEE_ID:
-                substitute = Integer.toString(doc.getId());
+                substitute = Integer.toString(doc.getEmployee().getId());
                 break;
             case GFUB:
-                substitute = doc.isGfub() ? "GF" : "UB";
+                substitute = doc.getProfession().getWorkingArea().toString();
                 break;
             case DEPARTMENT:
-                substitute = doc.getDepartmentName();
+                substitute = doc.getProfession().getDepartmentName();
                 break;
             case MAX_HOURS:
-                substitute = Integer.toString(doc.getMaxWorkTime());
+                substitute = Integer.toString(doc.getProfession().getMaxWorkingHours());
                 break;
             case WAGE:
-                substitute = Double.toString(doc.getWage());
+                substitute = Double.toString(doc.getProfession().getWage());
                 break;
             case VACATION:
                 substitute = doc.getVacation().toString();
