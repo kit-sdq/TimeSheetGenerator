@@ -7,6 +7,7 @@ import java.io.IOException;
 /**
  * @author Liam Wachter
  */
+@Deprecated
 public interface IOutput {
     /**
      * @param documentation the checked documentation

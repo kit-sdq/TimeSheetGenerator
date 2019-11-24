@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+@Deprecated
 public class Output implements IOutput {
     
     private static final String FILE_TEMPLATE = "src/main/resources/MiLoG_Arbeitszeitdokumentation.tex";
@@ -81,17 +82,13 @@ public class Output implements IOutput {
      * Writes a given string to a file.
      * If the given file already exists, it gets overwritten.
      * 
-     * @param file - File in which the content should be written
-     * @param content - String to be written to the file
+     * @param file - File in which the content should be written.
+     * @param content - String to be written to the file.
+     * @throws IOException If an I/O error occurs while opening, writing or closing the {@code file}.
      */
-    private void saveStringToFile(File file, String content) {
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(content);
-            fileWriter.close();
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            System.exit(-1);
-        }
+    private void saveStringToFile(File file, String content) throws IOException {
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(content);
+        fileWriter.close();
     }
 }
