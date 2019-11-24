@@ -2,6 +2,7 @@ package io;
 
 import data.TimeSheet;
 
+@Deprecated
 enum DocumentPlaceholder implements IPlaceholder {
 
     YEAR("<year>"),

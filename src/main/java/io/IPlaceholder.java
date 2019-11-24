@@ -1,5 +1,6 @@
 package io;
 
+@Deprecated
 public interface IPlaceholder {
     /**
      * Gets the associated placeholder string.

@@ -3,6 +3,7 @@ package io;
 import java.text.SimpleDateFormat;
 import data.Entry;
 
+@Deprecated
 enum TablePlaceholder implements IPlaceholder {
     
     TABLE_ACTION("<action>"),

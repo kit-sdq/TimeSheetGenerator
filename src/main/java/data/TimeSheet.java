@@ -85,12 +85,71 @@ public class TimeSheet {
         }
         return totalWorkTime;
     }
+    
+    /**
+     * Gets the value of an element of a {@link TimeSheet}.
+     * 
+     * @param element - Element to get the value from
+     * @return The value of an element as a String
+     */
+    public String getElementStringValue(Element element) {
+        String value;
+        switch (element) {
+            case YEAR:
+                value = Integer.toString(this.getYear());
+                break;
+            case MONTH:
+                value = Integer.toString(this.getMonth().getValue());
+                break;
+            case EMPLOYEE_NAME:
+                value = this.getEmployee().getName();
+                break;
+            case EMPLOYEE_ID:
+                value = Integer.toString(this.getEmployee().getId());
+                break;
+            case GFUB:
+                value = this.getProfession().getWorkingArea().toString();
+                break;
+            case DEPARTMENT:
+                value = this.getProfession().getDepartmentName();
+                break;
+            case MAX_HOURS:
+                value = Integer.toString(this.getProfession().getMaxWorkingHours());
+                break;
+            case WAGE:
+                value = Double.toString(this.getProfession().getWage());
+                break;
+            case VACATION:
+                value = this.getVacation().toString();
+                break;
+            case HOURS_SUM:
+                value = this.getTotalWorkTime().toString();
+                break;
+            case TRANSFER_PRED:
+                value = this.getPredTranfer().toString();
+                break;
+            case TRANSFER_SUCC:
+                value = this.getSuccTransfer().toString();
+                break;
+            default:
+                value = null;
+                break;
+        }
+        return value;
+    }
+    
+    public static enum Element {
+        YEAR,
+        MONTH,
+        EMPLOYEE_NAME,
+        EMPLOYEE_ID,
+        GFUB,
+        DEPARTMENT,
+        MAX_HOURS,
+        WAGE,
+        VACATION,
+        HOURS_SUM,
+        TRANSFER_PRED,
+        TRANSFER_SUCC; 
+    }
 }
-
-
-
-
-
-
-
-
