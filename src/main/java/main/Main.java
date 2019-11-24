@@ -1,14 +1,11 @@
 package main;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 import data.TimeSheet;
-import io.IOutput;
-import io.Output;
+import io.FileController;
+import io.IGenerator;
+import io.LatexGenerator;
 import parser.IParser;
 import parser.ParseException;
 import parser.Parser;
@@ -31,8 +28,8 @@ public class Main {
         String month;
         
         try {
-            global = readFile(userInput.getFile(UserInputFile.JSON_GLOBAL), StandardCharsets.UTF_8);
-            month = readFile(userInput.getFile(UserInputFile.JSON_MONTH), StandardCharsets.UTF_8);
+            global = FileController.readFileToString(userInput.getFile(UserInputFile.JSON_GLOBAL));
+            month = FileController.readFileToString(userInput.getFile(UserInputFile.JSON_MONTH));
         } catch (IOException exception) {
             System.out.println("Error reading file");
             return;
@@ -52,18 +49,15 @@ public class Main {
         
         // TODO send o to checker
 
-        // TODO if valid send o to pdf generation in the output package
-        IOutput output = new Output();
+        ClassLoader classLoader = Main.class.getClassLoader();
         try {
-            System.out.println(output.generateLaTeX(doc));
+            String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Arbeitszeitdokumentation.tex"));
+            IGenerator generator = new LatexGenerator(doc, latexTemplate);
+            FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(-1);
         }
-    }
-
-    private static String readFile(File file, Charset encoding) throws IOException {
-        byte[] encoded = Files.readAllBytes(file.toPath());
-        return new String(encoded, encoding);
+        
     }
 }
