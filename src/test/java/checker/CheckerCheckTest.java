@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import data.Employee;
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
@@ -34,7 +34,7 @@ public class CheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -52,7 +52,7 @@ public class CheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -70,7 +70,7 @@ public class CheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -88,7 +88,7 @@ public class CheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions

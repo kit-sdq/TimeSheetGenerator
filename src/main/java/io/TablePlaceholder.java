@@ -1,4 +1,4 @@
-package output;
+package io;
 
 import java.text.SimpleDateFormat;
 import data.Entry;

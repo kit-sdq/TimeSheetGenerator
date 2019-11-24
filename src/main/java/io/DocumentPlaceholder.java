@@ -1,6 +1,6 @@
-package output;
+package io;
 
-import data.FullDocumentation;
+import data.TimeSheet;
 
 enum DocumentPlaceholder implements IPlaceholder {
 
@@ -34,7 +34,7 @@ enum DocumentPlaceholder implements IPlaceholder {
      * @param doc - Document to get the substitutes from
      * @return The substitute element parsed to a string
      */
-    public String getSubstitute(FullDocumentation doc) {
+    public String getSubstitute(TimeSheet doc) {
         String substitute;
         switch (this) {
             case YEAR:

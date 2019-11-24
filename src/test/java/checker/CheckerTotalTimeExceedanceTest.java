@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import data.Employee;
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
@@ -39,7 +39,7 @@ public class CheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -57,7 +57,7 @@ public class CheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -76,7 +76,7 @@ public class CheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -95,7 +95,7 @@ public class CheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -117,7 +117,7 @@ public class CheckerTotalTimeExceedanceTest {
         Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -143,7 +143,7 @@ public class CheckerTotalTimeExceedanceTest {
         Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -169,7 +169,7 @@ public class CheckerTotalTimeExceedanceTest {
         Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         //Assertions
@@ -198,7 +198,7 @@ public class CheckerTotalTimeExceedanceTest {
         Entry entry = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -235,7 +235,7 @@ public class CheckerTotalTimeExceedanceTest {
         
         ////Checker initialization
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions

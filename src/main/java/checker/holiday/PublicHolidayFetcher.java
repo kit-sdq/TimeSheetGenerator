@@ -1,4 +1,4 @@
-package checker;
+package checker.holiday;
 
 import java.io.BufferedReader;
 import java.io.IOException;

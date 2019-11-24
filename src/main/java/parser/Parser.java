@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 import data.Employee;
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
@@ -57,7 +57,7 @@ public class Parser implements IParser {
     
 
     @Override
-    public FullDocumentation parse(String globalConfig, String monthConfig) throws IllegalArgumentException, ParseException {
+    public TimeSheet parse(String globalConfig, String monthConfig) throws IllegalArgumentException, ParseException {
         
         parseGlobal(globalConfig);
         parseMonth(monthConfig);
@@ -66,7 +66,7 @@ public class Parser implements IParser {
         
         WorkingArea workingArea = gf ? WorkingArea.GF : WorkingArea.UB;
         Profession profession = new Profession(institute, workingArea, workingHours, wage);
-        FullDocumentation doc = new FullDocumentation(employee, profession, YearMonth.of(year, month), entries, vacation, succ_transfer, pred_transfer);
+        TimeSheet doc = new TimeSheet(employee, profession, YearMonth.of(year, month), entries, vacation, succ_transfer, pred_transfer);
         
         return doc;
     }

@@ -16,9 +16,12 @@ import java.util.Random;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import checker.holiday.Holiday;
+import checker.holiday.PublicHolidayFetcher;
+import checker.holiday.State;
 import data.Employee;
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
@@ -57,7 +60,7 @@ public class CheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -76,7 +79,7 @@ public class CheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -95,7 +98,7 @@ public class CheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -114,7 +117,7 @@ public class CheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -144,7 +147,7 @@ public class CheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions

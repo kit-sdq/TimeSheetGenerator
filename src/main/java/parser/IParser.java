@@ -1,10 +1,10 @@
 package parser;
 
-import data.FullDocumentation;
+import data.TimeSheet;
 
 /**
  * @author Liam Wachter
  */
 public interface IParser {
-    FullDocumentation parse(String global, String month) throws IllegalArgumentException, ParseException;
+    TimeSheet parse(String global, String month) throws IllegalArgumentException, ParseException;
 }

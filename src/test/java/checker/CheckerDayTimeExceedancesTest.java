@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import data.Employee;
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
@@ -41,7 +41,7 @@ public class CheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -57,7 +57,7 @@ public class CheckerDayTimeExceedancesTest {
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -73,7 +73,7 @@ public class CheckerDayTimeExceedancesTest {
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -93,7 +93,7 @@ public class CheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
@@ -119,7 +119,7 @@ public class CheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
         Entry[] entries = {entry};
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         ////Assertions

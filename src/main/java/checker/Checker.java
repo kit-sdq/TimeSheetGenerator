@@ -1,7 +1,7 @@
 package checker;
 
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.TimeSpan;
 
 import java.time.DayOfWeek;
@@ -10,6 +10,10 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+
+import checker.holiday.Holiday;
+import checker.holiday.PublicHolidayFetcher;
+import checker.holiday.State;
 
 /**
  * TODO Documentation of class
@@ -25,16 +29,16 @@ public class Checker {
     private static final int MAX_ROW_NUM = 22;
     private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(State.BW);
 
-    private final FullDocumentation fullDoc;
+    private final TimeSheet fullDoc;
     
-    public Checker(FullDocumentation fullDoc) {
+    public Checker(TimeSheet fullDoc) {
         this.fullDoc = fullDoc;
     }
     
     /**
-     * Runs all of the needed tests in order to validate the {@link FullDocumentation} instance.
+     * Runs all of the needed tests in order to validate the {@link TimeSheet} instance.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value with error or validity message
      */
     public CheckerReturn check() {
@@ -53,7 +57,7 @@ public class Checker {
     /**
      * Checks whether maximum working time was exceeded.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for time exceedance or validity
      */
     protected CheckerReturn checkTotalTimeExceedance() {
@@ -69,7 +73,7 @@ public class Checker {
     /**
      * Checks whether the working time per day meets all legal pause rules.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for missing pause or validity
      */
     protected CheckerReturn checkDayTimeExceedances() {    
@@ -117,7 +121,7 @@ public class Checker {
     /**
      * Checks whether the working time per day is inside the legal bounds.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for time out of bounds or validity
      */
     protected CheckerReturn checkDayTimeBounds() {
@@ -134,7 +138,7 @@ public class Checker {
     /**
      * Checks whether all of the days are valid working days.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for Sunday, holiday or validity
      */
     protected CheckerReturn checkValidWorkingDays() {
@@ -165,7 +169,7 @@ public class Checker {
     /**
      * Checks whether the number of entries exceeds the maximum number of rows of the template document.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for row number exceedance or validity
      */
     protected CheckerReturn checkRowNumExceedance() {
@@ -178,7 +182,7 @@ public class Checker {
     /**
      * Checks whether the department name is empty.
      * 
-     * @param fullDoc - {@link FullDocumentation} instance to get checked
+     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for missing department name or validity
      */
     protected CheckerReturn checkDepartmentName() {
@@ -188,7 +192,7 @@ public class Checker {
     
     ////Following methods are primarily for testing purposes.
     /**
-     * This method gets the maximally allowed number of entries inside a {@link FullDocumentation}.
+     * This method gets the maximally allowed number of entries inside a {@link TimeSheet}.
      * @return The maximum number of {@link Entry entries}.
      */
     protected static int getMaxEntries() {

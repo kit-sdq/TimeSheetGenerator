@@ -1,4 +1,4 @@
-package input;
+package main;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,9 +6,9 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
-import data.FullDocumentation;
-import output.IOutput;
-import output.Output;
+import data.TimeSheet;
+import io.IOutput;
+import io.Output;
 import parser.IParser;
 import parser.ParseException;
 import parser.Parser;
@@ -41,7 +41,7 @@ public class Main {
         // TODO send to parser and get back FullDocumentation object o
         // Work in Progress
         IParser jsonParser = new Parser();
-        FullDocumentation doc = null;
+        TimeSheet doc = null;
         try {
             doc = jsonParser.parse(global, month);            
         } catch (ParseException e) {

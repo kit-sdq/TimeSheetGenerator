@@ -6,7 +6,7 @@ import java.time.YearMonth;
 /**
  * @author Liam Wachter
  */
-public class FullDocumentation {
+public class TimeSheet {
     private final Employee employee;
     private final Profession profession;
     private final YearMonth yearMonth;
@@ -24,7 +24,7 @@ public class FullDocumentation {
      * @param succTransfer - The time that should be carried over to the next documentation.
      * @param predTransfer - The time that got carried over from the last documentation.
      */
-    public FullDocumentation(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries, TimeSpan vacation,
+    public TimeSheet(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries, TimeSpan vacation,
             TimeSpan succTransfer, TimeSpan predTransfer) {
         this.employee = employee;
         this.profession = profession;

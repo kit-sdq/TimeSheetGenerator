@@ -1,7 +1,7 @@
-package output;
+package io;
 
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,7 +17,7 @@ public class Output implements IOutput {
     
     //TODO Documentation of the methods
     @Override
-    public String generateLaTeX(FullDocumentation documentation) throws IOException {
+    public String generateLaTeX(TimeSheet documentation) throws IOException {
         String filledTex = null;
             filledTex = readLaTeXTemplate();
 

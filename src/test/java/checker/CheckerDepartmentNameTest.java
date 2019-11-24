@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import data.Employee;
 import data.Entry;
-import data.FullDocumentation;
+import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
@@ -32,7 +32,7 @@ public class CheckerDepartmentNameTest {
         
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, 40, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         assertEquals(CheckerReturn.NAME_MISSING, checker.checkDepartmentName());
@@ -45,7 +45,7 @@ public class CheckerDepartmentNameTest {
 
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, 40, 10.31);
-        FullDocumentation fullDoc = new FullDocumentation(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
         assertEquals(CheckerReturn.VALID, checker.checkDepartmentName());
