@@ -2,11 +2,13 @@ package main;
 
 import java.io.IOException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import data.TimeSheet;
 import io.FileController;
 import io.IGenerator;
 import io.LatexGenerator;
-import parser.IParser;
 import parser.ParseException;
 import parser.Parser;
 
@@ -26,28 +28,28 @@ public class Main {
         
         String global;
         String month;
-        
         try {
             global = FileController.readFileToString(userInput.getFile(UserInputFile.JSON_GLOBAL));
             month = FileController.readFileToString(userInput.getFile(UserInputFile.JSON_MONTH));
-        } catch (IOException exception) {
-            System.out.println("Error reading file");
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            System.exit(-1);
             return;
         }
         
-        // TODO send to parser and get back FullDocumentation object o
-        // Work in Progress
-        IParser jsonParser = new Parser();
-        TimeSheet doc = null;
+        TimeSheet doc;
         try {
-            doc = jsonParser.parse(global, month);            
-        } catch (ParseException e) {
+            JSONObject globalJson = new JSONObject(global);
+            JSONObject monthJson = new JSONObject(month);
+            
+            doc = Parser.parseTimeSheet(globalJson, monthJson);            
+        } catch (JSONException | ParseException e) {
             System.out.println(e.getMessage());
             System.exit(-1);
+            return;
         }
 
-        
-        // TODO send o to checker
+        // TODO send doc to checker
 
         ClassLoader classLoader = Main.class.getClassLoader();
         try {

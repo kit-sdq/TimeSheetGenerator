@@ -1,15 +1,11 @@
 package parser;
 
-/**
- * @author Dennis Zimmermann
- * @version 1.0
- */
-@SuppressWarnings("serial")
-public class ParseException extends Exception{
-
+public class ParseException extends Exception {
     
-    public ParseException(String error) {
+    private static final long serialVersionUID = -644519857973827281L;
 
+    public ParseException(String error) {
         super(error);
-    }    
+    }
+    
 }
