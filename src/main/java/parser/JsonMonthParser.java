@@ -53,19 +53,19 @@ public class JsonMonthParser implements IMonthParser {
     @Override
     public TimeSpan getVacation() throws ParseException {
         String vacation = json.optString("vacation", "0:00");
-        return parseTimeSpan(vacation);
+        return TimeSpan.parse(vacation);
     }
 
     @Override
     public TimeSpan getSuccTransfer() throws ParseException {
         String vacation = json.optString("succ_transfer", "0:00");
-        return parseTimeSpan(vacation);
+        return TimeSpan.parse(vacation);
     }
 
     @Override
     public TimeSpan getPredTransfer() throws ParseException {
         String vacation = json.optString("pred_transfer", "0:00");
-        return parseTimeSpan(vacation);
+        return TimeSpan.parse(vacation);
     }
     
     //TODO Rework
@@ -97,31 +97,10 @@ public class JsonMonthParser implements IMonthParser {
             throw new ParseException("Date format error. Usage: dd.MM.YYYY");
         }
         
-        start = parseTimeSpan(startString);
-        end = parseTimeSpan(endString);
-        pause = parseTimeSpan(pauseString);
+        start = TimeSpan.parse(startString);
+        end = TimeSpan.parse(endString);
+        pause = TimeSpan.parse(pauseString);
         
         return new Entry(action, date, start, end, pause);
     }
-    
-    //TODO Rework and move to TimeSpan
-    private TimeSpan parseTimeSpan (String s) throws ParseException {    
-        String[] split = s.split(":");
-        if (split.length != 2) {
-            throw new ParseException("Time format error. Usage: (X)X:XX.");
-        }
-        
-        int hour, minute;
-        
-        try {
-            hour = Integer.parseInt(split[0]);
-            minute = Integer.parseInt(split[1]);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Time format error, not a Number.");
-        }
-        
-        // Info: validity check of hour and minutes is done by the TimeSpan class
-        return new TimeSpan(hour, minute);
-    }
-
 }

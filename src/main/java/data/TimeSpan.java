@@ -69,6 +69,29 @@ public class TimeSpan implements Comparable<TimeSpan> {
         this.minute = (60 + minuteDiff) % 60;
     }
 
+    /**
+     * Attempts to interpret the string s as a representation of a {@link TimeSpan}.
+     * @param s - the string to be parsed.
+     * @return A {@link TimeSpan} representing the input string
+     */
+    public static TimeSpan parse(String s) {
+        if (!s.matches("^[0-9]+:[0-5]?[0-9]$")) {
+            throw new IllegalArgumentException("Invalid time string. Usage: h...h:mm");
+        }
+        String[] splittedString = s.split(":");
+        
+        int hours;
+        int minutes;
+        try {
+            hours = Integer.parseInt(splittedString[0]);
+            minutes = Integer.parseInt(splittedString[1]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        
+        return new TimeSpan(hours, minutes);
+    }
+    
     @Override
     public String toString() {
         return String.format("%02d:%02d", hour, minute);
