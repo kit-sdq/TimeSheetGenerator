@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import checker.holiday.Holiday;
 import checker.holiday.PublicHolidayFetcher;
-import checker.holiday.State;
+import checker.holiday.GermanState;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -142,7 +142,7 @@ public class CheckerValidWorkingDaysTest {
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(randYear, randMonth);
         Date date = Date.valueOf(yearMonth.getYear() + "-" + yearMonth.getMonthValue() + "-" + randDay);
-        State state = State.BW;
+        GermanState state = GermanState.BW;
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);

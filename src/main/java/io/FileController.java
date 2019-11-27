@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -34,6 +35,10 @@ public class FileController {
     
     public static String readFileToString(File file) throws IOException {
         return readInputStreamToString(new FileInputStream(file));
+    }
+    
+    public static String readURLToString(URL url) throws IOException {
+        return readInputStreamToString(url.openStream());
     }
     
     public static void saveStringToFile(String content, File file) throws IOException {

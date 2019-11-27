@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 import checker.holiday.Holiday;
 import checker.holiday.PublicHolidayFetcher;
-import checker.holiday.State;
+import checker.holiday.GermanState;
 
 /**
  * TODO Documentation of class
@@ -27,7 +27,7 @@ public class Checker {
     //TODO Replace with enum
     private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
     private static final int MAX_ROW_NUM = 22;
-    private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(State.BW);
+    private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(GermanState.BW);
 
     private final TimeSheet fullDoc;
     

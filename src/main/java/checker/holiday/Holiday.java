@@ -3,17 +3,30 @@ package checker.holiday;
 import java.time.LocalDate;
 
 /**
- * @author copied from swt docu generator
+ * Represents a certain holiday used by a class implementing {@link IHolidayChecker}.
  */
 public class Holiday {
-    private String name;
-    private LocalDate date;
+    
+    //TODO JavaDoc
+    private final LocalDate date;
+    private final String description;
 
-    public Holiday(String name, LocalDate date) {
-        this.name = name;
+    public Holiday(LocalDate date, String description) {
         this.date = date;
+        this.description = description;
     }
 
-    public String getName() { return this.name; }
-    public LocalDate getDate() { return this.date; }
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public LocalDate getDate() {
+        return this.date;
+    }
+    
+    //TODO Test equalsDate 
+    public boolean equalsDate(LocalDate otherDate) {
+        return date.equals(otherDate);
+    }
+    
 }

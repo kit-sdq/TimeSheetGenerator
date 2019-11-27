@@ -6,6 +6,8 @@ package data;
  * @author Liam Wachter
  */
 public class TimeSpan implements Comparable<TimeSpan> {
+    
+    //TODO Replace magic numbers with constants
     private int minute;
     private int hour;
 

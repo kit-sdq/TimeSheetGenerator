@@ -19,12 +19,13 @@ import org.json.JSONObject;
 /**
  * @author copied from swt docu generator
  */
+@Deprecated
 public class PublicHolidayFetcher {
 
     private final String API_URL = "https://feiertage-api.de/api/?jahr=";
-    private State state;
+    private GermanState state;
 
-    public PublicHolidayFetcher(State state) {
+    public PublicHolidayFetcher(GermanState state) {
         this.state = state;
     }
 
@@ -39,7 +40,7 @@ public class PublicHolidayFetcher {
                 JSONObject data = (JSONObject) stateJson.get(name);
                 String dateString = (String) data.get("datum");
                 LocalDate date = LocalDate.parse(dateString, dateFormatter);
-                result.add(new Holiday(name, date));
+                result.add(new Holiday(date, name));
             }
             return result;
         } catch (Exception e) {
