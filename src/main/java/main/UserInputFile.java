@@ -1,25 +1,24 @@
 package main;
 
-import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public enum UserInputFile {
   
-  JSON_GLOBAL("Global JSON File", "Load json", new FileNameExtensionFilter("JSON-File", "json")),
-  JSON_MONTH("Month JSON File", "Load json", new FileNameExtensionFilter("JSON-File", "json")),
-  OUTPUT("Output Tex File", "Save", new FileNameExtensionFilter("Tex-File", "tex"));
+  JSON_GLOBAL("Global JSON File", new FileNameExtensionFilter("JSON-File", "json"), FileOperation.OPEN),
+  JSON_MONTH("Month JSON File", new FileNameExtensionFilter("JSON-File", "json"), FileOperation.OPEN),
+  OUTPUT("Output Tex File", new FileNameExtensionFilter("Tex-File", "tex"), FileOperation.SAVE);
   
   private String dialogTitel;
-  private String dialogButton;
-  private FileFilter fileFilter;
+  private FileNameExtensionFilter fileFilter;
+  private FileOperation operation;
   
-  private UserInputFile(String dialogTitel, String dialogButton, FileFilter fileFilter) {
+  private UserInputFile(String dialogTitel, FileNameExtensionFilter fileFilter, FileOperation operation) {
     this.dialogTitel = dialogTitel;
-    this.dialogButton = dialogButton;
     this.fileFilter = fileFilter;
+    this.operation = operation;
   }
   
-  public FileFilter getFileFilter() {
+  public FileNameExtensionFilter getFileFilter() {
     return this.fileFilter;
   }
   
@@ -27,7 +26,13 @@ public enum UserInputFile {
     return this.dialogTitel;
   }
   
-  public String getDialogButton() {
-    return this.dialogButton;
+  public FileOperation getFileOperation() {
+	  return this.operation;
   }
+  
+  public enum FileOperation {
+	  OPEN,
+	  SAVE
+  }
+  
 }

@@ -2,14 +2,18 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.swing.JFileChooser;
 
 import org.apache.commons.cli.*;
+import org.apache.commons.io.FilenameUtils;
 
 public class UserInput {
 
   private CommandLine commmandLine;
+  
+  private String currentDirectory = null; //caches the last used directory for the file chooser
   
   public UserInput(String[] args) throws ParseException {
     DefaultParser dp = new DefaultParser();
@@ -44,23 +48,53 @@ public class UserInput {
     if (commmandLine.hasOption(UserInputOption.GUI.getOption().getOpt())) {
       JFileChooser fileChooser = new JFileChooser();
       
-      //TODO Should this line be used? What dir? Home maybe?
-      fileChooser.setCurrentDirectory(new File("./"));
+      if (currentDirectory == null || currentDirectory.isEmpty()) {
+    	  fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+      } else {
+    	  fileChooser.setCurrentDirectory(new File(currentDirectory));
+      }
       
       //Configure the accept behavior of the JFileChooser
       fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
       fileChooser.setFileFilter(userInputFile.getFileFilter());
       fileChooser.setAcceptAllFileFilterUsed(false);
       
-      //Cosmetic changes to title and button
+      //Cosmetic changes to title
       fileChooser.setDialogTitle(userInputFile.getDialogTitel());
-      fileChooser.setApproveButtonText(userInputFile.getDialogButton());
+      
+      //Get allowed file extensions
+      String[] exts = userInputFile.getFileFilter().getExtensions();
       
       //Show dialog and check for errors
-      if (fileChooser.showDialog(null, null) != JFileChooser.APPROVE_OPTION) {
-        throw new IOException("File could not be selected.");
+      switch (userInputFile.getFileOperation()) {
+      	case OPEN:
+    	  if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+    		  throw new IOException("File could not be opened.");
+    	  }
+    	  file = fileChooser.getSelectedFile();
+    	  
+    	  if (!file.exists()) {
+    		  throw new IOException("Selected file does not exist.");
+    	  } else if (exts.length > 0 && !Arrays.asList(exts).contains(FilenameUtils.getExtension(file.getName()))) {
+    		  throw new IOException("Selected file has an unsupported extension.");
+    	  }
+    	  break;
+      	case SAVE:
+    	  if (fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
+    		  throw new IOException("File could not be saved.");
+    	  }
+    	  file = fileChooser.getSelectedFile();
+    	  
+    	  if (exts.length > 0 && !Arrays.asList(exts).contains(FilenameUtils.getExtension(file.getName()))) {
+    		  String ext = exts[0].startsWith(".") ? exts[0] : "." + exts[0];
+    		  file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName()) + ext);
+    	  }
+    	  break;
+    	default: //Never used, since OPEN and SAVE are the only enum values
+    	  break;
       }
-      file = fileChooser.getSelectedFile();
+      
+      currentDirectory = file.getParent();
     } else {
       String[] fileArgs = commmandLine.getOptionValues(UserInputOption.FILE.getOption().getOpt());
       
