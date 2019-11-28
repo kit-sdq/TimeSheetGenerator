@@ -28,7 +28,7 @@ public class GermanyHolidayChecker implements IHolidayChecker {
 
     @Override
     public boolean isHoliday(LocalDate date) throws HolidayFetchException {
-        if (holidays.isEmpty()) {
+        if (!hasHolidays()) {
             fetchHolidays();
         }
         
@@ -42,7 +42,7 @@ public class GermanyHolidayChecker implements IHolidayChecker {
 
     @Override
     public Collection<Holiday> getHolidays() throws HolidayFetchException {
-        if (holidays.isEmpty()) {
+        if (!hasHolidays()) {
             fetchHolidays();
         }
         return holidays;
@@ -65,4 +65,10 @@ public class GermanyHolidayChecker implements IHolidayChecker {
         
     }
     
+    private boolean hasHolidays() {
+        if (holidays == null || holidays.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }
