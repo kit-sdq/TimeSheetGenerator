@@ -3,7 +3,6 @@ package checker.holiday;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
@@ -25,7 +24,7 @@ public class GermanyHolidayCheckerTest {
         GermanState state = GermanState.BW;
         
         ////HolidayChecker initialization
-        IHolidayChecker holidayChecker = new GermanyHolidayChecker(Year.of(localDate.getYear()), state);
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(localDate.getYear(), state);
         
         ////Assertions
         assertEquals(true, holidayChecker.isHoliday(localDate));
@@ -38,7 +37,7 @@ public class GermanyHolidayCheckerTest {
         GermanState state = GermanState.BW;
         
         ////HolidayChecker initialization
-        IHolidayChecker holidayChecker = new GermanyHolidayChecker(Year.of(localDate.getYear()), state);
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(localDate.getYear(), state);
         
         ////Assertions
         assertEquals(true, holidayChecker.isHoliday(localDate));
@@ -51,7 +50,7 @@ public class GermanyHolidayCheckerTest {
         GermanState state = GermanState.BW;
         
         ////HolidayChecker initialization
-        IHolidayChecker holidayChecker = new GermanyHolidayChecker(Year.of(localDate.getYear()), state);
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(localDate.getYear(), state);
         
         ////Assertions
         assertEquals(true, holidayChecker.isHoliday(localDate));
@@ -65,7 +64,7 @@ public class GermanyHolidayCheckerTest {
         ////Test values
         GermanState state = GermanState.BW;
         int year = rand.nextInt(RANDOM_YEAR_BOUND) + 1950;
-        IHolidayChecker holidayChecker = new GermanyHolidayChecker(Year.of(year), state);
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(year, state);
         
         for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
             int month = rand.nextInt(RANDOM_MONTH_BOUND) + 1;
@@ -93,7 +92,7 @@ public class GermanyHolidayCheckerTest {
         ////Test values
         GermanState state = GermanState.BW;
         int year = rand.nextInt(RANDOM_YEAR_BOUND) + 1950;
-        IHolidayChecker holidayChecker = new GermanyHolidayChecker(Year.of(year), state);
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(year, state);
         
         ////HolidayChecker initialization
         Collection<Holiday> holidays = holidayChecker.getHolidays();

@@ -21,8 +21,8 @@ public class GermanyHolidayChecker implements IHolidayChecker {
     private Collection<Holiday> holidays;
     private static final String HOLIDAY_FETCH_ADDRESS = "https://feiertage-api.de/api/?jahr=$year$&nur_land=$state$";
     
-    public GermanyHolidayChecker(Year year, GermanState state) {
-        this.year = year;
+    public GermanyHolidayChecker(int year, GermanState state) {
+        this.year = Year.of(year);
         this.state = state;
     }
 
