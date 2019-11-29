@@ -35,11 +35,10 @@ public class JsonGlobalParser implements IGlobalParser {
         Profession profession;
         try {
             String departmentName = json.getString("institute");
-            String maxWorkingTimeString = json.getString("workingTime");
-            TimeSpan maxWorkingTime = TimeSpan.parse(maxWorkingTimeString);
+            TimeSpan maxWorkingTime = TimeSpan.parse(json.getString("workingTime"));
             double wage = json.getDouble("wage");    
-            //TODO Replace boolean with string in global.json because ub tag deprecated 
-            WorkingArea workingArea = json.getBoolean("gf") ? WorkingArea.GF : WorkingArea.UB;
+            WorkingArea workingArea = WorkingArea.parse(json.getString("workingArea"));
+            
             profession = new Profession(departmentName, workingArea, maxWorkingTime, wage);
         } catch (IllegalArgumentException | JSONException e) {
             throw new ParseException(e.getMessage());
