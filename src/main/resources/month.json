@@ -1,9 +1,11 @@
 {
-  "month": 11,
   "year": 2019,
+  "month": 11,
   "vacation": "3:00",
   "pred_transfer": "0:00",
   "succ_transfer": "0:00",
-  "entries": [{"action": "Korrektur", "date": "01.11.2019", "start": "10:00", "end": "11:00", "pause": "00:00"},
-    {"action": "Fragen beantworten", "date": "3.11.19", "start": "01:31", "end": "05:11", "pause": "00:30"}]
+  "entries": [
+    {"action": "Korrektur", "day": 01, "start": "10:00", "end": "11:00"},
+    {"action": "Fragen beantworten", "day": 3, "start": "01:31", "end": "05:11", "pause": "00:30"}
+  ]
 }

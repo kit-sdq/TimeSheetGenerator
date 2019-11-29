@@ -2,7 +2,7 @@ package checker;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
@@ -39,7 +39,7 @@ public class CheckerDayTimeExceedancesTest {
         TimeSpan pause = zeroTs.clone();
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -51,9 +51,9 @@ public class CheckerDayTimeExceedancesTest {
     @Test
     public void testValidMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", Date.valueOf("2019-11-22"), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs.clone());
-        Entry entry2 = new Entry("Test2", Date.valueOf("2019-11-22"), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30));
-        Entry entry3 = new Entry("Test3", Date.valueOf("2019-11-23"), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs.clone());
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30));
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
@@ -67,9 +67,9 @@ public class CheckerDayTimeExceedancesTest {
     @Test
     public void testExceedanceMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", Date.valueOf("2019-11-22"), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs.clone());
-        Entry entry2 = new Entry("Test2", Date.valueOf("2019-11-22"), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
-        Entry entry3 = new Entry("Test3", Date.valueOf("2019-11-23"), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs.clone());
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
@@ -91,7 +91,7 @@ public class CheckerDayTimeExceedancesTest {
         TimeSpan pause = zeroTs.clone();
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -117,7 +117,7 @@ public class CheckerDayTimeExceedancesTest {
         TimeSpan pause = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);

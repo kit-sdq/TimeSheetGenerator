@@ -2,7 +2,7 @@ package checker;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
@@ -49,7 +49,7 @@ public class CheckerDayTimeBoundsTest {
         end.subtract(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -72,7 +72,7 @@ public class CheckerDayTimeBoundsTest {
         end.subtract(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -92,7 +92,7 @@ public class CheckerDayTimeBoundsTest {
         start.add(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -115,7 +115,7 @@ public class CheckerDayTimeBoundsTest {
         start.add(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -132,7 +132,7 @@ public class CheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -152,7 +152,7 @@ public class CheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
@@ -176,7 +176,7 @@ public class CheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);

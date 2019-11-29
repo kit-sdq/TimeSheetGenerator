@@ -2,7 +2,7 @@ package checker;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 
@@ -17,7 +17,7 @@ import data.WorkingArea;
 
 public class CheckerDepartmentNameTest {
 
-    private static final Entry[] ENTRIES = {new Entry("Test", Date.valueOf("2019-11-22"),
+    private static final Entry[] ENTRIES = {new Entry("Test", LocalDate.of(2019, 11, 22),
             new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0))};
     
     ////Placeholder for documentation construction

@@ -1,8 +1,8 @@
 package parser;
 
-import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.Date;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,26 +15,43 @@ public class JsonMonthParser implements IMonthParser {
 
     private final JSONObject json;
     
+    // Caching attributes to avoid redundant json parsing.
+    private YearMonth yearMonth;
+    private Entry[] entries;
+    
     public JsonMonthParser(JSONObject json) {
         this.json = json;
     }
 
     @Override
     public YearMonth getYearMonth() throws ParseException {
+        // If the year and month were already parsed, they are simply returned
+        if (hasYearMonth()) {
+            return this.yearMonth;
+        }
+        
+        // Otherwise get them out of the JSONObject
         YearMonth yearMonth;
         try {
             int month = json.getInt("month");
             int year = json.getInt("year");
             yearMonth = YearMonth.of(year, month);
-        } catch (JSONException e) {
+        } catch (DateTimeException | JSONException e) {
             throw new ParseException(e.getMessage());
         }
         
+        this.yearMonth = yearMonth;
         return yearMonth;
     }
 
     @Override
     public Entry[] getEntries() throws ParseException {
+        // If the entries were already parsed, they are simply returned
+        if (hasEntries()) {
+            return this.entries;
+        }
+        
+        //Otherwise 
         Entry[] entries;
         try {
             JSONArray entriesJSONArray = json.getJSONArray("entries");
@@ -43,10 +60,11 @@ public class JsonMonthParser implements IMonthParser {
             for (int i = 0; i < entries.length; i++) {
                 entries[i] = parseEntry(entriesJSONArray.getJSONObject(i));
             }
-        } catch (JSONException e) {
+        } catch (DateTimeException | JSONException e) {
             throw new ParseException(e.getMessage());
         }
         
+        this.entries = entries;
         return entries;
     }
 
@@ -68,39 +86,31 @@ public class JsonMonthParser implements IMonthParser {
         return TimeSpan.parse(vacation);
     }
     
-    //TODO Rework
-    private Entry parseEntry(JSONObject json) throws JSONException, ParseException {        
-        String dateString = json.getString("date");
+    private Entry parseEntry(JSONObject json) throws JSONException, DateTimeException, ParseException {        
+        // Json "getters" 
         String action = json.getString("action");
+        int day = json.getInt("day");
         String startString = json.getString("start");
         String endString = json.getString("end");
         String pauseString = json.optString("pause", "00:00");
         
-        // Fix Date String (ugly, but it works)
-        String[] split = dateString.split("\\.");
-        int year;
-        try {
-            year = Integer.parseInt(split[2]);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Date format error. Usage: dd.MM.YYYY");
-        }
-        if (year < 2000) {
-            dateString = split[0] + "." + split[1] + ".20" + split[2]; 
-        }
+        // TimeSpan parsing
+        TimeSpan start = TimeSpan.parse(startString);
+        TimeSpan end = TimeSpan.parse(endString);
+        TimeSpan pause = TimeSpan.parse(pauseString);
         
-        TimeSpan start, end, pause;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-        Date date;
-        try {
-            date = sdf.parse(dateString);
-        } catch (java.text.ParseException e) {
-            throw new ParseException("Date format error. Usage: dd.MM.YYYY");
-        }
-        
-        start = TimeSpan.parse(startString);
-        end = TimeSpan.parse(endString);
-        pause = TimeSpan.parse(pauseString);
+        // LocalDate construction
+        YearMonth yearMonth = getYearMonth();
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), day);
         
         return new Entry(action, date, start, end, pause);
+    }
+    
+    private boolean hasYearMonth() {
+        return !(yearMonth == null);
+    }
+    
+    private boolean hasEntries() {
+        return !(entries == null);
     }
 }

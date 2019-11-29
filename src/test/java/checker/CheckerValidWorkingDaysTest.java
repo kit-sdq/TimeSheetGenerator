@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
@@ -55,7 +54,7 @@ public class CheckerValidWorkingDaysTest {
         TimeSpan end = new TimeSpan(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2019, Month.NOVEMBER);
-        Date date = Date.valueOf(yearMonth.getYear() + "-" + yearMonth.getMonthValue() + "-22"); //Friday, 22. November 2019, no Holiday in BW Germany
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 22); //Friday, 22. November 2019, no Holiday in BW Germany
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -74,7 +73,7 @@ public class CheckerValidWorkingDaysTest {
         TimeSpan end = new TimeSpan(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2019, Month.JANUARY);
-        Date date = Date.valueOf(yearMonth.getYear() + "-" + yearMonth.getMonthValue() + "-01"); //New years day: Holiday in BW Germany
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1); //New years day: Holiday in BW Germany
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -93,7 +92,7 @@ public class CheckerValidWorkingDaysTest {
         TimeSpan end = new TimeSpan(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2020, Month.DECEMBER);
-        Date date = Date.valueOf(yearMonth.getYear() + "-" + yearMonth.getMonthValue() + "-25");
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25);
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -112,7 +111,7 @@ public class CheckerValidWorkingDaysTest {
         TimeSpan end = new TimeSpan(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2022, Month.DECEMBER);
-        Date date = Date.valueOf(yearMonth.getYear() + "-" + yearMonth.getMonthValue() + "-25"); //Its a Sunday and Holiday
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25); //Its a Sunday and Holiday
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -141,7 +140,7 @@ public class CheckerValidWorkingDaysTest {
         TimeSpan end = new TimeSpan(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(randYear, randMonth);
-        Date date = Date.valueOf(yearMonth.getYear() + "-" + yearMonth.getMonthValue() + "-" + randDay);
+        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), randDay);
         GermanState state = GermanState.BW;
         
         ////Checker initialization

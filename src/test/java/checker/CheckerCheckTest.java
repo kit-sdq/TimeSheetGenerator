@@ -2,7 +2,7 @@ package checker;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 
@@ -29,7 +29,7 @@ public class CheckerCheckTest {
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
         TimeSpan pause = zeroTs.clone();
-        Date date = Date.valueOf("2019-11-22"); //Valid working day
+        LocalDate date = LocalDate.of(2019, 11, 22); //Valid working day
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -47,7 +47,7 @@ public class CheckerCheckTest {
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
         TimeSpan pause = zeroTs.clone();
-        Date date = Date.valueOf("2019-12-25"); //Holiday
+        LocalDate date = LocalDate.of(2019, 12, 25); //Holiday
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -65,7 +65,7 @@ public class CheckerCheckTest {
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
         TimeSpan pause = zeroTs.clone();
-        Date date = Date.valueOf("2019-12-1"); //Sunday
+        LocalDate date = LocalDate.of(2019, 12, 1); //Sunday
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -83,7 +83,7 @@ public class CheckerCheckTest {
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
         TimeSpan pause = zeroTs.clone();
-        Date date = Date.valueOf("2022-12-25"); //Sunday and holiday
+        LocalDate date = LocalDate.of(2022, 12, 25); //Sunday and holiday
         
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);

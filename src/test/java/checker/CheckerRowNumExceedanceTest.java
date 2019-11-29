@@ -2,7 +2,7 @@ package checker;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
@@ -31,7 +31,7 @@ public class CheckerRowNumExceedanceTest {
     @Test
     public void testNoExceedanceLowerBound() {
         ////Checker initialization
-        Entry entry = new Entry("Test", Date.valueOf("2019-11-22"),
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22),
                 new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
@@ -53,7 +53,7 @@ public class CheckerRowNumExceedanceTest {
             TimeSpan end = new TimeSpan(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
-            Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
             entries[i] = entry;
         }
         
@@ -78,7 +78,7 @@ public class CheckerRowNumExceedanceTest {
             TimeSpan end = new TimeSpan(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
-            Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
             entries[i] = entry;
         }
         
@@ -106,7 +106,7 @@ public class CheckerRowNumExceedanceTest {
             TimeSpan end = new TimeSpan(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
-            Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
             entries[i] = entry;
         }
         

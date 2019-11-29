@@ -1,20 +1,20 @@
 package data;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author Liam Wachter
  */
 public class Entry {
     private String action;
-    private Date date;
+    private LocalDate date;
     private TimeSpan start, end, pause;
 
     //TODO Document
     
     //TODO Validity check - working time less than zero case
-    public Entry(String action, Date date, TimeSpan start, TimeSpan end, TimeSpan pause) {
+    public Entry(String action, LocalDate date, TimeSpan start, TimeSpan end, TimeSpan pause) {
         if (start.getHour() > 23 || end.getHour() > 23) {
             throw new IllegalArgumentException("Start and end time may not be greater than 23:59.");
         } else if (end.compareTo(start) < 0) {
@@ -32,7 +32,7 @@ public class Entry {
         return action;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -73,8 +73,8 @@ public class Entry {
                 value = this.getAction();
                 break;
             case TABLE_DATE:
-                SimpleDateFormat datePattern = new SimpleDateFormat("dd.MM.yy");
-                value = datePattern.format(this.getDate());
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
+                value = this.getDate().format(formatter);
                 break;
             case TABLE_START:
                 value = this.getStart().toString();

@@ -2,7 +2,7 @@ package checker;
 
 import static org.junit.Assert.*;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
@@ -35,7 +35,7 @@ public class CheckerTotalTimeExceedanceTest {
         int hoursToWork = 0;
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"),
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22),
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
@@ -53,7 +53,7 @@ public class CheckerTotalTimeExceedanceTest {
         int hoursToWork = 22;
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"),
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22),
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
@@ -72,7 +72,7 @@ public class CheckerTotalTimeExceedanceTest {
         int minutesToWork = 1;
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), 
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
@@ -91,7 +91,7 @@ public class CheckerTotalTimeExceedanceTest {
         int minutesToWork = 0;
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), 
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
@@ -114,7 +114,7 @@ public class CheckerTotalTimeExceedanceTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
@@ -140,7 +140,7 @@ public class CheckerTotalTimeExceedanceTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
@@ -166,7 +166,7 @@ public class CheckerTotalTimeExceedanceTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
-        Entry entry1 = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
@@ -195,7 +195,7 @@ public class CheckerTotalTimeExceedanceTest {
         TimeSpan pause = new TimeSpan((rand.nextInt(end.getHour())), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
-        Entry entry = new Entry("Test 1", Date.valueOf("2019-11-22"), start, end, pause);
+        Entry entry = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
@@ -229,7 +229,7 @@ public class CheckerTotalTimeExceedanceTest {
             TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
             TimeSpan pause = new TimeSpan((rand.nextInt(end.getHour())), rand.nextInt(RANDOM_MINUTES_BOUND));
             
-            Entry entry = new Entry("Test", Date.valueOf("2019-11-22"), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
             entries[i] = entry;
         }
         

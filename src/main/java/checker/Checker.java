@@ -5,10 +5,7 @@ import data.TimeSheet;
 import data.TimeSpan;
 
 import java.time.DayOfWeek;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 
 import checker.holiday.Holiday;
@@ -78,14 +75,14 @@ public class Checker {
      */
     protected CheckerReturn checkDayTimeExceedances() {    
         //This map contains all dates associated with their working times
-        HashMap<Date,TimeSpan[]> workingDays = new HashMap<Date, TimeSpan[]>();
+        HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
         for (Entry entry : fullDoc.getEntries()) {
             //EndToStart is the number of hours at this work shift.
             TimeSpan endToStart = entry.getEnd().clone();
             endToStart.subtract(entry.getStart());
             TimeSpan pause = entry.getPause().clone();
-            Date date = entry.getDate();
+            LocalDate date = entry.getDate();
             
             //If a day appears more than once this logic sums all of the working times
             if (workingDays.containsKey(date)) {
@@ -142,13 +139,8 @@ public class Checker {
      * @return {@link CheckerReturn} value for Sunday, holiday or validity
      */
     protected CheckerReturn checkValidWorkingDays() {
-        //TODO What happens to non-valid days like 32snd of January?
         for (Entry entry : fullDoc.getEntries()) {
-            //entry.getDate().toInstant() caused problems on some jre versions
-            //because the util.date child sql.date does not support this operation, but gets called from time to time.
-            //TODO Change Date in entry to LocalDate!
-            LocalDate localDate = Instant.ofEpochMilli(entry.getDate().getTime()).atZone(ZoneId.systemDefault()).toLocalDate();
-            
+            LocalDate localDate = entry.getDate();
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
