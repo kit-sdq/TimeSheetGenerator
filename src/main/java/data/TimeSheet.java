@@ -123,7 +123,9 @@ public class TimeSheet {
                 value = this.getVacation().toString();
                 break;
             case HOURS_SUM:
-                value = this.getTotalWorkTime().toString();
+                TimeSpan sumTime = this.getTotalWorkTime().clone();
+                sumTime.add(vacation);
+                value = sumTime.toString();
                 break;
             case TRANSFER_PRED:
                 value = this.getPredTranfer().toString();
