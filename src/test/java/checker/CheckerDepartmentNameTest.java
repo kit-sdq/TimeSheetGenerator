@@ -31,7 +31,7 @@ public class CheckerDepartmentNameTest {
         String departmentName = "";
         
         ////Checker initialization
-        Profession profession = new Profession(departmentName, WorkingArea.UB, 40, 10.31);
+        Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         
@@ -44,7 +44,7 @@ public class CheckerDepartmentNameTest {
         String departmentName = "validName Test Word";
 
         ////Checker initialization
-        Profession profession = new Profession(departmentName, WorkingArea.UB, 40, 10.31);
+        Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
         Checker checker = new Checker(fullDoc);
         

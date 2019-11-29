@@ -2,7 +2,7 @@
 	"name": "Max Mustermann",
 	"personnelnumber": 1234567,
 	"institute": "Fakultät für Informatik",
-	"workinghours": 40,
+	"workingTime": "40:00",
 	"wage": 10.31,
 	"gf": false,
 	"ub": true

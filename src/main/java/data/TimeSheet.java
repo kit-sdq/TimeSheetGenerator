@@ -114,7 +114,7 @@ public class TimeSheet {
                 value = this.getProfession().getDepartmentName();
                 break;
             case MAX_HOURS:
-                value = Integer.toString(this.getProfession().getMaxWorkingHours());
+                value = this.getProfession().getMaxWorkingTime().toString();
                 break;
             case WAGE:
                 value = Double.toString(this.getProfession().getWage());

@@ -60,7 +60,7 @@ public class Checker {
      * @return {@link CheckerReturn} value for time exceedance or validity
      */
     protected CheckerReturn checkTotalTimeExceedance() {
-        TimeSpan maxWorkingTime = new TimeSpan(fullDoc.getProfession().getMaxWorkingHours(), 0);
+        TimeSpan maxWorkingTime = fullDoc.getProfession().getMaxWorkingTime();
         
         if (fullDoc.getTotalWorkTime().compareTo(maxWorkingTime) > 0) {
             return CheckerReturn.TIME_EXCEEDANCE;

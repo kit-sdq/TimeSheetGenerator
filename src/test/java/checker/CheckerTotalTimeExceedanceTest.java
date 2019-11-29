@@ -31,7 +31,7 @@ public class CheckerTotalTimeExceedanceTest {
     @Test
     public void testNoExceedanceLowerBound() {
         //Test values
-        int maxWorkTime = 22;
+        TimeSpan maxWorkTime = new TimeSpan(22, 0);
         int hoursToWork = 0;
         
         //Checker initialization
@@ -49,7 +49,7 @@ public class CheckerTotalTimeExceedanceTest {
     @Test
     public void testNoExceedanceUpperBound() {
         //Test values
-        int maxWorkTime = 22;
+        TimeSpan maxWorkTime = new TimeSpan(22, 0);
         int hoursToWork = 22;
         
         //Checker initialization
@@ -67,7 +67,7 @@ public class CheckerTotalTimeExceedanceTest {
     @Test
     public void testExceedanceMinutes() {
         //Test values
-        int maxWorkTime = 14;
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
         int hoursToWork = 14;
         int minutesToWork = 1;
         
@@ -86,7 +86,7 @@ public class CheckerTotalTimeExceedanceTest {
     @Test
     public void testExceedanceHours() {
         //Test values
-        int maxWorkTime = 14;
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
         int hoursToWork = 15;
         int minutesToWork = 0;
         
@@ -108,7 +108,8 @@ public class CheckerTotalTimeExceedanceTest {
         Random rand = new Random();
         
         //Test values
-        int maxWorkTime = rand.nextInt(RANDOM_DAY_BOUND);
+        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
+        TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND), 0);
         TimeSpan pause = new TimeSpan(0, 0);
@@ -121,7 +122,7 @@ public class CheckerTotalTimeExceedanceTest {
         Checker checker = new Checker(fullDoc);
         
         //Assertions
-        if (maxWorkTime < end.getHour()) {
+        if (maxWorkTime.compareTo(end) < 0) {
             assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
         } else {
             assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
@@ -134,9 +135,10 @@ public class CheckerTotalTimeExceedanceTest {
         Random rand = new Random();
         
         //Test values
-        int maxWorkTime = rand.nextInt(RANDOM_DAY_BOUND);
+        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
+        TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(maxWorkTime, rand.nextInt(RANDOM_MINUTES_BOUND));
+        TimeSpan end = new TimeSpan(maxWorkHours, rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
@@ -160,7 +162,8 @@ public class CheckerTotalTimeExceedanceTest {
         Random rand = new Random();
         
         //Test values
-        int maxWorkTime = rand.nextInt(RANDOM_DAY_BOUND);
+        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
+        TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = new TimeSpan(0, 0);
@@ -173,9 +176,7 @@ public class CheckerTotalTimeExceedanceTest {
         Checker checker = new Checker(fullDoc);
         
         //Assertions
-        if (end.getHour() > maxWorkTime) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
-        } else if (end.getHour() == maxWorkTime && end.getMinute() > 0) {
+        if (end.compareTo(maxWorkTime) > 0) {
             assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
         } else {
             assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
@@ -188,7 +189,8 @@ public class CheckerTotalTimeExceedanceTest {
         Random rand = new Random();
         
         ////Test values
-        int maxWorkTime = rand.nextInt(RANDOM_DAY_BOUND);
+        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
+        TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
         //The end hour has to be greater than 1 to guarantee that the pause is not longer than the work
         TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
@@ -203,9 +205,7 @@ public class CheckerTotalTimeExceedanceTest {
         
         ////Assertions
         TimeSpan workingTime = entry.getWorkingTime();
-        if (workingTime.getHour() > maxWorkTime) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
-        } else if (workingTime.getHour() == maxWorkTime && workingTime.getMinute() > 0) {
+        if (workingTime.compareTo(maxWorkTime) > 0) {
             assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
         } else {
             assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
@@ -218,7 +218,8 @@ public class CheckerTotalTimeExceedanceTest {
         Random rand = new Random();
         
         ////Test values
-        int maxWorkTime = rand.nextInt(RANDOM_HOUR_BOUND);
+        int maxWorkHours = rand.nextInt(RANDOM_HOUR_BOUND);
+        TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         int numberOfEntries = rand.nextInt(50) + 1; //May not be zero!
         
         ////Entry generator
@@ -239,9 +240,7 @@ public class CheckerTotalTimeExceedanceTest {
         Checker checker = new Checker(fullDoc);
         
         ////Assertions
-        if (fullDoc.getTotalWorkTime().getHour() > maxWorkTime) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
-        } else if (fullDoc.getTotalWorkTime().getHour() == maxWorkTime && fullDoc.getTotalWorkTime().getMinute() > 0) {
+        if (fullDoc.getTotalWorkTime().compareTo(maxWorkTime) > 0) {
             assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
         } else {
             assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());

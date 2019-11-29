@@ -13,7 +13,7 @@ public class FullDocumentationArithmeticTest {
     @Test
     public void testGetTotalWorkTime() {
         Employee employee = new Employee("Moritz Gstür", 1234567);
-        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, 40, 10.31);
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSpan zeroTs = new TimeSpan(0, 0);
         Entry[] entries = new Entry[6];
         entries[0] = new Entry("Test1", LocalDate.now(), new TimeSpan(10, 0), new TimeSpan(18, 30), new TimeSpan(3, 15));
