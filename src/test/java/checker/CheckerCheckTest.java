@@ -24,7 +24,7 @@ public class CheckerCheckTest {
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
     @Test
-    public void testSingleEntryValidDocumentation() {
+    public void testSingleEntryValidDocumentation() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
@@ -42,7 +42,7 @@ public class CheckerCheckTest {
     }
     
     @Test
-    public void testSingleEntryValidButHoliday() {
+    public void testSingleEntryValidButHoliday() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
@@ -60,7 +60,7 @@ public class CheckerCheckTest {
     }
     
     @Test
-    public void testSingleEntryValidButSunday() {
+    public void testSingleEntryValidButSunday() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
@@ -78,7 +78,7 @@ public class CheckerCheckTest {
     }
     
     @Test
-    public void testSingleEntryValidButSundayAndHoliday() {
+    public void testSingleEntryValidButSundayAndHoliday() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);

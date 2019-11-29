@@ -8,9 +8,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import checker.holiday.Holiday;
-import checker.holiday.PublicHolidayFetcher;
+import checker.holiday.HolidayFetchException;
+import checker.holiday.IHolidayChecker;
 import checker.holiday.GermanState;
+import checker.holiday.GermanyHolidayChecker;
 
 /**
  * TODO Documentation of class
@@ -24,7 +25,7 @@ public class Checker {
     //TODO Replace with enum
     private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
     private static final int MAX_ROW_NUM = 22;
-    private static final PublicHolidayFetcher HOLIDAY_FETCHER = new PublicHolidayFetcher(GermanState.BW);
+    private static final GermanState STATE = GermanState.BW;
 
     private final TimeSheet fullDoc;
     
@@ -37,8 +38,9 @@ public class Checker {
      * 
      * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value with error or validity message
+     * @throws CheckerException Thrown if an error occurs while checking the validity
      */
-    public CheckerReturn check() {
+    public CheckerReturn check() throws CheckerException {
         CheckerReturn result = CheckerReturn.VALID;
         result = (result.equals(CheckerReturn.VALID)) ? checkTotalTimeExceedance() : result;
         result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeExceedances() : result;
@@ -137,8 +139,10 @@ public class Checker {
      * 
      * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value for Sunday, holiday or validity
+     * @throws CheckerException Thrown if an error occurs while fetching holidays
      */
-    protected CheckerReturn checkValidWorkingDays() {
+    protected CheckerReturn checkValidWorkingDays() throws CheckerException {
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(fullDoc.getYear(), STATE);
         for (Entry entry : fullDoc.getEntries()) {
             LocalDate localDate = entry.getDate();
             
@@ -147,12 +151,15 @@ public class Checker {
                 return CheckerReturn.TIME_SUNDAY;
             }
             
-            //Check for each entry whether it is a holiday
-            for (Holiday holiday : HOLIDAY_FETCHER.getHolidaysByYear(fullDoc.getYear())) {
-                if (holiday.getDate().equals(localDate)) {
+            //Check for each entry whether it is a holiday           
+            try {
+                if (holidayChecker.isHoliday(localDate)) {
                     return CheckerReturn.TIME_HOLIDAY;
                 }
+            } catch (HolidayFetchException e) {
+                throw new CheckerException(e.getMessage());
             }
+            
         }
         
         return CheckerReturn.VALID;

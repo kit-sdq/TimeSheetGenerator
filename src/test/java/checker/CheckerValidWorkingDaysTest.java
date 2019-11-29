@@ -9,15 +9,15 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import checker.holiday.Holiday;
-import checker.holiday.PublicHolidayFetcher;
+import checker.holiday.HolidayFetchException;
+import checker.holiday.IHolidayChecker;
 import checker.holiday.GermanState;
+import checker.holiday.GermanyHolidayChecker;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -48,7 +48,7 @@ public class CheckerValidWorkingDaysTest {
     }
     
     @Test
-    public void testValidWorkingDay() {
+    public void testValidWorkingDay() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(0, 0);
@@ -67,7 +67,7 @@ public class CheckerValidWorkingDaysTest {
     }
 
     @Test
-    public void testNewYearsDay2019() {
+    public void testNewYearsDay2019() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(0, 0);
@@ -86,7 +86,7 @@ public class CheckerValidWorkingDaysTest {
     }
     
     @Test
-    public void testChristmas2020() {
+    public void testChristmas2020() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(0, 0);
@@ -105,7 +105,7 @@ public class CheckerValidWorkingDaysTest {
     }
     
     @Test
-    public void testChristmas2022() {
+    public void testChristmas2022() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(0, 0);
@@ -128,7 +128,7 @@ public class CheckerValidWorkingDaysTest {
     }
     
     @Test
-    public void testRandomDayBW() {
+    public void testRandomDayBW() throws CheckerException, HolidayFetchException {
         ////Random
         Random rand = new Random();
         int randYear = (rand.nextInt(40) + 1990);
@@ -151,17 +151,11 @@ public class CheckerValidWorkingDaysTest {
         
         ////Assertions
         LocalDate randDate = LocalDate.of(randYear, randMonth, randDay);
-        ArrayList<LocalDate> holidayDates = new ArrayList<LocalDate>();      
-        PublicHolidayFetcher phf = new PublicHolidayFetcher(state);
-        
-        //TODO This workaround should get fixed in source code of Holiday
-        for (Holiday holiday : phf.getHolidaysByYear(randYear)) {
-            holidayDates.add(holiday.getDate());
-        }
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(randDate.getYear(), state);
         
         if (randDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
             assertEquals(CheckerReturn.TIME_SUNDAY, checker.checkValidWorkingDays());
-        } else if (holidayDates.contains(randDate)) {
+        } else if (holidayChecker.isHoliday(randDate)) {
             assertEquals(CheckerReturn.TIME_HOLIDAY, checker.checkValidWorkingDays());
         } else {
             assertEquals(CheckerReturn.VALID, checker.checkValidWorkingDays());
