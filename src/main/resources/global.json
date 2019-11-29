@@ -1,7 +1,7 @@
 {
 	"name": "Max Mustermann",
-	"personnelnumber": 1234567,
-	"institute": "Fakultät für Informatik",
+	"staffId": 1234567,
+	"department": "Fakultät für Informatik",
 	"workingTime": "40:00",
 	"wage": 10.31,
 	"workingArea": "uB"

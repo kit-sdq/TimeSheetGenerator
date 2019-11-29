@@ -21,7 +21,7 @@ public class JsonGlobalParser implements IGlobalParser {
         Employee employee;
         try {
             String name = json.getString("name");
-            int id = json.getInt("personnelnumber");
+            int id = json.getInt("staffId");
             employee = new Employee(name, id);
         } catch (JSONException e) {
             throw new ParseException(e.getMessage());
@@ -34,7 +34,7 @@ public class JsonGlobalParser implements IGlobalParser {
     public Profession getProfession() throws ParseException {
         Profession profession;
         try {
-            String departmentName = json.getString("institute");
+            String departmentName = json.getString("department");
             TimeSpan maxWorkingTime = TimeSpan.parse(json.getString("workingTime"));
             double wage = json.getDouble("wage");    
             WorkingArea workingArea = WorkingArea.parse(json.getString("workingArea"));
