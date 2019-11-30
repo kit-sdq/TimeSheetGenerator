@@ -19,7 +19,7 @@ import data.WorkingArea;
 public class CheckerDayTimeExceedancesTest {
     
     //Checker constants
-    TimeSpan[][] PAUSE_RULES = Checker.getPauseRules();
+    TimeSpan[][] PAUSE_RULES = MiLoGChecker.getPauseRules();
     
     //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
     private static final int RANDOM_HOUR_BOUND = 24;
@@ -42,10 +42,14 @@ public class CheckerDayTimeExceedancesTest {
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Execution
+        checker.checkDayTimeExceedances();
         
         ////Assertions
-        assertEquals(CheckerReturn.VALID, checker.checkDayTimeExceedances());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
     @Test
@@ -58,10 +62,14 @@ public class CheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Execution
+        checker.checkDayTimeExceedances();
         
         ////Assertions
-        assertEquals(CheckerReturn.VALID, checker.checkDayTimeExceedances());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
 
     @Test
@@ -74,10 +82,13 @@ public class CheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        checker.checkDayTimeExceedances();
         
         ////Assertions
-        assertEquals(CheckerReturn.TIME_PAUSE, checker.checkDayTimeExceedances());
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage())));
     }
     
     @Test
@@ -94,16 +105,21 @@ public class CheckerDayTimeExceedancesTest {
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
             if (entry.getWorkingTime().compareTo(pauseRule[0]) >= 0) {
-                assertEquals(CheckerReturn.TIME_PAUSE, checker.checkDayTimeExceedances());
+                checker.checkDayTimeExceedances();
+                
+                assertEquals(CheckerReturn.INVALID, checker.getResult());
+                assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage())));
                 return;
             }
         }
-        assertEquals(CheckerReturn.VALID, checker.checkDayTimeExceedances());
+        
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
     @Test
@@ -120,7 +136,7 @@ public class CheckerDayTimeExceedancesTest {
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
         TimeSpan startToEnd = end.clone();
@@ -129,11 +145,16 @@ public class CheckerDayTimeExceedancesTest {
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
             if (startToEnd.compareTo(pauseRule[0]) >= 0) {
                 if (entry.getPause().compareTo(pauseRule[1]) < 0) {
-                    assertEquals(CheckerReturn.TIME_PAUSE, checker.checkDayTimeExceedances());
+                    checker.checkDayTimeExceedances();
+                    
+                    assertEquals(CheckerReturn.INVALID, checker.getResult());
+                    assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage())));
                     return;
                 }
             }
         }
-        assertEquals(CheckerReturn.VALID, checker.checkDayTimeExceedances());
+        
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
 }

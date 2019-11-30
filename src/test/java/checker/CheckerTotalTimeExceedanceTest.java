@@ -40,10 +40,14 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         //Assertions
-        assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
     @Test
@@ -58,10 +62,14 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         //Assertions
-        assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
 
     @Test
@@ -77,10 +85,14 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
         
         //Assertions
-        assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
     }
     
     @Test
@@ -96,10 +108,14 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
         
         //Assertions
-        assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
     }
     
     @Test
@@ -119,13 +135,18 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         //Assertions
         if (maxWorkTime.compareTo(end) < 0) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }    
     }
     
@@ -146,13 +167,18 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         //Assertions
         if (end.getMinute() > 0) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }
     }
     
@@ -173,13 +199,18 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         //Assertions
         if (end.compareTo(maxWorkTime) > 0) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }
     }
     
@@ -201,14 +232,19 @@ public class CheckerTotalTimeExceedanceTest {
         Entry[] entries = {entry};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         ////Assertions
         TimeSpan workingTime = entry.getWorkingTime();
         if (workingTime.compareTo(maxWorkTime) > 0) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }
     }
     
@@ -237,13 +273,18 @@ public class CheckerTotalTimeExceedanceTest {
         ////Checker initialization
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Execution
+        checker.checkTotalTimeExceedance();
         
         ////Assertions
         if (fullDoc.getTotalWorkTime().compareTo(maxWorkTime) > 0) {
-            assertEquals(CheckerReturn.TIME_EXCEEDANCE, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkTotalTimeExceedance());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }
     }
 }

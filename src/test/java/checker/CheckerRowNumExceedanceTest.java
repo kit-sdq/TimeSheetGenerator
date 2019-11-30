@@ -20,7 +20,7 @@ public class CheckerRowNumExceedanceTest {
 
     //TODO Out source entry generator
     private static final int RANDOM_ENTRY_BOUND = 50;
-    private static final int CHECKER_ENTRY_MAX = Checker.getMaxEntries();
+    private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntries();
     
     ////Placeholder for documentation construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -35,10 +35,14 @@ public class CheckerRowNumExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Execution
+        checker.checkRowNumExceedance();
         
         ////Assertions
-        assertEquals(CheckerReturn.VALID, checker.checkRowNumExceedance());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
     @Test
@@ -59,11 +63,15 @@ public class CheckerRowNumExceedanceTest {
         
         ////Checker initialization
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Execution
+        checker.checkRowNumExceedance();
         
         ////Assertions
         assertTrue(numberOfEntries == fullDoc.getEntries().length);
-        assertEquals(CheckerReturn.VALID, checker.checkRowNumExceedance());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
     @Test
@@ -84,11 +92,15 @@ public class CheckerRowNumExceedanceTest {
         
         ////Checker initialization
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Execution
+        checker.checkRowNumExceedance();
         
         ////Assertions
         assertTrue(numberOfEntries == fullDoc.getEntries().length);
-        assertEquals(CheckerReturn.ROWNUM_EXCEEDENCE, checker.checkRowNumExceedance());
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
     }
     
     @Test
@@ -112,14 +124,19 @@ public class CheckerRowNumExceedanceTest {
         
         ////Checker initialization
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Execution
+        checker.checkRowNumExceedance();
         
         ////Assertions
         assertTrue(numberOfEntries == fullDoc.getEntries().length);
-        if (fullDoc.getEntries().length > Checker.getMaxEntries()) {
-            assertEquals(CheckerReturn.ROWNUM_EXCEEDENCE, checker.checkRowNumExceedance());
+        if (fullDoc.getEntries().length > MiLoGChecker.getMaxEntries()) {
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkRowNumExceedance());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }
     }
 

@@ -60,10 +60,14 @@ public class CheckerValidWorkingDaysTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Executions
+        checker.checkValidWorkingDays();
         
         ////Assertions
-        assertEquals(CheckerReturn.VALID, checker.checkValidWorkingDays());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
 
     @Test
@@ -79,10 +83,14 @@ public class CheckerValidWorkingDaysTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Executions
+        checker.checkValidWorkingDays();
         
         ////Assertions
-        assertEquals(CheckerReturn.TIME_HOLIDAY, checker.checkValidWorkingDays());
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
     }
     
     @Test
@@ -98,10 +106,14 @@ public class CheckerValidWorkingDaysTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Executions
+        checker.checkValidWorkingDays();
         
         ////Assertions
-        assertEquals(CheckerReturn.TIME_HOLIDAY, checker.checkValidWorkingDays());
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
     }
     
     @Test
@@ -117,14 +129,18 @@ public class CheckerValidWorkingDaysTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
-        ////Assertions
+        ////Executions
+        checker.checkValidWorkingDays();
+        
         /*
          * We assert Sunday instead of Holiday here because the possibility for a Sunday is much higher then for a holiday
          * and therefore this check is done beforehand.
          */
-        assertEquals(CheckerReturn.TIME_SUNDAY, checker.checkValidWorkingDays());
+        ////Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
     }
     
     @Test
@@ -147,18 +163,25 @@ public class CheckerValidWorkingDaysTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
         LocalDate randDate = LocalDate.of(randYear, randMonth, randDay);
         IHolidayChecker holidayChecker = new GermanyHolidayChecker(randDate.getYear(), state);
         
+        ////Executions
+        checker.checkValidWorkingDays();
+        
+        ////Assertions
         if (randDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
-            assertEquals(CheckerReturn.TIME_SUNDAY, checker.checkValidWorkingDays());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
         } else if (holidayChecker.isHoliday(randDate)) {
-            assertEquals(CheckerReturn.TIME_HOLIDAY, checker.checkValidWorkingDays());
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
         } else {
-            assertEquals(CheckerReturn.VALID, checker.checkValidWorkingDays());
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
         }
         
     }

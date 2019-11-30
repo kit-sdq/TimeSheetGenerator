@@ -35,10 +35,11 @@ public class CheckerCheckTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
         assertEquals(CheckerReturn.VALID, checker.check());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
     @Test
@@ -53,10 +54,11 @@ public class CheckerCheckTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
-        assertEquals(CheckerReturn.TIME_HOLIDAY, checker.check());
+        assertEquals(CheckerReturn.INVALID, checker.check());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
     }
     
     @Test
@@ -71,10 +73,11 @@ public class CheckerCheckTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
-        assertEquals(CheckerReturn.TIME_SUNDAY, checker.check());
+        assertEquals(CheckerReturn.INVALID, checker.check());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
     }
     
     @Test
@@ -89,9 +92,10 @@ public class CheckerCheckTest {
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
-        assertEquals(CheckerReturn.TIME_SUNDAY, checker.check());
+        assertEquals(CheckerReturn.INVALID, checker.check());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
     }
 }

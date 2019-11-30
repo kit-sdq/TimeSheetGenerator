@@ -6,6 +6,9 @@ import data.TimeSpan;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 import checker.holiday.HolidayFetchException;
@@ -17,7 +20,7 @@ import checker.holiday.GermanyHolidayChecker;
  * TODO Documentation of class
  * @author Liam Wachter
  */
-public class Checker {
+public class MiLoGChecker implements IChecker {
     //TODO Are those static constant values better than attributes?
     private static final TimeSpan WORKDAY_LOWER_BOUND = new TimeSpan(6, 0);
     private static final TimeSpan WORKDAY_UPPER_BOUND = new TimeSpan(22, 0);
@@ -29,53 +32,60 @@ public class Checker {
 
     private final TimeSheet fullDoc;
     
-    public Checker(TimeSheet fullDoc) {
+    private CheckerReturn result;
+    private final Collection<CheckerError> errors;
+    
+    public MiLoGChecker(TimeSheet fullDoc) {
         this.fullDoc = fullDoc;
+        
+        this.result = CheckerReturn.VALID;
+        this.errors = Collections.synchronizedCollection(new ArrayList<CheckerError>());
     }
     
     /**
      * Runs all of the needed tests in order to validate the {@link TimeSheet} instance.
      * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
      * @return {@link CheckerReturn} value with error or validity message
      * @throws CheckerException Thrown if an error occurs while checking the validity
      */
     public CheckerReturn check() throws CheckerException {
-        CheckerReturn result = CheckerReturn.VALID;
-        result = (result.equals(CheckerReturn.VALID)) ? checkTotalTimeExceedance() : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeExceedances() : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkDayTimeBounds() : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkValidWorkingDays() : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkRowNumExceedance() : result;
-        result = (result.equals(CheckerReturn.VALID)) ? checkDepartmentName() : result;
+        result = CheckerReturn.VALID;
+        errors.clear();
         
-        //Always returns the first error that occurred.
+        checkTotalTimeExceedance();
+        checkDayTimeExceedances();
+        checkDayTimeBounds();
+        checkValidWorkingDays();
+        checkRowNumExceedance();
+        checkDepartmentName();
+        
         return result;
+    }
+    
+    /**
+     * Returns a collection of all occurred checker errors during the execution of the last call to {@link #check()} 
+     * @return {@link Collection<CheckerError>} list of occurred checker errors
+     */
+    public Collection<CheckerError> getErrors() {
+        return new ArrayList<CheckerError>(errors);
     }
 
     /**
      * Checks whether maximum working time was exceeded.
-     * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
-     * @return {@link CheckerReturn} value for time exceedance or validity
      */
-    protected CheckerReturn checkTotalTimeExceedance() {
+    protected void checkTotalTimeExceedance() {
         TimeSpan maxWorkingTime = fullDoc.getProfession().getMaxWorkingTime();
         
         if (fullDoc.getTotalWorkTime().compareTo(maxWorkingTime) > 0) {
-            return CheckerReturn.TIME_EXCEEDANCE;
+            errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
+            result = CheckerReturn.INVALID;
         }
-        
-        return CheckerReturn.VALID;
     }
     
     /**
      * Checks whether the working time per day meets all legal pause rules.
-     * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
-     * @return {@link CheckerReturn} value for missing pause or validity
      */
-    protected CheckerReturn checkDayTimeExceedances() {    
+    protected void checkDayTimeExceedances() {    
         //This map contains all dates associated with their working times
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
@@ -109,87 +119,86 @@ public class Checker {
                 if (mapTimeEntry[0].compareTo(pauseRule[0]) >= 0
                         && mapTimeEntry[1].compareTo(pauseRule[1]) < 0) {
                     
-                    return CheckerReturn.TIME_PAUSE;
+                    errors.add(new CheckerError(CheckerErrorMessage.TIME_PAUSE.getErrorMessage()));
+                    result = CheckerReturn.INVALID;
+                    return;
                 }
             }
         }
-        
-        return CheckerReturn.VALID;
     }
     
     /**
      * Checks whether the working time per day is inside the legal bounds.
-     * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
-     * @return {@link CheckerReturn} value for time out of bounds or validity
      */
-    protected CheckerReturn checkDayTimeBounds() {
+    protected void checkDayTimeBounds() {
         for (Entry entry : fullDoc.getEntries()) {
             if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
                     || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
                 
-                return CheckerReturn.TIME_OUTOFBOUNDS;
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage()));
+                result = CheckerReturn.INVALID;
+                return;
             }
         }
-        return CheckerReturn.VALID;
     }
     
     /**
      * Checks whether all of the days are valid working days.
      * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
-     * @return {@link CheckerReturn} value for Sunday, holiday or validity
      * @throws CheckerException Thrown if an error occurs while fetching holidays
      */
-    protected CheckerReturn checkValidWorkingDays() throws CheckerException {
+    protected void checkValidWorkingDays() throws CheckerException {
         IHolidayChecker holidayChecker = new GermanyHolidayChecker(fullDoc.getYear(), STATE);
         for (Entry entry : fullDoc.getEntries()) {
             LocalDate localDate = entry.getDate();
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-                return CheckerReturn.TIME_SUNDAY;
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_SUNDAY.getErrorMessage()));
+                result = CheckerReturn.INVALID;
+                return;
             }
             
             //Check for each entry whether it is a holiday           
             try {
                 if (holidayChecker.isHoliday(localDate)) {
-                    return CheckerReturn.TIME_HOLIDAY;
+                    errors.add(new CheckerError(CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage()));
+                    result = CheckerReturn.INVALID;
+                    return;
                 }
             } catch (HolidayFetchException e) {
                 throw new CheckerException(e.getMessage());
             }
             
         }
-        
-        return CheckerReturn.VALID;
     }
     
     /**
      * Checks whether the number of entries exceeds the maximum number of rows of the template document.
-     * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
-     * @return {@link CheckerReturn} value for row number exceedance or validity
      */
-    protected CheckerReturn checkRowNumExceedance() {
+    protected void checkRowNumExceedance() {
         if (fullDoc.getEntries().length > MAX_ROW_NUM) {
-            return CheckerReturn.ROWNUM_EXCEEDENCE;
+            errors.add(new CheckerError(CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage()));
+            result = CheckerReturn.INVALID;
         }
-        return CheckerReturn.VALID;
     }
 
     /**
      * Checks whether the department name is empty.
-     * 
-     * @param fullDoc - {@link TimeSheet} instance to get checked
-     * @return {@link CheckerReturn} value for missing department name or validity
      */
-    protected CheckerReturn checkDepartmentName() {
-        return fullDoc.getProfession().getDepartmentName().equals("") ? CheckerReturn.NAME_MISSING : CheckerReturn.VALID;
+    protected void checkDepartmentName() {
+        if (fullDoc.getProfession().getDepartmentName().isEmpty()) {
+            errors.add(new CheckerError(CheckerErrorMessage.NAME_MISSING.getErrorMessage()));
+            result = CheckerReturn.INVALID;
+        }
     }
     
     
     ////Following methods are primarily for testing purposes.
+    protected CheckerReturn getResult() {
+        return this.result;
+    }
+    
     /**
      * This method gets the maximally allowed number of entries inside a {@link TimeSheet}.
      * @return The maximum number of {@link Entry entries}.
@@ -221,4 +230,29 @@ public class Checker {
     protected static TimeSpan[][] getPauseRules() {
         return PAUSE_RULES;
     }
+    
+    /**
+     * This enum holds the possible error messages for this checker
+     */
+    protected enum CheckerErrorMessage {
+        TIME_EXCEEDANCE("Maximum legal working time exceeded."),
+        TIME_OUTOFBOUNDS("Working time is out of bounds."),
+        TIME_SUNDAY("Sunday is not a valid working day."),
+        TIME_HOLIDAY("Official holiday is not a valid working day."),
+        TIME_PAUSE("Maximum working time without pause exceeded."),
+        
+        ROWNUM_EXCEEDENCE("Exceeded the maximum number of rows for the document."),
+        NAME_MISSING("Name of the departement is missing.");
+        
+        private final String errorMsg;
+        
+        private CheckerErrorMessage(String errorMsg) {
+            this.errorMsg = errorMsg;
+        }
+        
+        public String getErrorMessage() {
+            return this.errorMsg;
+        }
+    }
+    
 }

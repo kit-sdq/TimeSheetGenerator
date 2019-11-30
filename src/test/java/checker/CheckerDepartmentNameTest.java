@@ -33,9 +33,14 @@ public class CheckerDepartmentNameTest {
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
-        assertEquals(CheckerReturn.NAME_MISSING, checker.checkDepartmentName());
+        ////Execution
+        checker.checkDepartmentName();
+        
+        ////Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.NAME_MISSING.getErrorMessage())));
     }
 
     @Test
@@ -46,9 +51,14 @@ public class CheckerDepartmentNameTest {
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
-        Checker checker = new Checker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
-        assertEquals(CheckerReturn.VALID, checker.checkDepartmentName());
+        ////Execution
+        checker.checkDepartmentName();
+        
+        ////Assertions
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
     }
     
 }
