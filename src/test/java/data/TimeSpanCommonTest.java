@@ -98,13 +98,4 @@ public class TimeSpanCommonTest {
         assertEquals(ts.toString(), "1923:00");
     }
     
-    @Test
-    public void testClone() {
-        TimeSpan timeSpan = new TimeSpan(1923, 17);
-        TimeSpan cloneTs = timeSpan;
-        
-        assertFalse(timeSpan == cloneTs);
-        assertTrue(timeSpan.compareTo(cloneTs) == 0);
-        assertTrue(cloneTs.getClass() == timeSpan.getClass());
-    }
 }
