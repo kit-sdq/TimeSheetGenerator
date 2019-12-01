@@ -28,7 +28,7 @@ public class MiLoGCheckerCheckTest {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 11, 22); //Valid working day
         
         ////Checker initialization
@@ -47,7 +47,7 @@ public class MiLoGCheckerCheckTest {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 12, 25); //Holiday
         
         ////Checker initialization
@@ -66,7 +66,7 @@ public class MiLoGCheckerCheckTest {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 12, 1); //Sunday
         
         ////Checker initialization
@@ -85,7 +85,7 @@ public class MiLoGCheckerCheckTest {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2022, 12, 25); //Sunday and holiday
         
         ////Checker initialization

@@ -53,9 +53,10 @@ public class Entry {
      * @return The working time
      */
     public TimeSpan getWorkingTime() {
-        TimeSpan workingTime = new TimeSpan(this.getEnd().getHour(), this.getEnd().getMinute());
-        workingTime.subtract(this.getStart());
-        workingTime.subtract(this.getPause());
+        TimeSpan workingTime = this.getEnd();
+        
+        workingTime = workingTime.subtract(this.getStart());
+        workingTime = workingTime.subtract(this.getPause());
         
         return workingTime;
     }

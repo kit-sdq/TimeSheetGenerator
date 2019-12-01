@@ -98,18 +98,18 @@ public class MiLoGChecker implements IChecker {
         
         for (Entry entry : fullDoc.getEntries()) {
             //EndToStart is the number of hours at this work shift.
-            TimeSpan endToStart = entry.getEnd().clone();
-            endToStart.subtract(entry.getStart());
-            TimeSpan pause = entry.getPause().clone();
+            TimeSpan endToStart = entry.getEnd();
+            endToStart = endToStart.subtract(entry.getStart());
+            TimeSpan pause = entry.getPause();
             LocalDate date = entry.getDate();
             
             //If a day appears more than once this logic sums all of the working times
             if (workingDays.containsKey(date)) {
                 TimeSpan oldWorkingTime = workingDays.get(date)[0];
-                endToStart.add(oldWorkingTime);
+                endToStart = endToStart.add(oldWorkingTime);
                 
                 TimeSpan oldPause = workingDays.get(date)[1];
-                pause.add(oldPause);
+                pause = pause.add(oldPause);
             }
             
             //Adds the day to the map, replaces the old entry respectively

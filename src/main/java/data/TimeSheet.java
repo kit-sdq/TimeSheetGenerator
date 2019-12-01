@@ -81,9 +81,9 @@ public class TimeSheet {
         
         //Sums up the working times entry per entry
         for (Entry entry : this.getEntries()) {
-            totalWorkTime.add(entry.getWorkingTime());
+            totalWorkTime = totalWorkTime.add(entry.getWorkingTime());
         }
         return totalWorkTime;
     }
-    
+  
 }
