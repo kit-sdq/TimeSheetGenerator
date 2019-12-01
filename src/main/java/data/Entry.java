@@ -1,7 +1,6 @@
 package data;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 /**
  * @author Liam Wachter
@@ -61,46 +60,4 @@ public class Entry {
         return workingTime;
     }
     
-    /**
-     * Gets the value of an element.
-     * @param element - The element to get the value from
-     * @return The value of an element as a String
-     */
-    public String getElementStringValue(Element element) {
-        String value;
-        switch (element) {
-            case TABLE_ACTION:
-                value = this.getAction();
-                break;
-            case TABLE_DATE:
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
-                value = this.getDate().format(formatter);
-                break;
-            case TABLE_START:
-                value = this.getStart().toString();
-                break;
-            case TABLE_END:
-                value = this.getEnd().toString();
-                break;
-            case TABLE_PAUSE:
-                value = this.getPause().toString();
-                break;
-            case TABLE_TIME:
-                value = this.getWorkingTime().toString();
-                break;
-            default:
-                value = null;
-                break;
-        }
-        return value;
-    }
-    
-    public static enum Element {
-        TABLE_ACTION,
-        TABLE_DATE,
-        TABLE_START,
-        TABLE_END,
-        TABLE_PAUSE,
-        TABLE_TIME;
-    }
 }
