@@ -81,7 +81,7 @@ public class TimeSheet {
         
         //Sums up the working times entry per entry
         for (Entry entry : this.getEntries()) {
-            totalWorkTime.add(entry.getWorkingTime());
+            totalWorkTime = totalWorkTime.add(entry.getWorkingTime());
         }
         return totalWorkTime;
     }
@@ -123,8 +123,7 @@ public class TimeSheet {
                 value = this.getVacation().toString();
                 break;
             case HOURS_SUM:
-                TimeSpan sumTime = this.getTotalWorkTime().clone();
-                sumTime.add(vacation);
+                TimeSpan sumTime = this.getTotalWorkTime().add(vacation);
                 value = sumTime.toString();
                 break;
             case TRANSFER_PRED:

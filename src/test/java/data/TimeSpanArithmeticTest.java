@@ -11,7 +11,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 20);
         TimeSpan ts2 = new TimeSpan(0, 5);
         
-        ts1.add(ts2);
+        ts1 = ts1.add(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 25);
     }
@@ -21,7 +21,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 0);
         TimeSpan ts2 = new TimeSpan(0, 37);
         
-        ts1.add(ts2);
+        ts1 = ts1.add(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 37);
     }
@@ -31,7 +31,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 0);
         TimeSpan ts2 = new TimeSpan(0, 0);
         
-        ts1.add(ts2);
+        ts1 = ts1.add(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 0);
     }
@@ -41,7 +41,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(11, 26);
         TimeSpan ts2 = new TimeSpan(2, 56);
         
-        ts1.add(ts2);
+        ts1 = ts1.add(ts2);
         assertEquals(ts1.getHour(), 14);
         assertEquals(ts1.getMinute(), 22);
     }
@@ -51,7 +51,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 56);
         TimeSpan ts2 = new TimeSpan(0, 5);
         
-        ts1.add(ts2);
+        ts1 = ts1.add(ts2);
         assertEquals(ts1.getHour(), 1);
         assertEquals(ts1.getMinute(), 1);
     }
@@ -61,7 +61,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 59);
         TimeSpan ts2 = new TimeSpan(0, 1);
         
-        ts1.add(ts2);
+        ts1 = ts1.add(ts2);
         assertEquals(ts1.getHour(), 1);
         assertEquals(ts1.getMinute(), 0);
     }
@@ -71,7 +71,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 59);
         TimeSpan ts2 = new TimeSpan(0, 1);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 58);
     }
@@ -81,7 +81,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(17, 22);
         TimeSpan ts2 = new TimeSpan(12, 16);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 5);
         assertEquals(ts1.getMinute(), 6);
     }
@@ -91,7 +91,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(57, 2);
         TimeSpan ts2 = new TimeSpan(2, 2);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 55);
         assertEquals(ts1.getMinute(), 0);
     }
@@ -101,7 +101,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(16, 5);
         TimeSpan ts2 = new TimeSpan(16, 5);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 0);
     }
@@ -111,7 +111,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(16, 5);
         TimeSpan ts2 = new TimeSpan(15, 6);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 59);
     }
@@ -121,7 +121,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(11, 26);
         TimeSpan ts2 = new TimeSpan(2, 56);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 8);
         assertEquals(ts1.getMinute(), 30);
     }
@@ -131,7 +131,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(5, 0);
         TimeSpan ts2 = new TimeSpan(4, 59);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 0);
         assertEquals(ts1.getMinute(), 1);
     }
@@ -141,7 +141,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(40, 58);
         TimeSpan ts2 = new TimeSpan(30, 59);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
         assertEquals(ts1.getHour(), 9);
         assertEquals(ts1.getMinute(), 59);
     }
@@ -151,7 +151,7 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(0, 0);
         TimeSpan ts2 = new TimeSpan(2, 7);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -159,6 +159,6 @@ public class TimeSpanArithmeticTest {
         TimeSpan ts1 = new TimeSpan(17, 0);
         TimeSpan ts2 = new TimeSpan(17, 5);
         
-        ts1.subtract(ts2);
+        ts1 = ts1.subtract(ts2);
     }
 }

@@ -34,9 +34,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     @Test
     public void testValidLowerBound() {
         ////Test values
-        TimeSpan start = zeroTs.clone();
-        TimeSpan end = zeroTs.clone();
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan start = zeroTs;
+        TimeSpan end = zeroTs;
+        TimeSpan pause = zeroTs;
         
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
@@ -55,9 +55,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     @Test
     public void testValidMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs.clone());
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs);
         Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30));
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
@@ -75,9 +75,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     @Test
     public void testExceedanceMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs.clone());
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs.clone());
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
@@ -97,9 +97,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         Random rand = new Random();
         
         ////Test values
-        TimeSpan start = zeroTs.clone();
+        TimeSpan start = zeroTs;
         TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan pause = zeroTs;
         
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
@@ -128,7 +128,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         Random rand = new Random();
         
         ////Test values
-        TimeSpan start = zeroTs.clone();
+        TimeSpan start = zeroTs;
         TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
         
@@ -139,8 +139,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Assertions
-        TimeSpan startToEnd = end.clone();
-        startToEnd.subtract(start);
+        TimeSpan startToEnd = end.subtract(start);
         
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
             if (startToEnd.compareTo(pauseRule[0]) >= 0) {

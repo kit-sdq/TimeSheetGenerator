@@ -34,8 +34,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     
     @Before
     public void init() {
-        CHECKER_WORKDAY_LOWER_BOUND = MiLoGChecker.getWorkdayLowerBound().clone();
-        CHECKER_WORKDAY_UPPER_BOUND = MiLoGChecker.getWorkdayUpperBound().clone();
+        CHECKER_WORKDAY_LOWER_BOUND = MiLoGChecker.getWorkdayLowerBound();
+        CHECKER_WORKDAY_UPPER_BOUND = MiLoGChecker.getWorkdayUpperBound();
     }
     
     @Test
@@ -46,7 +46,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //We just want to test the lower bound for now.
-        end.subtract(new TimeSpan(1, 0));
+        end = end.subtract(new TimeSpan(1, 0));
         
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
@@ -70,10 +70,10 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //This is done to lower the start one minute below the legal lower bound.
-        start.subtract(new TimeSpan(0, 1));
+        start = start.subtract(new TimeSpan(0, 1));
         
         //We just want to test the lower bound for now.
-        end.subtract(new TimeSpan(1, 0));
+        end = end.subtract(new TimeSpan(1, 0));
         
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
@@ -97,7 +97,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //We just want to test the upper bound for now.
-        start.add(new TimeSpan(1, 0));
+        start = start.add(new TimeSpan(1, 0));
         
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
@@ -121,10 +121,10 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         //This is done to raise the end one minute above the legal upper bound.
-        end.add(new TimeSpan(0, 1));
+        end = end.add(new TimeSpan(0, 1));
         
         //We just want to test the upper bound for now.
-        start.add(new TimeSpan(1, 0));
+        start = start.add(new TimeSpan(1, 0));
         
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);

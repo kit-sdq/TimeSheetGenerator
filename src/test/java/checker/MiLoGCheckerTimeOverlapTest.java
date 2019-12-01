@@ -45,7 +45,7 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
-        TimeSpan pause = zeroTs.clone();
+        TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 11, 22);
         
         Entry entry = new Entry("Test", date, start, end, pause);
@@ -68,19 +68,19 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         TimeSpan start0 = new TimeSpan(8, 0);
         TimeSpan end0 = new TimeSpan(12, 0);
-        TimeSpan pause0 = zeroTs.clone();
+        TimeSpan pause0 = zeroTs;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0);
         
         TimeSpan start1 = new TimeSpan(14, 0);
         TimeSpan end1 = new TimeSpan(18, 0);
-        TimeSpan pause1 = zeroTs.clone();
+        TimeSpan pause1 = zeroTs;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1);
         
         TimeSpan start2 = new TimeSpan(8, 0);
         TimeSpan end2 = new TimeSpan(12, 0);
-        TimeSpan pause2 = zeroTs.clone();
+        TimeSpan pause2 = zeroTs;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
@@ -103,19 +103,19 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         TimeSpan start0 = new TimeSpan(8, 0);
         TimeSpan end0 = new TimeSpan(12, 0);
-        TimeSpan pause0 = zeroTs.clone();
+        TimeSpan pause0 = zeroTs;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0);
         
         TimeSpan start1 = new TimeSpan(12, 0);
         TimeSpan end1 = new TimeSpan(18, 0);
-        TimeSpan pause1 = zeroTs.clone();
+        TimeSpan pause1 = zeroTs;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1);
         
         TimeSpan start2 = new TimeSpan(8, 0);
         TimeSpan end2 = new TimeSpan(12, 0);
-        TimeSpan pause2 = zeroTs.clone();
+        TimeSpan pause2 = zeroTs;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
@@ -138,19 +138,19 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         TimeSpan start0 = new TimeSpan(8, 0);
         TimeSpan end0 = new TimeSpan(12, 0);
-        TimeSpan pause0 = zeroTs.clone();
+        TimeSpan pause0 = zeroTs;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0);
         
         TimeSpan start1 = new TimeSpan(11, 0);
         TimeSpan end1 = new TimeSpan(13, 0);
-        TimeSpan pause1 = zeroTs.clone();
+        TimeSpan pause1 = zeroTs;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1);
         
         TimeSpan start2 = new TimeSpan(8, 0);
         TimeSpan end2 = new TimeSpan(12, 0);
-        TimeSpan pause2 = zeroTs.clone();
+        TimeSpan pause2 = zeroTs;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
@@ -173,19 +173,19 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         TimeSpan start0 = new TimeSpan(8, 0);
         TimeSpan end0 = new TimeSpan(12, 30);
-        TimeSpan pause0 = zeroTs.clone();
+        TimeSpan pause0 = zeroTs;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0);
         
         TimeSpan start1 = new TimeSpan(12, 15);
         TimeSpan end1 = new TimeSpan(14, 0);
-        TimeSpan pause1 = zeroTs.clone();
+        TimeSpan pause1 = zeroTs;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1);
         
         TimeSpan start2 = new TimeSpan(8, 0);
         TimeSpan end2 = new TimeSpan(12, 0);
-        TimeSpan pause2 = zeroTs.clone();
+        TimeSpan pause2 = zeroTs;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
@@ -208,19 +208,19 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         TimeSpan start0 = new TimeSpan(8, 0);
         TimeSpan end0 = new TimeSpan(14, 0);
-        TimeSpan pause0 = zeroTs.clone();
+        TimeSpan pause0 = zeroTs;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0);
         
         TimeSpan start1 = new TimeSpan(11, 0);
         TimeSpan end1 = new TimeSpan(13, 0);
-        TimeSpan pause1 = zeroTs.clone();
+        TimeSpan pause1 = zeroTs;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1);
         
         TimeSpan start2 = new TimeSpan(8, 0);
         TimeSpan end2 = new TimeSpan(12, 0);
-        TimeSpan pause2 = zeroTs.clone();
+        TimeSpan pause2 = zeroTs;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         

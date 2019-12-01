@@ -1,15 +1,13 @@
 package data;
 
 /**
- * A time span consisting of hour and minutes as well as basic arithmetic for it.
- *
- * @author Liam Wachter
+ * An immutable time span consisting of hour and minutes as well as basic arithmetic for it.
  */
 public class TimeSpan implements Comparable<TimeSpan> {
     
     //TODO Replace magic numbers with constants
-    private int minute;
-    private int hour;
+    private final int minute;
+    private final int hour;
 
     /**
      * Constructs a new TimeSpan instance.
@@ -45,21 +43,26 @@ public class TimeSpan implements Comparable<TimeSpan> {
     /**
      * Sums up hours and minutes taking carryover into account.
      * @param addend - TimeSpan that should be added
+     * @return The TimeSpan representing the sum
      */
-    public void add(TimeSpan addend) {
+    public TimeSpan add(TimeSpan addend) {
         int hourSum = this.hour + addend.getHour();
         int minuteSum = this.minute + addend.getMinute();
         int carry = minuteSum / 60;
         
-        this.hour = hourSum + carry;
-        this.minute = minuteSum % 60;
+        return new TimeSpan(
+            hourSum + carry,
+            minuteSum % 60
+        );
     }
 
     /**
      * Subtracts hours and minutes taking carryover into account.
-     * @param addend - TimeSpan that should be added
+     * @param subtrahend - TimeSpan that should be subtracted
+     * @return The TimeSpan representing the difference
+     * @throws IllegalArgumentException thrown if the subtrahend is greater than the minuend
      */
-    public void subtract(TimeSpan subtrahend) throws IllegalArgumentException {
+    public TimeSpan subtract(TimeSpan subtrahend) throws IllegalArgumentException {
         if (this.compareTo(subtrahend) < 0) {
             throw new IllegalArgumentException("Subtrahend may not be greater than Minuend.");
         }
@@ -67,8 +70,10 @@ public class TimeSpan implements Comparable<TimeSpan> {
         int hourDiff = this.hour - subtrahend.getHour();
         int minuteDiff = this.minute - subtrahend.getMinute();
         
-        this.hour = hourDiff - ((59 - minuteDiff) / 60);
-        this.minute = (60 + minuteDiff) % 60;
+        return new TimeSpan(
+            hourDiff - ((59 - minuteDiff) / 60),
+            (60 + minuteDiff) % 60
+        );
     }
 
     /**
@@ -108,10 +113,5 @@ public class TimeSpan implements Comparable<TimeSpan> {
         } else {
             return -1;
         }
-    }
-    
-    @Override
-    public TimeSpan clone() {
-        return new TimeSpan(this.hour, this.minute);
     }
 }

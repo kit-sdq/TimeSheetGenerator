@@ -101,7 +101,7 @@ public class TimeSpanCommonTest {
     @Test
     public void testClone() {
         TimeSpan timeSpan = new TimeSpan(1923, 17);
-        TimeSpan cloneTs = timeSpan.clone();
+        TimeSpan cloneTs = timeSpan;
         
         assertFalse(timeSpan == cloneTs);
         assertTrue(timeSpan.compareTo(cloneTs) == 0);
