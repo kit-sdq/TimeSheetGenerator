@@ -1,0 +1,243 @@
+\documentclass[]{scrartcl}
+\usepackage[a4paper,top=0.3in,bottom=0.2in,left=0.3in,right=0.3in]{geometry}
+\usepackage{tabulary}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage{eurosym}
+\thispagestyle{empty}
+
+\newcommand{\tableentry}[2]{\parbox{#1cm}{\centering #2}}
+\newcommand{\headentry}[1]{\parbox{18.6cm}{#1}}
+
+\begin{document}
+	\includegraphics[width=140pt]{Logo_KIT.pdf} \par \smallskip
+	\sffamily
+	
+	%HEADER
+	\headentry{\huge Arbeitszeitdokumentation \hspace*{\fill} \Large Monat / Jahr: \underline{\parbox{5.75cm}{\centering !month / !year }}} \par \medskip
+	\headentry{\Large Name des Mitarbeiters/der Mitarbeiterin: \hspace*{\fill} \underline{\parbox{9cm}{\centering !employeeName }}} \par \medskip
+	\headentry{\Large Personalnummer: \hspace*{\fill} \underline{\parbox{5cm}{\centering !employeeID} \parbox{3.85cm}{\centering !workingArea}}} \par \medskip %This is the KIT style for workingArea => GF: $\Box$ UB: $\boxtimes$
+	\headentry{\Large Institut/Organisationseinheit: \hspace*{\fill} \underline{\parbox{9cm}{\centering !department }}} \par \medskip
+	\headentry{\Large Vertraglich vereinbarte Arbeitszeit: \hspace*{\fill} \parbox{9cm}{\underline{\parbox{2.85cm}{\centering !workingTime}} \parbox{6cm}{\centering \raggedleft Stundensatz: \underline{\parbox{2.25cm}{\centering !wage\euro} } } } } \par \medskip
+	
+	%BODY
+	\large
+	\begin{center}
+		\begin{tabular}{| c | c | c | c | c | c |}
+			\hline
+			%Line 1
+			\tableentry{6}{T\"atigkeit (Stichwort, Projekt)}
+			& \tableentry{2}{Datum} 
+			& \tableentry{2}{Beginn} 
+			& \tableentry{2}{Ende} 
+			& \tableentry{2}{Pause} 
+			& \tableentry{2}{Arbeitszeit\textsuperscript{1}}\\
+			\hline
+			%Line 2
+			\tableentry{6}{}
+			& \tableentry{2}{(tt.mm.jj)} 
+			& \tableentry{2}{(hh:mm)} 
+			& \tableentry{2}{(hh:mm)} 
+			& \tableentry{2}{(hh:mm)} 
+			& \tableentry{2}{(hh:mm)}\\
+			\hline
+			%Line 3
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 4
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 5
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 6
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 7
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 8
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 9
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 10
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 11
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 12
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 13
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 14
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 15
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 16
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 17
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 18
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 19
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 20
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 21
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline
+			%Line 22
+			\tableentry{6}{!action}
+			& \tableentry{2}{!date} 
+			& \tableentry{2}{!begin} 
+			& \tableentry{2}{!end} 
+			& \tableentry{2}{!break} 
+			& \tableentry{2}{!dayTotal}\\
+			\hline 
+			%Leerzeile
+			\multicolumn{6}{c}{\thinspace}\\
+			%Urlaub
+			\cline{4-6}
+			\multicolumn{3}{c}{\thinspace} 
+			& \multicolumn{2}{|c|}{\centering Urlaub anteilig:}
+			& \tableentry{2}{!vacation}\\
+			\cline{4-6}
+			%Summe
+			\multicolumn{3}{c}{\thinspace} 
+			& \multicolumn{2}{|c|}{\centering Summe:}
+			& \tableentry{2}{!sum}\\
+			\cline{4-6}
+			%SollArbeitszeit
+			\multicolumn{3}{c}{\thinspace} 
+			& \multicolumn{2}{|c|}{\centering monatliche Soll-Arbeitszeit:}
+			& \tableentry{2}{!workingTime}\\
+			\cline{4-6}
+			%Übertrag Vormonat
+			\multicolumn{3}{c}{\thinspace} 
+			& \multicolumn{2}{|c|}{\centering Übertrag vom Vormonat:}
+			& \tableentry{2}{!carryPred}\\
+			\cline{4-6}
+			%Übertrag Folgemonat
+			\multicolumn{3}{c}{\thinspace} 
+			& \multicolumn{2}{|c|}{\centering Übertrag in den Folgemonat:}
+			& \tableentry{2}{!carrySucc}\\
+			\cline{4-6}
+		\end{tabular}	
+	\end{center}
+	
+	%FOOTER
+	\par \bigskip \bigskip \bigskip
+	\headentry{\large Ich bestätige die Richtigkeit der Angaben: \hspace*{\fill} $\overline{{\parbox{5.75cm}{\normalsize Datum, Beschäftigte/r} } }$ } \par \medskip
+	\headentry{\normalsize Nach $\S 17$ Mindestlohngesetz (MiLoG) müssen für geringfügig entlohnte und kurzfristig beschäftigte Arbeitnehmer/innen u.a. Beginn, Ende und Dauer der täglichen Arbeitszeit aufgezeichnet und für Kontrollzwecke mindestens 2 Jahre am Ort der Beschäftigung aufbewahrt werden!} \par \bigskip \bigskip
+	\headentry{\hspace*{\fill} geprüft: $\overline{{\parbox{5.75cm}{\normalsize Datum, Dienstvorgesetzte/r} } }$} \par \medskip
+	\rule{6cm}{0.2pt} \par \smallskip
+	\headentry{\textsuperscript{1} Summe in vollen Stunden und Minuten ohne Pause (Std:Min); bei Abwesenheit können auch folgende Kürzel eingetragen werden: U=Urlaub, K=Krankheit, F=Feiertag, S=Sonstiges}
+\end{document}

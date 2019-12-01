@@ -53,7 +53,7 @@ public class Main {
 
         ClassLoader classLoader = Main.class.getClassLoader();
         try {
-            String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Arbeitszeitdokumentation.tex"));
+            String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Template.tex"));
             IGenerator generator = new LatexGenerator(doc, latexTemplate);
             FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
         } catch (IOException e) {

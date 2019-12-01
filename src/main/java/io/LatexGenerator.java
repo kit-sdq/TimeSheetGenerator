@@ -65,40 +65,40 @@ public class LatexGenerator implements IGenerator {
         String value;
         switch (element) {
             case YEAR:
-                value = "<year>";
+                value = "!year";
                 break;
             case MONTH:
-                value = "<month>";
+                value = "!month";
                 break;
             case EMPLOYEE_NAME:
-                value = "<employeeName>";
+                value = "!employeeName";
                 break;
             case EMPLOYEE_ID:
-                value = "<employeeNumber>";
+                value = "!employeeID";
                 break;
             case GFUB:
-                value = "<gfub>";
+                value = "!workingArea";
                 break;
             case DEPARTMENT:
-                value = "<department>";
+                value = "!department";
                 break;
             case MAX_HOURS:
-                value = "<maxHours>";
+                value = "!workingTime";
                 break;
             case WAGE:
-                value = "<wage>";
+                value = "!wage";
                 break;
             case VACATION:
-                value = "<vacation>";
+                value = "!vacation";
                 break;
             case HOURS_SUM:
-                value = "<sum>";
+                value = "!sum";
                 break;
             case TRANSFER_PRED:
-                value = "<carryFrom>";
+                value = "!carryPred";
                 break;
             case TRANSFER_SUCC:
-                value = "<carryTo>";
+                value = "!carrySucc";
                 break;
             default:
                 value = null;
@@ -111,22 +111,22 @@ public class LatexGenerator implements IGenerator {
         String value;
         switch (element) {
             case TABLE_ACTION:
-                value = "<action>";
+                value = "!action";
                 break;
             case TABLE_DATE:
-                value = "<date>";
+                value = "!date";
                 break;
             case TABLE_START:
-                value = "<begin>";
+                value = "!begin";
                 break;
             case TABLE_END:
-                value = "<end>";
+                value = "!end";
                 break;
             case TABLE_PAUSE:
-                value = "<break>";
+                value = "!break";
                 break;
             case TABLE_TIME:
-                value = "<time>";
+                value = "!dayTotal";
                 break;
             default:
                 value = null;
