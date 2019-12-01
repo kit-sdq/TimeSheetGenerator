@@ -16,7 +16,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class CheckerDayTimeExceedancesTest {
+public class MiLoGCheckerDayTimeExceedancesTest {
     
     //Checker constants
     TimeSpan[][] PAUSE_RULES = MiLoGChecker.getPauseRules();

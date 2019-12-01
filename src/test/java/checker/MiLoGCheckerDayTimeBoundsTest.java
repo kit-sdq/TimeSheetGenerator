@@ -17,7 +17,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class CheckerDayTimeBoundsTest {
+public class MiLoGCheckerDayTimeBoundsTest {
 
     private static TimeSpan CHECKER_WORKDAY_LOWER_BOUND;
     private static TimeSpan CHECKER_WORKDAY_UPPER_BOUND;

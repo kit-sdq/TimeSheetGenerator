@@ -28,7 +28,7 @@ import data.WorkingArea;
 /**
  * ATTENTION: This test class only runs correctly if the calling machine is connected to the Internet. 
  */
-public class CheckerValidWorkingDaysTest {
+public class MiLoGCheckerValidWorkingDaysTest {
 
     ////Placeholder for documentation construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);

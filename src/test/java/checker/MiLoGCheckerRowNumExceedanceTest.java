@@ -16,7 +16,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class CheckerRowNumExceedanceTest {
+public class MiLoGCheckerRowNumExceedanceTest {
 
     //TODO Out source entry generator
     private static final int RANDOM_ENTRY_BOUND = 50;

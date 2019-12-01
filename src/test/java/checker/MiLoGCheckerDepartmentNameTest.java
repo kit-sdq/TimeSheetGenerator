@@ -15,7 +15,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class CheckerDepartmentNameTest {
+public class MiLoGCheckerDepartmentNameTest {
 
     private static final Entry[] ENTRIES = {new Entry("Test", LocalDate.of(2019, 11, 22),
             new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0))};

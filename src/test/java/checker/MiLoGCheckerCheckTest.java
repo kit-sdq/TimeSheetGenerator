@@ -15,7 +15,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class CheckerCheckTest {
+public class MiLoGCheckerCheckTest {
 
     ////Placeholder for documentation construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);

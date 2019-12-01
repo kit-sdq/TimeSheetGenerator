@@ -16,7 +16,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class CheckerTotalTimeExceedanceTest {
+public class MiLoGCheckerTotalTimeExceedanceTest {
     
     private static final int RANDOM_HOUR_BOUND = 999;
     private static final int RANDOM_DAY_BOUND = 24; 
