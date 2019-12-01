@@ -1,0 +1,8 @@
+{
+	"name": "Max Mustermann",
+	"staffId": 1234567,
+	"department": "Fakultät für Informatik",
+	"workingTime": "40:00",
+	"wage": 10.31,
+	"workingArea": "uB"
+}
