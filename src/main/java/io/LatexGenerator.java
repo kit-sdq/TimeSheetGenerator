@@ -1,9 +1,13 @@
 package io;
 
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import data.Entry;
 import data.TimeSheet;
+import data.TimeSpan;
+import data.WorkingArea;
 
 public class LatexGenerator implements IGenerator {
 
@@ -25,10 +29,8 @@ public class LatexGenerator implements IGenerator {
         /*
          * This loop replaces the document-public placeholder in the TeX template with the correct data.
          */
-        for (TimeSheet.Element elem : TimeSheet.Element.values()) {
-            if (hasPlaceholder(elem)) {
-                filledTex = filledTex.replace(getPlaceholder(elem), timeSheet.getElementStringValue(elem));
-            }
+        for (TimeSheetElement elem : TimeSheetElement.values()) {
+            filledTex = filledTex.replace(elem.getPlaceholder(), getSubstitute(timeSheet, elem));
         }
         
         /*
@@ -36,12 +38,10 @@ public class LatexGenerator implements IGenerator {
          * If the TimeSheet contains to many elements for the table,
          * all rows get filled and the rest of data gets lost.
          */
-        for (Entry.Element elem : Entry.Element.values()) {
-            if (hasPlaceholder(elem)) {
-                String placeholder = getPlaceholder(elem);
-                for (Entry entry : timeSheet.getEntries()) {
-                    filledTex = filledTex.replaceFirst(placeholder, entry.getElementStringValue(elem));
-                }
+        for (EntryElement elem : EntryElement.values()) {
+            String placeholder = elem.getPlaceholder();
+            for (Entry entry : timeSheet.getEntries()) {
+                filledTex = filledTex.replaceFirst(placeholder, getSubstitute(entry, elem));
             }
         }
         
@@ -49,8 +49,8 @@ public class LatexGenerator implements IGenerator {
          * This loop fills up all not-needed rows of the table with a blank space.
          * IMPORTANT: Some kind of character is needed to make the TeX compile correctly on some TeX compilers.
          */
-        for (Entry.Element elem : Entry.Element.values()) {
-            filledTex = filledTex.replace(getPlaceholder(elem), "\\thinspace");
+        for (EntryElement elem : EntryElement.values()) {
+            filledTex = filledTex.replace(elem.getPlaceholder(), "\\thinspace");
         }
          
         return filledTex;
@@ -61,44 +61,50 @@ public class LatexGenerator implements IGenerator {
         return new FileNameExtensionFilter(FILE_DESCRIPTION, FILE_EXTENSION);
     }
 
-    private static String getPlaceholder(TimeSheet.Element element) {
+    private static String getSubstitute(TimeSheet timeSheet, TimeSheetElement element) {
         String value;
         switch (element) {
             case YEAR:
-                value = "!year";
+                value =  Integer.toString(timeSheet.getYear());
                 break;
             case MONTH:
-                value = "!month";
+                value = Integer.toString(timeSheet.getMonth().getValue());
                 break;
             case EMPLOYEE_NAME:
-                value = "!employeeName";
+                value = timeSheet.getEmployee().getName();
                 break;
             case EMPLOYEE_ID:
-                value = "!employeeID";
+                value = Integer.toString(timeSheet.getEmployee().getId());
                 break;
             case GFUB:
-                value = "!workingArea";
+                if (timeSheet.getProfession().getWorkingArea() == WorkingArea.GF) {
+                    value = "GF: $\\boxtimes$ UB: $\\Box$";
+                } else {
+                    value = "GF: $\\Box$ UB: $\\boxtimes$";
+                }
                 break;
             case DEPARTMENT:
-                value = "!department";
+                value = timeSheet.getProfession().getDepartmentName();
                 break;
             case MAX_HOURS:
-                value = "!workingTime";
+                value = timeSheet.getProfession().getMaxWorkingTime().toString();
                 break;
             case WAGE:
-                value = "!wage";
+                value = Double.toString(timeSheet.getProfession().getWage());
                 break;
             case VACATION:
-                value = "!vacation";
+                value = timeSheet.getVacation().toString();
                 break;
             case HOURS_SUM:
-                value = "!sum";
+                TimeSpan clonedTS = timeSheet.getTotalWorkTime().clone();
+                clonedTS.add(timeSheet.getVacation());
+                value = clonedTS.toString();
                 break;
             case TRANSFER_PRED:
-                value = "!carryPred";
+                value = timeSheet.getPredTranfer().toString();
                 break;
             case TRANSFER_SUCC:
-                value = "!carrySucc";
+                value = timeSheet.getSuccTransfer().toString();
                 break;
             default:
                 value = null;
@@ -107,26 +113,27 @@ public class LatexGenerator implements IGenerator {
         return value;
     }
     
-    private static String getPlaceholder(Entry.Element element) {
+    private static String getSubstitute(Entry entry, EntryElement element) {
         String value;
         switch (element) {
             case TABLE_ACTION:
-                value = "!action";
+                value = entry.getAction();
                 break;
             case TABLE_DATE:
-                value = "!date";
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
+                value = entry.getDate().format(formatter);
                 break;
             case TABLE_START:
-                value = "!begin";
+                value = entry.getStart().toString();
                 break;
             case TABLE_END:
-                value = "!end";
+                value = entry.getEnd().toString();
                 break;
             case TABLE_PAUSE:
-                value = "!break";
+                value = entry.getPause().toString();
                 break;
             case TABLE_TIME:
-                value = "!dayTotal";
+                value = entry.getWorkingTime().toString();
                 break;
             default:
                 value = null;
@@ -135,11 +142,47 @@ public class LatexGenerator implements IGenerator {
         return value;
     }
     
-    private static boolean hasPlaceholder(TimeSheet.Element element) {
-        return getPlaceholder(element) != null;
+    private static enum TimeSheetElement {
+        YEAR("!year"),
+        MONTH("!month"),
+        EMPLOYEE_NAME("!employeeName"),
+        EMPLOYEE_ID("!employeeID"),
+        GFUB("!workingArea"),
+        DEPARTMENT("!department"),
+        MAX_HOURS("!workingTime"),
+        WAGE("!wage"),
+        VACATION("!vacation"),
+        HOURS_SUM("!sum"),
+        TRANSFER_PRED("!carryPred"),
+        TRANSFER_SUCC("!carrySucc");
+        
+        private final String placeholder;
+        
+        private TimeSheetElement(String placeholder) {
+            this.placeholder = placeholder;
+        }
+        
+        public String getPlaceholder() {
+            return this.placeholder;
+        }
     }
     
-    private static boolean hasPlaceholder(Entry.Element element) {
-        return getPlaceholder(element) != null;
+    private static enum EntryElement {
+        TABLE_ACTION("!action"),
+        TABLE_DATE("!date"),
+        TABLE_START("!begin"),
+        TABLE_END("!end"),
+        TABLE_PAUSE("!break"),
+        TABLE_TIME("!dayTotal");
+        
+        private final String placeholder;
+        
+        private EntryElement(String placeholder) {
+            this.placeholder = placeholder;
+        }
+        
+        public String getPlaceholder() {
+            return this.placeholder;
+        }
     }
 }
