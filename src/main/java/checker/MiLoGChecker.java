@@ -1,15 +1,20 @@
 package checker;
 
 import data.Entry;
+import data.Tuple;
 import data.TimeSheet;
 import data.TimeSpan;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
@@ -48,6 +53,7 @@ public class MiLoGChecker implements IChecker {
      * @return {@link CheckerReturn} value with error or validity message
      * @throws CheckerException Thrown if an error occurs while checking the validity
      */
+    @Override
     public CheckerReturn check() throws CheckerException {
         result = CheckerReturn.VALID;
         errors.clear();
@@ -66,6 +72,7 @@ public class MiLoGChecker implements IChecker {
      * Returns a collection of all occurred checker errors during the execution of the last call to {@link #check()} 
      * @return {@link Collection<CheckerError>} list of occurred checker errors
      */
+    @Override
     public Collection<CheckerError> getErrors() {
         return new ArrayList<CheckerError>(errors);
     }
@@ -193,8 +200,37 @@ public class MiLoGChecker implements IChecker {
         }
     }
     
+    /**
+     * Checks whether times of different entries in the time sheet overlap.
+     */
+    protected void checkTimeOverlap() {
+        if (fullDoc.getEntries().length == 0) {
+            return;
+        }
+        
+        List<Tuple<LocalDateTime, LocalDateTime>> times = Arrays.asList(fullDoc.getEntries()).stream().map(
+            entry -> new Tuple<LocalDateTime, LocalDateTime>(
+                entry.getDate().atTime(entry.getStart().getHour(), entry.getStart().getMinute()),
+                entry.getDate().atTime(entry.getEnd().getHour(), entry.getEnd().getMinute())
+            )
+        ).collect(Collectors.toList());
+        times.sort((a, b) -> a.getFirst().compareTo(b.getFirst()));
+        
+        for (int i = 0; i < times.size() - 1; i++) {
+            if (times.get(i).getSecond().isAfter(times.get(i + 1).getFirst())) {
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_OVERLAP.getErrorMessage()));
+                result = CheckerReturn.INVALID;
+                return;
+            }
+        }
+    }
+    
     
     ////Following methods are primarily for testing purposes.
+    /**
+     * This method gets the result of the last call to {@link #check()}
+     * @return The result of the last call to {@link #check()}
+     */
     protected CheckerReturn getResult() {
         return this.result;
     }
@@ -242,7 +278,8 @@ public class MiLoGChecker implements IChecker {
         TIME_PAUSE("Maximum working time without pause exceeded."),
         
         ROWNUM_EXCEEDENCE("Exceeded the maximum number of rows for the document."),
-        NAME_MISSING("Name of the departement is missing.");
+        NAME_MISSING("Name of the departement is missing."),
+        TIME_OVERLAP("Start/End times in the time sheet overlap");
         
         private final String errorMsg;
         
