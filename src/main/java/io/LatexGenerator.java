@@ -6,7 +6,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import data.Entry;
 import data.TimeSheet;
-import data.TimeSpan;
 import data.WorkingArea;
 
 public class LatexGenerator implements IGenerator {
@@ -96,9 +95,7 @@ public class LatexGenerator implements IGenerator {
                 value = timeSheet.getVacation().toString();
                 break;
             case HOURS_SUM:
-                TimeSpan clonedTS = timeSheet.getTotalWorkTime().clone();
-                clonedTS.add(timeSheet.getVacation());
-                value = clonedTS.toString();
+                value = timeSheet.getTotalWorkTime().add(timeSheet.getVacation()).toString();
                 break;
             case TRANSFER_PRED:
                 value = timeSheet.getPredTranfer().toString();
