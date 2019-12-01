@@ -8,6 +8,10 @@ import data.Entry;
 import data.TimeSheet;
 import data.WorkingArea;
 
+/**
+ * The LatexGenerator generates a LaTeX string based on a template and fills it with 
+ * information of a {@link TimeSheet} and its associated {@link Entry Entries}.
+ */
 public class LatexGenerator implements IGenerator {
 
     private final static String FILE_EXTENSION = "tex";
@@ -16,6 +20,11 @@ public class LatexGenerator implements IGenerator {
     private final TimeSheet timeSheet;
     private final String template;
     
+    /**
+     * Constructs a new {@link TimeSheet} instance.
+     * @param timeSheet - as source of data to fill into the template.
+     * @param template - the template the generated LaTeX {@link String} should be based on.
+     */
     public LatexGenerator(TimeSheet timeSheet, String template) {
         this.timeSheet = timeSheet;
         this.template = template;
@@ -60,6 +69,13 @@ public class LatexGenerator implements IGenerator {
         return new FileNameExtensionFilter(FILE_DESCRIPTION, FILE_EXTENSION);
     }
 
+    /**
+     * Returns a substitute coming from a {@link TimeSheet} replacing
+     * a placeholder associated with a {@link TimeSheetElement} in the document {@link String}. 
+     * @param timeSheet - to get the substitute from
+     * @param element - element to get the substitute for
+     * @return A substitute as a {@link String}
+     */
     private static String getSubstitute(TimeSheet timeSheet, TimeSheetElement element) {
         String value;
         switch (element) {
@@ -110,6 +126,13 @@ public class LatexGenerator implements IGenerator {
         return value;
     }
     
+    /**
+     * Returns a substitute coming from an {@link Entry} elements data replacing
+     * a placeholder associated with an {@link EntryElement} in the document {@link String}. 
+     * @param entry - to get the substitute from
+     * @param element - element to get the substitute for
+     * @return A substitute as a {@link String}
+     */
     private static String getSubstitute(Entry entry, EntryElement element) {
         String value;
         switch (element) {
@@ -139,6 +162,10 @@ public class LatexGenerator implements IGenerator {
         return value;
     }
     
+    /**
+     * The different elements representing the {@link TimeSheet}, especially the 
+     * {@link Employee} and {@link Profession}, on the document.
+     */
     private static enum TimeSheetElement {
         YEAR("!year"),
         MONTH("!month"),
@@ -164,6 +191,9 @@ public class LatexGenerator implements IGenerator {
         }
     }
     
+    /**
+     * The different elements representing the {@link Entry entries} on the document.
+     */
     private static enum EntryElement {
         TABLE_ACTION("!action"),
         TABLE_DATE("!date"),
