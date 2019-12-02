@@ -36,14 +36,6 @@ public class TimeSheet {
     }
 
     /**
-     * Gets the year and month of a {@link TimeSheet} packed into a {@link YearMonth}.
-     * @return The YearMonth.
-     */
-    public YearMonth getYearMonth() {
-        return yearMonth;
-    }
-    
-    /**
      * Gets the year of a {@link TimeSheet}.
      * @return The year.
      */
