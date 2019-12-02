@@ -7,24 +7,40 @@ import java.time.LocalDate;
  */
 public class Holiday {
     
-    //TODO JavaDoc
     private final LocalDate date;
     private final String description;
 
+    /**
+     * Constructs a new {@link Holiday} instance.
+     * @param date - on which the holiday takes place.
+     * @param description - of the holiday.
+     */
     public Holiday(LocalDate date, String description) {
         this.date = date;
         this.description = description;
     }
 
+    /**
+     * Gets the description of a {@link Holiday}.
+     * @return The description.
+     */
     public String getDescription() {
         return this.description;
     }
     
+    /**
+     * Gets the date of a {@link Holiday}.
+     * @return The date.
+     */
     public LocalDate getDate() {
         return this.date;
     }
     
-    //TODO Test equalsDate 
+    /**
+     * Checks whether a {@link Holiday} takes place on a given date.
+     * @param otherDate - to check if the holiday takes place on.
+     * @return True if the {@link Holiday} takes place on this day, false otherwise.
+     */
     public boolean equalsDate(LocalDate otherDate) {
         return date.equals(otherDate);
     }

@@ -22,8 +22,8 @@ import checker.holiday.GermanState;
 import checker.holiday.GermanyHolidayChecker;
 
 /**
- * TODO Documentation of class
- * @author Liam Wachter
+ * The MiLoGChecker checks whether a {@link TimeSheet} instance is valid or not.
+ * This checker uses rules for its checks based on the German "Mindestlohngesetz" or "MiLoG".
  */
 public class MiLoGChecker implements IChecker {
     //TODO Are those static constant values better than attributes?
@@ -40,6 +40,10 @@ public class MiLoGChecker implements IChecker {
     private CheckerReturn result;
     private final Collection<CheckerError> errors;
     
+    /**
+     * Constructs a new {@link MiLoGChecker} instance.
+     * @param fullDoc - to be checked.
+     */
     public MiLoGChecker(TimeSheet fullDoc) {
         this.fullDoc = fullDoc;
         
@@ -70,7 +74,7 @@ public class MiLoGChecker implements IChecker {
     
     /**
      * Returns a collection of all occurred checker errors during the execution of the last call to {@link #check()} 
-     * @return {@link Collection<CheckerError>} list of occurred checker errors
+     * @return {@link Collection} of occurred checker errors.
      */
     @Override
     public Collection<CheckerError> getErrors() {

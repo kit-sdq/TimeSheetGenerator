@@ -14,6 +14,10 @@ import parser.IHolidayParser;
 import parser.JsonHolidayParser;
 import parser.ParseException;
 
+/**
+ * A GermanyHolidayChecker is a holiday checker implementing {@link IHolidayChecker} that
+ * is able to check for legal {@link Holiday holidays} of all different {@link GermanState GermanStates}.
+ */
 public class GermanyHolidayChecker implements IHolidayChecker {
 
     private final Year year;
@@ -21,6 +25,11 @@ public class GermanyHolidayChecker implements IHolidayChecker {
     private Collection<Holiday> holidays;
     private static final String HOLIDAY_FETCH_ADDRESS = "https://feiertage-api.de/api/?jahr=$year$&nur_land=$state$";
     
+    /**
+     * Constructs a new {@link GermanyHolidayChecker} instance.
+     * @param year - in which the {@link Holiday holidays} take place.
+     * @param state - of Germany to check for possible {@link Holiday holidays}.
+     */
     public GermanyHolidayChecker(int year, GermanState state) {
         this.year = Year.of(year);
         this.state = state;
@@ -48,6 +57,10 @@ public class GermanyHolidayChecker implements IHolidayChecker {
         return holidays;
     }
 
+    /**
+     * Fetches the occurring holidays from a specific source.
+     * @throws HolidayFetchException if an error occurs fetching the holidays.
+     */
     private void fetchHolidays() throws HolidayFetchException {
         String filledAddress = HOLIDAY_FETCH_ADDRESS
                 .replace("$year$", Integer.toString(year.getValue()))
@@ -65,6 +78,10 @@ public class GermanyHolidayChecker implements IHolidayChecker {
         
     }
     
+    /**
+     * Checks whether the {@link Holiday holidays} are already fetched.
+     * @return {@code True} if the holidays are already fetched, {@code False} otherwise.
+     */
     private boolean hasHolidays() {
         if (holidays == null || holidays.isEmpty()) {
             return false;
