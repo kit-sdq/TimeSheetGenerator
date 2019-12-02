@@ -6,12 +6,24 @@ import data.Entry;
 import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
-import org.json.*;
+import org.json.JSONObject;
 
+/**
+ * A Parser provides the functionality to construct a {@link TimeSheet} with the data
+ * coming from different types of files getting parsed by {@link IGlobalParser} and 
+ * {@link IMonthParser} instances.
+ */
 public class Parser {
 
     private Parser() {}
     
+    /**
+     * Returns a new {@link TimeSheet} constructed out of data coming from two {@link JSONObject} instances.
+     * @param globalJson - object to get global data from.
+     * @param monthJson - object to get month data from.
+     * @return A new {@link TimeSheet} instances.
+     * @throws ParseException if an error occurs while parsing the {@link JSONObject} instances.
+     */
     public static TimeSheet parseTimeSheet(JSONObject globalJson, JSONObject monthJson) throws ParseException {
         IGlobalParser globalParser = new JsonGlobalParser(globalJson);
         

@@ -12,11 +12,19 @@ import org.json.JSONObject;
 
 import checker.holiday.Holiday;
 
+/**
+ * A JsonHolidayParser provides the functionality to parse the
+ * elements specified by {@link IHolidayParser} from an {@link JSONObject}.
+ */
 public class JsonHolidayParser implements IHolidayParser {
     
     private final JSONObject json;
     private final static String DATE_PATTERN = "yyyy-MM-dd";
     
+    /**
+     * Constructs a new {@link JsonHolidayParser} instance.
+     * @param json - to parse the data from.
+     */
     public JsonHolidayParser(JSONObject json) {
         this.json = json;
     }

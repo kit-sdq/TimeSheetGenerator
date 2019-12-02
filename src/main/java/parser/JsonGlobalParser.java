@@ -8,10 +8,18 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
+/**
+ * A JsonGlobalParser provides the functionality to parse the
+ * elements specified by {@link IGlobalParser} from an {@link JSONObject}.
+ */
 public class JsonGlobalParser implements IGlobalParser {
 
     private final JSONObject json;
     
+    /**
+     * Constructs a new {@link JsonGlobalParser} instance.
+     * @param json - to parse the data from.
+     */
     public JsonGlobalParser(JSONObject json) {
         this.json = json;
     }
