@@ -114,7 +114,7 @@ public class LatexGenerator implements IGenerator {
                 value = timeSheet.getTotalWorkTime().add(timeSheet.getVacation()).toString();
                 break;
             case TRANSFER_PRED:
-                value = timeSheet.getPredTranfer().toString();
+                value = timeSheet.getPredTransfer().toString();
                 break;
             case TRANSFER_SUCC:
                 value = timeSheet.getSuccTransfer().toString();

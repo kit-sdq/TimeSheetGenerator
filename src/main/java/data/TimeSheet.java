@@ -79,7 +79,7 @@ public class TimeSheet {
      * Gets the transfered time from the predecessor month of a {@link TimeSheet}.
      * @return The transfered time from the predecessor month.
      */
-    public TimeSpan getPredTranfer() {
+    public TimeSpan getPredTransfer() {
         return this.predTransfer;
     }
     
