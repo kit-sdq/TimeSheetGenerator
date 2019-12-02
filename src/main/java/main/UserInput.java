@@ -39,7 +39,7 @@ public class UserInput {
   
   public static void printHelp() {
     HelpFormatter formatter = new HelpFormatter();
-    formatter.printHelp("documentation-checker", UserInputOption.getOptions());
+    formatter.printHelp("TimeSheetGenerator", UserInputOption.getOptions());
   }
   
   public File getFile(UserInputFile userInputFile) throws IOException {
