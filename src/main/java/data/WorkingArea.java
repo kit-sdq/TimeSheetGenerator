@@ -13,6 +13,11 @@ public enum WorkingArea {
      */
     UB;
     
+    /**
+     * Parses a given {@link String} to a {@link WorkingArea} element.
+     * @param s - the string to be parsed.
+     * @return A {@link WorkingArea} element parsed from a {@link String}.
+     */
     public static WorkingArea parse(String s) {
         if (s.equalsIgnoreCase("gf")) {
             return GF;

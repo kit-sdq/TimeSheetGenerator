@@ -4,7 +4,7 @@ import java.time.Month;
 import java.time.YearMonth;
 
 /**
- * @author Liam Wachter
+ * A time sheet represents a whole month of work done by an {@link Employee}.
  */
 public class TimeSheet {
     private final Employee employee;
@@ -14,7 +14,7 @@ public class TimeSheet {
     private final Entry[] entries;
     
     /**
-     * Constructs a new instance of {@code FullDocumentation}.
+     * Constructs a new instance of {@code TimeSheet}.
      *
      * @param employee - The {@link Employee employee} this documentation is associated with.
      * @param profession - The {@link Profession profession} of the {@link Employee employee}.
@@ -35,46 +35,81 @@ public class TimeSheet {
         this.entries = entries;
     }
 
-    //TODO JavaDoc for Getter
+    /**
+     * Gets the year and month of a {@link TimeSheet} packed into a {@link YearMonth}.
+     * @return The YearMonth.
+     */
     public YearMonth getYearMonth() {
         return yearMonth;
     }
     
+    /**
+     * Gets the year of a {@link TimeSheet}.
+     * @return The year.
+     */
     public int getYear() {
         return yearMonth.getYear();
     }
     
+    /**
+     * Gets the {@link Month} of a {@link TimeSheet}.
+     * @return The month.
+     */
     public Month getMonth() {
         return yearMonth.getMonth();
     }
 
+    /**
+     * Gets all entries associated with a {@link TimeSheet}.
+     * @return The entries.
+     */
     public Entry[] getEntries() {
         return entries;
     }
     
+    /**
+     * Gets the vacation of a {@link TimeSheet}.
+     * @return The vacation.
+     */
     public TimeSpan getVacation() {
         return this.vacation;
     }
 
+    /**
+     * Gets the transfered time from the predecessor month of a {@link TimeSheet}.
+     * @return The transfered time from the predecessor month.
+     */
     public TimeSpan getPredTranfer() {
         return this.predTransfer;
     }
     
+    /**
+     * Gets the transfered time from the successor month of a {@link TimeSheet}.
+     * @return The transfered time from the successor month.
+     */
     public TimeSpan getSuccTransfer() {
         return this.succTransfer;
     }
     
+    /**
+     * Gets the {@link Employee} associated with a {@link TimeSheet}.
+     * @return The employee.
+     */
     public Employee getEmployee() {
         return this.employee;
     }
     
+    /**
+     * Gets the {@link Profession} associated with a {@link TimeSheet}.
+     * @return The profession.
+     */
     public Profession getProfession() {
         return this.profession;
     }
     
     /**
      * Calculates the overall working time of all entries.
-     * @return The overall, summed up working time
+     * @return The overall, summed up working time.
      */
     public TimeSpan getTotalWorkTime() {
         TimeSpan totalWorkTime = new TimeSpan(0, 0);

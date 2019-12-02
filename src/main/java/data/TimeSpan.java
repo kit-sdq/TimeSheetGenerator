@@ -1,7 +1,7 @@
 package data;
 
 /**
- * An immutable time span consisting of hour and minutes as well as basic arithmetic for it.
+ * An immutable time span consisting of hours and minutes as well as basic arithmetic for it.
  */
 public class TimeSpan implements Comparable<TimeSpan> {
     
@@ -25,16 +25,16 @@ public class TimeSpan implements Comparable<TimeSpan> {
     }
 
     /**
-     * Gets the minute of the TimeSpan.
-     * @return - The minute
+     * Gets the minutes of a TimeSpan.
+     * @return - The minutes.
      */
     public int getMinute() {
         return minute;
     }
 
     /**
-     * Gets the hour of the TimeSpan.
-     * @return - The hour
+     * Gets the hours of a TimeSpan.
+     * @return - The hours.
      */
     public int getHour() {
         return hour;
@@ -43,7 +43,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
     /**
      * Sums up hours and minutes taking carryover into account.
      * @param addend - TimeSpan that should be added
-     * @return The TimeSpan representing the sum
+     * @return The {@link TimeSpan} representing the sum
      */
     public TimeSpan add(TimeSpan addend) {
         int hourSum = this.hour + addend.getHour();
@@ -59,7 +59,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
     /**
      * Subtracts hours and minutes taking carryover into account.
      * @param subtrahend - TimeSpan that should be subtracted
-     * @return The TimeSpan representing the difference
+     * @return The {@link TimeSpan} representing the difference
      * @throws IllegalArgumentException thrown if the subtrahend is greater than the minuend
      */
     public TimeSpan subtract(TimeSpan subtrahend) throws IllegalArgumentException {
@@ -77,7 +77,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
     }
 
     /**
-     * Attempts to interpret the string s as a representation of a {@link TimeSpan}.
+     * Attempts to interpret a string as a representation of a {@link TimeSpan}.
      * @param s - the string to be parsed.
      * @return A {@link TimeSpan} representing the input string
      */
