@@ -92,9 +92,9 @@ public class MiLoGChecker implements IChecker {
         TimeSpan totalWorkingTime = fullDoc.getTotalWorkTime();
         
         //Vacation and transfer corrected time
-        TimeSpan correctedMaxWorkingTime = maxWorkingTime.subtract(fullDoc.getVacation())
-                .subtract(fullDoc.getPredTransfer())
-                .add(fullDoc.getSuccTransfer());
+        TimeSpan correctedMaxWorkingTime = maxWorkingTime.add(fullDoc.getSuccTransfer())
+                .subtract(fullDoc.getVacation())
+                .subtract(fullDoc.getPredTransfer());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
             errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
