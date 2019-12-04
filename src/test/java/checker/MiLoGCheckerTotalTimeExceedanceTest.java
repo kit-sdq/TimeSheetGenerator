@@ -119,6 +119,54 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
     }
     
     @Test
+    public void testNoExceedanceSuccTransferUpperBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan succTransfer = new TimeSpan(4, 0);
+        int hoursToWork = 18;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
+    }
+    
+    @Test
+    public void testExceedanceSuccTransferLowerBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan succTransfer = new TimeSpan(3, 59);
+        int hoursToWork = 18;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
     public void testNoExceedanceVacationUpperBound() {
         //Test values
         TimeSpan maxWorkTime = new TimeSpan(14, 0);
