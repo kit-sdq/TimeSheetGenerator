@@ -33,7 +33,7 @@ public class TimeSheet {
          */
         if (profession.getMaxWorkingTime().add(succTransfer).compareTo(predTransfer.add(vacation)) < 0) {
             throw new IllegalArgumentException("Sum of predTransfer and vacation cannot be greater "
-                    + "than maxWorkingTime and succTransfer.");
+                    + "than sum of maxWorkingTime and succTransfer.");
         }
         
             this.employee = employee;
