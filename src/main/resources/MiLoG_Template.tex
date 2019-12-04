@@ -3,241 +3,252 @@
 \usepackage{tabulary}
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage{array}
+\usepackage{background}
 \usepackage[utf8]{inputenc}
 \usepackage{eurosym}
 \thispagestyle{empty}
 
-\newcommand{\tableentry}[2]{\parbox{#1cm}{\centering #2}}
 \newcommand{\headentry}[1]{\parbox{18.6cm}{#1}}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}} %uses package 'array'
 
 \begin{document}
 	\includegraphics[width=140pt]{Latex_Logo.pdf} \par \smallskip
 	\sffamily
-	
+
 	%HEADER
-	\headentry{\huge Arbeitszeitdokumentation \hspace*{\fill} \Large Monat / Jahr: \underline{\parbox{5.75cm}{\centering !month / !year }}} \par \medskip
-	\headentry{\Large Name des Mitarbeiters/der Mitarbeiterin: \hspace*{\fill} \underline{\parbox{9cm}{\centering !employeeName }}} \par \medskip
-	\headentry{\Large Personalnummer: \hspace*{\fill} \underline{\parbox{5cm}{\centering !employeeID} \parbox{3.85cm}{\centering !workingArea}}} \par \medskip %This is the KIT style for workingArea => GF: $\Box$ UB: $\boxtimes$
-	\headentry{\Large Institut/Organisationseinheit: \hspace*{\fill} \underline{\parbox{9cm}{\centering !department }}} \par \medskip
-	\headentry{\Large Vertraglich vereinbarte Arbeitszeit: \hspace*{\fill} \parbox{9cm}{\underline{\parbox{2.85cm}{\centering !workingTime}} \parbox{6cm}{\centering \raggedleft Stundensatz: \underline{\parbox{2.25cm}{\centering !wage\euro} } } } } \par \medskip
-	
+	\vspace{0.2cm}
+	\headentry{\huge \textbf{Arbeitszeitdokumentation} \hspace*{\fill} \Large \textbf{Monat / Jahr:} \underline{\parbox{5.0cm}{\centering !month / !year }}} \par \medskip
+	\headentry{\Large \textbf{Name des Mitarbeiters/der Mitarbeiterin:} \hspace*{\fill} \underline{\parbox{8.5cm}{!employeeName }}} \par \medskip
+	\headentry{\Large \textbf{Personalnummer:} \hspace*{\fill} \underline{\parbox{4.5cm}{!employeeID} \parbox{3.85cm}{\centering !workingArea}}} \par \medskip %This is the KIT style for workingArea => GF: $\Box$ UB: $\boxtimes$
+	\headentry{\Large \textbf{Institut/Organisationseinheit:} \hspace*{\fill} \underline{\parbox{8.5cm}{!department }}} \par \medskip
+	\headentry{\Large \textbf{Vertraglich vereinbarte Arbeitszeit:} \hspace*{\fill} \parbox{8.5cm}{\underline{\parbox{2.35cm}{\centering !workingTime}} \parbox{6cm}{\centering \raggedleft \textbf{Stundensatz:} \underline{\parbox{2.25cm}{\centering !wage \euro} } } } } \par \medskip
+
 	%BODY
 	\large
 	\begin{center}
-		\begin{tabular}{| c | c | c | c | c | c |}
+		\begin{tabular}{| P{6.7cm} | P{2cm} | P{1.8cm} | P{1.8cm} | P{1.8cm} | P{2.4cm} |}
 			\hline
 			%Line 1
-			\tableentry{6}{T\"atigkeit (Stichwort, Projekt)}
-			& \tableentry{2}{Datum} 
-			& \tableentry{2}{Beginn} 
-			& \tableentry{2}{Ende} 
-			& \tableentry{2}{Pause} 
-			& \tableentry{2}{Arbeitszeit\textsuperscript{1}}\\
+			\textbf{T\"atigkeit (Stichwort, Projekt)}
+			& \textbf{Datum}
+			& \textbf{Beginn}
+			& \textbf{Ende}
+			& \textbf{Pause}
+			& \textbf{Arbeitszeit\textsuperscript{1}}\\
 			\hline
 			%Line 2
-			\tableentry{6}{}
-			& \tableentry{2}{(tt.mm.jj)} 
-			& \tableentry{2}{(hh:mm)} 
-			& \tableentry{2}{(hh:mm)} 
-			& \tableentry{2}{(hh:mm)} 
-			& \tableentry{2}{(hh:mm)}\\
+			%empty
+			& \textbf{(tt.mm.jj)}
+			& \textbf{(hh:mm)}
+			& \textbf{(hh:mm)}
+			& \textbf{(hh:mm)}
+			& \textbf{(hh:mm)}\\
 			\hline
 			%Line 3
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 4
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 5
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 6
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 7
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 8
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 9
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 10
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 11
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 12
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 13
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 14
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 15
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 16
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 17
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 18
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 19
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 20
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 21
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline
 			%Line 22
-			\tableentry{6}{!action}
-			& \tableentry{2}{!date} 
-			& \tableentry{2}{!begin} 
-			& \tableentry{2}{!end} 
-			& \tableentry{2}{!break} 
-			& \tableentry{2}{!dayTotal}\\
+			!action
+			& !date
+			& !begin
+			& !end
+			& !break
+			& !dayTotal\\
 			\hline 
 			%Leerzeile
 			\multicolumn{6}{c}{\thinspace}\\
 			%Urlaub
-			\cline{4-6}
-			\multicolumn{3}{c}{\thinspace} 
-			& \multicolumn{2}{|c|}{\centering Urlaub anteilig:}
-			& \tableentry{2}{!vacation}\\
-			\cline{4-6}
+			\cline{3-6}
+			\multicolumn{2}{c}{\thinspace}
+			& \multicolumn{3}{|c|}{\centering \textbf{Urlaub anteilig:}}
+			& !vacation\\
+			\cline{3-6}
 			%Summe
-			\multicolumn{3}{c}{\thinspace} 
-			& \multicolumn{2}{|c|}{\centering Summe:}
-			& \tableentry{2}{!sum}\\
-			\cline{4-6}
+			\multicolumn{2}{c}{\thinspace}
+			& \multicolumn{3}{|c|}{\centering \textbf{Summe:}}
+			& !sum\\
+			\cline{3-6}
 			%SollArbeitszeit
-			\multicolumn{3}{c}{\thinspace} 
-			& \multicolumn{2}{|c|}{\centering monatliche Soll-Arbeitszeit:}
-			& \tableentry{2}{!workingTime}\\
-			\cline{4-6}
+			\multicolumn{2}{c}{\thinspace}
+			& \multicolumn{3}{|c|}{\centering \textbf{monatliche Soll-Arbeitszeit:}}
+			& !workingTime\\
+			\cline{3-6}
 			%Übertrag Vormonat
-			\multicolumn{3}{c}{\thinspace} 
-			& \multicolumn{2}{|c|}{\centering Übertrag vom Vormonat:}
-			& \tableentry{2}{!carryPred}\\
-			\cline{4-6}
+			\multicolumn{2}{c}{\thinspace}
+			& \multicolumn{3}{|c|}{\centering \textbf{Übertrag vom Vormonat:}}
+			& !carryPred\\
+			\cline{3-6}
 			%Übertrag Folgemonat
-			\multicolumn{3}{c}{\thinspace} 
-			& \multicolumn{2}{|c|}{\centering Übertrag in den Folgemonat:}
-			& \tableentry{2}{!carrySucc}\\
-			\cline{4-6}
-		\end{tabular}	
+			\multicolumn{2}{c}{\thinspace}
+			& \multicolumn{3}{|c|}{\centering \textbf{Übertrag in den Folgemonat:}}
+			& !carrySucc\\
+			\cline{3-6}
+		\end{tabular}
 	\end{center}
-	
+
 	%FOOTER
-	\par \bigskip \bigskip \bigskip
+	\par \bigskip \bigskip \medskip
 	\headentry{\large Ich bestätige die Richtigkeit der Angaben: \hspace*{\fill} $\overline{{\parbox{5.75cm}{\normalsize Datum, Beschäftigte/r} } }$ } \par \medskip
-	\headentry{\normalsize Nach $\S 17$ Mindestlohngesetz (MiLoG) müssen für geringfügig entlohnte und kurzfristig beschäftigte Arbeitnehmer/innen u.a. Beginn, Ende und Dauer der täglichen Arbeitszeit aufgezeichnet und für Kontrollzwecke mindestens 2 Jahre am Ort der Beschäftigung aufbewahrt werden!} \par \bigskip \bigskip
+	\headentry{\normalsize Nach \textbf{$\S 17$ Mindestlohngesetz (MiLoG)} müssen für geringfügig entlohnte und kurzfristig beschäftigte Arbeitnehmer/innen u.a. Beginn, Ende und Dauer der täglichen Arbeitszeit aufgezeichnet und für Kontrollzwecke mindestens 2 Jahre am Ort der Beschäftigung aufbewahrt werden!} \par \bigskip \bigskip
 	\headentry{\hspace*{\fill} geprüft: $\overline{{\parbox{5.75cm}{\normalsize Datum, Dienstvorgesetzte/r} } }$} \par \medskip
 	\rule{6cm}{0.2pt} \par \smallskip
 	\headentry{\textsuperscript{1} Summe in vollen Stunden und Minuten ohne Pause (Std:Min); bei Abwesenheit können auch folgende Kürzel eingetragen werden: U=Urlaub, K=Krankheit, F=Feiertag, S=Sonstiges}
+
+	%BACKGROUND
+	\SetBgContents{K\_IPD\_AZDoku\_01\_01-20}
+	\SetBgPosition{-2.4cm, -29.2cm}
+	\SetBgColor{black}
+	\SetBgOpacity{1.0}
+	\SetBgAngle{90.0}
+	\SetBgScale{0.8}
 \end{document}

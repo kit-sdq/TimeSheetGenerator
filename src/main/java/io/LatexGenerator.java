@@ -93,9 +93,9 @@ public class LatexGenerator implements IGenerator {
                 break;
             case GFUB:
                 if (timeSheet.getProfession().getWorkingArea() == WorkingArea.GF) {
-                    value = "GF: $\\boxtimes$ UB: $\\Box$";
+                    value = "\\textbf{GF:} $\\boxtimes$ \\textbf{UB:} $\\Box$";
                 } else {
-                    value = "GF: $\\Box$ UB: $\\boxtimes$";
+                    value = "\\textbf{GF:} $\\Box$ \\textbf{UB:} $\\boxtimes$";
                 }
                 break;
             case DEPARTMENT:
