@@ -26,7 +26,17 @@ public class TimeSheet {
      */
     public TimeSheet(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries, TimeSpan vacation,
             TimeSpan succTransfer, TimeSpan predTransfer) {
-        this.employee = employee;
+        
+        /*
+         * This check has to be done in order to guarantee that the corrected max working time
+         * (corrected => taking vacation and transfer into account) is not negative.
+         */
+        if (profession.getMaxWorkingTime().add(succTransfer).compareTo(predTransfer.add(vacation)) < 0) {
+            throw new IllegalArgumentException("Sum of predTransfer and vacation cannot be greater "
+                    + "than sum of maxWorkingTime and succTransfer.");
+        }
+        
+            this.employee = employee;
         this.profession = profession;
         this.yearMonth = yearMonth;
         this.vacation = vacation;

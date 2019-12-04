@@ -85,9 +85,18 @@ public class MiLoGChecker implements IChecker {
      * Checks whether maximum working time was exceeded.
      */
     protected void checkTotalTimeExceedance() {
+        //Legal maximum working time per month
         TimeSpan maxWorkingTime = fullDoc.getProfession().getMaxWorkingTime();
         
-        if (fullDoc.getTotalWorkTime().compareTo(maxWorkingTime) > 0) {
+        //Sum of all daily working times (without pauses!)
+        TimeSpan totalWorkingTime = fullDoc.getTotalWorkTime();
+        
+        //Vacation and transfer corrected time
+        TimeSpan correctedMaxWorkingTime = maxWorkingTime.add(fullDoc.getSuccTransfer())
+                .subtract(fullDoc.getVacation())
+                .subtract(fullDoc.getPredTransfer());
+        
+        if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
             errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
             result = CheckerReturn.INVALID;
         }

@@ -119,6 +119,250 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
     }
     
     @Test
+    public void testNoExceedanceSuccTransferUpperBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan succTransfer = new TimeSpan(4, 0);
+        int hoursToWork = 18;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
+    }
+    
+    @Test
+    public void testExceedanceSuccTransferLowerBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan succTransfer = new TimeSpan(3, 59);
+        int hoursToWork = 18;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
+    public void testNoExceedanceVacationUpperBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan vacation = new TimeSpan(1, 0);
+        int hoursToWork = 13;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
+    }
+    
+    @Test
+    public void testExceedanceCausedByVacationLowerBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan vacation = new TimeSpan(0, 1);
+        int hoursToWork = 14;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
+    public void testExceedanceCausedByVacationHours() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan vacation = new TimeSpan(2, 0);
+        int hoursToWork = 13;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
+    public void testExceedanceCausedByPredTransferHours() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan predTransfer = new TimeSpan(2, 0);
+        int hoursToWork = 13;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
+    public void testExceedanceCausedByPredTransferLowerBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan predTransfer = new TimeSpan(0, 1);
+        int hoursToWork = 14;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
+    public void testExceedancePredTransferVacationLowerBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan predTransfer = new TimeSpan(1, 30);
+        TimeSpan vacation = new TimeSpan(2, 31);
+        int hoursToWork = 10;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
+    }
+    
+    @Test
+    public void testNoExceedancePredTransferVacationUpperBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan predTransfer = new TimeSpan(1, 30);
+        TimeSpan vacation = new TimeSpan(2, 30);
+        int hoursToWork = 10;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
+    }
+    
+    @Test
+    public void testNoExceedancePredSuccTransferVacationLowerBound() {
+        //Test values
+        TimeSpan maxWorkTime = new TimeSpan(14, 0);
+        TimeSpan succTransfer = new TimeSpan(4, 0);
+        TimeSpan predTransfer = new TimeSpan(1, 30);
+        TimeSpan vacation = new TimeSpan(2, 30);
+        int hoursToWork = 14;
+        int minutesToWork = 0;
+        
+        //Checker initialization
+        Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), 
+                new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
+        Entry[] entries = {entry1};
+        Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, succTransfer, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        //Executions
+        checker.checkTotalTimeExceedance();
+        
+        //Assertions
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+        assertTrue(checker.getErrors().isEmpty());
+    }
+    
+    @Test
     public void testExceedanceRandomHoursWithoutPause() {
         //Random
         Random rand = new Random();
