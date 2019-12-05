@@ -58,7 +58,7 @@ public class LatexGenerator implements IGenerator {
          * IMPORTANT: Some kind of character is needed to make the TeX compile correctly on some TeX compilers.
          */
         for (EntryElement elem : EntryElement.values()) {
-            filledTex = filledTex.replace(elem.getPlaceholder(), "\\thinspace");
+            filledTex = filledTex.replace(elem.getPlaceholder(), "");
         }
          
         return filledTex;

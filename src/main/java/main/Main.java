@@ -5,6 +5,11 @@ import java.io.IOException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import checker.CheckerError;
+import checker.CheckerException;
+import checker.CheckerReturn;
+import checker.IChecker;
+import checker.MiLoGChecker;
 import data.TimeSheet;
 import io.FileController;
 import io.IGenerator;
@@ -37,24 +42,38 @@ public class Main {
             return;
         }
         
-        TimeSheet doc;
+        TimeSheet timeSheet;
         try {
             JSONObject globalJson = new JSONObject(global);
             JSONObject monthJson = new JSONObject(month);
             
-            doc = Parser.parseTimeSheet(globalJson, monthJson);            
+            timeSheet = Parser.parseTimeSheet(globalJson, monthJson);            
         } catch (JSONException | ParseException e) {
             System.out.println(e.getMessage());
             System.exit(-1);
             return;
         }
 
-        // TODO send doc to checker
-
+        IChecker checker = new MiLoGChecker(timeSheet);
+        CheckerReturn checkerReturn;
+        try {
+            checkerReturn = checker.check();
+        } catch (CheckerException e) {
+            System.out.println(e.getMessage());
+            System.exit(-1);
+            return;
+        }
+        if (checkerReturn == CheckerReturn.INVALID) {
+            for (CheckerError error : checker.getErrors()) {
+                System.out.println(error.getErrorMessage());
+            }
+            return;
+        }
+        
         ClassLoader classLoader = Main.class.getClassLoader();
         try {
             String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Template.tex"));
-            IGenerator generator = new LatexGenerator(doc, latexTemplate);
+            IGenerator generator = new LatexGenerator(timeSheet, latexTemplate);
             FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
         } catch (IOException e) {
             System.out.println(e.getMessage());
