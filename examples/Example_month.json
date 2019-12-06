@@ -5,7 +5,7 @@
   "pred_transfer": "0:00",
   "succ_transfer": "0:00",
   "entries": [
-    {"action": "Korrektur", "day": 01, "start": "10:00", "end": "11:00"},
-    {"action": "Fragen beantworten", "day": 3, "start": "01:31", "end": "05:11", "pause": "00:30"}
+    {"action": "Korrektur", "day": 2, "start": "10:00", "end": "11:00"},
+    {"action": "Fragen beantworten", "day": 4, "start": "11:31", "end": "15:11", "pause": "00:30"}
   ]
 }
