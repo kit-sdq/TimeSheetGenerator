@@ -1,21 +1,16 @@
 package checker;
 
 import data.Entry;
-import data.Tuple;
 import data.TimeSheet;
 import data.TimeSpan;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
 import checker.holiday.GermanState;
@@ -197,7 +192,7 @@ public class MiLoGChecker implements IChecker {
      * Checks whether the number of entries exceeds the maximum number of rows of the template document.
      */
     protected void checkRowNumExceedance() {
-        if (fullDoc.getEntries().length > MAX_ROW_NUM) {
+        if (fullDoc.getEntries().size() > MAX_ROW_NUM) {
             errors.add(new CheckerError(CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage()));
             result = CheckerReturn.INVALID;
         }
@@ -217,20 +212,14 @@ public class MiLoGChecker implements IChecker {
      * Checks whether times of different entries in the time sheet overlap.
      */
     protected void checkTimeOverlap() {
-        if (fullDoc.getEntries().length == 0) {
+        List<Entry> entries = fullDoc.getEntries();
+        if (entries.size() == 0) {
             return;
         }
         
-        List<Tuple<LocalDateTime, LocalDateTime>> times = Arrays.asList(fullDoc.getEntries()).stream().map(
-            entry -> new Tuple<LocalDateTime, LocalDateTime>(
-                entry.getDate().atTime(entry.getStart().getHour(), entry.getStart().getMinute()),
-                entry.getDate().atTime(entry.getEnd().getHour(), entry.getEnd().getMinute())
-            )
-        ).collect(Collectors.toList());
-        times.sort((a, b) -> a.getFirst().compareTo(b.getFirst()));
-        
-        for (int i = 0; i < times.size() - 1; i++) {
-            if (times.get(i).getSecond().isAfter(times.get(i + 1).getFirst())) {
+        for (int i = 0; i < entries.size() - 1; i++) {
+            if (entries.get(i).getDate().equals(entries.get(i + 1).getDate()) &&
+                    entries.get(i).getEnd().compareTo(entries.get(i + 1).getStart()) > 0) {
                 errors.add(new CheckerError(CheckerErrorMessage.TIME_OVERLAP.getErrorMessage()));
                 result = CheckerReturn.INVALID;
                 return;

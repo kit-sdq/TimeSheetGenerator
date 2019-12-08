@@ -69,7 +69,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         checker.checkRowNumExceedance();
         
         ////Assertions
-        assertTrue(numberOfEntries == fullDoc.getEntries().length);
+        assertTrue(numberOfEntries == fullDoc.getEntries().size());
         assertEquals(CheckerReturn.VALID, checker.getResult());
         assertTrue(checker.getErrors().isEmpty());
     }
@@ -98,7 +98,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         checker.checkRowNumExceedance();
         
         ////Assertions
-        assertTrue(numberOfEntries == fullDoc.getEntries().length);
+        assertTrue(numberOfEntries == fullDoc.getEntries().size());
         assertEquals(CheckerReturn.INVALID, checker.getResult());
         assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
     }
@@ -130,8 +130,8 @@ public class MiLoGCheckerRowNumExceedanceTest {
         checker.checkRowNumExceedance();
         
         ////Assertions
-        assertTrue(numberOfEntries == fullDoc.getEntries().length);
-        if (fullDoc.getEntries().length > MiLoGChecker.getMaxEntries()) {
+        assertTrue(numberOfEntries == fullDoc.getEntries().size());
+        if (fullDoc.getEntries().size() > MiLoGChecker.getMaxEntries()) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
             assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
         } else {

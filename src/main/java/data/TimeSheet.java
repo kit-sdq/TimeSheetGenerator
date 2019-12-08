@@ -2,6 +2,9 @@ package data;
 
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * A time sheet represents a whole month of work done by an {@link Employee}.
@@ -11,7 +14,7 @@ public class TimeSheet {
     private final Profession profession;
     private final YearMonth yearMonth;
     private final TimeSpan vacation, succTransfer, predTransfer;
-    private final Entry[] entries;
+    private final List<Entry> entries;
     
     /**
      * Constructs a new instance of {@code TimeSheet}.
@@ -36,13 +39,16 @@ public class TimeSheet {
                     + "than sum of maxWorkingTime and succTransfer.");
         }
         
-            this.employee = employee;
+        this.employee = employee;
         this.profession = profession;
         this.yearMonth = yearMonth;
         this.vacation = vacation;
         this.succTransfer = succTransfer;
         this.predTransfer = predTransfer;
-        this.entries = entries;
+        
+        List<Entry> entryList = Arrays.asList(entries);
+        Collections.sort(entryList);
+        this.entries = Collections.unmodifiableList(entryList);
     }
 
     /**
@@ -63,9 +69,10 @@ public class TimeSheet {
 
     /**
      * Gets all entries associated with a {@link TimeSheet}.
+     * The list of entries is sorted as specified in {@link Entry}.
      * @return The entries.
      */
-    public Entry[] getEntries() {
+    public List<Entry> getEntries() {
         return entries;
     }
     

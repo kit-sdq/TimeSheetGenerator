@@ -21,7 +21,7 @@ public class TimeSheetCommonTest {
         Employee employee = new Employee("Max Mustermann", 1234567);
         Profession profession = new Profession("IPD", WorkingArea.UB, maxWorkingTime, 10.31);
         YearMonth yearMonth = YearMonth.of(2019, 11);
-        Entry[] entries = null;
+        Entry[] entries = new Entry[0];
         TimeSheet timeSheet = new TimeSheet(employee, profession, yearMonth, entries, vacation, succTransfer, predTransfer);
         
         ////Assertions
@@ -39,7 +39,7 @@ public class TimeSheetCommonTest {
         Employee employee = new Employee("Max Mustermann", 1234567);
         Profession profession = new Profession("IPD", WorkingArea.UB, maxWorkingTime, 10.31);
         YearMonth yearMonth = YearMonth.of(2019, 11);
-        Entry[] entries = null;
+        Entry[] entries = new Entry[0];
         TimeSheet timeSheet = new TimeSheet(employee, profession, yearMonth, entries, vacation, succTransfer, predTransfer);
         
         ////Assertions
