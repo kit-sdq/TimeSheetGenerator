@@ -12,32 +12,38 @@ import org.apache.commons.io.FilenameUtils;
 public class UserInput {
 
   private CommandLine commmandLine;
+  private final String[] args;
   
   private String currentDirectory = null; //caches the last used directory for the file chooser
   
-  public UserInput(String[] args) throws ParseException {
-    DefaultParser dp = new DefaultParser();
-    this.commmandLine = dp.parse(UserInputOption.getOptions(), args, false);
-    
-    if (commmandLine.hasOption(UserInputOption.HELP.getOption().getOpt())) {
-      printHelp();
-    }
-    
-    //TODO Error Messages in Enum instead of magic numbers everywhere
-    /*
-     * Checks whether gui or file option were used.
-     * Using none of them makes it impossible to get the files.
-     */
-    if (!commmandLine.hasOption(UserInputOption.GUI.getOption().getOpt()) 
-        && !commmandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
-      throw new ParseException("Either gui or file option has to be used.");
-    } else if (commmandLine.hasOption(UserInputOption.GUI.getOption().getOpt())
-        && commmandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
-      throw new ParseException("Gui and file option cannot be used at the same time.");
-    }
+  public UserInput(String[] args) {
+    this.args = args;
   }
   
-  public static void printHelp() {
+  public Request parse() throws ParseException {
+      CommandLineParser dp = new DefaultParser();
+      this.commmandLine = dp.parse(UserInputOption.getOptions(), args, false);
+      
+      if (commmandLine.hasOption(UserInputOption.HELP.getOption().getOpt())) {
+          return Request.HELP;
+      }
+      
+      /*
+       * Checks whether gui or file option were used.
+       * Using none of them makes it impossible to get the files.
+       */
+      if (!commmandLine.hasOption(UserInputOption.GUI.getOption().getOpt()) 
+          && !commmandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
+        throw new ParseException("Either gui or file option has to be used.");
+      } else if (commmandLine.hasOption(UserInputOption.GUI.getOption().getOpt())
+          && commmandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
+        throw new ParseException("Gui and file option cannot be used at the same time.");
+      } else {
+          return Request.GENERATE;
+      }
+  }
+  
+  public void printHelp() {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("TimeSheetGenerator", UserInputOption.getOptions());
   }
@@ -116,5 +122,10 @@ public class UserInput {
     }
     
     return file;
+  }
+
+  public enum Request {
+      HELP,
+      GENERATE;
   }
 }

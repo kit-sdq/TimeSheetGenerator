@@ -14,6 +14,7 @@ import data.TimeSheet;
 import io.FileController;
 import io.IGenerator;
 import io.LatexGenerator;
+import main.UserInput.Request;
 import parser.ParseException;
 import parser.Parser;
 
@@ -23,14 +24,24 @@ public class Main {
      */
     public static void main(String[] args) {
         
-        UserInput userInput = null;
+        // Initialize and parse user input
+        UserInput userInput = new UserInput(args);
+        Request request;
         try {
-          userInput = new UserInput(args);
+          request = userInput.parse();
         } catch (org.apache.commons.cli.ParseException e) {
           System.out.println(e.getMessage());
           System.exit(-1);
+          return;
         }  
         
+        // If requested: Print help and return
+        if (request == Request.HELP) {
+            userInput.printHelp();
+            return;
+        }
+        
+        // Get content of input files 
         String global;
         String month;
         try {
@@ -42,6 +53,7 @@ public class Main {
             return;
         }
         
+        // Initialize time sheet
         TimeSheet timeSheet;
         try {
             JSONObject globalJson = new JSONObject(global);
@@ -54,6 +66,7 @@ public class Main {
             return;
         }
 
+        // Check time sheet
         IChecker checker = new MiLoGChecker(timeSheet);
         CheckerReturn checkerReturn;
         try {
@@ -70,6 +83,7 @@ public class Main {
             return;
         }
         
+        // Generates and saves output file
         ClassLoader classLoader = Main.class.getClassLoader();
         try {
             String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Template.tex"));
