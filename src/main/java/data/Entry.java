@@ -5,10 +5,10 @@ import java.time.LocalDate;
 /**
  * An entry represents a continuous work interval of an {@link Employee}.
  */
-public class Entry {
-    private String action;
-    private LocalDate date;
-    private TimeSpan start, end, pause;
+public class Entry implements Comparable<Entry> {
+    private final String action;
+    private final LocalDate date;
+    private final TimeSpan start, end, pause;
 
     /**
      * Constructs a new instance of {@link Entry}
@@ -85,5 +85,16 @@ public class Entry {
         
         return workingTime;
     }
-    
+
+    /**
+     * Compare by date and start time.
+     */
+    @Override
+    public int compareTo(Entry o) {
+        if (this.date.compareTo(o.getDate()) != 0) {
+            return this.date.compareTo(o.getDate());
+        } else {
+            return this.start.compareTo(o.getStart());
+        }
+    }
 }
