@@ -11,6 +11,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
 import checker.holiday.GermanState;
@@ -61,6 +63,8 @@ public class MiLoGChecker implements IChecker {
         checkDayTimeExceedances();
         checkDayTimeBounds();
         checkValidWorkingDays();
+        checkTimeOverlap();
+        
         checkRowNumExceedance();
         checkDepartmentName();
         
@@ -126,17 +130,17 @@ public class MiLoGChecker implements IChecker {
         }
         
         //Check for every mapTimeEntry (first for), whether all Pause Rules (second for) where met.
-        for (TimeSpan[] mapTimeEntry : workingDays.values()) {
+        for (Map.Entry<LocalDate, TimeSpan[]> mapEntry : workingDays.entrySet()) {
             for (TimeSpan[] pauseRule : PAUSE_RULES) {
                 
                 //Checks whether time of entry is greater than or equal pause rule "activation" time
                 //and pause time is less than the needed time.
-                if (mapTimeEntry[0].compareTo(pauseRule[0]) >= 0
-                        && mapTimeEntry[1].compareTo(pauseRule[1]) < 0) {
+                if (mapEntry.getValue()[0].compareTo(pauseRule[0]) >= 0
+                        && mapEntry.getValue()[1].compareTo(pauseRule[1]) < 0) {
                     
-                    errors.add(new CheckerError(CheckerErrorMessage.TIME_PAUSE.getErrorMessage()));
+                    errors.add(new CheckerError(CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), mapEntry.getKey()));
                     result = CheckerReturn.INVALID;
-                    return;
+                    break;
                 }
             }
         }
@@ -150,9 +154,8 @@ public class MiLoGChecker implements IChecker {
             if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
                     || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
                 
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage()));
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate()));
                 result = CheckerReturn.INVALID;
-                return;
             }
         }
     }
@@ -169,22 +172,39 @@ public class MiLoGChecker implements IChecker {
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_SUNDAY.getErrorMessage()));
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), localDate));
                 result = CheckerReturn.INVALID;
-                return;
+                continue;
             }
             
             //Check for each entry whether it is a holiday           
             try {
                 if (holidayChecker.isHoliday(localDate)) {
-                    errors.add(new CheckerError(CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage()));
+                    errors.add(new CheckerError(CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), localDate));
                     result = CheckerReturn.INVALID;
-                    return;
+                    continue;
                 }
             } catch (HolidayFetchException e) {
                 throw new CheckerException(e.getMessage());
             }
-            
+        }
+    }
+    
+    /**
+     * Checks whether times of different entries in the time sheet overlap.
+     */
+    protected void checkTimeOverlap() {
+        List<Entry> entries = fullDoc.getEntries();
+        if (entries.size() == 0) {
+            return;
+        }
+        
+        for (int i = 0; i < entries.size() - 1; i++) {
+            if (entries.get(i).getDate().equals(entries.get(i + 1).getDate()) &&
+                    entries.get(i).getEnd().compareTo(entries.get(i + 1).getStart()) > 0) {
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_OVERLAP.getErrorMessage(), entries.get(i).getDate()));
+                result = CheckerReturn.INVALID;
+            }
         }
     }
     
@@ -205,25 +225,6 @@ public class MiLoGChecker implements IChecker {
         if (fullDoc.getProfession().getDepartmentName().isEmpty()) {
             errors.add(new CheckerError(CheckerErrorMessage.NAME_MISSING.getErrorMessage()));
             result = CheckerReturn.INVALID;
-        }
-    }
-    
-    /**
-     * Checks whether times of different entries in the time sheet overlap.
-     */
-    protected void checkTimeOverlap() {
-        List<Entry> entries = fullDoc.getEntries();
-        if (entries.size() == 0) {
-            return;
-        }
-        
-        for (int i = 0; i < entries.size() - 1; i++) {
-            if (entries.get(i).getDate().equals(entries.get(i + 1).getDate()) &&
-                    entries.get(i).getEnd().compareTo(entries.get(i + 1).getStart()) > 0) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_OVERLAP.getErrorMessage()));
-                result = CheckerReturn.INVALID;
-                return;
-            }
         }
     }
     
@@ -270,18 +271,18 @@ public class MiLoGChecker implements IChecker {
     }
     
     /**
-     * This enum holds the possible error messages for this checker
+     * This enum holds the possible error messages (including format specifiers) for this checker
      */
     protected enum CheckerErrorMessage {
         TIME_EXCEEDANCE("Maximum legal working time exceeded."),
-        TIME_OUTOFBOUNDS("Working time is out of bounds."),
-        TIME_SUNDAY("Sunday is not a valid working day."),
-        TIME_HOLIDAY("Official holiday is not a valid working day."),
-        TIME_PAUSE("Maximum working time without pause exceeded."),
+        TIME_OUTOFBOUNDS("Working time is out of bounds on %tF."), // date
+        TIME_SUNDAY("The %tF is a sunday, which is not a valid working day."), // date
+        TIME_HOLIDAY("The %tF is an official holiday, which is not a valid working day."), // date
+        TIME_PAUSE("Maximum working time without pause exceeded on %tF."), // date
+        TIME_OVERLAP("Start/End times in the time sheet overlap on %tF."), // date
         
         ROWNUM_EXCEEDENCE("Exceeded the maximum number of rows for the document."),
-        NAME_MISSING("Name of the departement is missing."),
-        TIME_OVERLAP("Start/End times in the time sheet overlap");
+        NAME_MISSING("Name of the departement is missing.");
         
         private final String errorMsg;
         

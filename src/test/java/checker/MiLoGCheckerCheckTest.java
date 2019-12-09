@@ -56,9 +56,12 @@ public class MiLoGCheckerCheckTest {
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -75,9 +78,12 @@ public class MiLoGCheckerCheckTest {
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -94,8 +100,11 @@ public class MiLoGCheckerCheckTest {
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
 }
