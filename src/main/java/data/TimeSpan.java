@@ -5,7 +5,15 @@ package data;
  */
 public class TimeSpan implements Comparable<TimeSpan> {
     
-    //TODO Replace magic numbers with constants
+    public static final int MIN_HOUR = 0;
+    public static final int MIN_MINUTE = 0;
+    public static final int MAX_MINUTE = 59;
+    
+    // TODO these might be locale specific
+    private static final String PARSE_REGEX = "^[0-9]+:[0-5]?[0-9]$";
+    private static final String HOUR_MINUTE_SEPARATOR = ":";
+    private static final String STRING_FORMAT = "%02d:%02d";
+    
     private final int minute;
     private final int hour;
 
@@ -15,10 +23,10 @@ public class TimeSpan implements Comparable<TimeSpan> {
      * @param minute - Number of minutes between 0 and 59
      */
     public TimeSpan(int hour, int minute) {
-        if (hour < 0 || minute < 0) {
+        if (hour < MIN_HOUR || minute < MIN_MINUTE) {
             throw new IllegalArgumentException("Hour and minute may not be negative.");
-        } else if (minute > 59) {
-            throw new IllegalArgumentException("Minute may not be greater than 59.");
+        } else if (minute > MAX_MINUTE) {
+            throw new IllegalArgumentException(String.format("Minute may not be greater than %s.", MAX_MINUTE));
         }
         this.minute = minute;
         this.hour = hour;
@@ -48,11 +56,11 @@ public class TimeSpan implements Comparable<TimeSpan> {
     public TimeSpan add(TimeSpan addend) {
         int hourSum = this.hour + addend.getHour();
         int minuteSum = this.minute + addend.getMinute();
-        int carry = minuteSum / 60;
+        int carry = minuteSum / (MAX_MINUTE + 1);
         
         return new TimeSpan(
             hourSum + carry,
-            minuteSum % 60
+            minuteSum % (MAX_MINUTE + 1)
         );
     }
 
@@ -71,8 +79,8 @@ public class TimeSpan implements Comparable<TimeSpan> {
         int minuteDiff = this.minute - subtrahend.getMinute();
         
         return new TimeSpan(
-            hourDiff - ((59 - minuteDiff) / 60),
-            (60 + minuteDiff) % 60
+            hourDiff - ((MAX_MINUTE - minuteDiff) / (MAX_MINUTE + 1)),
+            ((MAX_MINUTE + 1) + minuteDiff) % (MAX_MINUTE + 1)
         );
     }
 
@@ -82,10 +90,10 @@ public class TimeSpan implements Comparable<TimeSpan> {
      * @return A {@link TimeSpan} representing the input string
      */
     public static TimeSpan parse(String s) {
-        if (!s.matches("^[0-9]+:[0-5]?[0-9]$")) {
+        if (!s.matches(PARSE_REGEX)) {
             throw new IllegalArgumentException("Invalid time string. Usage: h...h:mm");
         }
-        String[] splittedString = s.split(":");
+        String[] splittedString = s.split(HOUR_MINUTE_SEPARATOR);
         
         int hours;
         int minutes;
@@ -101,7 +109,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
     
     @Override
     public String toString() {
-        return String.format("%02d:%02d", hour, minute);
+        return String.format(STRING_FORMAT, hour, minute);
     }
 
     @Override
