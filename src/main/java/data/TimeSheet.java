@@ -19,13 +19,13 @@ public class TimeSheet {
     /**
      * Constructs a new instance of {@code TimeSheet}.
      *
-     * @param employee - The {@link Employee employee} this documentation is associated with.
+     * @param employee - The {@link Employee employee} this time sheet is associated with.
      * @param profession - The {@link Profession profession} of the {@link Employee employee}.
-     * @param yearMonth - The year and month this documentation is associated with.
-     * @param entries - The {@link Entry entries} this documentation should consist of.
+     * @param yearMonth - The year and month this time sheet is associated with.
+     * @param entries - The {@link Entry entries} this time sheet should consist of.
      * @param vacation - The vacation time that should get taken into account.
-     * @param succTransfer - The time that should be carried over to the next documentation.
-     * @param predTransfer - The time that got carried over from the last documentation.
+     * @param succTransfer - The time that should be carried over to the next time sheet.
+     * @param predTransfer - The time that got carried over from the last time sheet.
      */
     public TimeSheet(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries, TimeSpan vacation,
             TimeSpan succTransfer, TimeSpan predTransfer) {

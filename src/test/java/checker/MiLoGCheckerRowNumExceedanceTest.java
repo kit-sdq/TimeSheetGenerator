@@ -22,7 +22,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
     private static final int RANDOM_ENTRY_BOUND = 50;
     private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntries();
     
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
@@ -34,8 +34,8 @@ public class MiLoGCheckerRowNumExceedanceTest {
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22),
                 new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkRowNumExceedance();
@@ -62,14 +62,14 @@ public class MiLoGCheckerRowNumExceedanceTest {
         }
         
         ////Checker initialization
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkRowNumExceedance();
         
         ////Assertions
-        assertTrue(numberOfEntries == fullDoc.getEntries().size());
+        assertTrue(numberOfEntries == timeSheet.getEntries().size());
         assertEquals(CheckerReturn.VALID, checker.getResult());
         assertTrue(checker.getErrors().isEmpty());
     }
@@ -91,14 +91,14 @@ public class MiLoGCheckerRowNumExceedanceTest {
         }
         
         ////Checker initialization
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkRowNumExceedance();
         
         ////Assertions
-        assertTrue(numberOfEntries == fullDoc.getEntries().size());
+        assertTrue(numberOfEntries == timeSheet.getEntries().size());
         assertEquals(CheckerReturn.INVALID, checker.getResult());
         assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
     }
@@ -123,15 +123,15 @@ public class MiLoGCheckerRowNumExceedanceTest {
         }
         
         ////Checker initialization
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkRowNumExceedance();
         
         ////Assertions
-        assertTrue(numberOfEntries == fullDoc.getEntries().size());
-        if (fullDoc.getEntries().size() > MiLoGChecker.getMaxEntries()) {
+        assertTrue(numberOfEntries == timeSheet.getEntries().size());
+        if (timeSheet.getEntries().size() > MiLoGChecker.getMaxEntries()) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
             assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
         } else {
