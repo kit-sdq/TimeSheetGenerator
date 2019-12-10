@@ -2,7 +2,9 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 
@@ -27,6 +29,9 @@ public class UserInput {
       if (commandLine.hasOption(UserInputOption.HELP.getOption().getOpt())) {
           return Request.HELP;
       }
+      if (commandLine.hasOption(UserInputOption.VERSION.getOption().getOpt())) {
+          return Request.VERSION;
+      }
       
       /*
        * Checks whether gui or file option were used.
@@ -43,6 +48,28 @@ public class UserInput {
   public void printHelp() {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("TimeSheetGenerator", UserInputOption.getOptions());
+  }
+  
+  public void printVersion() {
+    String version = null;
+    try {
+        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("project.properties");
+        
+        if (inputStream != null) {
+            Properties properties = new Properties();
+            properties.load(inputStream);
+            
+            version = properties.getProperty("version");
+        }
+    } catch (IOException e) {
+        version = null;
+    }
+    
+    if (version == null) {
+        System.out.println("Version not found");
+    } else {
+        System.out.println("Version: " + version);
+    }
   }
   
   public File getFile(UserInputFile userInputFile) throws IOException {
@@ -123,6 +150,7 @@ public class UserInput {
 
   public enum Request {
       HELP,
+      VERSION,
       GENERATE;
   }
 }

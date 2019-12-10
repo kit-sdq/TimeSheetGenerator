@@ -45,6 +45,12 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+        	<resource>
+        		<directory>src/main/resources/maven</directory>
+        		<filtering>true</filtering>
+        	</resource>
+        </resources>
     </build>
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.json/json -->
