@@ -6,13 +6,10 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.Collection;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import io.FileController;
 import parser.IHolidayParser;
-import parser.JsonHolidayParser;
 import parser.ParseException;
+import parser.json.JsonHolidayParser;
 
 /**
  * A GermanyHolidayChecker is a holiday checker implementing {@link IHolidayChecker} that
@@ -68,11 +65,10 @@ public class GermanyHolidayChecker implements IHolidayChecker {
         
         try {
             String stringHolidays = FileController.readURLToString(new URL(filledAddress));
-            JSONObject jsonHolidays = new JSONObject(stringHolidays);
-            IHolidayParser holidayParser = new JsonHolidayParser(jsonHolidays);
+            IHolidayParser holidayParser = new JsonHolidayParser(stringHolidays);
             
             holidays = holidayParser.getHolidays();
-        } catch (IOException | JSONException | ParseException e) {
+        } catch (IOException | ParseException e) {
             throw new HolidayFetchException(e.getMessage());
         }
         
