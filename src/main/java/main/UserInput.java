@@ -51,25 +51,46 @@ public class UserInput {
   }
   
   public void printVersion() {
-    String version = null;
-    try {
-        InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("project.properties");
-        
-        if (inputStream != null) {
-            Properties properties = new Properties();
-            properties.load(inputStream);
-            
-            version = properties.getProperty("version");
-        }
-    } catch (IOException e) {
-        version = null;
-    }
-    
-    if (version == null) {
-        System.out.println("Version not found");
-    } else {
-        System.out.println("Version: " + version);
-    }
+      String version = null;
+      String buildTime = null;
+      String branch = null;
+      String commit = null;
+      
+      try {
+          InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("project.properties");
+          
+          if (inputStream != null) {
+              Properties properties = new Properties();
+              properties.load(inputStream);
+              
+              String[] buildProperties = properties.getProperty("buildInfo").split(";");
+              if (buildProperties.length >= 4) {
+                  version = buildProperties[0];
+                  buildTime = buildProperties[1];
+                  
+                  branch = buildProperties[2];
+                  if (branch.startsWith("$")) {
+                      branch = null;
+                  }
+                  commit = buildProperties[3];
+                  if (commit.startsWith("$")) {
+                      commit = null;
+                  }
+              }
+          }
+      } catch (IOException e) {}
+      
+      if (version == null) { // general error
+          System.out.println("Version not found");
+      } else {
+          System.out.println("Version: " + version);
+          
+          // false when buildnumber-maven-plugin not executed (possible when run from ide)
+          if (buildTime != null && branch != null && commit != null) {
+              System.out.println();
+              System.out.println("Built from " + branch + " (" + commit + ") at " + buildTime);
+          }
+      }
   }
   
   public File getFile(UserInputFile userInputFile) throws IOException {

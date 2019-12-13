@@ -9,7 +9,13 @@
     <version>v0.1.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <versionName>${project.version};${maven.build.timestamp};${scmBranch};${buildNumber}</versionName>
     </properties>
+    <scm>
+    	<connection>scm:git:url</connection>
+    	<developerConnection>scm:git:url</developerConnection>
+    	<tag>HEAD</tag>
+    </scm>
     <build>
         <plugins>
             <plugin>
@@ -44,12 +50,30 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                   <groupId>org.codehaus.mojo</groupId>
+                   <artifactId>buildnumber-maven-plugin</artifactId>
+                   <version>1.4</version>
+                   <executions>
+                       <execution>
+                           <goals>
+                               <goal>create</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+                   <configuration>
+                       <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                       <doCheck>false</doCheck> <!-- Don't fail on modified local resources -->
+                       <doUpdate>false</doUpdate> <!-- Use local SCM information -->
+                       <shortRevisionLength>7</shortRevisionLength>
+                   </configuration>
+            </plugin>
         </plugins>
         <resources>
-        	<resource>
-        		<directory>src/main/resources/maven</directory>
-        		<filtering>true</filtering>
-        	</resource>
+            <resource>
+                <directory>src/main/resources/maven</directory>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
     <dependencies>
