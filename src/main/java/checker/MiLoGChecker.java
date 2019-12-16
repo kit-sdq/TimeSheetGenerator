@@ -60,7 +60,7 @@ public class MiLoGChecker implements IChecker {
         errors.clear();
         
         checkTotalTimeExceedance();
-        checkDayTimeExceedances();
+        checkDayPauseTime();
         checkDayTimeBounds();
         checkValidWorkingDays();
         checkTimeOverlap();
@@ -104,7 +104,7 @@ public class MiLoGChecker implements IChecker {
     /**
      * Checks whether the working time per day meets all legal pause rules.
      */
-    protected void checkDayTimeExceedances() {    
+    protected void checkDayPauseTime() {    
         //This map contains all dates associated with their working times
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
