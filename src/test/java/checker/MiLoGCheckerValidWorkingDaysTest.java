@@ -88,9 +88,12 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Executions
         checker.checkValidWorkingDays();
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -111,9 +114,12 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Executions
         checker.checkValidWorkingDays();
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -138,9 +144,12 @@ public class MiLoGCheckerValidWorkingDaysTest {
          * We assert Sunday instead of Holiday here because the possibility for a Sunday is much higher then for a holiday
          * and therefore this check is done beforehand.
          */
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -172,17 +181,55 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Executions
         checker.checkValidWorkingDays();
         
+        ////Expectation (on error)
+        String errorSunday = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String errorHoliday = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        
         ////Assertions
         if (randDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(errorSunday)));
         } else if (holidayChecker.isHoliday(randDate)) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(errorHoliday)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
         }
+    }
+    
+    @Test
+    public void testMultipleInvalidWorkingDays() throws CheckerException {
+        ////Test values
+        TimeSpan start0 = new TimeSpan(0, 0);
+        TimeSpan end0 = new TimeSpan(0, 0);
+        TimeSpan pause0 = new TimeSpan(0, 0);
+        YearMonth yearMonth0 = YearMonth.of(2020, Month.JANUARY);
+        LocalDate date0 = LocalDate.of(yearMonth0.getYear(), yearMonth0.getMonthValue(), 1);
+        Entry entry0 = new Entry("Test", date0, start0, end0, pause0);
         
+        TimeSpan start1 = new TimeSpan(0, 0);
+        TimeSpan end1 = new TimeSpan(0, 0);
+        TimeSpan pause1 = new TimeSpan(0, 0);
+        YearMonth yearMonth1 = YearMonth.of(2020, Month.JANUARY);
+        LocalDate date1 = LocalDate.of(yearMonth1.getYear(), yearMonth1.getMonthValue(), 6);
+        Entry entry1 = new Entry("Test", date1, start1, end1, pause1);
+        
+        ////Checker initialization
+        Entry[] entries = {entry0, entry1};
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth0, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        
+        ////Executions
+        checker.checkValidWorkingDays();
+        
+        ////Expectation
+        String error0 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date0);
+        String error1 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date1);
+        
+        ////Assertions
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error0)));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error1)));
     }
 }
