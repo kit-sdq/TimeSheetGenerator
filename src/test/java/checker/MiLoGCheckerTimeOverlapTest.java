@@ -17,7 +17,7 @@ import data.WorkingArea;
 
 public class MiLoGCheckerTimeOverlapTest {
 
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
@@ -27,10 +27,10 @@ public class MiLoGCheckerTimeOverlapTest {
     public void testEmptyEntries() {
         ////Test values
         Entry[] entries = {};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -50,10 +50,10 @@ public class MiLoGCheckerTimeOverlapTest {
         
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -85,10 +85,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -120,10 +120,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry1, entry2, entry0};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -155,10 +155,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -190,10 +190,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -228,10 +228,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry1, entry2, entry0};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -266,10 +266,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();
@@ -304,10 +304,10 @@ public class MiLoGCheckerTimeOverlapTest {
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         
         ////Checker initialization
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkTimeOverlap();

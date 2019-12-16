@@ -31,13 +31,18 @@ public class Main {
           request = userInput.parse();
         } catch (org.apache.commons.cli.ParseException e) {
           System.out.println(e.getMessage());
-          System.exit(-1);
+          System.exit(1);
           return;
         }  
         
         // If requested: Print help and return
         if (request == Request.HELP) {
             userInput.printHelp();
+            return;
+        }
+        // If requested: Print version
+        if (request == Request.VERSION) {
+            userInput.printVersion();
             return;
         }
         
@@ -49,7 +54,7 @@ public class Main {
             month = FileController.readFileToString(userInput.getFile(UserInputFile.JSON_MONTH));
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(-1);
+            System.exit(1);
             return;
         }
         
@@ -62,7 +67,7 @@ public class Main {
             timeSheet = Parser.parseTimeSheet(globalJson, monthJson);            
         } catch (JSONException | ParseException e) {
             System.out.println(e.getMessage());
-            System.exit(-1);
+            System.exit(1);
             return;
         }
 
@@ -73,7 +78,7 @@ public class Main {
             checkerReturn = checker.check();
         } catch (CheckerException e) {
             System.out.println(e.getMessage());
-            System.exit(-1);
+            System.exit(1);
             return;
         }
         if (checkerReturn == CheckerReturn.INVALID) {
@@ -91,7 +96,7 @@ public class Main {
             FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(-1);
+            System.exit(1);
         }
         
     }

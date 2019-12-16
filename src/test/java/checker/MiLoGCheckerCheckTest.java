@@ -17,14 +17,14 @@ import data.WorkingArea;
 
 public class MiLoGCheckerCheckTest {
 
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
     @Test
-    public void testSingleEntryValidDocumentation() throws CheckerException {
+    public void testSingleEntryValidTimeSheet() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
         TimeSpan end = new TimeSpan(12, 0);
@@ -34,8 +34,8 @@ public class MiLoGCheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
         assertEquals(CheckerReturn.VALID, checker.check());
@@ -53,8 +53,8 @@ public class MiLoGCheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
         String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
@@ -75,8 +75,8 @@ public class MiLoGCheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
         String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
@@ -97,8 +97,8 @@ public class MiLoGCheckerCheckTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
         String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);

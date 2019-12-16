@@ -23,7 +23,7 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
     //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
     private static final int RANDOM_MINUTES_BOUND = 60;
     
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
@@ -39,8 +39,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
@@ -61,8 +61,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, 0), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
@@ -84,8 +84,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -107,8 +107,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -131,8 +131,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -155,8 +155,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, succTransfer, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -179,8 +179,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -203,8 +203,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -227,8 +227,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -251,8 +251,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, predTransfer);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -275,8 +275,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, predTransfer);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -300,8 +300,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, predTransfer);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -325,8 +325,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, predTransfer);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, zeroTs, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -351,8 +351,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
                 new TimeSpan(0, 0), new TimeSpan(hoursToWork, minutesToWork), new TimeSpan(0, 0));
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, succTransfer, predTransfer);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, vacation, succTransfer, predTransfer);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Executions
         checker.checkTotalTimeExceedance();
@@ -378,8 +378,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
@@ -410,8 +410,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
@@ -442,8 +442,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         Entry entry1 = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry1};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
@@ -475,8 +475,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         Entry entry = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
@@ -516,14 +516,14 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         
         ////Checker initialization
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, maxWorkTime, 10.31);
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         //Execution
         checker.checkTotalTimeExceedance();
         
         ////Assertions
-        if (fullDoc.getTotalWorkTime().compareTo(maxWorkTime) > 0) {
+        if (timeSheet.getTotalWorkTime().compareTo(maxWorkTime) > 0) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
             assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage())));
         } else {

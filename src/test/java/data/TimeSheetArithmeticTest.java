@@ -8,7 +8,7 @@ import java.time.YearMonth;
 
 import org.junit.Test;
 
-public class FullDocumentationArithmeticTest {
+public class TimeSheetArithmeticTest {
 
     @Test
     public void testGetTotalWorkTime() {
@@ -22,9 +22,9 @@ public class FullDocumentationArithmeticTest {
         entries[3] = new Entry("Test4", LocalDate.now(), new TimeSpan(15, 0), new TimeSpan(16, 30), new TimeSpan(0, 0));
         entries[4] = new Entry("Test5", LocalDate.now(), new TimeSpan(20, 0), new TimeSpan(20, 30), new TimeSpan(0, 0));
         entries[5] = new Entry("Test6", LocalDate.now(), new TimeSpan(9, 30), new TimeSpan(18, 30), new TimeSpan(1, 0));
-        TimeSheet fullDoc = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, zeroTs, zeroTs, zeroTs);
         
-        assertEquals(fullDoc.getTotalWorkTime().toString(), "21:30");
+        assertEquals(timeSheet.getTotalWorkTime().toString(), "21:30");
     }
 
     //TODO Create random tests
