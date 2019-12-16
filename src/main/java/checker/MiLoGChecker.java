@@ -26,6 +26,7 @@ public class MiLoGChecker implements IChecker {
     //TODO Are those static constant values better than attributes?
     private static final TimeSpan WORKDAY_LOWER_BOUND = new TimeSpan(6, 0);
     private static final TimeSpan WORKDAY_UPPER_BOUND = new TimeSpan(22, 0);
+    private static final TimeSpan WORKDAY_MAX_WORKING_TIME = new TimeSpan(10, 0);
     
     //TODO Replace with enum
     private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
@@ -60,6 +61,7 @@ public class MiLoGChecker implements IChecker {
         errors.clear();
         
         checkTotalTimeExceedance();
+        checkDayTimeExceedance();
         checkDayPauseTime();
         checkDayTimeBounds();
         checkValidWorkingDays();
@@ -81,7 +83,7 @@ public class MiLoGChecker implements IChecker {
     }
 
     /**
-     * Checks whether maximum working time was exceeded.
+     * Checks whether total maximum working time was exceeded.
      */
     protected void checkTotalTimeExceedance() {
         //Legal maximum working time per month
@@ -98,6 +100,18 @@ public class MiLoGChecker implements IChecker {
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
             errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
             result = CheckerReturn.INVALID;
+        }
+    }
+    
+    /**
+     * Checks whether daily maximum working time was exceeded.
+     */
+    protected void checkDayTimeExceedance() {
+        for (Entry entry : timeSheet.getEntries()) {
+            if (entry.getWorkingTime().compareTo(WORKDAY_MAX_WORKING_TIME) > 0) {
+                errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
+                result = CheckerReturn.INVALID;
+            }
         }
     }
     
