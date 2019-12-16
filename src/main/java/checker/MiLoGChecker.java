@@ -98,7 +98,7 @@ public class MiLoGChecker implements IChecker {
                 .subtract(timeSheet.getPredTransfer());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
-            errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
+            errors.add(new CheckerError(CheckerErrorMessage.TOTAL_TIME_EXCEEDANCE.getErrorMessage()));
             result = CheckerReturn.INVALID;
         }
     }
@@ -109,7 +109,8 @@ public class MiLoGChecker implements IChecker {
     protected void checkDayTimeExceedance() {
         for (Entry entry : timeSheet.getEntries()) {
             if (entry.getWorkingTime().compareTo(WORKDAY_MAX_WORKING_TIME) > 0) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
+                errors.add(new CheckerError(CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(),
+                        WORKDAY_MAX_WORKING_TIME, entry.getDate()));
                 result = CheckerReturn.INVALID;
             }
         }
@@ -287,7 +288,8 @@ public class MiLoGChecker implements IChecker {
      * This enum holds the possible error messages (including format specifiers) for this checker
      */
     protected enum CheckerErrorMessage {
-        TIME_EXCEEDANCE("Maximum legal working time exceeded."),
+        TOTAL_TIME_EXCEEDANCE("Maximum legal working time exceeded."),
+        DAY_TIME_EXCEEDANCE("Maximum daily working time of %s exceeded on %tF"), // string and date
         TIME_OUTOFBOUNDS("Working time is out of bounds on %tF."), // date
         TIME_SUNDAY("The %tF is a sunday, which is not a valid working day."), // date
         TIME_HOLIDAY("The %tF is an official holiday, which is not a valid working day."), // date
