@@ -194,7 +194,7 @@ public class MiLoGChecker implements IChecker {
      * Checks whether times of different entries in the time sheet overlap.
      */
     protected void checkTimeOverlap() {
-        List<Entry> entries = fullDoc.getEntries();
+        List<Entry> entries = timeSheet.getEntries();
         if (entries.size() == 0) {
             return;
         }
