@@ -83,9 +83,6 @@ public class GermanyHolidayChecker implements IHolidayChecker {
      * @return {@code True} if the holidays are already fetched, {@code False} otherwise.
      */
     private boolean hasHolidays() {
-        if (holidays == null || holidays.isEmpty()) {
-            return false;
-        }
-        return true;
+        return holidays != null && !holidays.isEmpty();
     }
 }

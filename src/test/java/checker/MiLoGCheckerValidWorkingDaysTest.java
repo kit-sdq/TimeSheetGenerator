@@ -30,7 +30,7 @@ import data.WorkingArea;
  */
 public class MiLoGCheckerValidWorkingDaysTest {
 
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
@@ -59,8 +59,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
         checker.checkValidWorkingDays();
@@ -82,8 +82,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
         checker.checkValidWorkingDays();
@@ -105,8 +105,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
         checker.checkValidWorkingDays();
@@ -128,8 +128,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
         checker.checkValidWorkingDays();
@@ -162,8 +162,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         ////Checker initialization
         Entry entry = new Entry("Test", date, start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
         LocalDate randDate = LocalDate.of(randYear, randMonth, randDay);

@@ -25,7 +25,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     private static final int RANDOM_HOUR_BOUND = 24;
     private static final int RANDOM_MINUTES_BOUND = 60;
     
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
@@ -41,8 +41,8 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeExceedances();
@@ -61,8 +61,8 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeExceedances();
@@ -81,8 +81,8 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         checker.checkDayTimeExceedances();
         
@@ -104,8 +104,8 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
@@ -135,8 +135,8 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
         TimeSpan startToEnd = end.subtract(start);
