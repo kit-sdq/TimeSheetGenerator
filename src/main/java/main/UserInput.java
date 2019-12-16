@@ -2,7 +2,9 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.Properties;
 
 import javax.swing.JFileChooser;
 
@@ -27,6 +29,9 @@ public class UserInput {
       if (commandLine.hasOption(UserInputOption.HELP.getOption().getOpt())) {
           return Request.HELP;
       }
+      if (commandLine.hasOption(UserInputOption.VERSION.getOption().getOpt())) {
+          return Request.VERSION;
+      }
       
       /*
        * Checks whether gui or file option were used.
@@ -43,6 +48,49 @@ public class UserInput {
   public void printHelp() {
     HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp("TimeSheetGenerator", UserInputOption.getOptions());
+  }
+  
+  public void printVersion() {
+      String version = null;
+      String buildTime = null;
+      String branch = null;
+      String commit = null;
+      
+      try {
+          InputStream inputStream = Main.class.getClassLoader().getResourceAsStream("project.properties");
+          
+          if (inputStream != null) {
+              Properties properties = new Properties();
+              properties.load(inputStream);
+              
+              String[] buildProperties = properties.getProperty("buildInfo").split(";");
+              if (buildProperties.length >= 4) {
+                  version = buildProperties[0];
+                  buildTime = buildProperties[1];
+                  
+                  branch = buildProperties[2];
+                  if (branch.startsWith("$")) {
+                      branch = null;
+                  }
+                  commit = buildProperties[3];
+                  if (commit.startsWith("$")) {
+                      commit = null;
+                  }
+              }
+          }
+      } catch (IOException e) {}
+      
+      if (version == null) { // general error
+          System.out.println("Version not found");
+      } else {
+          System.out.println("Version: " + version);
+          
+          // false when buildnumber-maven-plugin not executed (possible when run from ide)
+          if (buildTime != null && branch != null && commit != null) {
+              System.out.println();
+              System.out.println("Built from " + branch + " (" + commit + ") at " + buildTime);
+          }
+      }
   }
   
   public File getFile(UserInputFile userInputFile) throws IOException {
@@ -123,6 +171,7 @@ public class UserInput {
 
   public enum Request {
       HELP,
+      VERSION,
       GENERATE;
   }
 }

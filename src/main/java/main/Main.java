@@ -40,6 +40,11 @@ public class Main {
             userInput.printHelp();
             return;
         }
+        // If requested: Print version
+        if (request == Request.VERSION) {
+            userInput.printVersion();
+            return;
+        }
         
         // Get content of input files 
         String global;
