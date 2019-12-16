@@ -1,5 +1,5 @@
 {
-  "$schema": "https://github.com/kit-sdq/TimeSheetGenerator/tree/master/examples/schemas/month.json",
+  "$schema": "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/master/examples/schemas/month.json",
   "year": 2019,
   "month": 11,
   "vacation": "3:00",

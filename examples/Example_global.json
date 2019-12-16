@@ -1,5 +1,5 @@
 {
-	"$schema": "https://github.com/kit-sdq/TimeSheetGenerator/tree/master/examples/schemas/global.json",
+	"$schema": "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/master/examples/schemas/global.json",
 	"name": "Max Mustermann",
 	"staffId": 1234567,
 	"department": "Fakultät für Informatik",
