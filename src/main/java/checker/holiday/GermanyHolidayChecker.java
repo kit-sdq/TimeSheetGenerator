@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.Collection;
 
+import javax.net.ssl.SSLHandshakeException;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +25,8 @@ public class GermanyHolidayChecker implements IHolidayChecker {
     private final Year year;
     private final GermanState state;
     private Collection<Holiday> holidays;
-    private static final String HOLIDAY_FETCH_ADDRESS = "https://feiertage-api.de/api/?jahr=$year$&nur_land=$state$";
+    private static final String HOLIDAY_FETCH_ADDRESS_HTTPS = "https://feiertage-api.de/api/?jahr=$year$&nur_land=$state$";
+    private static final String HOLIDAY_FETCH_ADDRESS_HTTP = "http://feiertage-api.de/api/?jahr=$year$&nur_land=$state$";
     
     /**
      * Constructs a new {@link GermanyHolidayChecker} instance.
@@ -62,20 +65,49 @@ public class GermanyHolidayChecker implements IHolidayChecker {
      * @throws HolidayFetchException if an error occurs fetching the holidays.
      */
     private void fetchHolidays() throws HolidayFetchException {
-        String filledAddress = HOLIDAY_FETCH_ADDRESS
-                .replace("$year$", Integer.toString(year.getValue()))
-                .replace("$state$", state.name());
-        
+        String stringHolidays;
         try {
-            String stringHolidays = FileController.readURLToString(new URL(filledAddress));
-            JSONObject jsonHolidays = new JSONObject(stringHolidays);
-            IHolidayParser holidayParser = new JsonHolidayParser(jsonHolidays);
-            
-            holidays = holidayParser.getHolidays();
-        } catch (IOException | JSONException | ParseException e) {
+            stringHolidays = fetchHolidaysJSONString();
+        } catch (IOException e) {
             throw new HolidayFetchException(e.getMessage());
         }
         
+        try {
+            JSONObject jsonHolidays = new JSONObject(stringHolidays);
+            IHolidayParser holidayParser = new JsonHolidayParser(jsonHolidays);
+            holidays = holidayParser.getHolidays();
+        } catch (JSONException | ParseException e) {
+            throw new HolidayFetchException(e.getMessage());
+        }
+        
+    }
+    
+    /**
+     * Reads holidays formatted as JSON string and retries with fallback http address if https is not available.
+     * @return Holidays formatted as JSON string
+     * @throws IOException if an I/O error occurs.
+     */
+    private String fetchHolidaysJSONString() throws IOException {
+        try {
+            return readHolidayJSONStringFromAddress(HOLIDAY_FETCH_ADDRESS_HTTPS);
+        } catch (SSLHandshakeException e) {
+            return readHolidayJSONStringFromAddress(HOLIDAY_FETCH_ADDRESS_HTTP);
+        }
+    }
+    
+    /**
+     * Reads holidays formatted as JSON string from address given.
+     * @param address - to fetch holidays from
+     * @return Holidays formatted as JSON string
+     * @throws SSLHandshakeException if an SSL handshake error occurs.
+     * @throws IOException if an I/O error occurs.
+     */
+    private String readHolidayJSONStringFromAddress(String address) throws SSLHandshakeException, IOException {
+        String filledAddress = address
+                .replace("$year$", Integer.toString(year.getValue()))
+                .replace("$state$", state.name());
+        
+        return FileController.readURLToString(new URL(filledAddress));
     }
     
     /**
