@@ -44,5 +44,21 @@ public class Holiday {
     public boolean equalsDate(LocalDate otherDate) {
         return date.equals(otherDate);
     }
-    
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Holiday)) {
+            return false;
+        }
+
+        Holiday otherHoliday = (Holiday)other;
+        if (!this.date.equals(otherHoliday.date)) {
+            return false;
+        } else if (!this.description.equals(otherHoliday.description)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
