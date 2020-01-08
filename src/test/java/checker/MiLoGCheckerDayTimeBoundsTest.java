@@ -26,7 +26,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
     private static final int RANDOM_HOUR_BOUND = 24;
     private static final int RANDOM_MINUTES_BOUND = 60;
     
-    ////Placeholder for documentation construction
+    ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
@@ -51,8 +51,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeBounds();
@@ -78,15 +78,18 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeBounds();
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate());
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -102,8 +105,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeBounds();
@@ -129,15 +132,18 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeBounds();
         
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate());
+        
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -150,8 +156,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeBounds();
@@ -174,16 +180,19 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
-        MiLoGChecker checker = new MiLoGChecker(fullDoc);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
         checker.checkDayTimeBounds();
         
+        ////Expectation (on error)
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate());
+        
         ////Assertions
         if (start.compareTo(CHECKER_WORKDAY_LOWER_BOUND) < 0) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
@@ -203,19 +212,52 @@ public class MiLoGCheckerDayTimeBoundsTest {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
         Entry[] entries = {entry};
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
+        
+        ////Execution
+        checker.checkDayTimeBounds();
+        
+        ////Expectation (on error)
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate());
+        
+        ////Assertions
+        if (start.compareTo(CHECKER_WORKDAY_LOWER_BOUND) < 0 || end.compareTo(CHECKER_WORKDAY_UPPER_BOUND) > 0) {
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
+        } else {
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+            assertTrue(checker.getErrors().isEmpty());
+        }
+    }
+    
+    @Test
+    public void testOutOfBoundsMultiple() {
+        ////Test values
+        TimeSpan start0 = CHECKER_WORKDAY_LOWER_BOUND.subtract(new TimeSpan(0, 1));
+        TimeSpan end0 = CHECKER_WORKDAY_UPPER_BOUND.subtract(new TimeSpan(1, 0));
+        TimeSpan pause0 = new TimeSpan(0, 0);
+        Entry entry0 = new Entry("Test", LocalDate.of(2019, 11, 20), start0, end0, pause0);
+        
+        TimeSpan start1 = CHECKER_WORKDAY_LOWER_BOUND.add(new TimeSpan(1, 0));
+        TimeSpan end1 = CHECKER_WORKDAY_UPPER_BOUND.add(new TimeSpan(0, 1));
+        TimeSpan pause1 = new TimeSpan(0, 0);
+        Entry entry1 = new Entry("Test", LocalDate.of(2019, 11, 22), start1, end1, pause1);
+        
+        Entry[] entries = {entry0, entry1};
         TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Execution
         checker.checkDayTimeBounds();
         
+        ////Expectation (on error)
+        String error0 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry0.getDate());
+        String error1 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry1.getDate());
+        
         ////Assertions
-        if (start.compareTo(CHECKER_WORKDAY_LOWER_BOUND) < 0 || end.compareTo(CHECKER_WORKDAY_UPPER_BOUND) > 0) {
-            assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage())));
-        } else {
-            assertEquals(CheckerReturn.VALID, checker.getResult());
-            assertTrue(checker.getErrors().isEmpty());
-        }
+        assertEquals(CheckerReturn.INVALID, checker.getResult());
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error0)));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error1)));
     }
 }

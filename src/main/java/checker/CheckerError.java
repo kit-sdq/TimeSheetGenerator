@@ -15,9 +15,10 @@ public class CheckerError {
     /**
      * Constructs a new {@link CheckerError} instance.
      * @param errorMsg - associated with the occurred error.
+     * @param args - Arguments referenced by the format specifiers in the errorMsg format string. 
      */
-    public CheckerError(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public CheckerError(String errorMsg, Object... args) {
+        this.errorMsg = String.format(errorMsg, args);
     }
     
     /**

@@ -10,6 +10,11 @@ public enum UserInputOption {
       .desc("Prints helping information")
       .hasArg(false)
       .build()),
+  VERSION(Option.builder("v")
+      .longOpt("version")
+      .desc("Prints the version")
+      .hasArg(false)
+      .build()),
   GUI(Option.builder("g")
       .longOpt("gui")
       .desc("Enables load/save dialogs")

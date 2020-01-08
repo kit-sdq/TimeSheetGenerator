@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"definitions": {
+		"time_span": {
+			"type": "string",
+			"pattern": "^[0-9]+:[0-5]?[0-9]$"
+		}
+	},
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"staffId": {
+			"type": "integer"
+		},
+		"department": {
+			"type": "string"
+		},
+		"workingTime": {
+			"$ref": "#/definitions/time_span"
+		},
+		"wage": {
+			"type": "number",
+			"minimum": 0.0
+		},
+		"workingArea": {
+			"type": "string",
+			"enum": ["ub", "gf"]
+		}
+	},
+	"patternProperties": {
+		"^\\$.*$": {}
+	},
+	"required": ["name", "staffId", "department", "workingTime", "wage", "workingArea"],
+	"additionalProperties": false
+}
