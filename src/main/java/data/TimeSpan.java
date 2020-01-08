@@ -122,4 +122,21 @@ public class TimeSpan implements Comparable<TimeSpan> {
             return -1;
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof TimeSpan)) {
+            return false;
+        }
+
+        TimeSpan otherTimeSpan = (TimeSpan)other;
+        if (this.hour != otherTimeSpan.hour) {
+            return false;
+        } else if (this.minute != otherTimeSpan.minute) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

@@ -56,4 +56,24 @@ public class Profession {
         return wage;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Profession)) {
+            return false;
+        }
+
+        Profession otherProfession = (Profession)other;
+        if (!this.departmentName.equals(otherProfession.departmentName)) {
+            return false;
+        } else if (!this.workingArea.equals(otherProfession.workingArea)) {
+            return false;
+        } else if (!this.maxWorkingTime.equals(otherProfession.maxWorkingTime)) {
+            return false;
+        } else if (this.wage != otherProfession.wage) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }
