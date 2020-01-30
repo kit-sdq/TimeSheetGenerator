@@ -36,7 +36,7 @@ public class UserInput {
     /**
      * Parse the command line arguments
      * @return The user request read from the command line arguments
-     * @throws ParseException Thrown in caes the command line arguments are invalid
+     * @throws ParseException Thrown in case the command line arguments are invalid
      */
     public Request parse() throws ParseException {
         CommandLineParser dp = new DefaultParser();
@@ -144,7 +144,7 @@ public class UserInput {
             case OUTPUT:
                 file = new File(fileArgs[2]);
                 break;
-            default: // never userd
+            default: // never used
                 break;
             }
         } else { // file is chosen in a GUI
