@@ -21,6 +21,8 @@ public class LatexGenerator implements IGenerator {
     private final static String FILE_EXTENSION = "tex";
     private final static String FILE_DESCRIPTION = "TeX-File";
     
+    private final static String SHORTHAND_VACATION = "U";
+    
     /**
      * List of characters that can be escaped by using a backslash (\) as a prefix
      */
@@ -127,10 +129,10 @@ public class LatexGenerator implements IGenerator {
                 value = Double.toString(timeSheet.getProfession().getWage());
                 break;
             case VACATION:
-                value = timeSheet.getVacation().toString();
+                value = timeSheet.getTotalVacationTime().toString();
                 break;
             case HOURS_SUM:
-                value = timeSheet.getTotalWorkTime().add(timeSheet.getVacation()).toString();
+                value = timeSheet.getTotalWorkTime().add(timeSheet.getTotalVacationTime()).toString();
                 break;
             case TRANSFER_PRED:
                 value = timeSheet.getPredTransfer().toString();
@@ -172,7 +174,11 @@ public class LatexGenerator implements IGenerator {
                 value = entry.getPause().toString();
                 break;
             case TABLE_TIME:
-                value = entry.getWorkingTime().toString();
+                if (entry.isVacation()) {
+                    value = SHORTHAND_VACATION + " " + entry.getWorkingTime().toString();
+                } else {
+                    value = entry.getWorkingTime().toString();
+                }
                 break;
             default:
                 value = null;

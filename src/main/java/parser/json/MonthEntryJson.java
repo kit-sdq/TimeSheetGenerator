@@ -12,6 +12,7 @@ class MonthEntryJson {
     private final TimeSpan start;
     private final TimeSpan end;
     private TimeSpan pause;
+    private boolean vacation;
     
     @JsonCreator
     MonthEntryJson(
@@ -25,6 +26,7 @@ class MonthEntryJson {
         this.start = TimeSpan.parse(start);
         this.end = TimeSpan.parse(end);
         this.pause = new TimeSpan(0, 0); // default
+        this.vacation = false; // default
     }
 
     public String getAction() {
@@ -50,6 +52,15 @@ class MonthEntryJson {
     @JsonProperty("pause")
     public void setPause(String pause) {
         this.pause = TimeSpan.parse(pause);
+    }
+    
+    public boolean getVacation() {
+        return vacation;
+    }
+    
+    @JsonProperty("vacation")
+    public void setVacation(boolean vacation) {
+        this.vacation = vacation;
     }
 
 }
