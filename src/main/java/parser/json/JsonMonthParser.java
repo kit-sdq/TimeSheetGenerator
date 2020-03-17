@@ -68,6 +68,8 @@ public class JsonMonthParser implements IMonthParser {
                     return parseEntry(entry);
                 } catch (ParseException | RuntimeException e) {
                     throw new RuntimeException(e);
+                } catch (RuntimeException e) {
+                    throw new RuntimeException(e);
                 }
             }).collect(Collectors.toList());
         } catch(RuntimeException e) {
