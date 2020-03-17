@@ -32,9 +32,9 @@ public class MiLoGCheckerRowNumExceedanceTest {
     public void testNoExceedanceLowerBound() {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22),
-                new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0));
+                new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0), false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -57,12 +57,12 @@ public class MiLoGCheckerRowNumExceedanceTest {
             TimeSpan end = new TimeSpan(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
-            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
             entries[i] = entry;
         }
         
         ////Checker initialization
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -86,12 +86,12 @@ public class MiLoGCheckerRowNumExceedanceTest {
             TimeSpan end = new TimeSpan(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
-            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
             entries[i] = entry;
         }
         
         ////Checker initialization
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -118,12 +118,12 @@ public class MiLoGCheckerRowNumExceedanceTest {
             TimeSpan end = new TimeSpan(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
-            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
             entries[i] = entry;
         }
         
         ////Checker initialization
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution

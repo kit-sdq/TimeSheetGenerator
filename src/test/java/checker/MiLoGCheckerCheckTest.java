@@ -32,9 +32,9 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2019, 11, 22); //Valid working day
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
@@ -51,9 +51,9 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2019, 12, 25); //Holiday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
@@ -73,9 +73,9 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2019, 12, 1); //Sunday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
@@ -95,9 +95,9 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2022, 12, 25); //Sunday and holiday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation

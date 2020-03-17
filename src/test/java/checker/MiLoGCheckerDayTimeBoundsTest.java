@@ -49,9 +49,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         end = end.subtract(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -76,9 +76,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         end = end.subtract(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -103,9 +103,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         start = start.add(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -130,9 +130,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         start = start.add(new TimeSpan(1, 0));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -154,9 +154,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -178,9 +178,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -210,9 +210,9 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -237,15 +237,15 @@ public class MiLoGCheckerDayTimeBoundsTest {
         TimeSpan start0 = CHECKER_WORKDAY_LOWER_BOUND.subtract(new TimeSpan(0, 1));
         TimeSpan end0 = CHECKER_WORKDAY_UPPER_BOUND.subtract(new TimeSpan(1, 0));
         TimeSpan pause0 = new TimeSpan(0, 0);
-        Entry entry0 = new Entry("Test", LocalDate.of(2019, 11, 20), start0, end0, pause0);
+        Entry entry0 = new Entry("Test", LocalDate.of(2019, 11, 20), start0, end0, pause0, false);
         
         TimeSpan start1 = CHECKER_WORKDAY_LOWER_BOUND.add(new TimeSpan(1, 0));
         TimeSpan end1 = CHECKER_WORKDAY_UPPER_BOUND.add(new TimeSpan(0, 1));
         TimeSpan pause1 = new TimeSpan(0, 0);
-        Entry entry1 = new Entry("Test", LocalDate.of(2019, 11, 22), start1, end1, pause1);
+        Entry entry1 = new Entry("Test", LocalDate.of(2019, 11, 22), start1, end1, pause1, false);
         
         Entry[] entries = {entry0, entry1};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Execution

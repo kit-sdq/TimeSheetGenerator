@@ -39,9 +39,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -55,13 +55,13 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     @Test
     public void testValidMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30));
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30), false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -75,13 +75,13 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     @Test
     public void testExceedanceMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         checker.checkDayTimeExceedances();
@@ -105,9 +105,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
@@ -139,9 +139,9 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         TimeSpan pause = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
@@ -169,13 +169,13 @@ public class MiLoGCheckerDayTimeExceedancesTest {
     @Test
     public void testMultipleExceedences() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(8, 0), new TimeSpan(20, 0), zeroTs);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(8, 0), new TimeSpan(20, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Execution

@@ -27,18 +27,19 @@ public class JsonMonthParserTest {
         "\"month\": 11," +
         "\"entries\": [" +
             "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-            "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+            "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+            "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
         "]" +
     "}";
     private static final String JSON_EXAMPLE_FULL = "{" +
         "\"year\": 2019," +
         "\"month\": 11," +
-        "\"vacation\": \"3:00\"," +
         "\"pred_transfer\": \"2:00\"," +
         "\"succ_transfer\": \"1:00\"," +
         "\"entries\": [" +
             "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-            "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+            "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+            "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
         "]" +
     "}";
 
@@ -72,7 +73,8 @@ public class JsonMonthParserTest {
             "\"month\": 11," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]" +
         "}";
         IMonthParser parser = new JsonMonthParser(json);
@@ -88,7 +90,8 @@ public class JsonMonthParserTest {
             "\"year\": 2019," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]" +
         "}";
         IMonthParser parser = new JsonMonthParser(json);
@@ -105,7 +108,8 @@ public class JsonMonthParserTest {
             "\"month\": 11," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]," +
             "\"something\": \"else\"" +
         "}";
@@ -157,7 +161,8 @@ public class JsonMonthParserTest {
             "\"month\": 11," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]," +
             "\"something\": \"else\"" +
         "}";
@@ -190,84 +195,11 @@ public class JsonMonthParserTest {
         // assert
         List<Entry> entryList = Arrays.asList(entries);
 
-        assertEquals(2, entryList.size());
+        assertEquals(3, entryList.size());
 
-        assert(entryList.contains(new Entry("Korrektur", LocalDate.of(2019, 11, 2), new TimeSpan(10, 0), new TimeSpan(11, 0), new TimeSpan(0, 0))));
-        assert(entryList.contains(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new TimeSpan(11, 31), new TimeSpan(15, 11), new TimeSpan(0, 30))));
-    }
-
-    @Test(expected = ParseException.class)
-    public void testParseVacationEmptyJson() throws ParseException {
-        // data
-        IMonthParser parser = new JsonMonthParser(JSON_EMPTY);
-
-        // execute
-        parser.getVacation();
-    }
-
-    @Test(expected = ParseException.class)
-    public void testParseVacationAdditionalProperty() throws ParseException {
-        // data
-        String json = "{" +
-            "\"year\": 2019," +
-            "\"month\": 11," +
-            "\"vacation\": \"3:00\"," +
-            "\"pred_transfer\": \"2:00\"," +
-            "\"succ_transfer\": \"1:00\"," +
-            "\"entries\": [" +
-                "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
-            "]," +
-            "\"something\": \"else\"" +
-        "}";
-        IMonthParser parser = new JsonMonthParser(json);
-
-        // execute
-        parser.getVacation();
-    }
-
-    @Test(expected = ParseException.class)
-    public void testParseVacationWrongFormat() throws ParseException {
-        // data
-        String json = "{" +
-            "\"year\": 2019," +
-            "\"month\": 11," +
-            "\"vacation\": \"3 Stunden 0 Minuten\"," +
-            "\"pred_transfer\": \"2:00\"," +
-            "\"succ_transfer\": \"1:00\"," +
-            "\"entries\": [" +
-                "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
-            "]" +
-        "}";
-        IMonthParser parser = new JsonMonthParser(json);
-
-        // execute
-        parser.getVacation();
-    }
-
-    @Test
-    public void testParseVacation() throws ParseException {
-        // data
-        IMonthParser parser = new JsonMonthParser(JSON_EXAMPLE_FULL);
-
-        // execute
-        TimeSpan vacation = parser.getVacation();
-
-        // assert
-        assertEquals(new TimeSpan(3, 0), vacation);
-    }
-
-    @Test
-    public void testParseVacationDefault() throws ParseException {
-        // data
-        IMonthParser parser = new JsonMonthParser(JSON_EXAMPLE_NECESSARY);
-
-        // execute
-        TimeSpan vacation = parser.getVacation();
-
-        // assert
-        assertEquals(new TimeSpan(0, 0), vacation);
+        assert(entryList.contains(new Entry("Korrektur", LocalDate.of(2019, 11, 2), new TimeSpan(10, 0), new TimeSpan(11, 0), new TimeSpan(0, 0), false)));
+        assert(entryList.contains(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new TimeSpan(11, 31), new TimeSpan(15, 11), new TimeSpan(0, 30), false)));
+        assert(entryList.contains(new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), true)));
     }
 
     @Test(expected = ParseException.class)
@@ -290,7 +222,8 @@ public class JsonMonthParserTest {
             "\"succ_transfer\": \"1:00\"," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]," +
             "\"something\": \"else\"" +
         "}";
@@ -311,7 +244,8 @@ public class JsonMonthParserTest {
             "\"succ_transfer\": \"1:00\"," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]" +
         "}";
         IMonthParser parser = new JsonMonthParser(json);
@@ -364,7 +298,8 @@ public class JsonMonthParserTest {
             "\"succ_transfer\": \"1:00\"," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]," +
             "\"something\": \"else\"" +
         "}";
@@ -385,7 +320,8 @@ public class JsonMonthParserTest {
             "\"succ_transfer\": \"1 Stunden 0 Minuten\"," +
             "\"entries\": [" +
                 "{\"action\": \"Korrektur\", \"day\": 2, \"start\": \"10:00\", \"end\": \"11:00\"}," +
-                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+                "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}," +
+                "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
             "]" +
         "}";
         IMonthParser parser = new JsonMonthParser(json);

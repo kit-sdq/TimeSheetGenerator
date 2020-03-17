@@ -18,7 +18,7 @@ import data.WorkingArea;
 public class MiLoGCheckerDepartmentNameTest {
 
     private static final Entry[] ENTRIES = {new Entry("Test", LocalDate.of(2019, 11, 22),
-            new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0))};
+            new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0), false)};
     
     ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -32,7 +32,7 @@ public class MiLoGCheckerDepartmentNameTest {
         
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -50,7 +50,7 @@ public class MiLoGCheckerDepartmentNameTest {
 
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution

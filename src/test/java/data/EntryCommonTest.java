@@ -17,7 +17,7 @@ public class EntryCommonTest {
 
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        Entry entry = new Entry(action, date, start, end, pause);
+        Entry entry = new Entry(action, date, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 3);
@@ -39,7 +39,7 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause);
+        new Entry(action, date, start, end, pause, false);
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -51,7 +51,7 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause);
+        new Entry(action, date, start, end, pause, false);
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -63,7 +63,7 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause);
+        new Entry(action, date, start, end, pause, false);
     }
     
     @Test(expected = IllegalArgumentException.class)
@@ -75,6 +75,19 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause);
+        new Entry(action, date, start, end, pause, false);
     }
+    
+    @Test(expected = IllegalArgumentException.class)
+    public void testConstructorIllegalArgumentPauseAndVacation() {
+        String action = "Test";
+        TimeSpan start = new TimeSpan(14, 0);
+        TimeSpan end = new TimeSpan(18, 0);
+        TimeSpan pause = new TimeSpan(0, 30);
+
+        LocalDate date = LocalDate.of(2019, 11, 16);
+        
+        new Entry(action, date, start, end, pause, true);
+    }
+    
 }
