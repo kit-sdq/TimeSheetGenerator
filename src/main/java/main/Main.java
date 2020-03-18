@@ -15,35 +15,39 @@ import main.UserInput.Request;
 import parser.ParseException;
 import parser.Parser;
 
+/**
+ * Main class of the application containing the main method as entry point for the application
+ */
 public class Main {
+
     /**
-     * @param args first argument global.json and second argument month.json, just use UTF8
+     * Main entry point for the application
+     * @param args command line arguments that are passed to the apache cli library
      */
     public static void main(String[] args) {
-        
         // Initialize and parse user input
         UserInput userInput = new UserInput(args);
         Request request;
         try {
-          request = userInput.parse();
+            request = userInput.parse();
         } catch (org.apache.commons.cli.ParseException e) {
-          System.out.println(e.getMessage());
-          System.exit(1);
-          return;
-        }  
-        
+            System.out.println(e.getMessage());
+            System.exit(1);
+            return;
+        }
+
         // If requested: Print help and return
         if (request == Request.HELP) {
             userInput.printHelp();
             return;
         }
-        // If requested: Print version
+        // If requested: Print version and return
         if (request == Request.VERSION) {
             userInput.printVersion();
             return;
         }
-        
-        // Get content of input files 
+
+        // Get content of input files
         String global;
         String month;
         try {
@@ -54,7 +58,7 @@ public class Main {
             System.exit(1);
             return;
         }
-        
+
         // Initialize time sheet
         TimeSheet timeSheet;
         try {
@@ -70,19 +74,20 @@ public class Main {
         CheckerReturn checkerReturn;
         try {
             checkerReturn = checker.check();
-        } catch (CheckerException e) {
+        } catch (CheckerException e) { // exception does not mean that the time sheet is invalid, but that the process of checking failed
             System.out.println(e.getMessage());
             System.exit(1);
             return;
         }
+        // Print all errors in case the time sheet is invalid
         if (checkerReturn == CheckerReturn.INVALID) {
             for (CheckerError error : checker.getErrors()) {
                 System.out.println(error.getErrorMessage());
             }
             return;
         }
-        
-        // Generates and saves output file
+
+        // Generate and save output file
         ClassLoader classLoader = Main.class.getClassLoader();
         try {
             String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Template.tex"));
@@ -91,7 +96,8 @@ public class Main {
         } catch (IOException e) {
             System.out.println(e.getMessage());
             System.exit(1);
+            return;
         }
-        
     }
+
 }

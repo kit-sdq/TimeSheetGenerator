@@ -3,45 +3,73 @@ package main;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
+/**
+ * Represents the input option the user has on the command line
+ */
 public enum UserInputOption {
-  
-  HELP(Option.builder("h")
-      .longOpt("help")
-      .desc("Prints helping information")
-      .hasArg(false)
-      .build()),
-  VERSION(Option.builder("v")
-      .longOpt("version")
-      .desc("Prints the version")
-      .hasArg(false)
-      .build()),
-  GUI(Option.builder("g")
-      .longOpt("gui")
-      .desc("Enables load/save dialogs")
-      .hasArg(false)
-      .build()),
-  FILE(Option.builder("f")
-      .longOpt("file")
-      .desc("Passes file paths via console")
-      .numberOfArgs(3)
-      .argName("global.json> <month.json> <output-file.tex")
-      .build());
-  
-  private Option option;
-  
-  private UserInputOption (Option option) {
-    this.option = option;
-  }
-  
-  public Option getOption() {
-    return this.option;
-  }
-  
-  public static Options getOptions() {
-    Options options = new Options();
-    for(UserInputOption uio : UserInputOption.values()) {
-      options.addOption(uio.getOption());
+
+    /**
+     * Print the command line help
+     */
+    HELP(Option.builder("h")
+        .longOpt("help")
+        .desc("Prints helping information")
+        .hasArg(false)
+        .build()),
+    /**
+     * Print the version of the application
+     */
+    VERSION(Option.builder("v")
+        .longOpt("version")
+        .desc("Prints the version")
+        .hasArg(false)
+        .build()),
+    /**
+     * Show the GUI for choosing the files
+     */
+    GUI(Option.builder("g")
+        .longOpt("gui")
+        .desc("Enables load/save dialogs")
+        .hasArg(false)
+        .build()),
+    /**
+     * Specify the files in the arguments of this command
+     */
+    FILE(Option.builder("f")
+        .longOpt("file")
+        .desc("Passes file paths via console")
+        .numberOfArgs(3)
+        .argName("global.json> <month.json> <output-file.tex")
+        .build());
+
+    private final Option option;
+
+    /**
+     * Create a user input option
+     * @param option Apache CLI option for the user input option
+     */
+    private UserInputOption(Option option) {
+        this.option = option;
     }
-    return options;
-  } 
+
+    /**
+     * Get the Apache CLI option of this user input option
+     * @return Apache CLI option
+     */
+    public Option getOption() {
+        return this.option;
+    }
+
+    /**
+     * Get the Apache CLI options
+     * @return Apache CLI options
+     */
+    public static Options getOptions() {
+        Options options = new Options();
+        for (UserInputOption uio : UserInputOption.values()) {
+            options.addOption(uio.getOption());
+        }
+        return options;
+    }
+
 }
