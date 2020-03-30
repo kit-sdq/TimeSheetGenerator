@@ -57,10 +57,16 @@ public class JsonMonthParser implements IMonthParser {
         try {
             MonthJson month = parse();
             
+            // catching the ParseException is necessary, because Java complains about a unhandled exception otherwise
+            // declaring the exception is not possible in a lambda function
+            // a workaround is to encapsulate the exception in a RuntimeException, which doesn't have to be declared
+            // since we expect the RuntimeException caught outside the lambda function to include the actual exception as the cause,
+            // we need to encapsulate RuntimeExceptions thrown in parseEntry(..) as well
+            // (note that IllegalArgumentException is a RuntimeException as well)
             entries = month.getEntries().stream().map(entry -> {
                 try {
                     return parseEntry(entry);
-                } catch (ParseException e) {
+                } catch (ParseException | RuntimeException e) {
                     throw new RuntimeException(e);
                 }
             }).collect(Collectors.toList());
