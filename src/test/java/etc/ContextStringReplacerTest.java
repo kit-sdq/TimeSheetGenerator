@@ -48,10 +48,23 @@ public class ContextStringReplacerTest {
     }
     
     @Test
+    public void testStringContainsSubstringNoIterator() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        // execute
+        String result = replacer.getString();
+        // assert
+        assertEquals("Hello World", result);
+    }
+    
+    @Test
     public void testStringContainsSubstringNoReplace() {
         // data
         ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
         // execute
+        for (@SuppressWarnings("unused") ContextStringReplacement replacement : replacer) {
+            // do nothing
+        }
         String result = replacer.getString();
         // assert
         assertEquals("Hello World", result);
@@ -208,6 +221,67 @@ public class ContextStringReplacerTest {
     }
     
     @Test
+    public void testStringContainsMultipleSubstringsEqualPrefixShorterSubstringFirst() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("ll", "llo"));
+        // assert
+        for (ContextStringReplacement replacement : replacer) {
+            assertEquals("ll", replacement.getSubstring());
+        }
+    }
+    
+    @Test
+    public void testStringContainsMultipleSubstringsEqualPrefixLongerSubstringFirst() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("llo", "ll"));
+        // assert
+        for (ContextStringReplacement replacement : replacer) {
+            assertEquals("llo", replacement.getSubstring());
+        }
+    }
+    
+    @Test
+    public void testStringContainsOverlappingSubstringsReplaceDifferent() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        // execute
+        for (ContextStringReplacement replacement : replacer) {
+            replacement.replace("__");
+        }
+        String result = replacer.getString();
+        // assert
+        assertEquals("Hello W__orld", result);
+    }
+    
+    @Test
+    public void testStringContainsOverlappingSubstringsReplaceMatch() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        // execute
+        for (ContextStringReplacement replacement : replacer) {
+            replacement.replace("_o");
+        }
+        String result = replacer.getString();
+        // assert
+        assertEquals("Hello W_oorld", result);
+    }
+    
+    @Test
+    public void testStringContainsOverlappingSubstringsIgnoreFirst() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        // execute
+        int c = 0;
+        for (ContextStringReplacement replacement : replacer) {
+            if (c++ > 0)
+                replacement.replace("o_");
+        }
+        String result = replacer.getString();
+        // assert
+        assertEquals("Hello Woo_rld", result);
+    }
+    
+    @Test
     public void testStringContainsSubstringSkip() {
         // data
         ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
@@ -251,6 +325,33 @@ public class ContextStringReplacerTest {
     }
     
     @Test
+    public void testStringContainsOverlappingSubstringsNoSkip() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        // execute
+        int c = 0;
+        for (@SuppressWarnings("unused") ContextStringReplacement replacement : replacer) {
+            c++;
+        }
+        // assert
+        assertEquals(2, c);
+    }
+    
+    @Test
+    public void testStringContainsOverlappingSubstringsSkip() {
+        // data
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        // execute
+        int c = 0;
+        for (ContextStringReplacement replacement : replacer) {
+            replacement.skip();
+            c++;
+        }
+        // assert
+        assertEquals(1, c);
+    }
+    
+    @Test
     public void testStringContainsMultipleSubstringsGetIndex() {
         // data
         ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
@@ -264,7 +365,6 @@ public class ContextStringReplacerTest {
             else
                 assertEquals(9, replacement.getIndex());
             
-            replacement.skip();
             c++;    
         }
     }
@@ -296,8 +396,6 @@ public class ContextStringReplacerTest {
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("", replacement.getLookbehind(0));
             assertEquals("", replacement.getLookahead(0));
-            
-            replacement.skip();
         }
     }
     
@@ -309,8 +407,6 @@ public class ContextStringReplacerTest {
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("l", replacement.getLookbehind(1));
             assertEquals("o", replacement.getLookahead(1));
-            
-            replacement.skip();
         }
     }
     
@@ -322,8 +418,6 @@ public class ContextStringReplacerTest {
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("ell", replacement.getLookbehind(3));
             assertEquals("orl", replacement.getLookahead(3));
-            
-            replacement.skip();
         }
     }
     
@@ -341,8 +435,6 @@ public class ContextStringReplacerTest {
                 assertEquals("W", replacement.getLookbehind(1));
                 assertEquals("r", replacement.getLookahead(1));
             }
-            
-            replacement.skip();
         }
     }
     
@@ -356,8 +448,6 @@ public class ContextStringReplacerTest {
                 assertEquals("H", replacement.getLookbehind(1));
             else
                 assertEquals("d", replacement.getLookahead(1));
-                
-            replacement.skip();
         }
     }
     
@@ -371,8 +461,6 @@ public class ContextStringReplacerTest {
                 assertEquals("He", replacement.getLookbehind(3));
             else
                 assertEquals("ld", replacement.getLookahead(3));
-                
-            replacement.skip();
         }
     }
     
@@ -386,8 +474,6 @@ public class ContextStringReplacerTest {
                 assertEquals("", replacement.getLookbehind(3));
             else
                 assertEquals("", replacement.getLookahead(3));
-                
-            replacement.skip();
         }
     }
     
@@ -399,8 +485,6 @@ public class ContextStringReplacerTest {
         ContextStringReplacement storedReplacement = null;
         for (ContextStringReplacement replacement : replacer) {
             storedReplacement = replacement;
-            
-            replacement.skip();
         }
         storedReplacement.replace("ooo W");
     }
@@ -436,8 +520,6 @@ public class ContextStringReplacerTest {
                 replacement.replace("_");
             else if (replacement.getLookahead(1).equals(" "))
                 replacement.replace("ooo");
-            else
-                replacement.skip();
         });
         // assert
         assertEquals("He__ooo Wor_d", result);

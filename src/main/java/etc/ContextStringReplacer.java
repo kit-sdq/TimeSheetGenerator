@@ -8,12 +8,21 @@ import java.util.function.Consumer;
 /**
  * Provides functionality to replace substrings in a string.
  * The substrings are found by matching against a given collection of substrings.
- * When iterating over a <code>ContextStringReplacer</code> object, a <code>ContextStringReplacement</code> is provided for each found substring.
+ * The substrings are used in the order of the collection to find a match.
+ * <br><br>
+ * When iterating over a <code>ContextStringReplacer</code> object,
+ * a <code>ContextStringReplacement</code> is provided for each found substring.
  * The <code>ContextStringReplacement</code> contains information about the found substring
  * as well as the characters before (lookbehind) and after (lookahead) the found substring.
- * The replacement for the found substring is then specified by calling the <code>replace</code> method of the <code>ContextStringReplacment</code> object.
+ * <br><br>
+ * The replacement for the found substring is then specified by calling the <code>replace</code> method
+ * of the <code>ContextStringReplacement</code> object.
  * The replacement as part of the edited string is not searched for matching substrings again.
- * If the found substring should not be replaced, then the <code>skip</code> method must be called.
+ * <br><br>
+ * If <code>replace</code> is not called on the <code>ContextStringReplacement</code> object,
+ * then the next substring is searched beginning at the next character of the string.
+ * If the next substring should be searched beginning after the found substring, then <code>skip</code> can be called,
+ * which behaves like <code>replace(getSubstring())</code>.
  * <br><br>
  * The static <code>replace</code> method of the <code>ContextStringReplacer</code> is added for convenience
  * and allows to express a replacement in one line of code.
@@ -23,7 +32,7 @@ import java.util.function.Consumer;
  * String s = "Hello World";
  * ContextStringReplacer replacer = new ContextStringReplacer(s, Arrays.asList("o"));
  * 
- * for (ContextStringReplacement replacment : replacer) {
+ * for (ContextStringReplacement replacement : replacer) {
  *   if (replacement.getLookahead(1).equals(" ")) {
  *     replacement.replace("ooo");
  *   } else if (replacement.getLookbehind(1).equals("W")) {
@@ -34,7 +43,6 @@ import java.util.function.Consumer;
  * s = replacer.getString();
  * assert(s.equals("Hellooo W0rld"));
  * </pre>
- * <br>
  * Example using the static replace method:
  * <pre>
  * String s = "Hello World";
@@ -48,8 +56,8 @@ import java.util.function.Consumer;
  * 
  * assert(s.equals("Hellooo W0rld"));
  * </pre>
- * <br>
  * Warning: <code>ContextStringReplacerIterator</code> and <code>ContextStringReplacement</code> objects are single-use only and should not be stored.
+ * <br><br>
  * Warning: This class is not thread safe.
  */
 public class ContextStringReplacer implements Iterable<ContextStringReplacer.ContextStringReplacerIterator.ContextStringReplacement> {
@@ -183,8 +191,13 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
          * @return <code>ContextStringReplacement</code> object for the next substring to replace
          */
         private ContextStringReplacement findNext() {
+            // use the cached replacement if possible
             if (nextReplacement != null)
                 return nextReplacement;
+
+            // invalidate the current replacement (necessary to guarantee that the index found here will be valid)
+            if (currentReplacement != null)
+                currentReplacement.invalidate();
 
             int nextIndex;
             String nextSubstring;
@@ -203,12 +216,18 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
                                 nextIndex = i;
                                 nextSubstring = substring;
 
+                                // continue after the replacement next time
+                                currentIndex = nextIndex + 1;
+
                                 break search;
                             }
                         }
                     }
                 }
 
+                // unnecessary to search the string again
+                currentIndex = string.length();
+                
                 return null;
             }
 
@@ -229,33 +248,24 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
             if (invalid)
                 throw new IllegalStateException();
             
-            ContextStringReplacement next = findNext();
-
-            return next != null;
+            return findNext() != null;
         }
 
         @Override
         public ContextStringReplacement next() {
             if (invalid)
                 throw new IllegalStateException();
-            
+
             // find the next replacement (possibly cached)
-            ContextStringReplacement replacement= findNext();
-            if (replacement == null)
+            currentReplacement = findNext();
+            if (currentReplacement == null)
                 throw new NoSuchElementException();
 
-            // invalidate the old replacement
-            if (currentReplacement != null)
-                currentReplacement.invalidate();
-            
-            // store the current replacement
-            currentReplacement = replacement;
-                
             // search for a new replacement next time
             resetNext();
 
             // return the current replacement
-            return replacement;
+            return currentReplacement;
         }
 
         /**
@@ -292,7 +302,7 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
             /**
              * If this replacement is invalidated.
              * The replacement is invalidated when replacing or skipping the found substring
-             * or moving on to a new replacment or iterator.
+             * or moving on to a new replacement or iterator.
              */
             private boolean invalid;
             
@@ -360,7 +370,9 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
             }
             
             /**
-             * Skip the replacement of the found substring.
+             * Skip the replacement and continue after the found substring.
+             * This is different from not calling any method,
+             * which would continue the search at the next character.
              * Calling this method invalidates the <code>ContextStringReplacement</code> object.
              */
             public void skip() {
