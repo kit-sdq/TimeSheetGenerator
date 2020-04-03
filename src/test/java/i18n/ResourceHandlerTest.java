@@ -5,28 +5,38 @@ import static org.junit.Assert.assertEquals;
 import java.time.LocalDate;
 import java.util.Locale;
 
+import org.junit.Before;
 import org.junit.Test;
 
+import i18n.ResourceHandler.ResourceHandlerInstance;
+
 public class ResourceHandlerTest {
+    
+    @Before
+    public void setUp() {
+        resourceHandler = new ResourceHandlerInstance("i18n_test/MessageBundle");
+    }
+    
+    private ResourceHandlerInstance resourceHandler;
     
     @Test
     public void testChangeLocale() {
         // execute
-        ResourceHandler.setLocale(Locale.GERMAN);
+        resourceHandler.setLocale(Locale.GERMAN);
         // assert
-        assertEquals(Locale.GERMAN, ResourceHandler.getLocale());
+        assertEquals(Locale.GERMAN, resourceHandler.getLocale());
         // execute
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         // assert
-        assertEquals(Locale.ENGLISH, ResourceHandler.getLocale());
+        assertEquals(Locale.ENGLISH, resourceHandler.getLocale());
     }
 
     @Test
     public void testGetMessage() {
         // data
-        ResourceHandler.setLocale(Locale.ROOT);
+        resourceHandler.setLocale(Locale.ROOT);
         // execute
-        String result = ResourceHandler.getMessage("test");
+        String result = resourceHandler.getMessage("test");
         // assert
         assertEquals("Hello World!", result);
     }
@@ -34,9 +44,9 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageEN() {
         // data
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         // execute
-        String result = ResourceHandler.getMessage("test");
+        String result = resourceHandler.getMessage("test");
         // assert
         assertEquals("Hello World!", result);
     }
@@ -44,9 +54,9 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageDE() {
         // data
-        ResourceHandler.setLocale(Locale.GERMAN);
+        resourceHandler.setLocale(Locale.GERMAN);
         // execute
-        String result = ResourceHandler.getMessage("test");
+        String result = resourceHandler.getMessage("test");
         // assert
         assertEquals("Hallo Welt!", result);
     }
@@ -54,9 +64,9 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageCountryDE() {
         // data
-        ResourceHandler.setLocale(Locale.GERMANY);
+        resourceHandler.setLocale(Locale.GERMANY);
         // execute
-        String result = ResourceHandler.getMessage("test");
+        String result = resourceHandler.getMessage("test");
         // assert
         assertEquals("Hallo Welt!", result);
     }
@@ -64,9 +74,9 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageFallback() {
         // data
-        ResourceHandler.setLocale(Locale.GERMAN);
+        resourceHandler.setLocale(Locale.GERMAN);
         // execute
-        String result = ResourceHandler.getMessage("fallback");
+        String result = resourceHandler.getMessage("fallback");
         // assert
         assertEquals("This is the fallback", result);
     }
@@ -74,9 +84,9 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageArgs() {
         // data
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         // execute
-        String result = ResourceHandler.getMessage("args", "here");
+        String result = resourceHandler.getMessage("args", "here");
         // assert
         assertEquals("Insert > here <", result);
     }
@@ -84,9 +94,9 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageArgsMultiple() {
         // data
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         // execute
-        String result = ResourceHandler.getMessage("multiArgs", 1, 2);
+        String result = resourceHandler.getMessage("multiArgs", 1, 2);
         // assert
         assertEquals("1 + 1 = 2", result);
     }
@@ -94,10 +104,10 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageWithoutFormat() {
         // data
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         LocalDate date = LocalDate.of(2019, 7, 21);
         // execute
-        String result = ResourceHandler.getMessage("dateWithoutFormat", date);
+        String result = resourceHandler.getMessage("dateWithoutFormat", date);
         // assert
         assertEquals("On 2019-07-21", result);
     }
@@ -105,10 +115,10 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageWithFormatLocaleEN() {
         // data
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         LocalDate date = LocalDate.of(2019, 7, 21);
         // execute
-        String result = ResourceHandler.getMessage("dateWithFormat", date);
+        String result = resourceHandler.getMessage("dateWithFormat", date);
         // assert
         assertEquals("On Jul 21, 2019", result);
     }
@@ -116,10 +126,10 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageWithFormatLocaleDE() {
         // data
-        ResourceHandler.setLocale(Locale.GERMAN);
+        resourceHandler.setLocale(Locale.GERMAN);
         LocalDate date = LocalDate.of(2019, 7, 21);
         // execute
-        String result = ResourceHandler.getMessage("dateWithFormat", date);
+        String result = resourceHandler.getMessage("dateWithFormat", date);
         // assert
         assertEquals("Am 21.07.2019", result);
     }
@@ -127,10 +137,10 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageWithFormatStyleLocalEN() {
         // data
-        ResourceHandler.setLocale(Locale.ENGLISH);
+        resourceHandler.setLocale(Locale.ENGLISH);
         LocalDate date = LocalDate.of(2019, 7, 21);
         // execute
-        String result = ResourceHandler.getMessage("dateWithLongFormat", date);
+        String result = resourceHandler.getMessage("dateWithLongFormat", date);
         // assert
         assertEquals("On July 21, 2019", result);
     }
@@ -138,10 +148,10 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageWithFormatStyleLocaleDE() {
         // data
-        ResourceHandler.setLocale(Locale.GERMAN);
+        resourceHandler.setLocale(Locale.GERMAN);
         LocalDate date = LocalDate.of(2019, 7, 21);
         // execute
-        String result = ResourceHandler.getMessage("dateWithLongFormat", date);
+        String result = resourceHandler.getMessage("dateWithLongFormat", date);
         // assert
         assertEquals("Am 21. Juli 2019", result);
     }
@@ -149,10 +159,10 @@ public class ResourceHandlerTest {
     @Test
     public void testGetMessageWithFormatStyleLocaleFallback() {
         // data
-        ResourceHandler.setLocale(Locale.GERMAN);
+        resourceHandler.setLocale(Locale.GERMAN);
         LocalDate date = LocalDate.of(2019, 7, 21);
         // execute
-        String result = ResourceHandler.getMessage("dateWithLongFormatFallback", date);
+        String result = resourceHandler.getMessage("dateWithLongFormatFallback", date);
         // assert
         assertEquals("Fallback to 21. Juli 2019", result);
     }

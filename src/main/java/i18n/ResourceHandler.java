@@ -11,52 +11,62 @@ import java.util.ResourceBundle;
  */
 public class ResourceHandler {
     
-    /**
-     * Path of the message bundles files in the resources without the localization postfix.
-     */
-    private static final String MESSAGE_BUNDLE_PATH = "i18n/MessageBundle";
+    protected static class ResourceHandlerInstance {
+        
+        protected ResourceHandlerInstance(String messageBundlePath) {
+            this.messageBundlePath = messageBundlePath;
+            
+            locale = Locale.getDefault();
+            format = new MessageFormat("");
+            
+            initialize();
+        }
+        
+        private void initialize() {
+            format.setLocale(locale);
+            
+            resourceBundle = ResourceBundle.getBundle(messageBundlePath, locale);
+        }
+        
+        private final String messageBundlePath;
 
-    private static Locale locale;
-    private static MessageFormat format;
-    
-    private static ResourceBundle resourceBundle;
-    
-    /**
-     * Static initializer for all non-localized resources.
-     * 
-     * Calls <code>initialize</code> to initialize localized resources as well.
-     */
-    static {
-        locale = Locale.getDefault();
-        format = new MessageFormat("");
+        private Locale locale;
+        private MessageFormat format;
         
-        initialize();
-    }
-    
-    /**
-     * Initiliazer for all localized resources.
-     * 
-     * May be called multiple times (whenever the <code>locale</code> object is changed).
-     */
-    private static void initialize() {
-        format.setLocale(locale);
+        private ResourceBundle resourceBundle;
         
-        resourceBundle = ResourceBundle.getBundle(MESSAGE_BUNDLE_PATH, locale);
-    }
-    
-    /**
-     * Replace the recognized formats in the format string
-     * that are not or not entirely supported by the <code>MessageFormat</code> class.
-     */
-    private static void replaceUnsupportedFormats(MessageFormat format) {
-        Format[] subformats = format.getFormats();
+        protected Locale getLocale() {
+            return locale;
+        }
         
-        for (int i = 0; i < subformats.length; i++) {
-            if (subformats[i] instanceof DateFormat) {
-                format.setFormat(i, new DateFormatWrapper((DateFormat) subformats[i]));
+        protected void setLocale(final Locale locale) {
+            this.locale = locale;
+            
+            initialize();
+        }
+        
+        protected String getMessage(final String key, final Object... args) {
+            String message = resourceBundle.getString(key);
+            
+            format.applyPattern(message);
+            replaceUnsupportedFormats(format);
+            
+            return format.format(args);
+        }
+        
+        private static void replaceUnsupportedFormats(MessageFormat format) {
+            Format[] subformats = format.getFormats();
+            
+            for (int i = 0; i < subformats.length; i++) {
+                if (subformats[i] instanceof DateFormat) {
+                    format.setFormat(i, new DateFormatWrapper((DateFormat) subformats[i]));
+                }
             }
         }
+        
     }
+    
+    private static ResourceHandlerInstance instance = new ResourceHandlerInstance("i18n/MessageBundle");
     
     /**
      * Get the currently used locale.
@@ -64,7 +74,7 @@ public class ResourceHandler {
      * @return Currently used locale
      */
     public static Locale getLocale() {
-        return locale;
+        return instance.getLocale();
     }
     
     /**
@@ -75,9 +85,7 @@ public class ResourceHandler {
      * @param locale Locale to use for the loading of i18n message bundles
      */
     public static void setLocale(final Locale locale) {
-        ResourceHandler.locale = locale;
-        
-        initialize();
+        instance.setLocale(locale);
     }
     
     /**
@@ -95,12 +103,7 @@ public class ResourceHandler {
      * @return Loaded message string containing a string representation of the provided objects
      */
     public static String getMessage(final String key, final Object... args) {
-        String message = resourceBundle.getString(key);
-        
-        format.applyPattern(message);
-        replaceUnsupportedFormats(format);
-        
-        return format.format(args);
+        return instance.getMessage(key, args);
     }
     
 }
