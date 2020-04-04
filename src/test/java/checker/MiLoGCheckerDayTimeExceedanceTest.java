@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.Random;
+
 import org.junit.Test;
 
 import data.Employee;
@@ -15,6 +17,11 @@ import data.TimeSpan;
 import data.WorkingArea;
 
 public class MiLoGCheckerDayTimeExceedanceTest {
+    
+    //// Placeholder for random tests
+    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
+    private static final int RANDOM_HOUR_BOUND = 24;
+    private static final int RANDOM_MINUTES_BOUND = 60;
     
     //// Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -218,5 +225,37 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         
         ////Assertions: Uniqueness
         assertTrue(checker.getErrors().stream().filter(item -> item.getErrorMessage().equals(error)).count() == 1L);
+    }
+    
+    @Test
+    public void testRandomSingleEntry() throws CheckerException {
+        ////Random
+        Random rand = new Random();
+
+        ////Test values
+        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
+        TimeSpan start = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
+        
+        ////Checker initialization
+        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, ZERO_TS);
+        Entry[] entries = {entry};
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
+
+        ////Execution
+        checker.checkDayTimeExceedance();
+
+        ////Expectation
+        String error = String.format(MiLoGChecker.CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(), 
+                MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
+
+        ////Assertions
+        if (entry.getWorkingTime().compareTo(MiLoGChecker.getWorkdayMaxWorkingTime()) > 0) {
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
+            assertEquals(CheckerReturn.INVALID, checker.getResult());
+        } else {
+            assertFalse(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
+            assertEquals(CheckerReturn.VALID, checker.getResult());
+        }
     }
 }
