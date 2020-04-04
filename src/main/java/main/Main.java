@@ -2,9 +2,6 @@ package main;
 
 import java.io.IOException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import checker.CheckerError;
 import checker.CheckerException;
 import checker.CheckerReturn;
@@ -65,11 +62,8 @@ public class Main {
         // Initialize time sheet
         TimeSheet timeSheet;
         try {
-            JSONObject globalJson = new JSONObject(global);
-            JSONObject monthJson = new JSONObject(month);
-
-            timeSheet = Parser.parseTimeSheet(globalJson, monthJson);
-        } catch (JSONException | ParseException e) {
+            timeSheet = Parser.parseTimeSheetJson(global, month);
+        } catch (ParseException e) {
             System.out.println(e.getMessage());
             System.exit(1);
             return;

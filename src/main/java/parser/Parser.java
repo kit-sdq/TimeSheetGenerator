@@ -6,7 +6,8 @@ import data.Entry;
 import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
-import org.json.JSONObject;
+import parser.json.JsonGlobalParser;
+import parser.json.JsonMonthParser;
 
 /**
  * A Parser provides the functionality to construct a {@link TimeSheet} with the data
@@ -18,13 +19,13 @@ public class Parser {
     private Parser() {}
     
     /**
-     * Returns a new {@link TimeSheet} constructed out of data coming from two {@link JSONObject} instances.
-     * @param globalJson - object to get global data from.
-     * @param monthJson - object to get month data from.
+     * Returns a new {@link TimeSheet} constructed out of data coming from two json strings.
+     * @param globalJson - json to get global data from.
+     * @param monthJson - json to get month data from.
      * @return A new {@link TimeSheet} instances.
-     * @throws ParseException if an error occurs while parsing the {@link JSONObject} instances.
+     * @throws ParseException if an error occurs while parsing the json strings.
      */
-    public static TimeSheet parseTimeSheet(JSONObject globalJson, JSONObject monthJson) throws ParseException {
+    public static TimeSheet parseTimeSheetJson(String globalJson, String monthJson) throws ParseException {
         IGlobalParser globalParser = new JsonGlobalParser(globalJson);
         
         Employee employee = globalParser.getEmployee();
