@@ -107,10 +107,24 @@ public class MiLoGChecker implements IChecker {
      * Checks whether daily maximum working time was exceeded.
      */
     protected void checkDayTimeExceedance() {
+        // This map contains all working days and their summed up working times.
+        Map<LocalDate,TimeSpan> workingTimeMap = new HashMap<LocalDate,TimeSpan>();
         for (Entry entry : timeSheet.getEntries()) {
-            if (entry.getWorkingTime().compareTo(WORKDAY_MAX_WORKING_TIME) > 0) {
+            // A check is performed whether a day contains more than one entry.
+            if (workingTimeMap.containsKey(entry.getDate())) {
+                // If so, the working times are summed up and written back to the map.
+                TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
+                workingTimeMap.put(entry.getDate(), summedTime);
+            } else {
+                // If not, a new entry will be created in the map.
+                workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+            }
+        }
+        
+        for (LocalDate workingDay : workingTimeMap.keySet()) {
+            if (WORKDAY_MAX_WORKING_TIME.compareTo(workingTimeMap.get(workingDay)) < 0) {
                 errors.add(new CheckerError(CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(),
-                        WORKDAY_MAX_WORKING_TIME, entry.getDate()));
+                        WORKDAY_MAX_WORKING_TIME, workingDay));
                 result = CheckerReturn.INVALID;
             }
         }
@@ -119,7 +133,7 @@ public class MiLoGChecker implements IChecker {
     /**
      * Checks whether the working time per day meets all legal pause rules.
      */
-    protected void checkDayPauseTime() {    
+    protected void checkDayPauseTime() {
         //This map contains all dates associated with their working times
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
@@ -277,13 +291,21 @@ public class MiLoGChecker implements IChecker {
     }
     
     /**
+     * This method gets the legal daily maximum working time to conform to laws.
+     * @return The daily maximum working time.
+     */
+    protected static TimeSpan getWorkdayMaxWorkingTime() {
+        return WORKDAY_MAX_WORKING_TIME;
+    }
+
+    /**
      * This method gets the legal pause rules to conform to laws.
      * @return The legal pause rules.
      */
     protected static TimeSpan[][] getPauseRules() {
         return PAUSE_RULES;
     }
-    
+
     /**
      * This enum holds the possible error messages (including format specifiers) for this checker
      */
