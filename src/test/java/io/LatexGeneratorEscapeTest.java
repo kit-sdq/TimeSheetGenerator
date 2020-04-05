@@ -54,14 +54,13 @@ public class LatexGeneratorEscapeTest {
         Employee employee = new Employee("Max Mustermann", 1234567);
         Profession profession = new Profession("Institut für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 23.71);
         Entry[] entries = new Entry[] {
-            new Entry("Fragen und Antworten", LocalDate.of(2020, 3, 21), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 30))
+            new Entry("Fragen und Antworten", LocalDate.of(2020, 3, 21), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 30), false)
         };
         TimeSheet timeSheet = new TimeSheet(
             employee,
             profession,
             YearMonth.of(2020, 3),
             entries,
-            new TimeSpan(0, 0),
             new TimeSpan(0, 0),
             new TimeSpan(0, 0)
         );
@@ -78,14 +77,13 @@ public class LatexGeneratorEscapeTest {
         Employee employee = new Employee("Max #Mustermann", 1234567);
         Profession profession = new Profession("Institut f~r Informatik", WorkingArea.UB, new TimeSpan(40, 0), 23.71);
         Entry[] entries = new Entry[] {
-            new Entry("Fragen & Antworten", LocalDate.of(2020, 3, 21), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 30))
+            new Entry("Fragen & Antworten", LocalDate.of(2020, 3, 21), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 30), false)
         };
         TimeSheet timeSheet = new TimeSheet(
             employee,
             profession,
             YearMonth.of(2020, 3),
             entries,
-            new TimeSpan(0, 0),
             new TimeSpan(0, 0),
             new TimeSpan(0, 0)
         );
