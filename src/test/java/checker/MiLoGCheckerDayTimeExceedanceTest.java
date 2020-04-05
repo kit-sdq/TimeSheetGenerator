@@ -31,6 +31,21 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     private static final LocalDate WORKINGDAY_VALID = LocalDate.of(2019, 11, 22);
 
     @Test
+    public void testNoEntry() throws CheckerException {
+        ////Checker initialization
+        Entry[] entries = {};
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
+
+        ////Execution
+        checker.checkDayTimeExceedance();
+
+        ////Assertions
+        assertEquals(0L, checker.getErrors().stream().count());
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+    }
+    
+    @Test
     public void testUpperBoundValidSingleEntry() throws CheckerException {
         ////Test values
         TimeSpan start = new TimeSpan(8, 0);
@@ -127,7 +142,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         TimeSpan end2 = new TimeSpan(20, 0);
         TimeSpan start3 = new TimeSpan(11, 0);
         TimeSpan end3 = new TimeSpan(21, 1);
-        LocalDate[] validWorkingDays = {LocalDate.of(2019, 11, 21), WORKINGDAY_VALID,LocalDate.of(2019, 11, 21)};
+        LocalDate[] validWorkingDays = {LocalDate.of(2019, 11, 21), WORKINGDAY_VALID, LocalDate.of(2019, 11, 23)};
         
         ////Checker initialization
         Entry entry1 = new Entry("Test 1", validWorkingDays[0], start1, end1, ZERO_TS);
@@ -233,11 +248,17 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         Random rand = new Random();
 
         ////Test values
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan start = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
+        TimeSpan fstTimeSpan = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
+        TimeSpan sndTimeSpan = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, ZERO_TS);
+        Entry entry;
+        if (fstTimeSpan.compareTo(sndTimeSpan) > 0) {
+            entry = new Entry("Test", WORKINGDAY_VALID, sndTimeSpan, fstTimeSpan, ZERO_TS);
+        } else {
+            entry = new Entry("Test", WORKINGDAY_VALID, fstTimeSpan, sndTimeSpan, ZERO_TS);
+        }
+        
         Entry[] entries = {entry};
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);

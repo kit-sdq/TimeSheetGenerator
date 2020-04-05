@@ -121,10 +121,10 @@ public class MiLoGChecker implements IChecker {
             }
         }
         
-        for (LocalDate workingDay : workingTimeMap.keySet()) {
-            if (WORKDAY_MAX_WORKING_TIME.compareTo(workingTimeMap.get(workingDay)) < 0) {
+        for (Map.Entry<LocalDate,TimeSpan> mapEntry : workingTimeMap.entrySet()) {
+            if (WORKDAY_MAX_WORKING_TIME.compareTo(mapEntry.getValue()) < 0) {
                 errors.add(new CheckerError(CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(),
-                        WORKDAY_MAX_WORKING_TIME, workingDay));
+                        WORKDAY_MAX_WORKING_TIME, mapEntry.getKey()));
                 result = CheckerReturn.INVALID;
             }
         }
