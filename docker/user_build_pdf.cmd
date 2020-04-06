@@ -1,4 +1,4 @@
-docker build .
+docker build -t timesheetgenerator:latest .
 SET SRC_PATH=%cd%
 SET IMAGE_NAME=timesheetgenerator:latest
 SET GLOBAL_JSON=global.json
