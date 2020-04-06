@@ -17,22 +17,17 @@ public class ResourceHandler {
             this.messageBundlePath = messageBundlePath;
             
             locale = Locale.getDefault();
-            format = new MessageFormat("");
             
             initialize();
         }
         
         private void initialize() {
-            format.setLocale(locale);
-            
             resourceBundle = ResourceBundle.getBundle(messageBundlePath, locale);
         }
         
         private final String messageBundlePath;
 
         private Locale locale;
-        private MessageFormat format;
-        
         private ResourceBundle resourceBundle;
         
         protected Locale getLocale() {
@@ -48,6 +43,8 @@ public class ResourceHandler {
         protected String getMessage(final String key, final Object... args) {
             String message = resourceBundle.getString(key);
             
+            MessageFormat format = new MessageFormat("");
+            format.setLocale(locale);
             format.applyPattern(message);
             replaceUnsupportedFormats(format);
             
