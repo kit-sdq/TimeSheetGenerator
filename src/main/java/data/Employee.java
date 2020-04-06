@@ -33,4 +33,21 @@ public class Employee {
     public int getId() {
         return this.id;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Employee)) {
+            return false;
+        }
+
+        Employee otherEmployee = (Employee)other;
+        if (!this.name.equals(otherEmployee.name)) {
+            return false;
+        } else if (this.id != otherEmployee.id) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

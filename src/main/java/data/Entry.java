@@ -97,4 +97,27 @@ public class Entry implements Comparable<Entry> {
             return this.start.compareTo(o.getStart());
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Entry)) {
+            return false;
+        }
+
+        Entry otherEntry = (Entry)other;
+        if (!this.action.equals(otherEntry.action)) {
+            return false;
+        } else if (!this.date.equals(otherEntry.date)) {
+            return false;
+        } else if (!this.start.equals(otherEntry.start)) {
+            return false;
+        } else if (!this.end.equals(otherEntry.end)) {
+            return false;
+        } else if (!this.pause.equals(otherEntry.pause)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

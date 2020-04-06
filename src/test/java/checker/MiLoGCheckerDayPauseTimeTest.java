@@ -16,7 +16,7 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 
-public class MiLoGCheckerDayTimeExceedancesTest {
+public class MiLoGCheckerDayPauseTimeTest {
     
     //Checker constants
     TimeSpan[][] PAUSE_RULES = MiLoGChecker.getPauseRules();
@@ -45,7 +45,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
-        checker.checkDayTimeExceedances();
+        checker.checkDayPauseTime();
         
         ////Assertions
         assertEquals(CheckerReturn.VALID, checker.getResult());
@@ -65,7 +65,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
-        checker.checkDayTimeExceedances();
+        checker.checkDayPauseTime();
         
         ////Assertions
         assertEquals(CheckerReturn.VALID, checker.getResult());
@@ -84,7 +84,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
-        checker.checkDayTimeExceedances();
+        checker.checkDayPauseTime();
         
         ////Expectation
         String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry1.getDate());
@@ -116,7 +116,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         ////Assertions
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
             if (entry.getWorkingTime().compareTo(pauseRule[0]) >= 0) {
-                checker.checkDayTimeExceedances();
+                checker.checkDayPauseTime();
                 
                 assertEquals(CheckerReturn.INVALID, checker.getResult());
                 assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
@@ -153,7 +153,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
             if (startToEnd.compareTo(pauseRule[0]) >= 0) {
                 if (entry.getPause().compareTo(pauseRule[1]) < 0) {
-                    checker.checkDayTimeExceedances();
+                    checker.checkDayPauseTime();
                     
                     assertEquals(CheckerReturn.INVALID, checker.getResult());
                     assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
@@ -179,7 +179,7 @@ public class MiLoGCheckerDayTimeExceedancesTest {
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Execution
-        checker.checkDayTimeExceedances();
+        checker.checkDayPauseTime();
         
         ////Expectation
         String error1 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry1.getDate());

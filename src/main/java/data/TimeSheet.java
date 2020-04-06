@@ -129,5 +129,31 @@ public class TimeSheet {
         }
         return totalWorkTime;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof TimeSheet)) {
+            return false;
+        }
+
+        TimeSheet otherTimeSheet = (TimeSheet)other;
+        if (!this.employee.equals(otherTimeSheet.employee)) {
+            return false;
+        } else if (!this.profession.equals(otherTimeSheet.profession)) {
+            return false;
+        } else if (!this.yearMonth.equals(otherTimeSheet.yearMonth)) {
+            return false;
+        } else if (!this.vacation.equals(otherTimeSheet.vacation)) {
+            return false;
+        } else if (!this.succTransfer.equals(otherTimeSheet.succTransfer)) {
+            return false;
+        } else if (!this.predTransfer.equals(otherTimeSheet.predTransfer)) {
+            return false;
+        } else if (!this.entries.equals(otherTimeSheet.entries)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
   
 }
