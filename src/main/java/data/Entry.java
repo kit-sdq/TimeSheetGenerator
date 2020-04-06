@@ -2,10 +2,15 @@ package data;
 
 import java.time.LocalDate;
 
+import i18n.ResourceHandler;
+
 /**
  * An entry represents a continuous work interval of an {@link Employee}.
  */
 public class Entry implements Comparable<Entry> {
+    
+    private int MAX_HOUR_PER_DAY = 23;
+    
     private final String action;
     private final LocalDate date;
     private final TimeSpan start, end, pause;
@@ -19,10 +24,10 @@ public class Entry implements Comparable<Entry> {
      * @param pause - the breaks taken in this work interval
      */
     public Entry(String action, LocalDate date, TimeSpan start, TimeSpan end, TimeSpan pause) {
-        if (start.getHour() > 23 || end.getHour() > 23) {
-            throw new IllegalArgumentException("Start and end time may not be greater than 23:59.");
+        if (start.getHour() > MAX_HOUR_PER_DAY || end.getHour() > MAX_HOUR_PER_DAY) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.entry.timeOverUpperLimit"));
         } else if (end.compareTo(start) < 0) {
-            throw new IllegalArgumentException("Start time may not be greater than end time.");
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.entry.startGreaterThanEnd"));
         }
         
         this.action = action;

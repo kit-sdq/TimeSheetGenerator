@@ -10,15 +10,17 @@ import data.TimeSheet;
  */
 public class CheckerError {
 
-    private final String errorMsg;
+    private final CheckerErrorMessage errorMsg;
+    private final Object[] args;
     
     /**
      * Constructs a new {@link CheckerError} instance.
      * @param errorMsg - associated with the occurred error.
      * @param args - Arguments referenced by the format specifiers in the errorMsg format string. 
      */
-    public CheckerError(String errorMsg, Object... args) {
-        this.errorMsg = String.format(errorMsg, args);
+    public CheckerError(CheckerErrorMessage errorMsg, Object... args) {
+        this.errorMsg = errorMsg;
+        this.args = args;
     }
     
     /**
@@ -26,7 +28,38 @@ public class CheckerError {
      * @return The error message.
      */
     public String getErrorMessage() {
-        return this.errorMsg;
+        return errorMsg.getErrorMessage(args);
+    }
+    
+    /**
+     * Gets the {@link CheckerErrorMessage} used to create this {@link CheckerError}.
+     * @return The checker error message.
+     */
+    public CheckerErrorMessage getCheckerErrorMessage() {
+        return errorMsg;
+    }
+    
+    /**
+     * Gets the arguments used to create this {@link CheckerError}.
+     * @return The arguments.
+     */
+    public Object[] getArgs() {
+        return args;
+    }
+    
+    /**
+     * A CheckerErrorMessage represents a message that can be used in a CheckerError.
+     */
+    public interface CheckerErrorMessage {
+        
+        /**
+         * Gets the error message.
+         * 
+         * @param args Arguments that will be inserted in the error message
+         * @return Error message including the formatted arguments
+         */
+        String getErrorMessage(Object... args);
+        
     }
     
 }

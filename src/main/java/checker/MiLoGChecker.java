@@ -3,6 +3,7 @@ package checker;
 import data.Entry;
 import data.TimeSheet;
 import data.TimeSpan;
+import i18n.ResourceHandler;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -98,7 +99,7 @@ public class MiLoGChecker implements IChecker {
                 .subtract(timeSheet.getPredTransfer());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
-            errors.add(new CheckerError(CheckerErrorMessage.TOTAL_TIME_EXCEEDANCE.getErrorMessage()));
+            errors.add(new CheckerError(MiLoGCheckerErrorMessage.TOTAL_TIME_EXCEEDANCE));
             result = CheckerReturn.INVALID;
         }
     }
@@ -123,7 +124,7 @@ public class MiLoGChecker implements IChecker {
         
         for (Map.Entry<LocalDate,TimeSpan> mapEntry : workingTimeMap.entrySet()) {
             if (WORKDAY_MAX_WORKING_TIME.compareTo(mapEntry.getValue()) < 0) {
-                errors.add(new CheckerError(CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(),
+                errors.add(new CheckerError(MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE,
                         WORKDAY_MAX_WORKING_TIME, mapEntry.getKey()));
                 result = CheckerReturn.INVALID;
             }
@@ -167,7 +168,7 @@ public class MiLoGChecker implements IChecker {
                 if (mapEntry.getValue()[0].compareTo(pauseRule[0]) >= 0
                         && mapEntry.getValue()[1].compareTo(pauseRule[1]) < 0) {
                     
-                    errors.add(new CheckerError(CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), mapEntry.getKey()));
+                    errors.add(new CheckerError(MiLoGCheckerErrorMessage.TIME_PAUSE, mapEntry.getKey()));
                     result = CheckerReturn.INVALID;
                     break;
                 }
@@ -183,7 +184,7 @@ public class MiLoGChecker implements IChecker {
             if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
                     || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
                 
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate()));
+                errors.add(new CheckerError(MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS, entry.getDate()));
                 result = CheckerReturn.INVALID;
             }
         }
@@ -201,7 +202,7 @@ public class MiLoGChecker implements IChecker {
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), localDate));
+                errors.add(new CheckerError(MiLoGCheckerErrorMessage.TIME_SUNDAY, localDate));
                 result = CheckerReturn.INVALID;
                 continue;
             }
@@ -209,7 +210,7 @@ public class MiLoGChecker implements IChecker {
             //Check for each entry whether it is a holiday           
             try {
                 if (holidayChecker.isHoliday(localDate)) {
-                    errors.add(new CheckerError(CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), localDate));
+                    errors.add(new CheckerError(MiLoGCheckerErrorMessage.TIME_HOLIDAY, localDate));
                     result = CheckerReturn.INVALID;
                     continue;
                 }
@@ -231,7 +232,7 @@ public class MiLoGChecker implements IChecker {
         for (int i = 0; i < entries.size() - 1; i++) {
             if (entries.get(i).getDate().equals(entries.get(i + 1).getDate()) &&
                     entries.get(i).getEnd().compareTo(entries.get(i + 1).getStart()) > 0) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_OVERLAP.getErrorMessage(), entries.get(i).getDate()));
+                errors.add(new CheckerError(MiLoGCheckerErrorMessage.TIME_OVERLAP, entries.get(i).getDate()));
                 result = CheckerReturn.INVALID;
             }
         }
@@ -242,7 +243,7 @@ public class MiLoGChecker implements IChecker {
      */
     protected void checkRowNumExceedance() {
         if (timeSheet.getEntries().size() > MAX_ROW_NUM) {
-            errors.add(new CheckerError(CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage()));
+            errors.add(new CheckerError(MiLoGCheckerErrorMessage.ROWNUM_EXCEEDENCE));
             result = CheckerReturn.INVALID;
         }
     }
@@ -252,7 +253,7 @@ public class MiLoGChecker implements IChecker {
      */
     protected void checkDepartmentName() {
         if (timeSheet.getProfession().getDepartmentName().isEmpty()) {
-            errors.add(new CheckerError(CheckerErrorMessage.NAME_MISSING.getErrorMessage()));
+            errors.add(new CheckerError(MiLoGCheckerErrorMessage.NAME_MISSING));
             result = CheckerReturn.INVALID;
         }
     }
@@ -309,26 +310,31 @@ public class MiLoGChecker implements IChecker {
     /**
      * This enum holds the possible error messages (including format specifiers) for this checker
      */
-    protected enum CheckerErrorMessage {
-        TOTAL_TIME_EXCEEDANCE("Maximum legal working time exceeded."),
-        DAY_TIME_EXCEEDANCE("Maximum daily working time of %s exceeded on %tF"), // string and date
-        TIME_OUTOFBOUNDS("Working time is out of bounds on %tF."), // date
-        TIME_SUNDAY("The %tF is a sunday, which is not a valid working day."), // date
-        TIME_HOLIDAY("The %tF is an official holiday, which is not a valid working day."), // date
-        TIME_PAUSE("Maximum working time without pause exceeded on %tF."), // date
-        TIME_OVERLAP("Start/End times in the time sheet overlap on %tF."), // date
+    protected enum MiLoGCheckerErrorMessage implements CheckerError.CheckerErrorMessage {
+        TOTAL_TIME_EXCEEDANCE("totalTimeExceedance"),
+        DAY_TIME_EXCEEDANCE("dayTimeExceedance"),
+        TIME_OUTOFBOUNDS("timeOutOfBounds"),
+        TIME_SUNDAY("timeSunday"),
+        TIME_HOLIDAY("timeHoliday"),
+        TIME_PAUSE("timePause"),
+        TIME_OVERLAP("timeOverlap"),
         
-        ROWNUM_EXCEEDENCE("Exceeded the maximum number of rows for the document."),
-        NAME_MISSING("Name of the departement is missing.");
+        ROWNUM_EXCEEDENCE("rowNumExceedance"),
+        NAME_MISSING("nameMissing");
         
-        private final String errorMsg;
+        private static final String messageKeyPrefix = "error.checker.";
         
-        private CheckerErrorMessage(String errorMsg) {
-            this.errorMsg = errorMsg;
+        private MiLoGCheckerErrorMessage(String messageKey) {
+            this.messageKey = messageKey;
         }
         
-        public String getErrorMessage() {
-            return this.errorMsg;
+        private final String messageKey;
+        
+        @Override
+        public String getErrorMessage(Object... args) {
+            String key = messageKeyPrefix + messageKey;
+            
+            return ResourceHandler.getMessage(key, args);
         }
     }
     

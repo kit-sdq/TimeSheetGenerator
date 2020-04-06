@@ -40,7 +40,7 @@ public class MiLoGCheckerDepartmentNameTest {
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.NAME_MISSING.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.MiLoGCheckerErrorMessage.NAME_MISSING.getErrorMessage())));
     }
 
     @Test

@@ -2,6 +2,8 @@ package main;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import i18n.ResourceHandler;
+
 /**
  * Represents a type of file that is specified by the user
  */
@@ -10,15 +12,15 @@ public enum UserInputFile {
     /**
      * [INPUT] Global JSON file containing information that are the same on all time sheets
      */
-    JSON_GLOBAL("Global JSON File", new FileNameExtensionFilter("JSON-File", "json"), FileOperation.OPEN),
+    JSON_GLOBAL("file.json.global.description", "file.json.description", "file.json.extension", FileOperation.OPEN),
     /**
      * [INPUT] JSON file containing information that is specific to one time sheet (= one month)
      */
-    JSON_MONTH("Month JSON File", new FileNameExtensionFilter("JSON-File", "json"), FileOperation.OPEN),
+    JSON_MONTH("file.json.month.description", "file.json.description", "file.json.extension", FileOperation.OPEN),
     /**
      * [OUTPUT] TeX file in which the generated time sheet is written.
      */
-    OUTPUT("Output Tex File", new FileNameExtensionFilter("Tex-File", "tex"), FileOperation.SAVE);
+    OUTPUT("file.tex.output.description", "file.tex.description", "file.tex.extension", FileOperation.SAVE);
 
     private final String dialogTitel;
     private final FileNameExtensionFilter fileFilter;
@@ -30,9 +32,12 @@ public enum UserInputFile {
      * @param fileFilter Filter for allowed file extensions
      * @param operation Operation associated with this user file type (OPEN or SAVE)
      */
-    private UserInputFile(String dialogTitel, FileNameExtensionFilter fileFilter, FileOperation operation) {
-        this.dialogTitel = dialogTitel;
-        this.fileFilter = fileFilter;
+    private UserInputFile(String dialogTitelKey, String fileDescriptionKey, String fileExtensionKey, FileOperation operation) {
+        this.dialogTitel = ResourceHandler.getMessage(dialogTitelKey);
+        this.fileFilter = new FileNameExtensionFilter(
+            ResourceHandler.getMessage(fileDescriptionKey),
+            ResourceHandler.getMessage(fileExtensionKey)
+        );
         this.operation = operation;
     }
 

@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
  */
 public class ResourceHandler {
     
+    private static final String DEFAULT_MESSAGE_BUNDLE_PATH = "i18n/MessageBundle";
+    
     protected static class ResourceHandlerInstance {
         
         protected ResourceHandlerInstance(String messageBundlePath) {
@@ -18,11 +20,7 @@ public class ResourceHandler {
             
             locale = Locale.getDefault();
             
-            initialize();
-        }
-        
-        private void initialize() {
-            resourceBundle = ResourceBundle.getBundle(messageBundlePath, locale);
+            loadResourceBundle();
         }
         
         private final String messageBundlePath;
@@ -37,7 +35,7 @@ public class ResourceHandler {
         protected void setLocale(final Locale locale) {
             this.locale = locale;
             
-            initialize();
+            loadResourceBundle();
         }
         
         protected String getMessage(final String key, final Object... args) {
@@ -49,6 +47,10 @@ public class ResourceHandler {
             replaceUnsupportedFormats(format);
             
             return format.format(args);
+        }
+        
+        private void loadResourceBundle() {
+            resourceBundle = ResourceBundle.getBundle(messageBundlePath, locale);
         }
         
         private static void replaceUnsupportedFormats(MessageFormat format) {
@@ -63,7 +65,7 @@ public class ResourceHandler {
         
     }
     
-    private static ResourceHandlerInstance instance = new ResourceHandlerInstance("i18n/MessageBundle");
+    private static ResourceHandlerInstance instance = new ResourceHandlerInstance(DEFAULT_MESSAGE_BUNDLE_PATH);
     
     /**
      * Get the currently used locale.

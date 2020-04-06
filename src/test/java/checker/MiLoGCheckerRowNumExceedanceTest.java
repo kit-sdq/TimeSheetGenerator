@@ -100,7 +100,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         ////Assertions
         assertTrue(numberOfEntries == timeSheet.getEntries().size());
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.MiLoGCheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
     }
     
     @Test
@@ -133,7 +133,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         assertTrue(numberOfEntries == timeSheet.getEntries().size());
         if (timeSheet.getEntries().size() > MiLoGChecker.getMaxEntries()) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.MiLoGCheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage())));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
