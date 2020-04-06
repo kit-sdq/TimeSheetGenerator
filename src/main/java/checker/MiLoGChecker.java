@@ -26,6 +26,7 @@ public class MiLoGChecker implements IChecker {
     //TODO Are those static constant values better than attributes?
     private static final TimeSpan WORKDAY_LOWER_BOUND = new TimeSpan(6, 0);
     private static final TimeSpan WORKDAY_UPPER_BOUND = new TimeSpan(22, 0);
+    private static final TimeSpan WORKDAY_MAX_WORKING_TIME = new TimeSpan(10, 0);
     
     //TODO Replace with enum
     private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
@@ -60,7 +61,8 @@ public class MiLoGChecker implements IChecker {
         errors.clear();
         
         checkTotalTimeExceedance();
-        checkDayTimeExceedances();
+        checkDayTimeExceedance();
+        checkDayPauseTime();
         checkDayTimeBounds();
         checkValidWorkingDays();
         checkTimeOverlap();
@@ -81,7 +83,7 @@ public class MiLoGChecker implements IChecker {
     }
 
     /**
-     * Checks whether maximum working time was exceeded.
+     * Checks whether total maximum working time was exceeded.
      */
     protected void checkTotalTimeExceedance() {
         //Legal maximum working time per month
@@ -96,15 +98,42 @@ public class MiLoGChecker implements IChecker {
                 .subtract(timeSheet.getPredTransfer());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
-            errors.add(new CheckerError(CheckerErrorMessage.TIME_EXCEEDANCE.getErrorMessage()));
+            errors.add(new CheckerError(CheckerErrorMessage.TOTAL_TIME_EXCEEDANCE.getErrorMessage()));
             result = CheckerReturn.INVALID;
+        }
+    }
+    
+    /**
+     * Checks whether daily maximum working time was exceeded.
+     */
+    protected void checkDayTimeExceedance() {
+        // This map contains all working days and their summed up working times.
+        Map<LocalDate,TimeSpan> workingTimeMap = new HashMap<LocalDate,TimeSpan>();
+        for (Entry entry : timeSheet.getEntries()) {
+            // A check is performed whether a day contains more than one entry.
+            if (workingTimeMap.containsKey(entry.getDate())) {
+                // If so, the working times are summed up and written back to the map.
+                TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
+                workingTimeMap.put(entry.getDate(), summedTime);
+            } else {
+                // If not, a new entry will be created in the map.
+                workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+            }
+        }
+        
+        for (Map.Entry<LocalDate,TimeSpan> mapEntry : workingTimeMap.entrySet()) {
+            if (WORKDAY_MAX_WORKING_TIME.compareTo(mapEntry.getValue()) < 0) {
+                errors.add(new CheckerError(CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(),
+                        WORKDAY_MAX_WORKING_TIME, mapEntry.getKey()));
+                result = CheckerReturn.INVALID;
+            }
         }
     }
     
     /**
      * Checks whether the working time per day meets all legal pause rules.
      */
-    protected void checkDayTimeExceedances() {    
+    protected void checkDayPauseTime() {
         //This map contains all dates associated with their working times
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
@@ -262,18 +291,27 @@ public class MiLoGChecker implements IChecker {
     }
     
     /**
+     * This method gets the legal daily maximum working time to conform to laws.
+     * @return The daily maximum working time.
+     */
+    protected static TimeSpan getWorkdayMaxWorkingTime() {
+        return WORKDAY_MAX_WORKING_TIME;
+    }
+
+    /**
      * This method gets the legal pause rules to conform to laws.
      * @return The legal pause rules.
      */
     protected static TimeSpan[][] getPauseRules() {
         return PAUSE_RULES;
     }
-    
+
     /**
      * This enum holds the possible error messages (including format specifiers) for this checker
      */
     protected enum CheckerErrorMessage {
-        TIME_EXCEEDANCE("Maximum legal working time exceeded."),
+        TOTAL_TIME_EXCEEDANCE("Maximum legal working time exceeded."),
+        DAY_TIME_EXCEEDANCE("Maximum daily working time of %s exceeded on %tF"), // string and date
         TIME_OUTOFBOUNDS("Working time is out of bounds on %tF."), // date
         TIME_SUNDAY("The %tF is a sunday, which is not a valid working day."), // date
         TIME_HOLIDAY("The %tF is an official holiday, which is not a valid working day."), // date
