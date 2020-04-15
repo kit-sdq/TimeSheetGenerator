@@ -199,7 +199,7 @@ public class MiLoGCheckerTimeOverlapTest {
         checker.checkTimeOverlap();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OVERLAP.getErrorMessage(date0);
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OVERLAP.getErrorMessage(date0);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -237,7 +237,7 @@ public class MiLoGCheckerTimeOverlapTest {
         checker.checkTimeOverlap();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OVERLAP.getErrorMessage(date0);
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OVERLAP.getErrorMessage(date0);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -275,7 +275,7 @@ public class MiLoGCheckerTimeOverlapTest {
         checker.checkTimeOverlap();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OVERLAP.getErrorMessage(date0);
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OVERLAP.getErrorMessage(date0);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -313,7 +313,7 @@ public class MiLoGCheckerTimeOverlapTest {
         checker.checkTimeOverlap();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OVERLAP.getErrorMessage(date0);
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OVERLAP.getErrorMessage(date0);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -357,8 +357,8 @@ public class MiLoGCheckerTimeOverlapTest {
         checker.checkTimeOverlap();
         
         ////Expectation
-        String error0 = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OVERLAP.getErrorMessage(date0);
-        String error2 = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OVERLAP.getErrorMessage(date2);
+        String error0 =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OVERLAP.getErrorMessage(date0);
+        String error2 =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OVERLAP.getErrorMessage(date2);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());

@@ -10,16 +10,16 @@ import data.TimeSheet;
  */
 public class CheckerError {
 
-    private final CheckerErrorMessage errorMsg;
+    private final CheckerErrorMessageProvider errorMessageProvider;
     private final Object[] args;
     
     /**
      * Constructs a new {@link CheckerError} instance.
-     * @param errorMsg - associated with the occurred error.
+     * @param errorMessageProvider - Provider for the error message.
      * @param args - Arguments referenced by the format specifiers in the errorMsg format string. 
      */
-    public CheckerError(CheckerErrorMessage errorMsg, Object... args) {
-        this.errorMsg = errorMsg;
+    public CheckerError(CheckerErrorMessageProvider errorMessageProvider, Object... args) {
+        this.errorMessageProvider = errorMessageProvider;
         this.args = args;
     }
     
@@ -28,15 +28,15 @@ public class CheckerError {
      * @return The error message.
      */
     public String getErrorMessage() {
-        return errorMsg.getErrorMessage(args);
+        return errorMessageProvider.getErrorMessage(args);
     }
     
     /**
-     * Gets the {@link CheckerErrorMessage} used to create this {@link CheckerError}.
-     * @return The checker error message.
+     * Gets the {@link CheckerErrorMessageProvider} used to create this {@link CheckerError}.
+     * @return The checker error message provider.
      */
-    public CheckerErrorMessage getCheckerErrorMessage() {
-        return errorMsg;
+    public CheckerErrorMessageProvider getErrorMessageProvider() {
+        return errorMessageProvider;
     }
     
     /**
@@ -48,9 +48,9 @@ public class CheckerError {
     }
     
     /**
-     * A CheckerErrorMessage represents a message that can be used in a CheckerError.
+     * A CheckerErrorMessageProvider provides a message for given arguments that can be used in a CheckerError.
      */
-    public interface CheckerErrorMessage {
+    public interface CheckerErrorMessageProvider {
         
         /**
          * Gets the error message.

@@ -62,7 +62,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage(
                 MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
 
         ////Assertions
@@ -88,7 +88,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
 
         ////Assertions
@@ -120,9 +120,9 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String errorDayOne = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String errorDayOne =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
-        String errorDayTwo = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String errorDayTwo =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), secondValidWorkingDay);
         
         ////Assertions
@@ -156,11 +156,11 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String errorDayOne = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String errorDayOne =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), validWorkingDays[0]);
-        String errorDayTwo = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String errorDayTwo =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), validWorkingDays[1]);
-        String errorDayThree = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String errorDayThree =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), validWorkingDays[2]);
         
         ////Assertions
@@ -192,7 +192,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
 
         ////Assertions
@@ -226,7 +226,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
         TimeSpan summedTime = entry1.getWorkingTime()
                 .add(entry2.getWorkingTime())
@@ -267,7 +267,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         checker.checkDayTimeExceedance();
 
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
                 MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
 
         ////Assertions

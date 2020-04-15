@@ -180,7 +180,7 @@ public class UserInput {
                 if (!file.exists()) {
                     throw new IOException(ResourceHandler.getMessage("error.userinput.fileDoesNotExist"));
                 } else if (exts.length > 0 && !Arrays.asList(exts).contains(FilenameUtils.getExtension(file.getName()))) {
-                    throw new IOException(ResourceHandler.getMessage("error.userinput.unsupportedException"));
+                    throw new IOException(ResourceHandler.getMessage("error.userinput.unsupportedExtension"));
                 }
                 break;
             case SAVE:

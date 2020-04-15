@@ -85,7 +85,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
         checker.checkDayTimeBounds();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -139,7 +139,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
         checker.checkDayTimeBounds();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -187,7 +187,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
         checker.checkDayTimeBounds();
         
         ////Expectation (on error)
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
         
         ////Assertions
         if (start.compareTo(CHECKER_WORKDAY_LOWER_BOUND) < 0) {
@@ -219,7 +219,7 @@ public class MiLoGCheckerDayTimeBoundsTest {
         checker.checkDayTimeBounds();
         
         ////Expectation (on error)
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS.getErrorMessage(entry.getDate());
         
         ////Assertions
         if (start.compareTo(CHECKER_WORKDAY_LOWER_BOUND) < 0 || end.compareTo(CHECKER_WORKDAY_UPPER_BOUND) > 0) {
@@ -252,8 +252,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
         checker.checkDayTimeBounds();
         
         ////Expectation (on error)
-        String error0 = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(entry0.getDate());
-        String error1 = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(entry1.getDate());
+        String error0 =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS.getErrorMessage(entry0.getDate());
+        String error1 =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS.getErrorMessage(entry1.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());

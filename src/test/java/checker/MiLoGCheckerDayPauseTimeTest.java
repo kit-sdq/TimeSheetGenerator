@@ -87,7 +87,7 @@ public class MiLoGCheckerDayPauseTimeTest {
         checker.checkDayPauseTime();
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_PAUSE.getErrorMessage(entry1.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry1.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -111,7 +111,7 @@ public class MiLoGCheckerDayPauseTimeTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_PAUSE.getErrorMessage(entry.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry.getDate());
         
         ////Assertions
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
@@ -145,7 +145,7 @@ public class MiLoGCheckerDayPauseTimeTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_PAUSE.getErrorMessage(entry.getDate());
+        String error =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry.getDate());
         
         ////Assertions
         TimeSpan startToEnd = end.subtract(start);
@@ -182,8 +182,8 @@ public class MiLoGCheckerDayPauseTimeTest {
         checker.checkDayPauseTime();
         
         ////Expectation
-        String error1 = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_PAUSE.getErrorMessage(entry1.getDate());
-        String error3 = MiLoGChecker.MiLoGCheckerErrorMessage.TIME_PAUSE.getErrorMessage(entry3.getDate());
+        String error1 =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry1.getDate());
+        String error3 =  MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry3.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
