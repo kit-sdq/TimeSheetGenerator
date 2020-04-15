@@ -60,7 +60,7 @@ public class LatexGeneratorPlaceholderTest {
             {"Pause 1: !break, Pause 2: !break, Pause 3: !break, Pause 4: !break",
                 "Pause 1: 00:30, Pause 2: 00:00, Pause 3: 00:00, Pause 4: 00:00"},
             {"Time 1: !dayTotal, Time 2: !dayTotal, Time 3: !dayTotal, Time 4: !dayTotal",
-                "Time 1: 03:30, Time 2: 04:00, Time 3: U 01:00, Time 4: U 01:30"}
+                "Time 1: 03:30, Time 2: 04:00, Time 3: 01:00 U, Time 4: 01:30 U"}
         });
     }
 

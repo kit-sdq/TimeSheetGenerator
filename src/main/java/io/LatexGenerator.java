@@ -175,7 +175,7 @@ public class LatexGenerator implements IGenerator {
                 break;
             case TABLE_TIME:
                 if (entry.isVacation()) {
-                    value = SHORTHAND_VACATION + " " + entry.getWorkingTime().toString();
+                    value = entry.getWorkingTime().toString() + " " + SHORTHAND_VACATION;
                 } else {
                     value = entry.getWorkingTime().toString();
                 }
