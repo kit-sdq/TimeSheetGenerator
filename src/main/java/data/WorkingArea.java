@@ -1,5 +1,7 @@
 package data;
 
+import i18n.ResourceHandler;
+
 /**
  * Represents an area, environment respectively, an {@link Employee employee} works in.
  */
@@ -38,6 +40,6 @@ public enum WorkingArea {
         } else if (s.equalsIgnoreCase(UB.getStringValue())) {
             return UB;
         }
-        throw new IllegalArgumentException("Invalid string: Cannot be parsed to WorkingArea.");
+        throw new IllegalArgumentException(ResourceHandler.getMessage("error.workingarea.invalidParseInput"));
     }
 }

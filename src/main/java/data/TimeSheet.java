@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import i18n.ResourceHandler;
+
 /**
  * A time sheet represents a whole month of work done by an {@link Employee}.
  */
@@ -35,8 +37,7 @@ public class TimeSheet {
          * (corrected => taking vacation and transfer into account) is not negative.
          */
         if (profession.getMaxWorkingTime().add(succTransfer).compareTo(predTransfer.add(vacation)) < 0) {
-            throw new IllegalArgumentException("Sum of predTransfer and vacation cannot be greater "
-                    + "than sum of maxWorkingTime and succTransfer.");
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timesheet.sumOfTimeNegative"));
         }
         
         this.employee = employee;
