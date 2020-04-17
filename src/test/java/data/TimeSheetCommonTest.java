@@ -22,7 +22,7 @@ public class TimeSheetCommonTest {
         Profession profession = new Profession("IPD", WorkingArea.UB, maxWorkingTime, 10.31);
         YearMonth yearMonth = YearMonth.of(2019, 11);
         Entry[] entries = new Entry[] {
-            new Entry("Vacation", LocalDate.of(2019, 11, 29), new TimeSpan(0, 0), new TimeSpan(10, 0), new TimeSpan(0, 0), true)
+            new Entry("Vacation", LocalDate.of(2019, 11, 29), new TimeSpan(10, 0), new TimeSpan(20, 0), new TimeSpan(0, 0), true)
         };
         TimeSheet timeSheet = new TimeSheet(employee, profession, yearMonth, entries, succTransfer, predTransfer);
         
@@ -41,7 +41,7 @@ public class TimeSheetCommonTest {
         Profession profession = new Profession("IPD", WorkingArea.UB, maxWorkingTime, 10.31);
         YearMonth yearMonth = YearMonth.of(2019, 11);
         Entry[] entries = new Entry[] {
-            new Entry("Vacation", LocalDate.of(2019, 11, 29), new TimeSpan(0, 0), new TimeSpan(10, 0), new TimeSpan(0, 0), true)
+            new Entry("Vacation", LocalDate.of(2019, 11, 29), new TimeSpan(10, 0), new TimeSpan(20, 0), new TimeSpan(0, 0), true)
         };
         TimeSheet timeSheet = new TimeSheet(employee, profession, yearMonth, entries, succTransfer, predTransfer);
         

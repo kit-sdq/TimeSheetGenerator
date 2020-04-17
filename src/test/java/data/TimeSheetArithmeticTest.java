@@ -25,7 +25,7 @@ public class TimeSheetArithmeticTest {
         entries[6] = new Entry("Test7", LocalDate.now(), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), true);
         TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, zeroTs, zeroTs);
         
-        assertEquals(timeSheet.getTotalWorkTime().toString(), "21:30");
+        assertEquals(timeSheet.getTotalWorkTime(), new TimeSpan(21, 30));
     }
     
     @Test
@@ -40,7 +40,7 @@ public class TimeSheetArithmeticTest {
         entries[3] = new Entry("Test4", LocalDate.now(), new TimeSpan(15, 0), new TimeSpan(16, 30), new TimeSpan(0, 0), true);
         TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, zeroTs, zeroTs);
         
-        assertEquals(timeSheet.getTotalVacationTime().toString(), "08:00");
+        assertEquals(timeSheet.getTotalVacationTime(), new TimeSpan(8, 0));
     }
 
     //TODO Create random tests

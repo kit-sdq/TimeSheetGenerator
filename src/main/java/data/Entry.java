@@ -86,7 +86,7 @@ public class Entry implements Comparable<Entry> {
     
     /**
      * If the entry is a vacation entry.
-     * @return If vacation entry.
+     * @return True if the entry represents vacation time, False otherwise.
      */
     public boolean isVacation() {
         return vacation;
