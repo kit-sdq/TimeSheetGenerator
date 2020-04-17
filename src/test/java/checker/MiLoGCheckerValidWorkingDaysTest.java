@@ -89,7 +89,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
         checker.checkValidWorkingDays();
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -115,7 +115,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
         checker.checkValidWorkingDays();
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -145,7 +145,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
          * and therefore this check is done beforehand.
          */
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -182,8 +182,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         checker.checkValidWorkingDays();
         
         ////Expectation (on error)
-        String errorSunday = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
-        String errorHoliday = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String errorSunday = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
+        String errorHoliday = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         if (randDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
@@ -224,8 +224,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         checker.checkValidWorkingDays();
         
         ////Expectation
-        String error0 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date0);
-        String error1 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date1);
+        String error0 = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date0);
+        String error1 = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date1);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());

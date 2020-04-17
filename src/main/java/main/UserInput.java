@@ -15,6 +15,8 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.io.FilenameUtils;
 
+import i18n.ResourceHandler;
+
 /**
  * Represents the user input from the command line and the GUI
  */
@@ -52,7 +54,7 @@ public class UserInput {
         // "gui" and "file" options are mutually exclusive
         if (commandLine.hasOption(UserInputOption.GUI.getOption().getOpt())
             && commandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
-            throw new ParseException("Gui and file option cannot be used at the same time.");
+            throw new ParseException(ResourceHandler.getMessage("error.userinput.mutuallyExclusiveOptionsGuiFile"));
         } else {
             return Request.GENERATE;
         }
@@ -63,7 +65,7 @@ public class UserInput {
      */
     public void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp("TimeSheetGenerator", UserInputOption.getOptions());
+        formatter.printHelp(ResourceHandler.getMessage("application.name"), UserInputOption.getOptions());
     }
 
     /**
@@ -107,14 +109,14 @@ public class UserInput {
         } catch (IOException e) {}
 
         if (version == null) { // general error
-            System.out.println("Version not found");
+            System.out.println(ResourceHandler.getMessage("error.userinput.versionNotFound"));
         } else {
-            System.out.println("Version: " + version);
+            System.out.println(ResourceHandler.getMessage("command.output.version", version));
 
             // false when the buildnumber-maven-plugin is not executed (usually when the code is not run directly from the jar)
             if (buildTime != null && branch != null && commit != null) {
                 System.out.println();
-                System.out.println("Built from " + branch + " (" + commit + ") at " + buildTime);
+                System.out.println(ResourceHandler.getMessage("command.output.buildInfo", branch, commit, buildTime));
             }
         }
     }
@@ -171,19 +173,19 @@ public class UserInput {
             switch (userInputFile.getFileOperation()) {
             case OPEN:
                 if (fileChooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
-                    throw new IOException("File could not be opened.");
+                    throw new IOException(ResourceHandler.getMessage("error.userinput.fileCouldNotBeOpened"));
                 }
                 file = fileChooser.getSelectedFile();
 
                 if (!file.exists()) {
-                    throw new IOException("Selected file does not exist.");
+                    throw new IOException(ResourceHandler.getMessage("error.userinput.fileDoesNotExist"));
                 } else if (exts.length > 0 && !Arrays.asList(exts).contains(FilenameUtils.getExtension(file.getName()))) {
-                    throw new IOException("Selected file has an unsupported extension.");
+                    throw new IOException(ResourceHandler.getMessage("error.userinput.unsupportedExtension"));
                 }
                 break;
             case SAVE:
                 if (fileChooser.showSaveDialog(null) != JFileChooser.APPROVE_OPTION) {
-                    throw new IOException("File could not be saved.");
+                    throw new IOException(ResourceHandler.getMessage("error.userinput.fileCouldNotBeSaved"));
                 }
                 file = fileChooser.getSelectedFile();
 

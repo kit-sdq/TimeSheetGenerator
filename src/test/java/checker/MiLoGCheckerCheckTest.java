@@ -57,7 +57,7 @@ public class MiLoGCheckerCheckTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
@@ -79,7 +79,7 @@ public class MiLoGCheckerCheckTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
@@ -101,7 +101,7 @@ public class MiLoGCheckerCheckTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
