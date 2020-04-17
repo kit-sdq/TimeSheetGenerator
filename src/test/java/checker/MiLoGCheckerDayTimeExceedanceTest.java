@@ -243,6 +243,34 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     }
     
     @Test
+    public void testValidWorkVacationCombinationSingleDay() throws CheckerException {
+        ////Test values
+        TimeSpan start1 = new TimeSpan(8, 0);
+        TimeSpan end1 = new TimeSpan(13, 0);
+        TimeSpan start2 = new TimeSpan(15, 0);
+        TimeSpan end2 = new TimeSpan(20, 1);
+        
+        ////Checker initialization
+        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
+        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS, true);
+        Entry[] entries = {entry1, entry2};
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
+
+        ////Execution
+        checker.checkDayTimeExceedance();
+
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+                MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
+
+        ////Assertions
+        assertTrue(MiLoGChecker.getWorkdayMaxWorkingTime().compareTo(entry1.getWorkingTime()) > 0);
+        assertFalse(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+    }
+    
+    @Test
     public void testRandomSingleEntry() throws CheckerException {
         ////Random
         Random rand = new Random();

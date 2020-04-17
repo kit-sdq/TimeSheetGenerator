@@ -112,14 +112,16 @@ public class MiLoGChecker implements IChecker {
         // This map contains all working days and their summed up working times.
         Map<LocalDate,TimeSpan> workingTimeMap = new HashMap<LocalDate,TimeSpan>();
         for (Entry entry : timeSheet.getEntries()) {
-            // A check is performed whether a day contains more than one entry.
-            if (workingTimeMap.containsKey(entry.getDate())) {
-                // If so, the working times are summed up and written back to the map.
-                TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
-                workingTimeMap.put(entry.getDate(), summedTime);
-            } else {
-                // If not, a new entry will be created in the map.
-                workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+            if (!entry.isVacation()) {
+                // A check is performed whether a day contains more than one entry.
+                if (workingTimeMap.containsKey(entry.getDate())) {
+                    // If so, the working times are summed up and written back to the map.
+                    TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
+                    workingTimeMap.put(entry.getDate(), summedTime);
+                } else {
+                    // If not, a new entry will be created in the map.
+                    workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+                }
             }
         }
         
@@ -140,9 +142,7 @@ public class MiLoGChecker implements IChecker {
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
         for (Entry entry : timeSheet.getEntries()) {
-            if (entry.isVacation()) {
-                // TODO: what is the limit for a vacation?
-            } else {
+            if (!entry.isVacation()) {
                 //EndToStart is the number of hours at this work shift.
                 TimeSpan endToStart = entry.getEnd();
                 endToStart = endToStart.subtract(entry.getStart());
