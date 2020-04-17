@@ -38,7 +38,7 @@ public class ResourceHandlerTest {
         // execute
         String result = resourceHandler.getMessage("test");
         // assert
-        assertEquals("Hello World!", result);
+        assertEquals("Hello Fallback!", result);
     }
     
     @Test
