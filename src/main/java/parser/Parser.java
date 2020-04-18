@@ -35,11 +35,10 @@ public class Parser {
         
         YearMonth yearMonth = monthParser.getYearMonth();
         Entry[] entries = monthParser.getEntries();
-        TimeSpan vacation = monthParser.getVacation();
         TimeSpan succTransfer = monthParser.getSuccTransfer();
         TimeSpan predTransfer = monthParser.getPredTransfer();
         
-        return new TimeSheet(employee, profession, yearMonth, entries, vacation, succTransfer, predTransfer);
+        return new TimeSheet(employee, profession, yearMonth, entries, succTransfer, predTransfer);
     }
     
 }

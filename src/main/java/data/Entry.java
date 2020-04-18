@@ -14,6 +14,7 @@ public class Entry implements Comparable<Entry> {
     private final String action;
     private final LocalDate date;
     private final TimeSpan start, end, pause;
+    private final boolean vacation;
 
     /**
      * Constructs a new instance of {@link Entry}
@@ -22,12 +23,17 @@ public class Entry implements Comparable<Entry> {
      * @param start - the starting time of the work interval
      * @param end - the end time of the work interval
      * @param pause - the breaks taken in this work interval
+     * @param vacation - if the entry is a vacation entry (may not contain a pause if true)
      */
-    public Entry(String action, LocalDate date, TimeSpan start, TimeSpan end, TimeSpan pause) {
+    public Entry(String action, LocalDate date, TimeSpan start, TimeSpan end, TimeSpan pause, boolean vacation) {
         if (start.getHour() > MAX_HOUR_PER_DAY || end.getHour() > MAX_HOUR_PER_DAY) {
             throw new IllegalArgumentException(ResourceHandler.getMessage("error.entry.timeOverUpperLimit"));
         } else if (end.compareTo(start) < 0) {
             throw new IllegalArgumentException(ResourceHandler.getMessage("error.entry.startGreaterThanEnd"));
+        }
+        
+        if (!pause.equals(new TimeSpan(0, 0)) && vacation) {
+            throw new IllegalArgumentException("Vacation entries may not contain a pause.");
         }
         
         this.action = action;
@@ -35,6 +41,7 @@ public class Entry implements Comparable<Entry> {
         this.start = start;
         this.end = end;
         this.pause = pause;
+        this.vacation = vacation;
     }
 
     /**
@@ -75,6 +82,14 @@ public class Entry implements Comparable<Entry> {
      */
     public TimeSpan getPause() {
         return pause;
+    }
+    
+    /**
+     * If the entry is a vacation entry.
+     * @return True if the entry represents vacation time, False otherwise.
+     */
+    public boolean isVacation() {
+        return vacation;
     }
 
     /**
@@ -119,6 +134,8 @@ public class Entry implements Comparable<Entry> {
         } else if (!this.end.equals(otherEntry.end)) {
             return false;
         } else if (!this.pause.equals(otherEntry.pause)) {
+            return false;
+        } else if (this.vacation != otherEntry.vacation) {
             return false;
         } else {
             return true;

@@ -94,9 +94,10 @@ public class MiLoGChecker implements IChecker {
         TimeSpan totalWorkingTime = timeSheet.getTotalWorkTime();
         
         //Vacation and transfer corrected time
-        TimeSpan correctedMaxWorkingTime = maxWorkingTime.add(timeSheet.getSuccTransfer())
-                .subtract(timeSheet.getVacation())
-                .subtract(timeSheet.getPredTransfer());
+        TimeSpan correctedMaxWorkingTime = maxWorkingTime
+                .add(timeSheet.getSuccTransfer())
+                .subtract(timeSheet.getPredTransfer())
+                .subtract(timeSheet.getTotalVacationTime());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
             errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE));
@@ -111,14 +112,16 @@ public class MiLoGChecker implements IChecker {
         // This map contains all working days and their summed up working times.
         Map<LocalDate,TimeSpan> workingTimeMap = new HashMap<LocalDate,TimeSpan>();
         for (Entry entry : timeSheet.getEntries()) {
-            // A check is performed whether a day contains more than one entry.
-            if (workingTimeMap.containsKey(entry.getDate())) {
-                // If so, the working times are summed up and written back to the map.
-                TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
-                workingTimeMap.put(entry.getDate(), summedTime);
-            } else {
-                // If not, a new entry will be created in the map.
-                workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+            if (!entry.isVacation()) {
+                // A check is performed whether a day contains more than one entry.
+                if (workingTimeMap.containsKey(entry.getDate())) {
+                    // If so, the working times are summed up and written back to the map.
+                    TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
+                    workingTimeMap.put(entry.getDate(), summedTime);
+                } else {
+                    // If not, a new entry will be created in the map.
+                    workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+                }
             }
         }
         
@@ -139,24 +142,26 @@ public class MiLoGChecker implements IChecker {
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
         for (Entry entry : timeSheet.getEntries()) {
-            //EndToStart is the number of hours at this work shift.
-            TimeSpan endToStart = entry.getEnd();
-            endToStart = endToStart.subtract(entry.getStart());
-            TimeSpan pause = entry.getPause();
-            LocalDate date = entry.getDate();
-            
-            //If a day appears more than once this logic sums all of the working times
-            if (workingDays.containsKey(date)) {
-                TimeSpan oldWorkingTime = workingDays.get(date)[0];
-                endToStart = endToStart.add(oldWorkingTime);
+            if (!entry.isVacation()) {
+                //EndToStart is the number of hours at this work shift.
+                TimeSpan endToStart = entry.getEnd();
+                endToStart = endToStart.subtract(entry.getStart());
+                TimeSpan pause = entry.getPause();
+                LocalDate date = entry.getDate();
                 
-                TimeSpan oldPause = workingDays.get(date)[1];
-                pause = pause.add(oldPause);
+                //If a day appears more than once this logic sums all of the working times
+                if (workingDays.containsKey(date)) {
+                    TimeSpan oldWorkingTime = workingDays.get(date)[0];
+                    endToStart = endToStart.add(oldWorkingTime);
+                    
+                    TimeSpan oldPause = workingDays.get(date)[1];
+                    pause = pause.add(oldPause);
+                }
+                
+                //Adds the day to the map, replaces the old entry respectively
+                TimeSpan[] mapTimeEntry = {endToStart, pause};
+                workingDays.put(date, mapTimeEntry);
             }
-            
-            //Adds the day to the map, replaces the old entry respectively
-            TimeSpan[] mapTimeEntry = {endToStart, pause};
-            workingDays.put(date, mapTimeEntry);
         }
         
         //Check for every mapTimeEntry (first for), whether all Pause Rules (second for) where met.

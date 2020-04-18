@@ -14,7 +14,6 @@ import data.TimeSpan;
 class MonthJson {
     
     private final YearMonth yearMonth;
-    private TimeSpan vacation;
     private TimeSpan predTransfer;
     private TimeSpan succTransfer;
     private final List<MonthEntryJson> entries;
@@ -26,7 +25,6 @@ class MonthJson {
         @JsonProperty(value="entries", required=true) List<MonthEntryJson> entries
     ) {
         this.yearMonth = YearMonth.of(year, month);
-        this.vacation = new TimeSpan(0, 0); // default
         this.predTransfer = new TimeSpan(0, 0); // default
         this.succTransfer = new TimeSpan(0, 0); // default
         this.entries = new ArrayList<MonthEntryJson>(entries);
@@ -36,15 +34,6 @@ class MonthJson {
         return yearMonth;
     }
     
-    public TimeSpan getVacation() {
-        return vacation;
-    }
-    
-    @JsonProperty("vacation")
-    public void setVacation(String vacation) {
-        this.vacation = TimeSpan.parse(vacation);
-    }
-
     public TimeSpan getPredTransfer() {
         return predTransfer;
     }

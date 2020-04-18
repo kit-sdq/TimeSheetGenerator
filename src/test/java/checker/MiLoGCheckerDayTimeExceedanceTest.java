@@ -34,7 +34,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     public void testNoEntry() throws CheckerException {
         ////Checker initialization
         Entry[] entries = {};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -53,9 +53,9 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         TimeSpan pause = new TimeSpan(0, 45);
 
         ////Checker initialization
-        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, pause);
+        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -79,9 +79,9 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         TimeSpan pause = new TimeSpan(0, 45);
 
         ////Checker initialization
-        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, pause);
+        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -109,11 +109,11 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         LocalDate secondValidWorkingDay = LocalDate.of(2019, 11, 23);
         
         ////Checker initialization
-        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS);
-        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS);
-        Entry entry3 = new Entry("Test 3", secondValidWorkingDay, start3, end3, ZERO_TS);
+        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
+        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS, false);
+        Entry entry3 = new Entry("Test 3", secondValidWorkingDay, start3, end3, ZERO_TS, false);
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -145,11 +145,11 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         LocalDate[] validWorkingDays = {LocalDate.of(2019, 11, 21), WORKINGDAY_VALID, LocalDate.of(2019, 11, 23)};
         
         ////Checker initialization
-        Entry entry1 = new Entry("Test 1", validWorkingDays[0], start1, end1, ZERO_TS);
-        Entry entry2 = new Entry("Test 2", validWorkingDays[1], start2, end2, ZERO_TS);
-        Entry entry3 = new Entry("Test 3", validWorkingDays[2], start3, end3, ZERO_TS);
+        Entry entry1 = new Entry("Test 1", validWorkingDays[0], start1, end1, ZERO_TS, false);
+        Entry entry2 = new Entry("Test 2", validWorkingDays[1], start2, end2, ZERO_TS, false);
+        Entry entry3 = new Entry("Test 3", validWorkingDays[2], start3, end3, ZERO_TS, false);
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -182,10 +182,10 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         TimeSpan end2 = new TimeSpan(20, 1);
         
         ////Checker initialization
-        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS);
-        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS);
+        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
+        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS, false);
         Entry[] entries = {entry1, entry2};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -214,12 +214,12 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         TimeSpan end4 = new TimeSpan(22, 0);
         
         ////Checker initialization
-        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS);
-        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS);
-        Entry entry3 = new Entry("Test 3", WORKINGDAY_VALID, start3, end3, ZERO_TS);
-        Entry entry4 = new Entry("Test 4", WORKINGDAY_VALID, start4, end4, ZERO_TS);
+        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
+        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS, false);
+        Entry entry3 = new Entry("Test 3", WORKINGDAY_VALID, start3, end3, ZERO_TS, false);
+        Entry entry4 = new Entry("Test 4", WORKINGDAY_VALID, start4, end4, ZERO_TS, false);
         Entry[] entries = {entry1, entry2, entry3, entry4};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
@@ -243,6 +243,34 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     }
     
     @Test
+    public void testValidWorkVacationCombinationSingleDay() throws CheckerException {
+        ////Test values
+        TimeSpan start1 = new TimeSpan(8, 0);
+        TimeSpan end1 = new TimeSpan(13, 0);
+        TimeSpan start2 = new TimeSpan(15, 0);
+        TimeSpan end2 = new TimeSpan(20, 1);
+        
+        ////Checker initialization
+        Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
+        Entry entry2 = new Entry("Test 2", WORKINGDAY_VALID, start2, end2, ZERO_TS, true);
+        Entry[] entries = {entry1, entry2};
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
+        MiLoGChecker checker = new MiLoGChecker(timeSheet);
+
+        ////Execution
+        checker.checkDayTimeExceedance();
+
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE.getErrorMessage( 
+                MiLoGChecker.getWorkdayMaxWorkingTime(), WORKINGDAY_VALID);
+
+        ////Assertions
+        assertTrue(MiLoGChecker.getWorkdayMaxWorkingTime().compareTo(entry1.getWorkingTime()) > 0);
+        assertFalse(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
+        assertEquals(CheckerReturn.VALID, checker.getResult());
+    }
+    
+    @Test
     public void testRandomSingleEntry() throws CheckerException {
         ////Random
         Random rand = new Random();
@@ -254,13 +282,13 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         ////Checker initialization
         Entry entry;
         if (fstTimeSpan.compareTo(sndTimeSpan) > 0) {
-            entry = new Entry("Test", WORKINGDAY_VALID, sndTimeSpan, fstTimeSpan, ZERO_TS);
+            entry = new Entry("Test", WORKINGDAY_VALID, sndTimeSpan, fstTimeSpan, ZERO_TS, false);
         } else {
-            entry = new Entry("Test", WORKINGDAY_VALID, fstTimeSpan, sndTimeSpan, ZERO_TS);
+            entry = new Entry("Test", WORKINGDAY_VALID, fstTimeSpan, sndTimeSpan, ZERO_TS, false);
         }
         
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS, ZERO_TS);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
 
         ////Execution
