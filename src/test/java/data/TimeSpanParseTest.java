@@ -193,14 +193,18 @@ public class TimeSpanParseTest {
         }
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testNegativeHours() {
         ////Test values
         String timeString = "-2:00";
         
         ////TimeSpan initialization
         TimeSpan timeSpan = TimeSpan.parse(timeString);
+        
+        ////Assertions
+        assertEquals(true, timeSpan.isNegative());
+        assertEquals(2, timeSpan.getHour());
+        assertEquals(0, timeSpan.getMinute());
     }
     
     @SuppressWarnings("unused")

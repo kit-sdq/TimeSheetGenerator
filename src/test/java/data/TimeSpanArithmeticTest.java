@@ -146,19 +146,25 @@ public class TimeSpanArithmeticTest {
         assertEquals(ts1.getMinute(), 59);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSubtractIllegalArgument1() {
         TimeSpan ts1 = new TimeSpan(0, 0);
         TimeSpan ts2 = new TimeSpan(2, 7);
         
         ts1 = ts1.subtract(ts2);
+        assertEquals(ts1.isNegative(), true);
+        assertEquals(ts1.getHour(), 2);
+        assertEquals(ts1.getMinute(), 7);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testSubtractIllegalArgument2() {
         TimeSpan ts1 = new TimeSpan(17, 0);
         TimeSpan ts2 = new TimeSpan(17, 5);
         
         ts1 = ts1.subtract(ts2);
+        assertEquals(ts1.isNegative(), true);
+        assertEquals(ts1.getHour(), 0);
+        assertEquals(ts1.getMinute(), 5);
     }
 }

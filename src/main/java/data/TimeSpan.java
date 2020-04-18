@@ -4,136 +4,86 @@ import i18n.ResourceHandler;
 
 /**
  * An immutable time span consisting of hours and minutes as well as basic arithmetic for it.
+ * The time span may be positive or negative, but can only be created as positive.
+ * To create a negative time span use the negate method as shown in this example:
+ * <br><br>
+ * <code>
+ * TimeSpan ts = new TimeSpan(2, 15).negate();
+ * </code>
  */
-public class TimeSpan implements Comparable<TimeSpan> {
+public class TimeSpan extends Time {
     
-    public static final int MIN_HOUR = 0;
+    /**
+     * Minimum number of minutes.
+     */
     public static final int MIN_MINUTE = 0;
+    /**
+     * Maxmimum number of minutes.
+     */
     public static final int MAX_MINUTE = 59;
     
-    private final int minute;
-    private final int hour;
-
+    /**
+     * Constructs a new TimeSpan instance from a total number of minutes.
+     * @param totalMinutes - Total number of minutes.
+     */
+    public TimeSpan(int totalMinutes) {
+        super(totalMinutes);
+    }
+    
     /**
      * Constructs a new TimeSpan instance.
-     * @param hour - Non-negative amount of hours
+     * @param hour - Number of hours
      * @param minute - Number of minutes between 0 and 59
      */
     public TimeSpan(int hour, int minute) {
-        if (hour < MIN_HOUR || minute < MIN_MINUTE) {
-            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.timeNegative"));
-        } else if (minute > MAX_MINUTE) {
-            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.minuteOverUpperBound", MAX_MINUTE));
+        super(hour, minute, true);
+        
+        if (minute < MIN_MINUTE || minute > MAX_MINUTE) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.time.minuteOutOfBounds", MIN_MINUTE, MAX_MINUTE));
         }
-        this.minute = minute;
-        this.hour = hour;
-    }
-
-    /**
-     * Gets the minutes of a TimeSpan.
-     * @return - The minutes.
-     */
-    public int getMinute() {
-        return minute;
-    }
-
-    /**
-     * Gets the hours of a TimeSpan.
-     * @return - The hours.
-     */
-    public int getHour() {
-        return hour;
-    }
-
-    /**
-     * Sums up hours and minutes taking carryover into account.
-     * @param addend - TimeSpan that should be added
-     * @return The {@link TimeSpan} representing the sum
-     */
-    public TimeSpan add(TimeSpan addend) {
-        int hourSum = this.hour + addend.getHour();
-        int minuteSum = this.minute + addend.getMinute();
-        int carry = minuteSum / (MAX_MINUTE + 1);
-        
-        return new TimeSpan(
-            hourSum + carry,
-            minuteSum % (MAX_MINUTE + 1)
-        );
-    }
-
-    /**
-     * Subtracts hours and minutes taking carryover into account.
-     * @param subtrahend - TimeSpan that should be subtracted
-     * @return The {@link TimeSpan} representing the difference
-     * @throws IllegalArgumentException thrown if the subtrahend is greater than the minuend
-     */
-    public TimeSpan subtract(TimeSpan subtrahend) throws IllegalArgumentException {
-        if (this.compareTo(subtrahend) < 0) {
-            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.subtrahendGreaterThanMinuend"));
-        }
-        
-        int hourDiff = this.hour - subtrahend.getHour();
-        int minuteDiff = this.minute - subtrahend.getMinute();
-        
-        return new TimeSpan(
-            hourDiff - ((MAX_MINUTE - minuteDiff) / (MAX_MINUTE + 1)),
-            ((MAX_MINUTE + 1) + minuteDiff) % (MAX_MINUTE + 1)
-        );
-    }
-
-    /**
-     * Attempts to interpret a string as a representation of a {@link TimeSpan}.
-     * @param s - the string to be parsed.
-     * @return A {@link TimeSpan} representing the input string
-     */
-    public static TimeSpan parse(String s) {
-        if (!s.matches(ResourceHandler.getMessage("locale.timespan.parseRegex"))) {
-            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.invalidParseInput"));
-        }
-        String[] splittedString = s.split(ResourceHandler.getMessage("locale.timespan.separatorHourMinute"));
-        
-        int hours;
-        int minutes;
-        try {
-            hours = Integer.parseInt(splittedString[0]);
-            minutes = Integer.parseInt(splittedString[1]);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        
-        return new TimeSpan(hours, minutes);
     }
     
-    @Override
-    public String toString() {
-        return ResourceHandler.getMessage("locale.timespan.stringFormat", hour, minute);
+    /**
+     * Get a positive TimeSpan with the same number of hours and minutes.
+     * @return Absolute TimeSpan.
+     */
+    public TimeSpan abs() {
+        return new TimeSpan(Math.abs(getTotalMinutes()));
     }
 
-    @Override
-    public int compareTo(TimeSpan other) {
-        if (this.hour > other.getHour()) {
-            return 1;
-        } else if (this.hour == other.getHour()) {
-            return Integer.compare(this.minute, other.getMinute());
-        } else {
-            return -1;
-        }
+    /**
+     * Get the sum of two TimeSpans.
+     * @param addend - TimeSpan to be added.
+     * @return Sum of the two TimeSpans.
+     */
+    public TimeSpan add(TimeSpan addend) {
+        return new TimeSpan(getTotalMinutes() + addend.getTotalMinutes());
+    }
+    
+    /**
+     * Get a TimeSpan with the same number of hours and minutes but with the opposite sign.
+     * @return Negated TimeSpan.
+     */
+    public TimeSpan negate() {
+        return new TimeSpan(-getTotalMinutes());
     }
 
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof TimeSpan)) {
-            return false;
-        }
+    /**
+     * Get the difference between two TimeSpans.
+     * @param subtrahend - TimeSpan to be subtracted.
+     * @return Difference between the TimeSpans.
+     */
+    public TimeSpan subtract(TimeSpan subtrahend) {
+        return new TimeSpan(getTotalMinutes() - subtrahend.getTotalMinutes());
+    }
 
-        TimeSpan otherTimeSpan = (TimeSpan)other;
-        if (this.hour != otherTimeSpan.hour) {
-            return false;
-        } else if (this.minute != otherTimeSpan.minute) {
-            return false;
-        } else {
-            return true;
-        }
+    /**
+     * Parse a TimeSpan from a string. The format is defined in the i18n files with the key "locale.time.parseRegex".
+     * @param string - String representation of the TimeSpan.
+     * @return Parsed TimeSpan.
+     */
+    public static TimeSpan parse(String string) {
+        return parse(string, (totalMinutes) -> new TimeSpan(totalMinutes));
     }
 
 }
