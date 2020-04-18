@@ -90,9 +90,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(0, 1));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -113,9 +117,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(1, 0));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -161,9 +169,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(0, 1));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -215,9 +227,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(0, 1));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -242,9 +258,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(1, 0));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -266,9 +286,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(1, 0));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -290,9 +314,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(0, 1));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -318,9 +346,13 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         //Executions
         checker.checkTotalTimeExceedance();
         
+        ////Expectation
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                maxWorkTime, new TimeSpan(0, 1));
+        
         //Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
-        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+        assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
     @Test
@@ -404,8 +436,12 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         
         //Assertions
         if (maxWorkTime.compareTo(end) < 0) {
+            ////Expectation
+            String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                    maxWorkTime, end.subtract(maxWorkTime));
+            
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
@@ -436,8 +472,12 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         
         //Assertions
         if (end.getMinute() > 0) {
+            ////Expectation
+            String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                    maxWorkTime, end.subtract(maxWorkTime));
+            
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
@@ -468,8 +508,12 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         
         //Assertions
         if (end.compareTo(maxWorkTime) > 0) {
+            ////Expectation
+            String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                    maxWorkTime, end.subtract(maxWorkTime));
+            
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
@@ -502,8 +546,12 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         ////Assertions
         TimeSpan workingTime = entry.getWorkingTime();
         if (workingTime.compareTo(maxWorkTime) > 0) {
+            ////Expectation
+            String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                    maxWorkTime, timeSheet.getTotalWorkTime().subtract(maxWorkTime));
+                
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());
@@ -542,8 +590,12 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         
         ////Assertions
         if (timeSheet.getTotalWorkTime().compareTo(maxWorkTime) > 0) {
+            ////Expectation
+            String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage( 
+                    maxWorkTime, timeSheet.getTotalWorkTime().subtract(maxWorkTime));
+            
             assertEquals(CheckerReturn.INVALID, checker.getResult());
-            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE.getErrorMessage())));
+            assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
         } else {
             assertEquals(CheckerReturn.VALID, checker.getResult());
             assertTrue(checker.getErrors().isEmpty());

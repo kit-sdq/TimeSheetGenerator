@@ -100,7 +100,10 @@ public class MiLoGChecker implements IChecker {
                 .subtract(timeSheet.getTotalVacationTime());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
-            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE));
+            //Calculate difference
+            TimeSpan difference = totalWorkingTime.subtract(correctedMaxWorkingTime);
+            
+            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE, maxWorkingTime, difference));
             result = CheckerReturn.INVALID;
         }
     }
