@@ -15,7 +15,7 @@ public class EntryArithmeticTest {
         TimeSpan start = new TimeSpan(14, 0);
         TimeSpan end = new TimeSpan(18, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Entry entry = new Entry("Test", DATE_NOW, start, end, pause);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 3);
@@ -27,7 +27,7 @@ public class EntryArithmeticTest {
         TimeSpan start = new TimeSpan(17, 0);
         TimeSpan end = new TimeSpan(20, 30);
         TimeSpan pause = new TimeSpan(0, 0);
-        Entry entry = new Entry("Test", DATE_NOW, start, end, pause);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 3);
@@ -39,7 +39,7 @@ public class EntryArithmeticTest {
         TimeSpan start = new TimeSpan(12, 30);
         TimeSpan end = new TimeSpan(21, 0);
         TimeSpan pause = new TimeSpan(0, 30);
-        Entry entry = new Entry("Test", DATE_NOW, start, end, pause);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 8);
@@ -51,7 +51,7 @@ public class EntryArithmeticTest {
         TimeSpan start = new TimeSpan(13, 0);
         TimeSpan end = new TimeSpan(21, 25);
         TimeSpan pause = new TimeSpan(0, 30);
-        Entry entry = new Entry("Test", DATE_NOW, start, end, pause);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 7);
@@ -63,7 +63,7 @@ public class EntryArithmeticTest {
         TimeSpan start = new TimeSpan(19, 30);
         TimeSpan end = new TimeSpan(20, 0);
         TimeSpan pause = new TimeSpan(0, 0);
-        Entry entry = new Entry("Test", DATE_NOW, start, end, pause);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 0);
@@ -75,10 +75,23 @@ public class EntryArithmeticTest {
         TimeSpan start = new TimeSpan(13, 0);
         TimeSpan end = new TimeSpan(23, 0);
         TimeSpan pause = new TimeSpan(5, 0);
-        Entry entry = new Entry("Test", DATE_NOW, start, end, pause);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
         TimeSpan workingTime = entry.getWorkingTime();
         assertEquals(workingTime.getHour(), 5);
         assertEquals(workingTime.getMinute(), 0);
     }
+    
+    @Test
+    public void testGetWorkingTimeVacation() {
+        TimeSpan start = new TimeSpan(9, 0);
+        TimeSpan end = new TimeSpan(12, 0);
+        TimeSpan pause = new TimeSpan(0, 0);
+        Entry entry = new Entry("Test", DATE_NOW, start, end, pause, true);
+        
+        TimeSpan workingTime = entry.getWorkingTime();
+        assertEquals(workingTime.getHour(), 3);
+        assertEquals(workingTime.getMinute(), 0);
+    }
+    
 }

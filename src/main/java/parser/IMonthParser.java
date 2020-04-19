@@ -26,13 +26,6 @@ public interface IMonthParser {
     public Entry[] getEntries() throws ParseException;
     
     /**
-     * Returns {@link TimeSpan} representing the vacation parsed from data.
-     * @return A vacation {@link TimeSpan}.
-     * @throws ParseException if an error occurs while parsing.
-     */
-    public TimeSpan getVacation() throws ParseException;
-    
-    /**
      * Returns {@link TimeSpan} representing the transfered time
      * from the successor month parsed from data.
      * @return A transfered time {@link TimeSpan}.

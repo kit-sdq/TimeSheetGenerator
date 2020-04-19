@@ -1,11 +1,16 @@
 package data;
 
+import i18n.ResourceHandler;
+
 /**
  * An immutable time span consisting of hours and minutes as well as basic arithmetic for it.
  */
 public class TimeSpan implements Comparable<TimeSpan> {
     
-    //TODO Replace magic numbers with constants
+    public static final int MIN_HOUR = 0;
+    public static final int MIN_MINUTE = 0;
+    public static final int MAX_MINUTE = 59;
+    
     private final int minute;
     private final int hour;
 
@@ -15,10 +20,10 @@ public class TimeSpan implements Comparable<TimeSpan> {
      * @param minute - Number of minutes between 0 and 59
      */
     public TimeSpan(int hour, int minute) {
-        if (hour < 0 || minute < 0) {
-            throw new IllegalArgumentException("Hour and minute may not be negative.");
-        } else if (minute > 59) {
-            throw new IllegalArgumentException("Minute may not be greater than 59.");
+        if (hour < MIN_HOUR || minute < MIN_MINUTE) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.timeNegative"));
+        } else if (minute > MAX_MINUTE) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.minuteOverUpperBound", MAX_MINUTE));
         }
         this.minute = minute;
         this.hour = hour;
@@ -48,11 +53,11 @@ public class TimeSpan implements Comparable<TimeSpan> {
     public TimeSpan add(TimeSpan addend) {
         int hourSum = this.hour + addend.getHour();
         int minuteSum = this.minute + addend.getMinute();
-        int carry = minuteSum / 60;
+        int carry = minuteSum / (MAX_MINUTE + 1);
         
         return new TimeSpan(
             hourSum + carry,
-            minuteSum % 60
+            minuteSum % (MAX_MINUTE + 1)
         );
     }
 
@@ -64,15 +69,15 @@ public class TimeSpan implements Comparable<TimeSpan> {
      */
     public TimeSpan subtract(TimeSpan subtrahend) throws IllegalArgumentException {
         if (this.compareTo(subtrahend) < 0) {
-            throw new IllegalArgumentException("Subtrahend may not be greater than Minuend.");
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.subtrahendGreaterThanMinuend"));
         }
         
         int hourDiff = this.hour - subtrahend.getHour();
         int minuteDiff = this.minute - subtrahend.getMinute();
         
         return new TimeSpan(
-            hourDiff - ((59 - minuteDiff) / 60),
-            (60 + minuteDiff) % 60
+            hourDiff - ((MAX_MINUTE - minuteDiff) / (MAX_MINUTE + 1)),
+            ((MAX_MINUTE + 1) + minuteDiff) % (MAX_MINUTE + 1)
         );
     }
 
@@ -82,10 +87,10 @@ public class TimeSpan implements Comparable<TimeSpan> {
      * @return A {@link TimeSpan} representing the input string
      */
     public static TimeSpan parse(String s) {
-        if (!s.matches("^[0-9]+:[0-5]?[0-9]$")) {
-            throw new IllegalArgumentException("Invalid time string. Usage: h...h:mm");
+        if (!s.matches(ResourceHandler.getMessage("locale.timespan.parseRegex"))) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timespan.invalidParseInput"));
         }
-        String[] splittedString = s.split(":");
+        String[] splittedString = s.split(ResourceHandler.getMessage("locale.timespan.separatorHourMinute"));
         
         int hours;
         int minutes;
@@ -101,7 +106,7 @@ public class TimeSpan implements Comparable<TimeSpan> {
     
     @Override
     public String toString() {
-        return String.format("%02d:%02d", hour, minute);
+        return ResourceHandler.getMessage("locale.timespan.stringFormat", hour, minute);
     }
 
     @Override
@@ -114,4 +119,21 @@ public class TimeSpan implements Comparable<TimeSpan> {
             return -1;
         }
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof TimeSpan)) {
+            return false;
+        }
+
+        TimeSpan otherTimeSpan = (TimeSpan)other;
+        if (this.hour != otherTimeSpan.hour) {
+            return false;
+        } else if (this.minute != otherTimeSpan.minute) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
 }

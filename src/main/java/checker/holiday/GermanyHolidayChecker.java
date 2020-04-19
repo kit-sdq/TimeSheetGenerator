@@ -8,13 +8,10 @@ import java.util.Collection;
 
 import javax.net.ssl.SSLHandshakeException;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import io.FileController;
 import parser.IHolidayParser;
-import parser.JsonHolidayParser;
 import parser.ParseException;
+import parser.json.JsonHolidayParser;
 
 /**
  * A GermanyHolidayChecker is a holiday checker implementing {@link IHolidayChecker} that
@@ -73,10 +70,10 @@ public class GermanyHolidayChecker implements IHolidayChecker {
         }
         
         try {
-            JSONObject jsonHolidays = new JSONObject(stringHolidays);
-            IHolidayParser holidayParser = new JsonHolidayParser(jsonHolidays);
+            IHolidayParser holidayParser = new JsonHolidayParser(stringHolidays);
+            
             holidays = holidayParser.getHolidays();
-        } catch (JSONException | ParseException e) {
+        } catch (ParseException e) {
             throw new HolidayFetchException(e.getMessage());
         }
         
@@ -115,9 +112,6 @@ public class GermanyHolidayChecker implements IHolidayChecker {
      * @return {@code True} if the holidays are already fetched, {@code False} otherwise.
      */
     private boolean hasHolidays() {
-        if (holidays == null || holidays.isEmpty()) {
-            return false;
-        }
-        return true;
+        return holidays != null && !holidays.isEmpty();
     }
 }

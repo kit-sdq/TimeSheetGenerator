@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import i18n.ResourceHandler;
+
 /**
  * A time sheet represents a whole month of work done by an {@link Employee}.
  */
@@ -13,42 +15,41 @@ public class TimeSheet {
     private final Employee employee;
     private final Profession profession;
     private final YearMonth yearMonth;
-    private final TimeSpan vacation, succTransfer, predTransfer;
+    private final TimeSpan succTransfer, predTransfer;
     private final List<Entry> entries;
     
     /**
      * Constructs a new instance of {@code TimeSheet}.
      *
-     * @param employee - The {@link Employee employee} this documentation is associated with.
+     * @param employee - The {@link Employee employee} this time sheet is associated with.
      * @param profession - The {@link Profession profession} of the {@link Employee employee}.
-     * @param yearMonth - The year and month this documentation is associated with.
-     * @param entries - The {@link Entry entries} this documentation should consist of.
-     * @param vacation - The vacation time that should get taken into account.
-     * @param succTransfer - The time that should be carried over to the next documentation.
-     * @param predTransfer - The time that got carried over from the last documentation.
+     * @param yearMonth - The year and month this time sheet is associated with.
+     * @param entries - The {@link Entry entries} this time sheet should consist of.
+     * @param succTransfer - The time that should be carried over to the next time sheet.
+     * @param predTransfer - The time that got carried over from the last time sheet.
      */
-    public TimeSheet(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries, TimeSpan vacation,
+    public TimeSheet(Employee employee, Profession profession, YearMonth yearMonth, Entry[] entries,
             TimeSpan succTransfer, TimeSpan predTransfer) {
-        
-        /*
-         * This check has to be done in order to guarantee that the corrected max working time
-         * (corrected => taking vacation and transfer into account) is not negative.
-         */
-        if (profession.getMaxWorkingTime().add(succTransfer).compareTo(predTransfer.add(vacation)) < 0) {
-            throw new IllegalArgumentException("Sum of predTransfer and vacation cannot be greater "
-                    + "than sum of maxWorkingTime and succTransfer.");
-        }
         
         this.employee = employee;
         this.profession = profession;
         this.yearMonth = yearMonth;
-        this.vacation = vacation;
         this.succTransfer = succTransfer;
         this.predTransfer = predTransfer;
         
         List<Entry> entryList = Arrays.asList(entries);
         Collections.sort(entryList);
         this.entries = Collections.unmodifiableList(entryList);
+        
+        /*
+         * This check has to be done in order to guarantee that the corrected max working time
+         * (corrected => taking vacation and transfer into account) is not negative.
+         * 
+         * TODO: I don't think this belongs here, should probably be in some checker.
+         */
+        if (profession.getMaxWorkingTime().add(succTransfer).compareTo(predTransfer.add(getTotalVacationTime())) < 0) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timesheet.sumOfTimeNegative"));
+        }
     }
 
     /**
@@ -74,14 +75,6 @@ public class TimeSheet {
      */
     public List<Entry> getEntries() {
         return entries;
-    }
-    
-    /**
-     * Gets the vacation of a {@link TimeSheet}.
-     * @return The vacation.
-     */
-    public TimeSpan getVacation() {
-        return this.vacation;
     }
 
     /**
@@ -123,11 +116,53 @@ public class TimeSheet {
     public TimeSpan getTotalWorkTime() {
         TimeSpan totalWorkTime = new TimeSpan(0, 0);
         
-        //Sums up the working times entry per entry
         for (Entry entry : this.getEntries()) {
-            totalWorkTime = totalWorkTime.add(entry.getWorkingTime());
+            if (!entry.isVacation()) {
+                totalWorkTime = totalWorkTime.add(entry.getWorkingTime());
+            }
         }
+        
         return totalWorkTime;
+    }
+    
+    /**
+     * Calculates the overall vacation time of all entries.
+     * @return The overall, summed up vacation time.
+     */
+    public TimeSpan getTotalVacationTime() {
+        TimeSpan totalVacationTime = new TimeSpan(0, 0);
+        
+        for (Entry entry : this.getEntries()) {
+            if (entry.isVacation()) {
+                totalVacationTime = totalVacationTime.add(entry.getWorkingTime());
+            }
+        }
+        
+        return totalVacationTime;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof TimeSheet)) {
+            return false;
+        }
+
+        TimeSheet otherTimeSheet = (TimeSheet)other;
+        if (!this.employee.equals(otherTimeSheet.employee)) {
+            return false;
+        } else if (!this.profession.equals(otherTimeSheet.profession)) {
+            return false;
+        } else if (!this.yearMonth.equals(otherTimeSheet.yearMonth)) {
+            return false;
+        } else if (!this.succTransfer.equals(otherTimeSheet.succTransfer)) {
+            return false;
+        } else if (!this.predTransfer.equals(otherTimeSheet.predTransfer)) {
+            return false;
+        } else if (!this.entries.equals(otherTimeSheet.entries)) {
+            return false;
+        } else {
+            return true;
+        }
     }
   
 }

@@ -39,5 +39,21 @@ public class Tuple<A, B> {
     public B getSecond() {
         return this.second;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Tuple<?, ?>)) {
+            return false;
+        }
+
+        Tuple<?, ?> otherTuple = (Tuple<?, ?>)other;
+        if (!this.first.equals(otherTuple.first)) {
+            return false;
+        } else if (!this.second.equals(otherTuple.second)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     
 }

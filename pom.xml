@@ -6,10 +6,16 @@
 
     <groupId>edu.kit.ipd.sdq</groupId>
     <artifactId>TimeSheetGenerator</artifactId>
-    <version>v0.1.1</version>
+    <version>v0.2.0</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <versionName>${project.version};${maven.build.timestamp};${scmBranch};${buildNumber}</versionName>
     </properties>
+    <scm>
+    	<connection>scm:git:url</connection>
+    	<developerConnection>scm:git:url</developerConnection>
+    	<tag>HEAD</tag>
+    </scm>
     <build>
         <plugins>
             <plugin>
@@ -44,15 +50,36 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                   <groupId>org.codehaus.mojo</groupId>
+                   <artifactId>buildnumber-maven-plugin</artifactId>
+                   <version>1.4</version>
+                   <executions>
+                       <execution>
+                           <goals>
+                               <goal>create</goal>
+                           </goals>
+                       </execution>
+                   </executions>
+                   <configuration>
+                       <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+                       <doCheck>false</doCheck> <!-- Don't fail on modified local resources -->
+                       <doUpdate>false</doUpdate> <!-- Use local SCM information -->
+                       <shortRevisionLength>7</shortRevisionLength>
+                   </configuration>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/resources/maven</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.json/json -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20190722</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
         <dependency>
             <groupId>commons-cli</groupId>
@@ -64,6 +91,12 @@
            	<groupId>commons-io</groupId>
            	<artifactId>commons-io</artifactId>
            	<version>2.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+        	<groupId>com.fasterxml.jackson.core</groupId>
+        	<artifactId>jackson-databind</artifactId>
+        	<version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

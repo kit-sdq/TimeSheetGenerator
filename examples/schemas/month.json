@@ -1,0 +1,72 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"definitions": {
+		"time_span": {
+			"type": "string",
+			"pattern": "^[0-9]+:[0-5]?[0-9]$"
+		},
+		"day_time": {
+			"type": "string",
+			"pattern": "^(([0-1]?[0-9])|(2[0-3])):[0-5]?[0-9]$"
+		},
+		"entry": {
+			"type": "object",
+			"properties": {
+				"action": {
+					"type": "string"
+				},
+				"day": {
+					"type": "integer",
+					"minimum": 1,
+					"maximum": 31
+				},
+				"start": {
+					"$ref": "#/definitions/day_time"
+				},
+				"end": {
+					"$ref": "#/definitions/day_time"
+				},
+				"pause": {
+					"$ref": "#/definitions/time_span"
+				},
+				"vacation": {
+					"type": "boolean",
+					"default": false
+				}
+			},
+			"required": ["action", "day", "start", "end"],
+			"not": { "required": ["pause", "vacation"] },
+			"additionalProperties": false
+		}
+	},
+	"properties": {
+		"year": {
+			"type": "integer",
+			"minimum": 1000,
+			"maximum": 9999
+		},
+		"month": {
+			"type": "integer",
+			"minimum": 1,
+			"maximum": 12
+		},
+		"pred_transfer": {
+			"$ref": "#/definitions/time_span"
+		},
+		"succ_transfer": {
+			"$ref": "#/definitions/time_span"
+		},
+		"entries": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/entry"
+			}
+		}
+	},
+	"patternProperties": {
+		"^\\$.*$": {}
+	},
+	"required": ["year", "month", "entries"],
+	"additionalProperties": false
+}

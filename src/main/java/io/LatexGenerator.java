@@ -1,21 +1,41 @@
 package io;
 
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import data.Entry;
 import data.TimeSheet;
 import data.WorkingArea;
+import etc.ContextStringReplacer;
+import i18n.ResourceHandler;
 
 /**
  * The LatexGenerator generates a LaTeX string based on a template and fills it with 
  * information of a {@link TimeSheet} and its associated {@link Entry Entries}.
  */
 public class LatexGenerator implements IGenerator {
-
-    private final static String FILE_EXTENSION = "tex";
-    private final static String FILE_DESCRIPTION = "TeX-File";
+    
+    private final static String SHORTHAND_VACATION = "U";
+    
+    /**
+     * List of characters that can be escaped by using a backslash (\) as a prefix
+     */
+    private final static String[] LATEX_SPECIALCHARACTERS_ESCAPE = new String[] { "&", "%", "$", "#", "_", "{", "}" };
+    /**
+     * Map of characters that have to be replaced with a command
+     */
+    private final static Map<String, String> LATEX_SPECIALCHARACTERS_REPLACE = new HashMap<String, String>();
+    static {
+        LATEX_SPECIALCHARACTERS_REPLACE.put("\\", "\\textbackslash");
+        LATEX_SPECIALCHARACTERS_REPLACE.put("~", "\\textasciitilde");
+        LATEX_SPECIALCHARACTERS_REPLACE.put("^", "\\textasciicircum");
+    }
+    
+    private final static String TABLE_DATE_FORMAT = "dd.MM.yy";
     
     private final TimeSheet timeSheet;
     private final String template;
@@ -49,7 +69,8 @@ public class LatexGenerator implements IGenerator {
         for (EntryElement elem : EntryElement.values()) {
             String placeholder = elem.getPlaceholder();
             for (Entry entry : timeSheet.getEntries()) {
-                filledTex = filledTex.replaceFirst(placeholder, getSubstitute(entry, elem));
+                // quoteReplacement is required because the replacement string (including \, $, ^, ...) is interpreted as a regex expression otherwise
+                filledTex = filledTex.replaceFirst(placeholder, Matcher.quoteReplacement(getSubstitute(entry, elem)));
             }
         }
         
@@ -66,7 +87,10 @@ public class LatexGenerator implements IGenerator {
 
     @Override
     public FileNameExtensionFilter getFileNameExtensionFilter() {
-        return new FileNameExtensionFilter(FILE_DESCRIPTION, FILE_EXTENSION);
+        return new FileNameExtensionFilter(
+            ResourceHandler.getMessage("file.tex.description"),
+            ResourceHandler.getMessage("file.tex.extension")
+        );
     }
 
     /**
@@ -86,7 +110,7 @@ public class LatexGenerator implements IGenerator {
                 value = Integer.toString(timeSheet.getMonth().getValue());
                 break;
             case EMPLOYEE_NAME:
-                value = timeSheet.getEmployee().getName();
+                value = escapeText(timeSheet.getEmployee().getName());
                 break;
             case EMPLOYEE_ID:
                 value = Integer.toString(timeSheet.getEmployee().getId());
@@ -99,7 +123,7 @@ public class LatexGenerator implements IGenerator {
                 }
                 break;
             case DEPARTMENT:
-                value = timeSheet.getProfession().getDepartmentName();
+                value = escapeText(timeSheet.getProfession().getDepartmentName());
                 break;
             case MAX_HOURS:
                 value = timeSheet.getProfession().getMaxWorkingTime().toString();
@@ -108,10 +132,10 @@ public class LatexGenerator implements IGenerator {
                 value = Double.toString(timeSheet.getProfession().getWage());
                 break;
             case VACATION:
-                value = timeSheet.getVacation().toString();
+                value = timeSheet.getTotalVacationTime().toString();
                 break;
             case HOURS_SUM:
-                value = timeSheet.getTotalWorkTime().add(timeSheet.getVacation()).toString();
+                value = timeSheet.getTotalWorkTime().add(timeSheet.getTotalVacationTime()).toString();
                 break;
             case TRANSFER_PRED:
                 value = timeSheet.getPredTransfer().toString();
@@ -137,10 +161,10 @@ public class LatexGenerator implements IGenerator {
         String value;
         switch (element) {
             case TABLE_ACTION:
-                value = entry.getAction();
+                value = escapeText(entry.getAction());
                 break;
             case TABLE_DATE:
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TABLE_DATE_FORMAT);
                 value = entry.getDate().format(formatter);
                 break;
             case TABLE_START:
@@ -153,13 +177,42 @@ public class LatexGenerator implements IGenerator {
                 value = entry.getPause().toString();
                 break;
             case TABLE_TIME:
-                value = entry.getWorkingTime().toString();
+                if (entry.isVacation()) {
+                    value = entry.getWorkingTime().toString() + " " + SHORTHAND_VACATION;
+                } else {
+                    value = entry.getWorkingTime().toString();
+                }
                 break;
             default:
                 value = null;
                 break;
         }
         return value;
+    }
+    
+    /**
+     * Escape all LaTeX special characters in the given text string
+     * @param text Text only, not allowed to contain LaTeX commands or formatting
+     * @return The escaped text string
+     */
+    public static String escapeText(String text) {
+        String escapedText = text;
+
+        escapedText = ContextStringReplacer.replace(escapedText, LATEX_SPECIALCHARACTERS_REPLACE.keySet(), (r) -> {
+            String replaceWith = LATEX_SPECIALCHARACTERS_REPLACE.get(r.getSubstring());
+            
+            if (r.getLookahead(1).equals(" ")) {
+                r.replace(replaceWith + "\\");
+            } else {
+                r.replace(replaceWith + " ");
+            }
+        });
+
+        for (String specialCharacter : LATEX_SPECIALCHARACTERS_ESCAPE) {
+            escapedText = escapedText.replace(specialCharacter, "\\" + specialCharacter);
+        }
+        
+        return escapedText;
     }
     
     /**
