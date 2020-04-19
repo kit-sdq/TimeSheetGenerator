@@ -147,7 +147,7 @@ public class TimeSpanArithmeticTest {
     }
     
     @Test
-    public void testSubtractIllegalArgument1() {
+    public void testSubtractNegative1() {
         TimeSpan ts1 = new TimeSpan(0, 0);
         TimeSpan ts2 = new TimeSpan(2, 7);
         
@@ -158,7 +158,7 @@ public class TimeSpanArithmeticTest {
     }
     
     @Test
-    public void testSubtractIllegalArgument2() {
+    public void testSubtractNegative2() {
         TimeSpan ts1 = new TimeSpan(17, 0);
         TimeSpan ts2 = new TimeSpan(17, 5);
         

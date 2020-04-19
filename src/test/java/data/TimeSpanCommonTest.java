@@ -43,6 +43,20 @@ public class TimeSpanCommonTest {
     }
     
     @Test
+    public void testConstructor7() {
+        TimeSpan ts = new TimeSpan(143);
+        
+        assertEquals(ts.getTotalMinutes(), 143);
+    }
+    
+    @Test
+    public void testConstructor8() {
+        TimeSpan ts = new TimeSpan(-143);
+        
+        assertEquals(ts.getTotalMinutes(), -143);
+    }
+    
+    @Test
     public void testToString1() {
         TimeSpan ts = new TimeSpan(0, 0);
         
@@ -96,6 +110,13 @@ public class TimeSpanCommonTest {
         TimeSpan ts = new TimeSpan(1923, 0);
         
         assertEquals(ts.toString(), "1923:00");
+    }
+    
+    @Test
+    public void testToString9() {
+        TimeSpan ts = new TimeSpan(7, 36).negate();
+        
+        assertEquals(ts.toString(), "-07:36");
     }
     
 }

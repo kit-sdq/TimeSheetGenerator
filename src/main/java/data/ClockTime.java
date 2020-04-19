@@ -28,7 +28,7 @@ public class ClockTime extends Time {
      * Create a new clock time.
      * @param totalMinutes Total number of minutes between 0 and 24 * 60 - 1.
      */
-    public ClockTime(int totalMinutes) {
+    private ClockTime(int totalMinutes) {
         super(totalMinutes);
         
         if (totalMinutes < 0 || totalMinutes > MAX_HOUR * Time.MINUTES_PER_HOUR + MAX_MINUTE) {
@@ -82,7 +82,7 @@ public class ClockTime extends Time {
      * @return Parsed ClockTime.
      */
     public static ClockTime parse(String string) {
-        return parse(string, (totalMinutes) -> new ClockTime(totalMinutes));
+        return parse(string, totalMinutes -> new ClockTime(totalMinutes));
     }
 
 }

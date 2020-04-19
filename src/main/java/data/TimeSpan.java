@@ -83,7 +83,7 @@ public class TimeSpan extends Time {
      * @return Parsed TimeSpan.
      */
     public static TimeSpan parse(String string) {
-        return parse(string, (totalMinutes) -> new TimeSpan(totalMinutes));
+        return parse(string, totalMinutes -> new TimeSpan(totalMinutes));
     }
 
 }
