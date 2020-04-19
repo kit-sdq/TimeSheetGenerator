@@ -93,6 +93,22 @@ public abstract class Time implements Comparable<Time> {
     }
     
     /**
+     * Get if the time is positive.
+     * @return True if the time is positive.
+     */
+    public boolean isPositive() {
+        return totalMinutes > 0;
+    }
+    
+    /**
+     * Get if the time is zero.
+     * @return True if the time is zero.
+     */
+    public boolean isZero() {
+        return totalMinutes == 0;
+    }
+    
+    /**
      * Parse the string representation of a Time object.
      * @param string String representation.
      * @param create Encapsulated constructor function for the requested object. The provided argument is the total number of minutes.
@@ -120,6 +136,10 @@ public abstract class Time implements Comparable<Time> {
             throw new IllegalArgumentException(e.getMessage());
         }
         
+        if (minutes >= MINUTES_PER_HOUR) {
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.time.minuteOutOfBounds", 0, MINUTES_PER_HOUR - 1));
+        }
+        
         return create.apply(sign * (hours * MINUTES_PER_HOUR + minutes));
     }
     
@@ -138,7 +158,7 @@ public abstract class Time implements Comparable<Time> {
     
     @Override
     public String toString() {
-        return ResourceHandler.getMessage("locale.time.stringFormat", getHour(), getMinute());
+        return ResourceHandler.getMessage("locale.time.stringFormat", getSign(), getHour(), getMinute());
     }
     
 }
