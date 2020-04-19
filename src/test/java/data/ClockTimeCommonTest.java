@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-public class ClockTimeTest {
+public class ClockTimeCommonTest {
 
     @Test
     public void testConstructor() {

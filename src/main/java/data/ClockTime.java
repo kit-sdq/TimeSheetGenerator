@@ -32,7 +32,7 @@ public class ClockTime extends Time {
         super(totalMinutes);
         
         if (totalMinutes < 0 || totalMinutes > MAX_HOUR * Time.MINUTES_PER_HOUR + MAX_MINUTE) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException(ResourceHandler.getMessage("error.time.timeOutOfDayBound"));
         }
     }
     
@@ -74,6 +74,28 @@ public class ClockTime extends Time {
      */
     public boolean isBefore(ClockTime other) {
         return getTotalMinutes() < other.getTotalMinutes();
+    }
+    
+    /**
+     * Add the TimeSpan to this ClockTime.
+     * 
+     * @param timeSpan The TimeSpan to add.
+     * @return Sum of this ClockTime and the TimeSpan.
+     * @throws IllegalArgumentException When the resulting ClockTime would be on a different day.
+     */
+    public ClockTime add(TimeSpan timeSpan) {
+        return new ClockTime(getTotalMinutes() + timeSpan.getTotalMinutes());
+    }
+    
+    /**
+     * Subtract the TimeSpan from this ClockTime.
+     * 
+     * @param timeSpan The TimeSpan to subtract.
+     * @return Resulting ClockTime after the TimeSpan has been subtracted.
+     * @throws IllegalArgumentException When the resulting ClockTime would be on a different day.
+     */
+    public ClockTime subtract(TimeSpan timeSpan) {
+        return new ClockTime(getTotalMinutes() - timeSpan.getTotalMinutes());
     }
     
     /**
