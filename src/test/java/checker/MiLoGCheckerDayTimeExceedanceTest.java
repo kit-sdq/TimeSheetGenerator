@@ -9,6 +9,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.Profession;
@@ -48,8 +49,8 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testUpperBoundValidSingleEntry() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(8, 0);
-        TimeSpan end = new TimeSpan(18, 45);
+        ClockTime start = new ClockTime(8, 0);
+        ClockTime end = new ClockTime(18, 45);
         TimeSpan pause = new TimeSpan(0, 45);
 
         ////Checker initialization
@@ -74,8 +75,8 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testExceedanceSingleEntry() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(8, 0);
-        TimeSpan end = new TimeSpan(18, 46);
+        ClockTime start = new ClockTime(8, 0);
+        ClockTime end = new ClockTime(18, 46);
         TimeSpan pause = new TimeSpan(0, 45);
 
         ////Checker initialization
@@ -100,12 +101,12 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testUpperBoundValidMultipleDays() throws CheckerException {
         ////Test values
-        TimeSpan start1 = new TimeSpan(8, 0);
-        TimeSpan end1 = new TimeSpan(13, 0);
-        TimeSpan start2 = new TimeSpan(15, 0);
-        TimeSpan end2 = new TimeSpan(20, 0);
-        TimeSpan start3 = new TimeSpan(14, 0);
-        TimeSpan end3 = new TimeSpan(18, 0);
+        ClockTime start1 = new ClockTime(8, 0);
+        ClockTime end1 = new ClockTime(13, 0);
+        ClockTime start2 = new ClockTime(15, 0);
+        ClockTime end2 = new ClockTime(20, 0);
+        ClockTime start3 = new ClockTime(14, 0);
+        ClockTime end3 = new ClockTime(18, 0);
         LocalDate secondValidWorkingDay = LocalDate.of(2019, 11, 23);
         
         ////Checker initialization
@@ -136,12 +137,12 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testMultipleExceedances() throws CheckerException {
         ////Test values
-        TimeSpan start1 = new TimeSpan(9, 59);
-        TimeSpan end1 = new TimeSpan(20, 0);
-        TimeSpan start2 = new TimeSpan(15, 0);
-        TimeSpan end2 = new TimeSpan(20, 0);
-        TimeSpan start3 = new TimeSpan(11, 0);
-        TimeSpan end3 = new TimeSpan(21, 1);
+        ClockTime start1 = new ClockTime(9, 59);
+        ClockTime end1 = new ClockTime(20, 0);
+        ClockTime start2 = new ClockTime(15, 0);
+        ClockTime end2 = new ClockTime(20, 0);
+        ClockTime start3 = new ClockTime(11, 0);
+        ClockTime end3 = new ClockTime(21, 1);
         LocalDate[] validWorkingDays = {LocalDate.of(2019, 11, 21), WORKINGDAY_VALID, LocalDate.of(2019, 11, 23)};
         
         ////Checker initialization
@@ -176,10 +177,10 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testExceedanceMultipleEntriesSingleDay() throws CheckerException {
         ////Test values
-        TimeSpan start1 = new TimeSpan(8, 0);
-        TimeSpan end1 = new TimeSpan(13, 0);
-        TimeSpan start2 = new TimeSpan(15, 0);
-        TimeSpan end2 = new TimeSpan(20, 1);
+        ClockTime start1 = new ClockTime(8, 0);
+        ClockTime end1 = new ClockTime(13, 0);
+        ClockTime start2 = new ClockTime(15, 0);
+        ClockTime end2 = new ClockTime(20, 1);
         
         ////Checker initialization
         Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
@@ -204,14 +205,14 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testExceedanceUniqueErrorMultipleEntriesSingleDay() throws CheckerException {
         ////Test values
-        TimeSpan start1 = new TimeSpan(7, 0);
-        TimeSpan end1 = new TimeSpan(10, 59);
-        TimeSpan start2 = new TimeSpan(11, 0);
-        TimeSpan end2 = new TimeSpan(14, 59);
-        TimeSpan start3 = new TimeSpan(15, 0);
-        TimeSpan end3 = new TimeSpan(20, 59);
-        TimeSpan start4 = new TimeSpan(21, 0);
-        TimeSpan end4 = new TimeSpan(22, 0);
+        ClockTime start1 = new ClockTime(7, 0);
+        ClockTime end1 = new ClockTime(10, 59);
+        ClockTime start2 = new ClockTime(11, 0);
+        ClockTime end2 = new ClockTime(14, 59);
+        ClockTime start3 = new ClockTime(15, 0);
+        ClockTime end3 = new ClockTime(20, 59);
+        ClockTime start4 = new ClockTime(21, 0);
+        ClockTime end4 = new ClockTime(22, 0);
         
         ////Checker initialization
         Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
@@ -245,10 +246,10 @@ public class MiLoGCheckerDayTimeExceedanceTest {
     @Test
     public void testValidWorkVacationCombinationSingleDay() throws CheckerException {
         ////Test values
-        TimeSpan start1 = new TimeSpan(8, 0);
-        TimeSpan end1 = new TimeSpan(13, 0);
-        TimeSpan start2 = new TimeSpan(15, 0);
-        TimeSpan end2 = new TimeSpan(20, 1);
+        ClockTime start1 = new ClockTime(8, 0);
+        ClockTime end1 = new ClockTime(13, 0);
+        ClockTime start2 = new ClockTime(15, 0);
+        ClockTime end2 = new ClockTime(20, 1);
         
         ////Checker initialization
         Entry entry1 = new Entry("Test 1", WORKINGDAY_VALID, start1, end1, ZERO_TS, false);
@@ -276,15 +277,15 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         Random rand = new Random();
 
         ////Test values
-        TimeSpan fstTimeSpan = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan sndTimeSpan = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
+        ClockTime fstClockTime = new ClockTime(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
+        ClockTime sndClockTime = new ClockTime(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
         Entry entry;
-        if (fstTimeSpan.compareTo(sndTimeSpan) > 0) {
-            entry = new Entry("Test", WORKINGDAY_VALID, sndTimeSpan, fstTimeSpan, ZERO_TS, false);
+        if (fstClockTime.compareTo(sndClockTime) > 0) {
+            entry = new Entry("Test", WORKINGDAY_VALID, sndClockTime, fstClockTime, ZERO_TS, false);
         } else {
-            entry = new Entry("Test", WORKINGDAY_VALID, fstTimeSpan, sndTimeSpan, ZERO_TS, false);
+            entry = new Entry("Test", WORKINGDAY_VALID, fstClockTime, sndClockTime, ZERO_TS, false);
         }
         
         Entry[] entries = {entry};

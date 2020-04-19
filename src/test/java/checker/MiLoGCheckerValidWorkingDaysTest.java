@@ -18,6 +18,7 @@ import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
 import checker.holiday.GermanState;
 import checker.holiday.GermanyHolidayChecker;
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -50,8 +51,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
     @Test
     public void testValidWorkingDay() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(0, 0);
+        ClockTime start = new ClockTime(0, 0);
+        ClockTime end = new ClockTime(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2019, Month.NOVEMBER);
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 22); //Friday, 22. November 2019, no Holiday in BW Germany
@@ -73,8 +74,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
     @Test
     public void testNewYearsDay2019() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(0, 0);
+        ClockTime start = new ClockTime(0, 0);
+        ClockTime end = new ClockTime(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2019, Month.JANUARY);
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1); //New years day: Holiday in BW Germany
@@ -99,8 +100,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
     @Test
     public void testChristmas2020() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(0, 0);
+        ClockTime start = new ClockTime(0, 0);
+        ClockTime end = new ClockTime(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2020, Month.DECEMBER);
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25);
@@ -125,8 +126,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
     @Test
     public void testChristmas2022() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(0, 0);
+        ClockTime start = new ClockTime(0, 0);
+        ClockTime end = new ClockTime(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(2022, Month.DECEMBER);
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25); //Its a Sunday and Holiday
@@ -161,8 +162,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         int randDay = (rand.nextInt(28) + 1); //To guarantee that the date exists. It is a day between 1 and 28 incl.
         
         ////Test values
-        TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(0, 0);
+        ClockTime start = new ClockTime(0, 0);
+        ClockTime end = new ClockTime(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         YearMonth yearMonth = YearMonth.of(randYear, randMonth);
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), randDay);
@@ -201,15 +202,15 @@ public class MiLoGCheckerValidWorkingDaysTest {
     @Test
     public void testMultipleInvalidWorkingDays() throws CheckerException {
         ////Test values
-        TimeSpan start0 = new TimeSpan(0, 0);
-        TimeSpan end0 = new TimeSpan(0, 0);
+        ClockTime start0 = new ClockTime(0, 0);
+        ClockTime end0 = new ClockTime(0, 0);
         TimeSpan pause0 = new TimeSpan(0, 0);
         YearMonth yearMonth0 = YearMonth.of(2020, Month.JANUARY);
         LocalDate date0 = LocalDate.of(yearMonth0.getYear(), yearMonth0.getMonthValue(), 1);
         Entry entry0 = new Entry("Test", date0, start0, end0, pause0, false);
         
-        TimeSpan start1 = new TimeSpan(0, 0);
-        TimeSpan end1 = new TimeSpan(0, 0);
+        ClockTime start1 = new ClockTime(0, 0);
+        ClockTime end1 = new ClockTime(0, 0);
         TimeSpan pause1 = new TimeSpan(0, 0);
         YearMonth yearMonth1 = YearMonth.of(2020, Month.JANUARY);
         LocalDate date1 = LocalDate.of(yearMonth1.getYear(), yearMonth1.getMonthValue(), 6);

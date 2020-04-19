@@ -7,6 +7,7 @@ import java.time.YearMonth;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.Profession;
@@ -54,7 +55,7 @@ public class LatexGeneratorEscapeTest {
         Employee employee = new Employee("Max Mustermann", 1234567);
         Profession profession = new Profession("Institut für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 23.71);
         Entry[] entries = new Entry[] {
-            new Entry("Fragen und Antworten", LocalDate.of(2020, 3, 21), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 30), false)
+            new Entry("Fragen und Antworten", LocalDate.of(2020, 3, 21), new ClockTime(9, 0), new ClockTime(12, 0), new TimeSpan(0, 30), false)
         };
         TimeSheet timeSheet = new TimeSheet(
             employee,
@@ -77,7 +78,7 @@ public class LatexGeneratorEscapeTest {
         Employee employee = new Employee("Max #Mustermann", 1234567);
         Profession profession = new Profession("Institut f~r Informatik", WorkingArea.UB, new TimeSpan(40, 0), 23.71);
         Entry[] entries = new Entry[] {
-            new Entry("Fragen & Antworten", LocalDate.of(2020, 3, 21), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 30), false)
+            new Entry("Fragen & Antworten", LocalDate.of(2020, 3, 21), new ClockTime(9, 0), new ClockTime(12, 0), new TimeSpan(0, 30), false)
         };
         TimeSheet timeSheet = new TimeSheet(
             employee,

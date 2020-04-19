@@ -9,6 +9,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -30,12 +31,13 @@ public class MiLoGCheckerDayPauseTimeTest {
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
+    private static final ClockTime zeroCs = new ClockTime(0, 0);
     
     @Test
     public void testValidLowerBound() {
         ////Test values
-        TimeSpan start = zeroTs;
-        TimeSpan end = zeroTs;
+        ClockTime start = zeroCs;
+        ClockTime end = zeroCs;
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
@@ -55,9 +57,9 @@ public class MiLoGCheckerDayPauseTimeTest {
     @Test
     public void testValidMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs, false);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30), false);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new ClockTime(8, 0), new ClockTime(11, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new ClockTime(16, 0), new ClockTime(21, 0), new TimeSpan(0, 30), false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new ClockTime(16, 0), new ClockTime(21, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
@@ -75,9 +77,9 @@ public class MiLoGCheckerDayPauseTimeTest {
     @Test
     public void testExceedanceMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs, false);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new ClockTime(8, 0), new ClockTime(12, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new ClockTime(16, 0), new ClockTime(21, 0), zeroTs, false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new ClockTime(16, 0), new ClockTime(21, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
@@ -100,8 +102,8 @@ public class MiLoGCheckerDayPauseTimeTest {
         Random rand = new Random();
         
         ////Test values
-        TimeSpan start = zeroTs;
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
+        ClockTime start = zeroCs;
+        ClockTime end = new ClockTime(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
@@ -134,8 +136,8 @@ public class MiLoGCheckerDayPauseTimeTest {
         Random rand = new Random();
         
         ////Test values
-        TimeSpan start = zeroTs;
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
+        ClockTime start = zeroCs;
+        ClockTime end = new ClockTime(rand.nextInt(RANDOM_HOUR_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
@@ -148,7 +150,7 @@ public class MiLoGCheckerDayPauseTimeTest {
         String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry.getDate());
         
         ////Assertions
-        TimeSpan startToEnd = end.subtract(start);
+        TimeSpan startToEnd = end.differenceTo(start);
         
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
             if (startToEnd.compareTo(pauseRule[0]) >= 0) {
@@ -169,9 +171,9 @@ public class MiLoGCheckerDayPauseTimeTest {
     @Test
     public void testMultipleExceedences() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs, false);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(8, 0), new TimeSpan(20, 0), zeroTs, false);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new ClockTime(8, 0), new ClockTime(12, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new ClockTime(16, 0), new ClockTime(21, 0), zeroTs, false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new ClockTime(8, 0), new ClockTime(20, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};

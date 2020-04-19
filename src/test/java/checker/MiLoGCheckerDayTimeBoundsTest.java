@@ -10,6 +10,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -19,8 +20,8 @@ import data.WorkingArea;
 
 public class MiLoGCheckerDayTimeBoundsTest {
 
-    private static TimeSpan CHECKER_WORKDAY_LOWER_BOUND;
-    private static TimeSpan CHECKER_WORKDAY_UPPER_BOUND;
+    private static ClockTime CHECKER_WORKDAY_LOWER_BOUND;
+    private static ClockTime CHECKER_WORKDAY_UPPER_BOUND;
     
     //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
     private static final int RANDOM_HOUR_BOUND = 24;
@@ -41,8 +42,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     @Test
     public void testValidLowerBound() {
         ////Test values
-        TimeSpan start = CHECKER_WORKDAY_LOWER_BOUND;
-        TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
+        ClockTime start = CHECKER_WORKDAY_LOWER_BOUND;
+        ClockTime end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
         //We just want to test the lower bound for now.
@@ -65,8 +66,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     @Test
     public void testOutOfLowerBound() {
         ////Test values
-        TimeSpan start = CHECKER_WORKDAY_LOWER_BOUND;
-        TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
+        ClockTime start = CHECKER_WORKDAY_LOWER_BOUND;
+        ClockTime end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
         //This is done to lower the start one minute below the legal lower bound.
@@ -95,8 +96,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     @Test
     public void testValidUpperBound() {
         ////Test values
-        TimeSpan start = CHECKER_WORKDAY_LOWER_BOUND;
-        TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
+        ClockTime start = CHECKER_WORKDAY_LOWER_BOUND;
+        ClockTime end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
         //We just want to test the upper bound for now.
@@ -119,8 +120,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     @Test
     public void testOutOfUpperBound() {
         ////Test values
-        TimeSpan start = CHECKER_WORKDAY_LOWER_BOUND;
-        TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
+        ClockTime start = CHECKER_WORKDAY_LOWER_BOUND;
+        ClockTime end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
         //This is done to raise the end one minute above the legal upper bound.
@@ -149,8 +150,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     @Test
     public void testValidBothBounds() {
         ////Test values
-        TimeSpan start = CHECKER_WORKDAY_LOWER_BOUND;
-        TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
+        ClockTime start = CHECKER_WORKDAY_LOWER_BOUND;
+        ClockTime end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
@@ -173,8 +174,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
         Random rand = new Random();
         
         ////Test values
-        TimeSpan start = new TimeSpan(rand.nextInt(CHECKER_WORKDAY_UPPER_BOUND.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
+        ClockTime start = new ClockTime(rand.nextInt(CHECKER_WORKDAY_UPPER_BOUND.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
+        ClockTime end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
@@ -205,8 +206,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
         Random rand = new Random();
         
         ////Test values
-        TimeSpan start = new TimeSpan(rand.nextInt(CHECKER_WORKDAY_UPPER_BOUND.getHour()), 0);
-        TimeSpan end = new TimeSpan(start.getHour() + rand.nextInt(RANDOM_HOUR_BOUND - start.getHour()), 0);
+        ClockTime start = new ClockTime(rand.nextInt(CHECKER_WORKDAY_UPPER_BOUND.getHour()), 0);
+        ClockTime end = new ClockTime(start.getHour() + rand.nextInt(RANDOM_HOUR_BOUND - start.getHour()), 0);
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization
@@ -234,13 +235,13 @@ public class MiLoGCheckerDayTimeBoundsTest {
     @Test
     public void testOutOfBoundsMultiple() {
         ////Test values
-        TimeSpan start0 = CHECKER_WORKDAY_LOWER_BOUND.subtract(new TimeSpan(0, 1));
-        TimeSpan end0 = CHECKER_WORKDAY_UPPER_BOUND.subtract(new TimeSpan(1, 0));
+        ClockTime start0 = CHECKER_WORKDAY_LOWER_BOUND.subtract(new TimeSpan(0, 1));
+        ClockTime end0 = CHECKER_WORKDAY_UPPER_BOUND.subtract(new TimeSpan(1, 0));
         TimeSpan pause0 = new TimeSpan(0, 0);
         Entry entry0 = new Entry("Test", LocalDate.of(2019, 11, 20), start0, end0, pause0, false);
         
-        TimeSpan start1 = CHECKER_WORKDAY_LOWER_BOUND.add(new TimeSpan(1, 0));
-        TimeSpan end1 = CHECKER_WORKDAY_UPPER_BOUND.add(new TimeSpan(0, 1));
+        ClockTime start1 = CHECKER_WORKDAY_LOWER_BOUND.add(new TimeSpan(1, 0));
+        ClockTime end1 = CHECKER_WORKDAY_UPPER_BOUND.add(new TimeSpan(0, 1));
         TimeSpan pause1 = new TimeSpan(0, 0);
         Entry entry1 = new Entry("Test", LocalDate.of(2019, 11, 22), start1, end1, pause1, false);
         

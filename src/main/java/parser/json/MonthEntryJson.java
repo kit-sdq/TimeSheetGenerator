@@ -3,14 +3,15 @@ package parser.json;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import data.ClockTime;
 import data.TimeSpan;
 
 class MonthEntryJson {
 
     private final String action;
     private final int day;
-    private final TimeSpan start;
-    private final TimeSpan end;
+    private final ClockTime start;
+    private final ClockTime end;
     private TimeSpan pause;
     private boolean vacation;
     
@@ -23,8 +24,8 @@ class MonthEntryJson {
     ) {
         this.action = action;
         this.day = day;
-        this.start = TimeSpan.parse(start);
-        this.end = TimeSpan.parse(end);
+        this.start = ClockTime.parse(start);
+        this.end = ClockTime.parse(end);
         this.pause = new TimeSpan(0, 0); // default
         this.vacation = false; // default
     }
@@ -37,11 +38,11 @@ class MonthEntryJson {
         return day;
     }
 
-    public TimeSpan getStart() {
+    public ClockTime getStart() {
         return start;
     }
 
-    public TimeSpan getEnd() {
+    public ClockTime getEnd() {
         return end;
     }
 

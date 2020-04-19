@@ -9,6 +9,7 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -32,7 +33,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
     public void testNoExceedanceLowerBound() {
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22),
-                new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0), false);
+                new ClockTime(0, 0), new ClockTime(0, 0), new TimeSpan(0, 0), false);
         Entry[] entries = {entry};
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -53,8 +54,8 @@ public class MiLoGCheckerRowNumExceedanceTest {
         ////Entry generator
         Entry[] entries = new Entry[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {
-            TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = new TimeSpan(0, 0);
+            ClockTime start = new ClockTime(0, 0);
+            ClockTime end = new ClockTime(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
             Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
@@ -82,8 +83,8 @@ public class MiLoGCheckerRowNumExceedanceTest {
         ////Entry generator
         Entry[] entries = new Entry[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {
-            TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = new TimeSpan(0, 0);
+            ClockTime start = new ClockTime(0, 0);
+            ClockTime end = new ClockTime(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
             Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
@@ -114,8 +115,8 @@ public class MiLoGCheckerRowNumExceedanceTest {
         ////Entry generator
         Entry[] entries = new Entry[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {
-            TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = new TimeSpan(0, 0);
+            ClockTime start = new ClockTime(0, 0);
+            ClockTime end = new ClockTime(0, 0);
             TimeSpan pause = new TimeSpan(0, 0);
             
             Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);

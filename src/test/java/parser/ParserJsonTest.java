@@ -7,6 +7,7 @@ import java.time.YearMonth;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.Profession;
@@ -61,9 +62,9 @@ public class ParserJsonTest {
         Employee expectedEmployee = new Employee("Max Mustermann", 1234567);
         Profession expectedProfession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         Entry[] expectedEntries = new Entry[] {
-            new Entry("Korrektur", LocalDate.of(2019, 11, 2), new TimeSpan(10, 0), new TimeSpan(11, 0), new TimeSpan(0, 0), false),
-            new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new TimeSpan(11, 31), new TimeSpan(15, 11), new TimeSpan(0, 30), false),
-            new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), true)
+            new Entry("Korrektur", LocalDate.of(2019, 11, 2), new ClockTime(10, 0), new ClockTime(11, 0), new TimeSpan(0, 0), false),
+            new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new ClockTime(11, 31), new ClockTime(15, 11), new TimeSpan(0, 30), false),
+            new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new ClockTime(9, 0), new ClockTime(12, 0), new TimeSpan(0, 0), true)
         };
         TimeSheet expectedTimeSheet = new TimeSheet(
             expectedEmployee,

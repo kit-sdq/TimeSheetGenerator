@@ -8,6 +8,7 @@ import java.time.YearMonth;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -26,8 +27,8 @@ public class MiLoGCheckerCheckTest {
     @Test
     public void testSingleEntryValidTimeSheet() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(8, 0);
-        TimeSpan end = new TimeSpan(12, 0);
+        ClockTime start = new ClockTime(8, 0);
+        ClockTime end = new ClockTime(12, 0);
         TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 11, 22); //Valid working day
         
@@ -45,8 +46,8 @@ public class MiLoGCheckerCheckTest {
     @Test
     public void testSingleEntryValidButHoliday() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(8, 0);
-        TimeSpan end = new TimeSpan(12, 0);
+        ClockTime start = new ClockTime(8, 0);
+        ClockTime end = new ClockTime(12, 0);
         TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 12, 25); //Holiday
         
@@ -67,8 +68,8 @@ public class MiLoGCheckerCheckTest {
     @Test
     public void testSingleEntryValidButSunday() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(8, 0);
-        TimeSpan end = new TimeSpan(12, 0);
+        ClockTime start = new ClockTime(8, 0);
+        ClockTime end = new ClockTime(12, 0);
         TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2019, 12, 1); //Sunday
         
@@ -89,8 +90,8 @@ public class MiLoGCheckerCheckTest {
     @Test
     public void testSingleEntryValidButSundayAndHoliday() throws CheckerException {
         ////Test values
-        TimeSpan start = new TimeSpan(8, 0);
-        TimeSpan end = new TimeSpan(12, 0);
+        ClockTime start = new ClockTime(8, 0);
+        ClockTime end = new ClockTime(12, 0);
         TimeSpan pause = zeroTs;
         LocalDate date = LocalDate.of(2022, 12, 25); //Sunday and holiday
         

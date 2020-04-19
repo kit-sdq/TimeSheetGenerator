@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Entry;
 import data.TimeSpan;
 import parser.IMonthParser;
@@ -197,9 +198,9 @@ public class JsonMonthParserTest {
 
         assertEquals(3, entryList.size());
 
-        assert(entryList.contains(new Entry("Korrektur", LocalDate.of(2019, 11, 2), new TimeSpan(10, 0), new TimeSpan(11, 0), new TimeSpan(0, 0), false)));
-        assert(entryList.contains(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new TimeSpan(11, 31), new TimeSpan(15, 11), new TimeSpan(0, 30), false)));
-        assert(entryList.contains(new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), true)));
+        assert(entryList.contains(new Entry("Korrektur", LocalDate.of(2019, 11, 2), new ClockTime(10, 0), new ClockTime(11, 0), new TimeSpan(0, 0), false)));
+        assert(entryList.contains(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new ClockTime(11, 31), new ClockTime(15, 11), new TimeSpan(0, 30), false)));
+        assert(entryList.contains(new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new ClockTime(9, 0), new ClockTime(12, 0), new TimeSpan(0, 0), true)));
     }
 
     @Test(expected = ParseException.class)

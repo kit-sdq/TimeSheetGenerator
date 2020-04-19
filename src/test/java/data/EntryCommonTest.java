@@ -11,8 +11,8 @@ public class EntryCommonTest {
     @Test
     public void testConstructor() {
         String action = "Test";
-        TimeSpan start = new TimeSpan(14, 0);
-        TimeSpan end = new TimeSpan(18, 0);
+        ClockTime start = new ClockTime(14, 0);
+        ClockTime end = new ClockTime(18, 0);
         TimeSpan pause = new TimeSpan(0, 30);
 
         LocalDate date = LocalDate.of(2019, 11, 16);
@@ -33,8 +33,8 @@ public class EntryCommonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIllegalArgument1() {
         String action = "Test";
-        TimeSpan start = new TimeSpan(14, 0);
-        TimeSpan end = new TimeSpan(42, 0);
+        ClockTime start = new ClockTime(14, 0);
+        ClockTime end = new ClockTime(42, 0);
         TimeSpan pause = new TimeSpan(0, 30);
         
         LocalDate date = LocalDate.of(2019, 11, 16);
@@ -45,8 +45,8 @@ public class EntryCommonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIllegalArgument2() {
         String action = "Test";
-        TimeSpan start = new TimeSpan(23, 59);
-        TimeSpan end = new TimeSpan(24, 0);
+        ClockTime start = new ClockTime(23, 59);
+        ClockTime end = new ClockTime(24, 0);
         TimeSpan pause = new TimeSpan(0, 30);
         
         LocalDate date = LocalDate.of(2019, 11, 16);
@@ -57,8 +57,8 @@ public class EntryCommonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIllegalArgument3() {
         String action = "Test";
-        TimeSpan start = new TimeSpan(23, 00);
-        TimeSpan end = new TimeSpan(22, 0);
+        ClockTime start = new ClockTime(23, 00);
+        ClockTime end = new ClockTime(22, 0);
         TimeSpan pause = new TimeSpan(0, 30);
         
         LocalDate date = LocalDate.of(2019, 11, 16);
@@ -69,8 +69,8 @@ public class EntryCommonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIllegalArgument4() {
         String action = "Test";
-        TimeSpan start = new TimeSpan(25, 00);
-        TimeSpan end = new TimeSpan(26, 0);
+        ClockTime start = new ClockTime(25, 00);
+        ClockTime end = new ClockTime(26, 0);
         TimeSpan pause = new TimeSpan(0, 30);
         
         LocalDate date = LocalDate.of(2019, 11, 16);
@@ -81,8 +81,8 @@ public class EntryCommonTest {
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorIllegalArgumentPauseAndVacation() {
         String action = "Test";
-        TimeSpan start = new TimeSpan(14, 0);
-        TimeSpan end = new TimeSpan(18, 0);
+        ClockTime start = new ClockTime(14, 0);
+        ClockTime end = new ClockTime(18, 0);
         TimeSpan pause = new TimeSpan(0, 30);
 
         LocalDate date = LocalDate.of(2019, 11, 16);

@@ -1,5 +1,6 @@
 package checker;
 
+import data.ClockTime;
 import data.Entry;
 import data.TimeSheet;
 import data.TimeSpan;
@@ -25,8 +26,8 @@ import checker.holiday.GermanyHolidayChecker;
  */
 public class MiLoGChecker implements IChecker {
     //TODO Are those static constant values better than attributes?
-    private static final TimeSpan WORKDAY_LOWER_BOUND = new TimeSpan(6, 0);
-    private static final TimeSpan WORKDAY_UPPER_BOUND = new TimeSpan(22, 0);
+    private static final ClockTime WORKDAY_LOWER_BOUND = new ClockTime(6, 0);
+    private static final ClockTime WORKDAY_UPPER_BOUND = new ClockTime(22, 0);
     private static final TimeSpan WORKDAY_MAX_WORKING_TIME = new TimeSpan(10, 0);
     
     //TODO Replace with enum
@@ -147,8 +148,7 @@ public class MiLoGChecker implements IChecker {
         for (Entry entry : timeSheet.getEntries()) {
             if (!entry.isVacation()) {
                 //EndToStart is the number of hours at this work shift.
-                TimeSpan endToStart = entry.getEnd();
-                endToStart = endToStart.subtract(entry.getStart());
+                TimeSpan endToStart = entry.getEnd().differenceTo(entry.getStart());
                 TimeSpan pause = entry.getPause();
                 LocalDate date = entry.getDate();
                 
@@ -287,7 +287,7 @@ public class MiLoGChecker implements IChecker {
      * This method gets the legal lower bound of time to start a working day.
      * @return The legal lower bound of time to start a working day.
      */
-    protected static TimeSpan getWorkdayLowerBound() {
+    protected static ClockTime getWorkdayLowerBound() {
         return WORKDAY_LOWER_BOUND;
     }
     
@@ -295,7 +295,7 @@ public class MiLoGChecker implements IChecker {
      * This method gets the legal upper bound of time to end a working day.
      * @return The legal upper bound of time to end a working day.
      */
-    protected static TimeSpan getWorkdayUpperBound() {
+    protected static ClockTime getWorkdayUpperBound() {
         return WORKDAY_UPPER_BOUND;
     }
     

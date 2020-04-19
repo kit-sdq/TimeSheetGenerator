@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.Profession;
@@ -73,10 +74,10 @@ public class LatexGeneratorPlaceholderTest {
         this.template = template;
         this.expected = expected;
 
-        Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new TimeSpan(10, 0), new TimeSpan(14, 0), new TimeSpan(0, 30), false);
-        Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new TimeSpan(8, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), false);
-        Entry entry2 = new Entry("Test Vacation", YEAR_MONTH.atDay(19), new TimeSpan(9, 0), new TimeSpan(10, 0), new TimeSpan(0, 0), true);
-        Entry entry3 = new Entry("Test 2 Vacation", YEAR_MONTH.atDay(21), new TimeSpan(15, 0), new TimeSpan(16, 30), new TimeSpan(0, 0), true);
+        Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
+        Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new ClockTime(8, 0), new ClockTime(12, 0), new TimeSpan(0, 0), false);
+        Entry entry2 = new Entry("Test Vacation", YEAR_MONTH.atDay(19), new ClockTime(9, 0), new ClockTime(10, 0), new TimeSpan(0, 0), true);
+        Entry entry3 = new Entry("Test 2 Vacation", YEAR_MONTH.atDay(21), new ClockTime(15, 0), new ClockTime(16, 30), new TimeSpan(0, 0), true);
         Entry[] entries = new Entry[] {entry0, entry1, entry2, entry3};
         this.timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, new TimeSpan(1, 0), new TimeSpan(2, 0));
     }

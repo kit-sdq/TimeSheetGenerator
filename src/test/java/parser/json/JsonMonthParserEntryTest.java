@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Entry;
 import data.TimeSpan;
 import parser.IMonthParser;
@@ -222,7 +223,7 @@ public class JsonMonthParserEntryTest {
         // assert
         assertEquals(1, entries.length);
 
-        assertEquals(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new TimeSpan(11, 31), new TimeSpan(15, 11), new TimeSpan(0, 0), false), entries[0]);
+        assertEquals(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new ClockTime(11, 31), new ClockTime(15, 11), new TimeSpan(0, 0), false), entries[0]);
     }
     
     @Test
@@ -236,7 +237,7 @@ public class JsonMonthParserEntryTest {
         // assert
         assertEquals(1, entries.length);
 
-        assertEquals(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new TimeSpan(11, 31), new TimeSpan(15, 11), new TimeSpan(0, 30), false), entries[0]);
+        assertEquals(new Entry("Fragen beantworten", LocalDate.of(2019, 11, 4), new ClockTime(11, 31), new ClockTime(15, 11), new TimeSpan(0, 30), false), entries[0]);
     }
     
     @Test
@@ -250,7 +251,7 @@ public class JsonMonthParserEntryTest {
         // assert
         assertEquals(1, entries.length);
 
-        assertEquals(new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), true), entries[0]);
+        assertEquals(new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new ClockTime(9, 0), new ClockTime(12, 0), new TimeSpan(0, 0), true), entries[0]);
     }
 
 }

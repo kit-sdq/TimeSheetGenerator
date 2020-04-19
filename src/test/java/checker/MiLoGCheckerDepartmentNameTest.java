@@ -8,6 +8,7 @@ import java.time.YearMonth;
 
 import org.junit.Test;
 
+import data.ClockTime;
 import data.Employee;
 import data.Entry;
 import data.TimeSheet;
@@ -18,7 +19,7 @@ import data.WorkingArea;
 public class MiLoGCheckerDepartmentNameTest {
 
     private static final Entry[] ENTRIES = {new Entry("Test", LocalDate.of(2019, 11, 22),
-            new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0), false)};
+            new ClockTime(0, 0), new ClockTime(0, 0), new TimeSpan(0, 0), false)};
     
     ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);

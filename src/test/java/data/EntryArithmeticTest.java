@@ -12,8 +12,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTime1() {
-        TimeSpan start = new TimeSpan(14, 0);
-        TimeSpan end = new TimeSpan(18, 0);
+        ClockTime start = new ClockTime(14, 0);
+        ClockTime end = new ClockTime(18, 0);
         TimeSpan pause = new TimeSpan(0, 30);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
@@ -24,8 +24,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTime2() {
-        TimeSpan start = new TimeSpan(17, 0);
-        TimeSpan end = new TimeSpan(20, 30);
+        ClockTime start = new ClockTime(17, 0);
+        ClockTime end = new ClockTime(20, 30);
         TimeSpan pause = new TimeSpan(0, 0);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
@@ -36,8 +36,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTime3() {
-        TimeSpan start = new TimeSpan(12, 30);
-        TimeSpan end = new TimeSpan(21, 0);
+        ClockTime start = new ClockTime(12, 30);
+        ClockTime end = new ClockTime(21, 0);
         TimeSpan pause = new TimeSpan(0, 30);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
@@ -48,8 +48,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTime4() {
-        TimeSpan start = new TimeSpan(13, 0);
-        TimeSpan end = new TimeSpan(21, 25);
+        ClockTime start = new ClockTime(13, 0);
+        ClockTime end = new ClockTime(21, 25);
         TimeSpan pause = new TimeSpan(0, 30);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
@@ -60,8 +60,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTime5() {
-        TimeSpan start = new TimeSpan(19, 30);
-        TimeSpan end = new TimeSpan(20, 0);
+        ClockTime start = new ClockTime(19, 30);
+        ClockTime end = new ClockTime(20, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
@@ -72,8 +72,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTime6() {
-        TimeSpan start = new TimeSpan(13, 0);
-        TimeSpan end = new TimeSpan(23, 0);
+        ClockTime start = new ClockTime(13, 0);
+        ClockTime end = new ClockTime(23, 0);
         TimeSpan pause = new TimeSpan(5, 0);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, false);
         
@@ -84,8 +84,8 @@ public class EntryArithmeticTest {
     
     @Test
     public void testGetWorkingTimeVacation() {
-        TimeSpan start = new TimeSpan(9, 0);
-        TimeSpan end = new TimeSpan(12, 0);
+        ClockTime start = new ClockTime(9, 0);
+        ClockTime end = new ClockTime(12, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         Entry entry = new Entry("Test", DATE_NOW, start, end, pause, true);
         
