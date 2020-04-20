@@ -2,12 +2,15 @@ package main;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import checker.CheckerError;
 import checker.CheckerException;
 import checker.CheckerReturn;
 import checker.IChecker;
 import checker.MiLoGChecker;
 import data.TimeSheet;
+import i18n.ResourceHandler;
 import io.FileController;
 import io.IGenerator;
 import io.LatexGenerator;
@@ -84,6 +87,16 @@ public class Main {
             for (CheckerError error : checker.getErrors()) {
                 System.out.println(error.getErrorMessage());
             }
+            
+            if (userInput.isGui()) {
+                StringBuilder errorList = new StringBuilder();
+                for (CheckerError error : checker.getErrors()) {
+                    errorList.append(error.getErrorMessage() + System.lineSeparator());
+                }
+                
+                JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
+            }
+            
             return;
         }
 
