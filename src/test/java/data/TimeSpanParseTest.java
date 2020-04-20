@@ -32,19 +32,19 @@ public class TimeSpanParseTest {
         ////Assertions
         assertEquals(0, tsSingle.getHour());
         assertEquals(0, tsSingle.getMinute());
-        assertTrue(tsSingle.compareTo(TimeSpan.ZERO) == 0);
+        assertTrue(tsSingle.isZero());
         
         assertEquals(0, tsHalf.getHour());
         assertEquals(0, tsHalf.getMinute());
-        assertTrue(tsHalf.compareTo(TimeSpan.ZERO) == 0);
+        assertTrue(tsHalf.isZero());
         
         assertEquals(0, tsOtherHalf.getHour());
         assertEquals(0, tsOtherHalf.getMinute());
-        assertTrue(tsOtherHalf.compareTo(TimeSpan.ZERO) == 0);
+        assertTrue(tsOtherHalf.isZero());
         
         assertEquals(0, tsDouble.getHour());
         assertEquals(0, tsDouble.getMinute());
-        assertTrue(tsDouble.compareTo(TimeSpan.ZERO) == 0);
+        assertTrue(tsDouble.isZero());
     }
 
     @Test

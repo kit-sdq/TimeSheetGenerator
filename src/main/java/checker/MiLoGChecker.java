@@ -189,8 +189,8 @@ public class MiLoGChecker implements IChecker {
      */
     protected void checkDayTimeBounds() {
         for (Entry entry : timeSheet.getEntries()) {
-            if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
-                    || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
+            if (entry.getStart().isBefore(WORKDAY_LOWER_BOUND)
+                    || entry.getEnd().isAfter(WORKDAY_UPPER_BOUND)) {
                 
                 errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS, entry.getDate()));
                 result = CheckerReturn.INVALID;
@@ -239,7 +239,7 @@ public class MiLoGChecker implements IChecker {
         
         for (int i = 0; i < entries.size() - 1; i++) {
             if (entries.get(i).getDate().equals(entries.get(i + 1).getDate()) &&
-                    entries.get(i).getEnd().compareTo(entries.get(i + 1).getStart()) > 0) {
+                    entries.get(i).getEnd().isAfter(entries.get(i + 1).getStart())) {
                 errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_OVERLAP, entries.get(i).getDate()));
                 result = CheckerReturn.INVALID;
             }

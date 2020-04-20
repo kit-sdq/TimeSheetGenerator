@@ -29,7 +29,7 @@ public class Entry implements Comparable<Entry> {
     public Entry(String action, LocalDate date, ClockTime start, ClockTime end, TimeSpan pause, boolean vacation) {
         if (start.getHour() > MAX_HOUR_PER_DAY || end.getHour() > MAX_HOUR_PER_DAY) {
             throw new IllegalArgumentException(ResourceHandler.getMessage("error.entry.timeOverUpperLimit"));
-        } else if (end.compareTo(start) < 0) {
+        } else if (end.isBefore(start)) {
             throw new IllegalArgumentException(ResourceHandler.getMessage("error.entry.startGreaterThanEnd"));
         }
         
