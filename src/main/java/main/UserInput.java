@@ -61,6 +61,14 @@ public class UserInput {
     }
 
     /**
+     * Get if the files are chosen from a GUI.
+     * @return True if the files are chosen from a GUI.
+     */
+    public boolean isGui() {
+        return !commandLine.hasOption(UserInputOption.FILE.getOption().getOpt());
+    }
+
+    /**
      * Print the command line help
      */
     public void printHelp() {
