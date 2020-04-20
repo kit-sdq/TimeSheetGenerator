@@ -94,7 +94,7 @@ public class Main {
                     errorList.append(error.getErrorMessage() + System.lineSeparator());
                 }
                 
-                JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListTitle"), JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
             }
             
             return;
