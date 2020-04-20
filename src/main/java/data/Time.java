@@ -38,7 +38,7 @@ public abstract class Time implements Comparable<Time> {
         }
     }
     
-    protected final int totalMinutes;
+    private final int totalMinutes;
     
     /**
      * Get the total number of minutes.
