@@ -27,7 +27,6 @@ public class MiLoGCheckerRowNumExceedanceTest {
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
-    private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
     @Test
     public void testNoExceedanceLowerBound() {
@@ -35,7 +34,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22),
                 new ClockTime(0, 0), new ClockTime(0, 0), new TimeSpan(0, 0), false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -63,7 +62,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         }
         
         ////Checker initialization
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -92,7 +91,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         }
         
         ////Checker initialization
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -124,7 +123,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         }
         
         ////Checker initialization
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution

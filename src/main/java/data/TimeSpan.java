@@ -23,6 +23,11 @@ public class TimeSpan extends Time {
     public static final int MAX_MINUTE = 59;
     
     /**
+     * TimeSpan representing zero minutes in total (00:00).
+     */
+    public static final TimeSpan ZERO = new TimeSpan(0, 0);
+    
+    /**
      * Constructs a new TimeSpan instance from a total number of minutes.
      * @param totalMinutes - Total number of minutes.
      */

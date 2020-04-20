@@ -24,7 +24,6 @@ public class MiLoGCheckerDepartmentNameTest {
     ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
-    private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
     @Test
     public void testEmptyName() {
@@ -33,7 +32,7 @@ public class MiLoGCheckerDepartmentNameTest {
         
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, TimeSpan.ZERO, TimeSpan.ZERO);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -51,7 +50,7 @@ public class MiLoGCheckerDepartmentNameTest {
 
         ////Checker initialization
         Profession profession = new Profession(departmentName, WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, profession, YEAR_MONTH, ENTRIES, TimeSpan.ZERO, TimeSpan.ZERO);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution

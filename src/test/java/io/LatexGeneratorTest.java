@@ -26,14 +26,13 @@ public class LatexGeneratorTest {
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
-    private static final TimeSpan zeroTs = new TimeSpan(0, 0);
-
+    
     @Test
     public void testCreate() {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "something something";
         // execute
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
@@ -46,7 +45,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "something something";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -60,7 +59,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -74,7 +73,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "something else";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -88,7 +87,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "something !noPlaceholderHere else";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -102,7 +101,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Name: !employeeName";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -116,7 +115,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Name: !employeeName, ID: !employeeID";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -130,7 +129,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Date: !date";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // execute
@@ -145,7 +144,7 @@ public class LatexGeneratorTest {
         Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new ClockTime(8, 0), new ClockTime(12, 0), new TimeSpan(0, 0), false);
         Entry[] entries = new Entry[] {entry0, entry1};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Date 1: !date, Date 2: !date";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // expected
@@ -161,7 +160,7 @@ public class LatexGeneratorTest {
         // data
         Entry entry = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry[] entries = new Entry[] {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Date: !date, Pause: !break";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // expected
@@ -178,7 +177,7 @@ public class LatexGeneratorTest {
         Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new ClockTime(8, 0), new ClockTime(12, 0), new TimeSpan(0, 0), false);
         Entry[] entries = new Entry[] {entry0, entry1};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Date 1: !date, Date 2: !date, Pause 1: !break, Pause 2: !break";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // expected
@@ -196,7 +195,7 @@ public class LatexGeneratorTest {
         Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new ClockTime(8, 0), new ClockTime(12, 0), new TimeSpan(0, 0), false);
         Entry[] entries = new Entry[] {entry0, entry1};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Date 1: !date, Date 2: !date, (Date 3: !date)";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // expected
@@ -213,7 +212,7 @@ public class LatexGeneratorTest {
         Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new ClockTime(8, 0), new ClockTime(12, 0), new TimeSpan(0, 0), false);
         Entry[] entries = new Entry[] {entry0, entry1};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Date: !date";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // expected
@@ -230,7 +229,7 @@ public class LatexGeneratorTest {
         Entry entry0 = new Entry("Test Action 1", YEAR_MONTH.atDay(12), new ClockTime(10, 0), new ClockTime(14, 0), new TimeSpan(0, 30), false);
         Entry entry1 = new Entry("Test Action 2", YEAR_MONTH.atDay(14), new ClockTime(8, 0), new ClockTime(12, 0), new TimeSpan(0, 0), false);
         Entry[] entries = new Entry[] {entry0, entry1};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         String template = "Name: !employeeName, ID: !employeeID, Date 1: !date, Date 2: !date, Pause 1: !break, Pause 2: !break";
         LatexGenerator generator = new LatexGenerator(timeSheet, template);
         // expected

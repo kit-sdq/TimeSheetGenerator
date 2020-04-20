@@ -14,7 +14,6 @@ public class TimeSheetArithmeticTest {
     public void testGetTotalWorkTime() {
         Employee employee = new Employee("Moritz Gstür", 1234567);
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-        TimeSpan zeroTs = new TimeSpan(0, 0);
         Entry[] entries = new Entry[7];
         entries[0] = new Entry("Test1", LocalDate.now(), new ClockTime(10, 0), new ClockTime(18, 30), new TimeSpan(3, 15), false);
         entries[1] = new Entry("Test2", LocalDate.now(), new ClockTime(12, 0), new ClockTime(16, 30), new TimeSpan(0, 0), false);
@@ -23,7 +22,7 @@ public class TimeSheetArithmeticTest {
         entries[4] = new Entry("Test5", LocalDate.now(), new ClockTime(20, 0), new ClockTime(20, 30), new TimeSpan(0, 0), false);
         entries[5] = new Entry("Test6", LocalDate.now(), new ClockTime(9, 30), new ClockTime(18, 30), new TimeSpan(1, 0), false);
         entries[6] = new Entry("Test7", LocalDate.now(), new ClockTime(9, 0), new ClockTime(12, 0), new TimeSpan(0, 0), true);
-        TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         assertEquals(timeSheet.getTotalWorkTime(), new TimeSpan(21, 30));
     }
@@ -32,13 +31,12 @@ public class TimeSheetArithmeticTest {
     public void testGetTotalVacationTime() {
         Employee employee = new Employee("Moritz Gstür", 1234567);
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-        TimeSpan zeroTs = new TimeSpan(0, 0);
         Entry[] entries = new Entry[4];
         entries[0] = new Entry("Test1", LocalDate.now(), new ClockTime(10, 0), new ClockTime(18, 30), new TimeSpan(3, 15), false);
         entries[1] = new Entry("Test2", LocalDate.now(), new ClockTime(12, 0), new ClockTime(16, 30), new TimeSpan(0, 0), true);
         entries[2] = new Entry("Test3", LocalDate.now(), new ClockTime(10, 0), new ClockTime(12, 0), new TimeSpan(0, 0), true);
         entries[3] = new Entry("Test4", LocalDate.now(), new ClockTime(15, 0), new ClockTime(16, 30), new TimeSpan(0, 0), true);
-        TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(employee, profession, YearMonth.of(2019, Month.NOVEMBER), entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         assertEquals(timeSheet.getTotalVacationTime(), new TimeSpan(8, 0));
     }

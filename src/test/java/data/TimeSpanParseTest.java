@@ -22,7 +22,6 @@ public class TimeSpanParseTest {
         String timeStringHalf = "0:00";
         String timeStringOtherHalf = "00:0";
         String timeStringDouble = "00:00";
-        TimeSpan zeroTS = new TimeSpan(0, 0);
         
         ////TimeSpan initialization
         TimeSpan tsSingle = TimeSpan.parse(timeStringSingle);
@@ -33,19 +32,19 @@ public class TimeSpanParseTest {
         ////Assertions
         assertEquals(0, tsSingle.getHour());
         assertEquals(0, tsSingle.getMinute());
-        assertTrue(tsSingle.compareTo(zeroTS) == 0);
+        assertTrue(tsSingle.compareTo(TimeSpan.ZERO) == 0);
         
         assertEquals(0, tsHalf.getHour());
         assertEquals(0, tsHalf.getMinute());
-        assertTrue(tsHalf.compareTo(zeroTS) == 0);
+        assertTrue(tsHalf.compareTo(TimeSpan.ZERO) == 0);
         
         assertEquals(0, tsOtherHalf.getHour());
         assertEquals(0, tsOtherHalf.getMinute());
-        assertTrue(tsOtherHalf.compareTo(zeroTS) == 0);
+        assertTrue(tsOtherHalf.compareTo(TimeSpan.ZERO) == 0);
         
         assertEquals(0, tsDouble.getHour());
         assertEquals(0, tsDouble.getMinute());
-        assertTrue(tsDouble.compareTo(zeroTS) == 0);
+        assertTrue(tsDouble.compareTo(TimeSpan.ZERO) == 0);
     }
 
     @Test

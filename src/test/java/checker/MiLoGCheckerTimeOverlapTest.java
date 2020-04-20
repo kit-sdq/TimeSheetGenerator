@@ -22,13 +22,12 @@ public class MiLoGCheckerTimeOverlapTest {
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
-    private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
     @Test
     public void testEmptyEntries() {
         ////Test values
         Entry[] entries = {};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -46,12 +45,12 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start = new ClockTime(8, 0);
         ClockTime end = new ClockTime(12, 0);
-        TimeSpan pause = zeroTs;
+        TimeSpan pause = TimeSpan.ZERO;
         LocalDate date = LocalDate.of(2019, 11, 22);
         
         Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -69,24 +68,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(12, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(14, 0);
         ClockTime end1 = new ClockTime(18, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -104,24 +103,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(12, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(14, 0);
         ClockTime end1 = new ClockTime(18, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry1, entry2, entry0};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -139,24 +138,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(12, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(12, 0);
         ClockTime end1 = new ClockTime(18, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -174,24 +173,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(12, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(11, 0);
         ClockTime end1 = new ClockTime(13, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -212,24 +211,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(12, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(11, 0);
         ClockTime end1 = new ClockTime(13, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry1, entry2, entry0};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -250,24 +249,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(12, 30);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(12, 15);
         ClockTime end1 = new ClockTime(14, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -288,24 +287,24 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(14, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(11, 0);
         ClockTime end1 = new ClockTime(13, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         Entry[] entries = {entry0, entry1, entry2};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
@@ -326,30 +325,30 @@ public class MiLoGCheckerTimeOverlapTest {
         ////Test values
         ClockTime start0 = new ClockTime(8, 0);
         ClockTime end0 = new ClockTime(14, 0);
-        TimeSpan pause0 = zeroTs;
+        TimeSpan pause0 = TimeSpan.ZERO;
         LocalDate date0 = LocalDate.of(2019, 11, 22);
         Entry entry0 = new Entry("Test 0", date0, start0, end0, pause0, false);
         
         ClockTime start1 = new ClockTime(11, 0);
         ClockTime end1 = new ClockTime(13, 0);
-        TimeSpan pause1 = zeroTs;
+        TimeSpan pause1 = TimeSpan.ZERO;
         LocalDate date1 = LocalDate.of(2019, 11, 22);
         Entry entry1 = new Entry("Test 1", date1, start1, end1, pause1, false);
         
         ClockTime start2 = new ClockTime(8, 0);
         ClockTime end2 = new ClockTime(12, 0);
-        TimeSpan pause2 = zeroTs;
+        TimeSpan pause2 = TimeSpan.ZERO;
         LocalDate date2 = LocalDate.of(2019, 11, 25);
         Entry entry2 = new Entry("Test 2", date2, start2, end2, pause2, false);
         
         ClockTime start3 = new ClockTime(11, 0);
         ClockTime end3 = new ClockTime(14, 0);
-        TimeSpan pause3 = zeroTs;
+        TimeSpan pause3 = TimeSpan.ZERO;
         LocalDate date3 = LocalDate.of(2019, 11, 25);
         Entry entry3 = new Entry("Test 3", date3, start3, end3, pause3, false);
         
         Entry[] entries = {entry0, entry1, entry2, entry3};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, TimeSpan.ZERO, TimeSpan.ZERO);
         
         ////Checker initialization
         MiLoGChecker checker = new MiLoGChecker(fullDoc);

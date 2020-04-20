@@ -25,8 +25,8 @@ class MonthJson {
         @JsonProperty(value="entries", required=true) List<MonthEntryJson> entries
     ) {
         this.yearMonth = YearMonth.of(year, month);
-        this.predTransfer = new TimeSpan(0, 0); // default
-        this.succTransfer = new TimeSpan(0, 0); // default
+        this.predTransfer = TimeSpan.ZERO; // default
+        this.succTransfer = TimeSpan.ZERO; // default
         this.entries = new ArrayList<MonthEntryJson>(entries);
     }
 

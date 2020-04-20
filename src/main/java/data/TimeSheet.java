@@ -114,7 +114,7 @@ public class TimeSheet {
      * @return The overall, summed up working time.
      */
     public TimeSpan getTotalWorkTime() {
-        TimeSpan totalWorkTime = new TimeSpan(0, 0);
+        TimeSpan totalWorkTime = TimeSpan.ZERO;
         
         for (Entry entry : this.getEntries()) {
             if (!entry.isVacation()) {
@@ -130,7 +130,7 @@ public class TimeSheet {
      * @return The overall, summed up vacation time.
      */
     public TimeSpan getTotalVacationTime() {
-        TimeSpan totalVacationTime = new TimeSpan(0, 0);
+        TimeSpan totalVacationTime = TimeSpan.ZERO;
         
         for (Entry entry : this.getEntries()) {
             if (entry.isVacation()) {

@@ -26,7 +26,7 @@ class MonthEntryJson {
         this.day = day;
         this.start = ClockTime.parse(start);
         this.end = ClockTime.parse(end);
-        this.pause = new TimeSpan(0, 0); // default
+        this.pause = TimeSpan.ZERO; // default
         this.vacation = false; // default
     }
 

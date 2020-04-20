@@ -276,7 +276,7 @@ public class JsonMonthParserTest {
         TimeSpan vacation = parser.getPredTransfer();
 
         // assert
-        assertEquals(new TimeSpan(0, 0), vacation);
+        assertTrue(vacation.isZero());
     }
 
     @Test(expected = ParseException.class)
@@ -352,7 +352,7 @@ public class JsonMonthParserTest {
         TimeSpan vacation = parser.getSuccTransfer();
 
         // assert
-        assertEquals(new TimeSpan(0, 0), vacation);
+        assertTrue(vacation.isZero());
     }
 
 }
