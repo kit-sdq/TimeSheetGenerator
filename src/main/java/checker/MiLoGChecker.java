@@ -62,6 +62,7 @@ public class MiLoGChecker implements IChecker {
         result = CheckerReturn.VALID;
         errors.clear();
         
+        checkNegativeAllowedWorkingTime();
         checkTotalTimeExceedance();
         checkDayTimeExceedance();
         checkDayPauseTime();
@@ -82,6 +83,25 @@ public class MiLoGChecker implements IChecker {
     @Override
     public Collection<CheckerError> getErrors() {
         return new ArrayList<CheckerError>(errors);
+    }
+    
+    /**
+     * Check whether the allowed working time is negative.
+     */
+    protected void checkNegativeAllowedWorkingTime() {
+        // get legal working time per month
+        TimeSpan legalMaxWorkingTime = timeSheet.getProfession().getMaxWorkingTime();
+        
+        // calculate allowed working time taking transfer and vacation into account
+        TimeSpan allowedMaxWorkingTime = legalMaxWorkingTime
+                .add(timeSheet.getSuccTransfer())
+                .subtract(timeSheet.getPredTransfer())
+                .subtract(timeSheet.getTotalVacationTime());
+                
+        if (allowedMaxWorkingTime.isNegative()) {
+            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ALLOWED_WORKING_TIME_NEGATIVE));
+            result = CheckerReturn.INVALID;
+        }
     }
 
     /**
@@ -319,6 +339,7 @@ public class MiLoGChecker implements IChecker {
      * This enum holds the possible error messages (including format specifiers) for this checker
      */
     protected enum MiLoGCheckerErrorMessageProvider implements CheckerError.CheckerErrorMessageProvider {
+        ALLOWED_WORKING_TIME_NEGATIVE("allowedWorkingTimeNegative"),
         TOTAL_TIME_EXCEEDANCE("totalTimeExceedance"),
         DAY_TIME_EXCEEDANCE("dayTimeExceedance"),
         TIME_OUTOFBOUNDS("timeOutOfBounds"),

@@ -40,16 +40,6 @@ public class TimeSheet {
         List<Entry> entryList = Arrays.asList(entries);
         Collections.sort(entryList);
         this.entries = Collections.unmodifiableList(entryList);
-        
-        /*
-         * This check has to be done in order to guarantee that the corrected max working time
-         * (corrected => taking vacation and transfer into account) is not negative.
-         * 
-         * TODO: I don't think this belongs here, should probably be in some checker.
-         */
-        if (profession.getMaxWorkingTime().add(succTransfer).compareTo(predTransfer.add(getTotalVacationTime())) < 0) {
-            throw new IllegalArgumentException(ResourceHandler.getMessage("error.timesheet.sumOfTimeNegative"));
-        }
     }
 
     /**

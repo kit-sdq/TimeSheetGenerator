@@ -9,9 +9,8 @@ import org.junit.Test;
 
 public class TimeSheetCommonTest {
 
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
-    public void testInvalidTransferVacation() {
+    @Test
+    public void testNegativeAllowedWorkingTime() {
         ////Test values
         TimeSpan maxWorkingTime = new TimeSpan(40, 0);
         TimeSpan predTransfer = new TimeSpan(60, 0);
@@ -27,6 +26,7 @@ public class TimeSheetCommonTest {
         TimeSheet timeSheet = new TimeSheet(employee, profession, yearMonth, entries, succTransfer, predTransfer);
         
         ////Assertions
+        assertTrue(timeSheet != null);
     }
 
     @Test
