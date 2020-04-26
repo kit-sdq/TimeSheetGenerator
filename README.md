@@ -16,3 +16,7 @@ Run TimeSheetGenerator (requires Java 8 or higher):
 |  `-v`  | `--version` | _none_                                  | Print the version of the application.                          |
 |  `-g`  |   `--gui`   | _none_                                  | Generate an output file based on files chosen in a file dialog.|
 |  `-f`  |  `--file`   |`<global.json> <month.json> <output.tex>`| Generate an output file based on the given files.              |
+
+## Docker Image
+
+*to do*
