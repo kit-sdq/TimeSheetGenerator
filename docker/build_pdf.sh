@@ -14,9 +14,7 @@ output_tex=${output_pdf%.*}.tex
 java -jar TimeSheetGenerator.jar --file ./src/$global_json ./src/$month_json $output_tex || exit $?
 
 # generate .pdf file
-pdflatex $output_tex || exit $?
-pdflatex $output_tex || exit $?
-pdflatex $output_tex || exit $?
+latexmk -pdf $output_tex || exit $?
 
 # copy .pdf file
 cp ${output_tex%.*}.pdf ./src/$output_pdf
