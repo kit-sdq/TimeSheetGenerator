@@ -16,3 +16,5 @@ buildNumber.properties
 *.iml
 .DS_Store
 .vscode
+docker/src/
+docker/target/
