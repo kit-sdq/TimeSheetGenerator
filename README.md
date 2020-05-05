@@ -30,7 +30,7 @@ For now only JSON files are supported.
 | department  | String       | Department where the employee is employed at.                                                              |
 | workingTime | TimeSpan     | Maximum allowed working time per month according to the employment contract.                               |
 | wage        | Decimal      | Wage per hour according to the employment contract.                                                        |
-| workingArea | {"ub", "gf"} | Working area of the employee; either "ub" (= "Universitaetsbereich") or "gf" (= "Grossforschungsbereich"). |
+| workingArea | {"ub","gf"} | Working area of the employee; either "ub" (= "Universitaetsbereich") or "gf" (= "Grossforschungsbereich"). |
 
 ### Monthly Working Time Recording
 
@@ -38,8 +38,8 @@ For now only JSON files are supported.
 | ------------- | --------- | -------------------------------------------------------------------------------------------- |
 | year          | Integer   | Year for which the working time is recorded.                                                 |
 | month         | Integer   | Month for which the working time is recorded.                                                |
-| pred_transfer | TimeSpan  | Working time transfer, in hours, from the predecessing month. *(default: 0:00)*              |
-| succ_transfer | TimeSpan  | Working time transfer, in hours, to the successing month. *(default: 0:00)*                  |
+| pred_transfer | TimeSpan  | Working time transfer, in hours, from the preceding month. *(default: 0:00)*              |
+| succ_transfer | TimeSpan  | Working time transfer, in hours, to the succeeding month. *(default: 0:00)*                  |
 | entries       | [Entries] | Array of entries, where each entry represent a continual period of working or vacation time. |
 
 #### Monthly Working Time Entry
