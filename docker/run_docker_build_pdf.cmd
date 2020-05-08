@@ -26,4 +26,4 @@ REM copy output file
 copy %TMP%\timesheetgenerator\%output_pdf_name% %output_pdf%
 
 REM clean tmp directory
-del /F %TMP%\timesheetgenerator\%global_json_name% %MP%\timesheetgenerator\%month_json_name% %TMP%\timesheetgenerator\%output_pdf_name%
+del /F %TMP%\timesheetgenerator\%global_json_name% %TMP%\timesheetgenerator\%month_json_name% %TMP%\timesheetgenerator\%output_pdf_name%
