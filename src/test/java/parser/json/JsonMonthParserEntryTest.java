@@ -31,14 +31,14 @@ public class JsonMonthParserEntryTest {
         "\"year\": 2019," +
         "\"month\": 11," +
         "\"entries\": [" +
-            "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\"}" +
+            "{\"action\": \"Fragen beantworten\", \"day\": 4, \"start\": \"11:31\", \"end\": \"15:11\", \"pause\": \"00:30\", \"comment\": \"something something\"}" +
         "]" +
     "}";
     private static final String JSON_EXAMPLE_FULL_VACATION = "{" +
         "\"year\": 2019," +
         "\"month\": 11," +
         "\"entries\": [" +
-            "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true}" +
+            "{\"action\": \"Urlaub in Italien\", \"day\": 11, \"start\": \"09:00\", \"end\": \"12:00\", \"vacation\": true, \"comment\": \"something else\"}" +
         "]" +
     "}";
 

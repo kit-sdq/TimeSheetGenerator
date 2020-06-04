@@ -1,10 +1,12 @@
 package parser.json;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import data.TimeSpan;
 
+@JsonIgnoreProperties({ "comment" })
 class MonthEntryJson {
 
     private final String action;

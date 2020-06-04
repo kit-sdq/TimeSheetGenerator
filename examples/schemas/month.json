@@ -33,6 +33,9 @@
 				"vacation": {
 					"type": "boolean",
 					"default": false
+				},
+				"comment": {
+					"type": "string"
 				}
 			},
 			"required": ["action", "day", "start", "end"],
