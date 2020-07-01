@@ -12,7 +12,7 @@
 			"type": "string"
 		},
 		"staffId": {
-			"type": "integer"
+			"type": "string"
 		},
 		"department": {
 			"type": "string"

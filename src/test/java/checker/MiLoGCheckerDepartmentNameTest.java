@@ -21,7 +21,7 @@ public class MiLoGCheckerDepartmentNameTest {
             new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0), false)};
     
     ////Placeholder for time sheet construction
-    private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
+    private static final Employee EMPLOYEE = new Employee("Max Mustermann", "1234567");
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     

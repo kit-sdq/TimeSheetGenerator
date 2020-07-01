@@ -113,7 +113,7 @@ public class LatexGenerator implements IGenerator {
                 value = escapeText(timeSheet.getEmployee().getName());
                 break;
             case EMPLOYEE_ID:
-                value = Integer.toString(timeSheet.getEmployee().getId());
+                value = timeSheet.getEmployee().getId();
                 break;
             case GFUB:
                 if (timeSheet.getProfession().getWorkingArea() == WorkingArea.GF) {

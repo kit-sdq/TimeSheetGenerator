@@ -18,7 +18,7 @@ public class TimeSheetCommonTest {
         TimeSpan succTransfer = new TimeSpan(20, 0);
         
         ////TimeSheet initialization
-        Employee employee = new Employee("Max Mustermann", 1234567);
+        Employee employee = new Employee("Max Mustermann", "1234567");
         Profession profession = new Profession("IPD", WorkingArea.UB, maxWorkingTime, 10.31);
         YearMonth yearMonth = YearMonth.of(2019, 11);
         Entry[] entries = new Entry[] {
@@ -37,7 +37,7 @@ public class TimeSheetCommonTest {
         TimeSpan succTransfer = new TimeSpan(20, 0);
         
         ////TimeSheet initialization
-        Employee employee = new Employee("Max Mustermann", 1234567);
+        Employee employee = new Employee("Max Mustermann", "1234567");
         Profession profession = new Profession("IPD", WorkingArea.UB, maxWorkingTime, 10.31);
         YearMonth yearMonth = YearMonth.of(2019, 11);
         Entry[] entries = new Entry[] {

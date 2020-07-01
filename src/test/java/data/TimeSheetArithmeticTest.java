@@ -12,7 +12,7 @@ public class TimeSheetArithmeticTest {
 
     @Test
     public void testGetTotalWorkTime() {
-        Employee employee = new Employee("Moritz Gstür", 1234567);
+        Employee employee = new Employee("Moritz Gstür", "1234567");
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSpan zeroTs = new TimeSpan(0, 0);
         Entry[] entries = new Entry[7];
@@ -30,7 +30,7 @@ public class TimeSheetArithmeticTest {
     
     @Test
     public void testGetTotalVacationTime() {
-        Employee employee = new Employee("Moritz Gstür", 1234567);
+        Employee employee = new Employee("Moritz Gstür", "1234567");
         Profession profession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         TimeSpan zeroTs = new TimeSpan(0, 0);
         Entry[] entries = new Entry[4];

@@ -22,7 +22,7 @@ public class LatexGeneratorTest {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy");
 
-    private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
+    private static final Employee EMPLOYEE = new Employee("Max Mustermann", "1234567");
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);

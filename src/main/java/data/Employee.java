@@ -6,14 +6,14 @@ package data;
 public class Employee {
 
     private final String name;
-    private final int id;
+    private final String id;
     
     /**
      * Constructs a new employee instance.
      * @param name - The full name of the employee
      * @param id - The employee id
      */
-    public Employee(String name, int id) {
+    public Employee(String name, String id) {
         this.name = name;
         this.id = id;
     }
@@ -30,7 +30,7 @@ public class Employee {
      * Gets the id of an employee.
      * @return The id of the employee.
      */
-    public int getId() {
+    public String getId() {
         return this.id;
     }
 
@@ -43,11 +43,8 @@ public class Employee {
         Employee otherEmployee = (Employee)other;
         if (!this.name.equals(otherEmployee.name)) {
             return false;
-        } else if (this.id != otherEmployee.id) {
-            return false;
-        } else {
-            return true;
-        }
+        } else
+            return this.id.equals(otherEmployee.id);
     }
 
 }

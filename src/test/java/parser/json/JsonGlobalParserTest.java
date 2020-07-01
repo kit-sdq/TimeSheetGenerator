@@ -1,13 +1,13 @@
 package parser.json;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import data.Employee;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import org.junit.Test;
 import parser.IGlobalParser;
 import parser.ParseException;
 
@@ -98,7 +98,28 @@ public class JsonGlobalParserTest {
         Employee employee = parser.getEmployee();
 
         // assert
-        assertEquals(new Employee("Max Mustermann", 1234567), employee);
+        assertEquals(new Employee("Max Mustermann", "1234567"), employee);
+    }
+
+    @Test
+    public void testParseEmployeeLeadingZeroId() throws ParseException {
+        // data
+        IGlobalParser parser = new JsonGlobalParser(
+          "{" +
+            "\"name\": \"Max Mustermann\"," +
+            "\"staffId\": \"01234567\"," +
+            "\"department\": \"Fakultät für Informatik\"," +
+            "\"workingTime\": \"40:00\"," +
+            "\"wage\": 10.31," +
+            "\"workingArea\": \"ub\"" +
+            "}"
+        );
+
+        // execute
+        Employee employee = parser.getEmployee();
+
+        // assert
+        assertEquals(new Employee("Max Mustermann", "01234567"), employee);
     }
 
     @Test(expected = ParseException.class)

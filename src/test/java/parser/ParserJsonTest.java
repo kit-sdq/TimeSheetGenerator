@@ -58,7 +58,7 @@ public class ParserJsonTest {
     @Test
     public void testParseTimeSheetJson() throws ParseException {
         // data
-        Employee expectedEmployee = new Employee("Max Mustermann", 1234567);
+        Employee expectedEmployee = new Employee("Max Mustermann", "1234567");
         Profession expectedProfession = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
         Entry[] expectedEntries = new Entry[] {
             new Entry("Korrektur", LocalDate.of(2019, 11, 2), new TimeSpan(10, 0), new TimeSpan(11, 0), new TimeSpan(0, 0), false),

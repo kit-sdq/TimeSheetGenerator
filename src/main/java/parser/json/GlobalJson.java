@@ -11,7 +11,7 @@ import data.WorkingArea;
 class GlobalJson {
 
     private final String name;
-    private final int staffId;
+    private final String staffId;
     private final String department;
     private final TimeSpan workingTime;
     private final double wage;
@@ -20,7 +20,7 @@ class GlobalJson {
     @JsonCreator
     GlobalJson(
         @JsonProperty(value="name", required=true) String name,
-        @JsonProperty(value="staffId", required=true) int staffId,
+        @JsonProperty(value="staffId", required=true) String staffId,
         @JsonProperty(value="department", required=true) String department,
         @JsonProperty(value="workingTime", required=true) String workingTime,
         @JsonProperty(value="wage", required=true) double wage,
@@ -38,7 +38,7 @@ class GlobalJson {
         return name;
     }
 
-    public int getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
