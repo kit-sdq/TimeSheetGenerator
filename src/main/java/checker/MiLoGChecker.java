@@ -3,6 +3,7 @@ package checker;
 import data.Entry;
 import data.TimeSheet;
 import data.TimeSpan;
+import i18n.ResourceHandler;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -93,12 +94,16 @@ public class MiLoGChecker implements IChecker {
         TimeSpan totalWorkingTime = timeSheet.getTotalWorkTime();
         
         //Vacation and transfer corrected time
-        TimeSpan correctedMaxWorkingTime = maxWorkingTime.add(timeSheet.getSuccTransfer())
-                .subtract(timeSheet.getVacation())
-                .subtract(timeSheet.getPredTransfer());
+        TimeSpan correctedMaxWorkingTime = maxWorkingTime
+                .add(timeSheet.getSuccTransfer())
+                .subtract(timeSheet.getPredTransfer())
+                .subtract(timeSheet.getTotalVacationTime());
         
         if (totalWorkingTime.compareTo(correctedMaxWorkingTime) > 0) {
-            errors.add(new CheckerError(CheckerErrorMessage.TOTAL_TIME_EXCEEDANCE.getErrorMessage()));
+            //Calculate difference
+            TimeSpan difference = totalWorkingTime.subtract(correctedMaxWorkingTime);
+            
+            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TOTAL_TIME_EXCEEDANCE, maxWorkingTime, difference));
             result = CheckerReturn.INVALID;
         }
     }
@@ -110,20 +115,22 @@ public class MiLoGChecker implements IChecker {
         // This map contains all working days and their summed up working times.
         Map<LocalDate,TimeSpan> workingTimeMap = new HashMap<LocalDate,TimeSpan>();
         for (Entry entry : timeSheet.getEntries()) {
-            // A check is performed whether a day contains more than one entry.
-            if (workingTimeMap.containsKey(entry.getDate())) {
-                // If so, the working times are summed up and written back to the map.
-                TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
-                workingTimeMap.put(entry.getDate(), summedTime);
-            } else {
-                // If not, a new entry will be created in the map.
-                workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+            if (!entry.isVacation()) {
+                // A check is performed whether a day contains more than one entry.
+                if (workingTimeMap.containsKey(entry.getDate())) {
+                    // If so, the working times are summed up and written back to the map.
+                    TimeSpan summedTime = workingTimeMap.get(entry.getDate()).add(entry.getWorkingTime());
+                    workingTimeMap.put(entry.getDate(), summedTime);
+                } else {
+                    // If not, a new entry will be created in the map.
+                    workingTimeMap.put(entry.getDate(), entry.getWorkingTime());
+                }
             }
         }
         
         for (Map.Entry<LocalDate,TimeSpan> mapEntry : workingTimeMap.entrySet()) {
             if (WORKDAY_MAX_WORKING_TIME.compareTo(mapEntry.getValue()) < 0) {
-                errors.add(new CheckerError(CheckerErrorMessage.DAY_TIME_EXCEEDANCE.getErrorMessage(),
+                errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.DAY_TIME_EXCEEDANCE,
                         WORKDAY_MAX_WORKING_TIME, mapEntry.getKey()));
                 result = CheckerReturn.INVALID;
             }
@@ -138,24 +145,26 @@ public class MiLoGChecker implements IChecker {
         HashMap<LocalDate,TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
         
         for (Entry entry : timeSheet.getEntries()) {
-            //EndToStart is the number of hours at this work shift.
-            TimeSpan endToStart = entry.getEnd();
-            endToStart = endToStart.subtract(entry.getStart());
-            TimeSpan pause = entry.getPause();
-            LocalDate date = entry.getDate();
-            
-            //If a day appears more than once this logic sums all of the working times
-            if (workingDays.containsKey(date)) {
-                TimeSpan oldWorkingTime = workingDays.get(date)[0];
-                endToStart = endToStart.add(oldWorkingTime);
+            if (!entry.isVacation()) {
+                //EndToStart is the number of hours at this work shift.
+                TimeSpan endToStart = entry.getEnd();
+                endToStart = endToStart.subtract(entry.getStart());
+                TimeSpan pause = entry.getPause();
+                LocalDate date = entry.getDate();
                 
-                TimeSpan oldPause = workingDays.get(date)[1];
-                pause = pause.add(oldPause);
+                //If a day appears more than once this logic sums all of the working times
+                if (workingDays.containsKey(date)) {
+                    TimeSpan oldWorkingTime = workingDays.get(date)[0];
+                    endToStart = endToStart.add(oldWorkingTime);
+                    
+                    TimeSpan oldPause = workingDays.get(date)[1];
+                    pause = pause.add(oldPause);
+                }
+                
+                //Adds the day to the map, replaces the old entry respectively
+                TimeSpan[] mapTimeEntry = {endToStart, pause};
+                workingDays.put(date, mapTimeEntry);
             }
-            
-            //Adds the day to the map, replaces the old entry respectively
-            TimeSpan[] mapTimeEntry = {endToStart, pause};
-            workingDays.put(date, mapTimeEntry);
         }
         
         //Check for every mapTimeEntry (first for), whether all Pause Rules (second for) where met.
@@ -167,7 +176,7 @@ public class MiLoGChecker implements IChecker {
                 if (mapEntry.getValue()[0].compareTo(pauseRule[0]) >= 0
                         && mapEntry.getValue()[1].compareTo(pauseRule[1]) < 0) {
                     
-                    errors.add(new CheckerError(CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), mapEntry.getKey()));
+                    errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_PAUSE, mapEntry.getKey()));
                     result = CheckerReturn.INVALID;
                     break;
                 }
@@ -183,7 +192,7 @@ public class MiLoGChecker implements IChecker {
             if (entry.getStart().compareTo(WORKDAY_LOWER_BOUND) < 0
                     || entry.getEnd().compareTo(WORKDAY_UPPER_BOUND) > 0) {
                 
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_OUTOFBOUNDS.getErrorMessage(), entry.getDate()));
+                errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_OUTOFBOUNDS, entry.getDate()));
                 result = CheckerReturn.INVALID;
             }
         }
@@ -201,7 +210,7 @@ public class MiLoGChecker implements IChecker {
             
             //Checks whether the day of the entry is Sunday
             if (localDate.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), localDate));
+                errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_SUNDAY, localDate));
                 result = CheckerReturn.INVALID;
                 continue;
             }
@@ -209,7 +218,7 @@ public class MiLoGChecker implements IChecker {
             //Check for each entry whether it is a holiday           
             try {
                 if (holidayChecker.isHoliday(localDate)) {
-                    errors.add(new CheckerError(CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), localDate));
+                    errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY, localDate));
                     result = CheckerReturn.INVALID;
                     continue;
                 }
@@ -231,7 +240,7 @@ public class MiLoGChecker implements IChecker {
         for (int i = 0; i < entries.size() - 1; i++) {
             if (entries.get(i).getDate().equals(entries.get(i + 1).getDate()) &&
                     entries.get(i).getEnd().compareTo(entries.get(i + 1).getStart()) > 0) {
-                errors.add(new CheckerError(CheckerErrorMessage.TIME_OVERLAP.getErrorMessage(), entries.get(i).getDate()));
+                errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_OVERLAP, entries.get(i).getDate()));
                 result = CheckerReturn.INVALID;
             }
         }
@@ -242,7 +251,7 @@ public class MiLoGChecker implements IChecker {
      */
     protected void checkRowNumExceedance() {
         if (timeSheet.getEntries().size() > MAX_ROW_NUM) {
-            errors.add(new CheckerError(CheckerErrorMessage.ROWNUM_EXCEEDENCE.getErrorMessage()));
+            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE));
             result = CheckerReturn.INVALID;
         }
     }
@@ -252,7 +261,7 @@ public class MiLoGChecker implements IChecker {
      */
     protected void checkDepartmentName() {
         if (timeSheet.getProfession().getDepartmentName().isEmpty()) {
-            errors.add(new CheckerError(CheckerErrorMessage.NAME_MISSING.getErrorMessage()));
+            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.NAME_MISSING));
             result = CheckerReturn.INVALID;
         }
     }
@@ -309,26 +318,31 @@ public class MiLoGChecker implements IChecker {
     /**
      * This enum holds the possible error messages (including format specifiers) for this checker
      */
-    protected enum CheckerErrorMessage {
-        TOTAL_TIME_EXCEEDANCE("Maximum legal working time exceeded."),
-        DAY_TIME_EXCEEDANCE("Maximum daily working time of %s exceeded on %tF"), // string and date
-        TIME_OUTOFBOUNDS("Working time is out of bounds on %tF."), // date
-        TIME_SUNDAY("The %tF is a sunday, which is not a valid working day."), // date
-        TIME_HOLIDAY("The %tF is an official holiday, which is not a valid working day."), // date
-        TIME_PAUSE("Maximum working time without pause exceeded on %tF."), // date
-        TIME_OVERLAP("Start/End times in the time sheet overlap on %tF."), // date
+    protected enum MiLoGCheckerErrorMessageProvider implements CheckerError.CheckerErrorMessageProvider {
+        TOTAL_TIME_EXCEEDANCE("totalTimeExceedance"),
+        DAY_TIME_EXCEEDANCE("dayTimeExceedance"),
+        TIME_OUTOFBOUNDS("timeOutOfBounds"),
+        TIME_SUNDAY("timeSunday"),
+        TIME_HOLIDAY("timeHoliday"),
+        TIME_PAUSE("timePause"),
+        TIME_OVERLAP("timeOverlap"),
         
-        ROWNUM_EXCEEDENCE("Exceeded the maximum number of rows for the document."),
-        NAME_MISSING("Name of the departement is missing.");
+        ROWNUM_EXCEEDENCE("rowNumExceedance"),
+        NAME_MISSING("nameMissing");
         
-        private final String errorMsg;
+        private static final String messageKeyPrefix = "error.checker.";
         
-        private CheckerErrorMessage(String errorMsg) {
-            this.errorMsg = errorMsg;
+        private MiLoGCheckerErrorMessageProvider(String messageKey) {
+            this.messageKey = messageKey;
         }
         
-        public String getErrorMessage() {
-            return this.errorMsg;
+        private final String messageKey;
+        
+        @Override
+        public String getErrorMessage(Object... args) {
+            String key = messageKeyPrefix + messageKey;
+            
+            return ResourceHandler.getMessage(key, args);
         }
     }
     

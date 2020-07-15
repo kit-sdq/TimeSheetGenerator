@@ -8,6 +8,10 @@ import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
 import data.Entry;
 import data.TimeSpan;
@@ -34,7 +38,11 @@ public class JsonMonthParser implements IMonthParser {
     
     private MonthJson parse() throws JsonProcessingException {
         if (monthJson == null) {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new ParameterNamesModule())
+                .addModule(new Jdk8Module())
+                .addModule(new JavaTimeModule())
+                .build();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
             monthJson = mapper.readValue(json, MonthJson.class);
         }
@@ -80,15 +88,6 @@ public class JsonMonthParser implements IMonthParser {
     }
 
     @Override
-    public TimeSpan getVacation() throws ParseException {
-        try {
-            return parse().getVacation();
-        } catch (JsonProcessingException e) {
-            throw new ParseException(e.getMessage());
-        }
-    }
-
-    @Override
     public TimeSpan getSuccTransfer() throws ParseException {
         try {
             return parse().getSuccTransfer();
@@ -122,7 +121,8 @@ public class JsonMonthParser implements IMonthParser {
             date,
             entry.getStart(),
             entry.getEnd(),
-            entry.getPause()
+            entry.getPause(),
+            entry.getVacation()
         );
     }
     

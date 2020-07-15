@@ -2,11 +2,11 @@
   "$schema": "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/master/examples/schemas/month.json",
   "year": 2019,
   "month": 11,
-  "vacation": "3:00",
   "pred_transfer": "0:00",
   "succ_transfer": "0:00",
   "entries": [
     {"action": "Korrektur", "day": 2, "start": "10:00", "end": "11:00"},
-    {"action": "Fragen beantworten", "day": 4, "start": "11:31", "end": "15:11", "pause": "00:30"}
+    {"action": "Fragen beantworten", "day": 4, "start": "11:31", "end": "15:11", "pause": "00:30"},
+    {"action": "Urlaub in Italien", "day": 11, "start": "08:00", "end": "16:00", "vacation": true}
   ]
 }

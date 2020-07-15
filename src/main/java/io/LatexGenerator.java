@@ -11,15 +11,15 @@ import data.Entry;
 import data.TimeSheet;
 import data.WorkingArea;
 import etc.ContextStringReplacer;
+import i18n.ResourceHandler;
 
 /**
  * The LatexGenerator generates a LaTeX string based on a template and fills it with 
  * information of a {@link TimeSheet} and its associated {@link Entry Entries}.
  */
 public class LatexGenerator implements IGenerator {
-
-    private final static String FILE_EXTENSION = "tex";
-    private final static String FILE_DESCRIPTION = "TeX-File";
+    
+    private final static String SHORTHAND_VACATION = "U";
     
     /**
      * List of characters that can be escaped by using a backslash (\) as a prefix
@@ -34,6 +34,8 @@ public class LatexGenerator implements IGenerator {
         LATEX_SPECIALCHARACTERS_REPLACE.put("~", "\\textasciitilde");
         LATEX_SPECIALCHARACTERS_REPLACE.put("^", "\\textasciicircum");
     }
+    
+    private final static String TABLE_DATE_FORMAT = "dd.MM.yy";
     
     private final TimeSheet timeSheet;
     private final String template;
@@ -85,7 +87,10 @@ public class LatexGenerator implements IGenerator {
 
     @Override
     public FileNameExtensionFilter getFileNameExtensionFilter() {
-        return new FileNameExtensionFilter(FILE_DESCRIPTION, FILE_EXTENSION);
+        return new FileNameExtensionFilter(
+            ResourceHandler.getMessage("file.tex.description"),
+            ResourceHandler.getMessage("file.tex.extension")
+        );
     }
 
     /**
@@ -127,10 +132,10 @@ public class LatexGenerator implements IGenerator {
                 value = Double.toString(timeSheet.getProfession().getWage());
                 break;
             case VACATION:
-                value = timeSheet.getVacation().toString();
+                value = timeSheet.getTotalVacationTime().toString();
                 break;
             case HOURS_SUM:
-                value = timeSheet.getTotalWorkTime().add(timeSheet.getVacation()).toString();
+                value = timeSheet.getTotalWorkTime().add(timeSheet.getTotalVacationTime()).toString();
                 break;
             case TRANSFER_PRED:
                 value = timeSheet.getPredTransfer().toString();
@@ -159,7 +164,7 @@ public class LatexGenerator implements IGenerator {
                 value = escapeText(entry.getAction());
                 break;
             case TABLE_DATE:
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yy");
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(TABLE_DATE_FORMAT);
                 value = entry.getDate().format(formatter);
                 break;
             case TABLE_START:
@@ -172,7 +177,11 @@ public class LatexGenerator implements IGenerator {
                 value = entry.getPause().toString();
                 break;
             case TABLE_TIME:
-                value = entry.getWorkingTime().toString();
+                if (entry.isVacation()) {
+                    value = entry.getWorkingTime().toString() + " " + SHORTHAND_VACATION;
+                } else {
+                    value = entry.getWorkingTime().toString();
+                }
                 break;
             default:
                 value = null;

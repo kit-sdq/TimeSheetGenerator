@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
 
+import i18n.ResourceHandler;
+
 /**
  * Provides functionality to replace substrings in a string.
  * The substrings are found by matching against a given collection of substrings.
@@ -72,7 +74,7 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
     public ContextStringReplacer(String string, Collection<String> replace) {
         for (String substring : replace) {
             if (substring.isEmpty())
-                throw new IllegalArgumentException("strings to replace may not be empty");
+                throw new IllegalArgumentException(ResourceHandler.getMessage("error.contextstringreplacer.emptyReplaceString"));
         }
         
         this.string = string;

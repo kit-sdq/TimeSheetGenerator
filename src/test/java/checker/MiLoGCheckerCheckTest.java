@@ -32,9 +32,9 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2019, 11, 22); //Valid working day
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
@@ -51,13 +51,13 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2019, 12, 25); //Holiday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
@@ -73,13 +73,13 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2019, 12, 1); //Sunday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());
@@ -95,13 +95,13 @@ public class MiLoGCheckerCheckTest {
         LocalDate date = LocalDate.of(2022, 12, 25); //Sunday and holiday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.check());

@@ -39,9 +39,9 @@ public class MiLoGCheckerDayPauseTimeTest {
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -55,13 +55,13 @@ public class MiLoGCheckerDayPauseTimeTest {
     @Test
     public void testValidMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30));
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(11, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), new TimeSpan(0, 30), false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Execution
@@ -75,19 +75,19 @@ public class MiLoGCheckerDayPauseTimeTest {
     @Test
     public void testExceedanceMultipleEntries() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         checker.checkDayPauseTime();
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry1.getDate());
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry1.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -105,13 +105,13 @@ public class MiLoGCheckerDayPauseTimeTest {
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry.getDate());
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry.getDate());
         
         ////Assertions
         for (TimeSpan[] pauseRule : PAUSE_RULES) {
@@ -139,13 +139,13 @@ public class MiLoGCheckerDayPauseTimeTest {
         TimeSpan pause = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause);
+        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry.getDate());
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry.getDate());
         
         ////Assertions
         TimeSpan startToEnd = end.subtract(start);
@@ -169,21 +169,21 @@ public class MiLoGCheckerDayPauseTimeTest {
     @Test
     public void testMultipleExceedences() {
         ////Test values
-        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs);
-        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs);
-        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(8, 0), new TimeSpan(20, 0), zeroTs);
+        Entry entry1 = new Entry("Test1", LocalDate.of(2019, 11, 22), new TimeSpan(8, 0), new TimeSpan(12, 0), zeroTs, false);
+        Entry entry2 = new Entry("Test2", LocalDate.of(2019, 11, 22), new TimeSpan(16, 0), new TimeSpan(21, 0), zeroTs, false);
+        Entry entry3 = new Entry("Test3", LocalDate.of(2019, 11, 23), new TimeSpan(8, 0), new TimeSpan(20, 0), zeroTs, false);
         
         ////Checker initialization
         Entry[] entries = {entry1, entry2, entry3};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Execution
         checker.checkDayPauseTime();
         
         ////Expectation
-        String error1 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry1.getDate());
-        String error3 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_PAUSE.getErrorMessage(), entry3.getDate());
+        String error1 = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry1.getDate());
+        String error3 = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_PAUSE.getErrorMessage(entry3.getDate());
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());

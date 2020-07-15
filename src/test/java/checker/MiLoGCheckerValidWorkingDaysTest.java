@@ -57,9 +57,9 @@ public class MiLoGCheckerValidWorkingDaysTest {
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 22); //Friday, 22. November 2019, no Holiday in BW Germany
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
@@ -80,16 +80,16 @@ public class MiLoGCheckerValidWorkingDaysTest {
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1); //New years day: Holiday in BW Germany
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
         checker.checkValidWorkingDays();
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -106,16 +106,16 @@ public class MiLoGCheckerValidWorkingDaysTest {
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25);
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
         checker.checkValidWorkingDays();
         
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -132,9 +132,9 @@ public class MiLoGCheckerValidWorkingDaysTest {
         LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25); //Its a Sunday and Holiday
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Executions
@@ -145,7 +145,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
          * and therefore this check is done beforehand.
          */
         ////Expectation
-        String error = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
+        String error = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
@@ -169,9 +169,9 @@ public class MiLoGCheckerValidWorkingDaysTest {
         GermanState state = GermanState.BW;
         
         ////Checker initialization
-        Entry entry = new Entry("Test", date, start, end, pause);
+        Entry entry = new Entry("Test", date, start, end, pause, false);
         Entry[] entries = {entry};
-        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
@@ -182,8 +182,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
         checker.checkValidWorkingDays();
         
         ////Expectation (on error)
-        String errorSunday = String.format(MiLoGChecker.CheckerErrorMessage.TIME_SUNDAY.getErrorMessage(), date);
-        String errorHoliday = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date);
+        String errorSunday = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_SUNDAY.getErrorMessage(date);
+        String errorHoliday = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
         if (randDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
@@ -206,26 +206,26 @@ public class MiLoGCheckerValidWorkingDaysTest {
         TimeSpan pause0 = new TimeSpan(0, 0);
         YearMonth yearMonth0 = YearMonth.of(2020, Month.JANUARY);
         LocalDate date0 = LocalDate.of(yearMonth0.getYear(), yearMonth0.getMonthValue(), 1);
-        Entry entry0 = new Entry("Test", date0, start0, end0, pause0);
+        Entry entry0 = new Entry("Test", date0, start0, end0, pause0, false);
         
         TimeSpan start1 = new TimeSpan(0, 0);
         TimeSpan end1 = new TimeSpan(0, 0);
         TimeSpan pause1 = new TimeSpan(0, 0);
         YearMonth yearMonth1 = YearMonth.of(2020, Month.JANUARY);
         LocalDate date1 = LocalDate.of(yearMonth1.getYear(), yearMonth1.getMonthValue(), 6);
-        Entry entry1 = new Entry("Test", date1, start1, end1, pause1);
+        Entry entry1 = new Entry("Test", date1, start1, end1, pause1, false);
         
         ////Checker initialization
         Entry[] entries = {entry0, entry1};
-        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth0, entries, zeroTs, zeroTs, zeroTs);
+        TimeSheet fullDoc = new TimeSheet(EMPLOYEE, PROFESSION, yearMonth0, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(fullDoc);
         
         ////Executions
         checker.checkValidWorkingDays();
         
         ////Expectation
-        String error0 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date0);
-        String error1 = String.format(MiLoGChecker.CheckerErrorMessage.TIME_HOLIDAY.getErrorMessage(), date1);
+        String error0 = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date0);
+        String error1 = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date1);
         
         ////Assertions
         assertEquals(CheckerReturn.INVALID, checker.getResult());
