@@ -10,6 +10,7 @@ import checker.CheckerReturn;
 import checker.IChecker;
 import checker.MiLoGChecker;
 import data.TimeSheet;
+import etc.ExitCode;
 import i18n.ResourceHandler;
 import io.FileController;
 import io.IGenerator;
@@ -35,7 +36,7 @@ public class Main {
             request = userInput.parse();
         } catch (org.apache.commons.cli.ParseException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            System.exit(ExitCode.GENERIC_ERROR.getCode());
             return;
         }
 
@@ -58,7 +59,7 @@ public class Main {
             month = FileController.readFileToString(userInput.getFile(UserInputFile.JSON_MONTH));
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            System.exit(ExitCode.GENERIC_ERROR.getCode());
             return;
         }
 
@@ -68,7 +69,7 @@ public class Main {
             timeSheet = Parser.parseTimeSheetJson(global, month);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            System.exit(ExitCode.GENERIC_ERROR.getCode());
             return;
         }
 
@@ -79,7 +80,7 @@ public class Main {
             checkerReturn = checker.check();
         } catch (CheckerException e) { // exception does not mean that the time sheet is invalid, but that the process of checking failed
             System.out.println(e.getMessage());
-            System.exit(1);
+            System.exit(ExitCode.GENERIC_ERROR.getCode());
             return;
         }
         // Print all errors in case the time sheet is invalid
@@ -97,6 +98,7 @@ public class Main {
                 JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
             }
             
+            System.exit(ExitCode.CHECKER_ERROR.getCode());
             return;
         }
 
@@ -108,7 +110,7 @@ public class Main {
             FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            System.exit(1);
+            System.exit(ExitCode.GENERIC_ERROR.getCode());
             return;
         }
     }
