@@ -31,12 +31,14 @@ The TimeSheetGenerator application is also provided in a Docker image including 
 
 ### Execution with Script
 
-`sh ./run_docker_build_pdf.sh <global json> <month json> <output pdf>`
+`sh ./run_docker_build_pdf.sh [-v] <global json> <month json> <output pdf>`
+
+`.\run_docker_build_pdf.cmd [-v] <global json> <month json> <output pdf>`
 
 The input and output arguments are full paths and the files do not need to be placed in a special directory.
 
 ### Execution without Script
 
-`docker run --rm -v <directory>:/prod/src timesheetgenerator:latest <global json> <month json> <output pdf>`
+`docker run --rm -v <directory>:/prod/src timesheetgenerator:latest [-v] <global json> <month json> <output pdf>`
 
 Without the script the input and output paths are relative to the specified directory. Remember that the specified directory will be mounted in the Docker container.
