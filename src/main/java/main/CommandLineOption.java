@@ -8,7 +8,7 @@ import org.apache.commons.cli.Options;
 /**
  * Represents the input option the user has on the command line
  */
-public enum UserInputOption {
+public enum CommandLineOption {
 
     /**
      * Print the command line help
@@ -42,6 +42,15 @@ public enum UserInputOption {
         .desc(ResourceHandler.getMessage("command.input.file.description"))
         .numberOfArgs(3)
         .argName(ResourceHandler.getMessage("command.input.file.arguments"))
+        .build()),
+    /**
+     * Pass the JSON input in the arguments of this command
+     */
+    JSON(Option.builder("j")
+        .longOpt("json")
+        .desc(ResourceHandler.getMessage("command.input.json.description"))
+        .numberOfArgs(2)
+        .argName(ResourceHandler.getMessage("command.input.json.arguments"))
         .build());
 
     private final Option option;
@@ -50,7 +59,7 @@ public enum UserInputOption {
      * Create a user input option
      * @param option Apache CLI option for the user input option
      */
-    private UserInputOption(Option option) {
+    private CommandLineOption(Option option) {
         this.option = option;
     }
 
@@ -68,8 +77,8 @@ public enum UserInputOption {
      */
     public static Options getOptions() {
         Options options = new Options();
-        for (UserInputOption uio : UserInputOption.values()) {
-            options.addOption(uio.getOption());
+        for (CommandLineOption option : CommandLineOption.values()) {
+            options.addOption(option.getOption());
         }
         return options;
     }
