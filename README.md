@@ -19,15 +19,17 @@ Run TimeSheetGenerator (requires Java 8 or higher):
 
 ## Docker Image
 
-The TimeSheetGenerator application is also provided in a Docker image including all runtime dependencies. This allows running the TimeSheetGenerator without having to install a LaTeX distribution. The Docker image is provided as part of the regular releases in this GitHub repository. Additionally we provide a script to simplify the use of the Docker image, for example copying the necessary files in a temporary directory, which is then mounted in the Docker container. This allows for the input and output files to be placed anywhere on your file system, as you would expect.
+The TimeSheetGenerator application is also provided in a Docker image including all runtime dependencies. This allows running the TimeSheetGenerator without having to install a LaTeX distribution. The Docker image is provided as part of the regular releases in this GitHub repository. Additionally we provide scripts to simplify the use of the Docker image, for example copying the necessary files in a temporary directory, which is then mounted in the Docker container. This allows for the input and output files to be placed anywhere on your file system, as you would expect.
 
 ### Installation
 
 - download the `docker.zip` file from the latest release
 - unzip the archive
-- find the extracted Docker image and the script to run it
+- find the extracted Docker image and the scripts to run it
 - install the Docker image with `docker load -i <image_name.tar.gz>`
 - place the script anywhere you like
+
+*Note that the docker image uses semantic version tags. This means that when loading a new image (for example with the version `1.2.3`), it will overwrite all fitting version tags, from least to most specific. In this example the overwritten version tags would be `1` (major), `1.2` (major.minor), `1.2.3` (major.minor.patch) and `latest`. The benefit of this is, that no matter how specific you are when choosing an image you want to run, you will always run the image with the specified version that you loaded last.*
 
 ### Execution with Script
 
