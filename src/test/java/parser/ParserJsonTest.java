@@ -1,11 +1,11 @@
 package parser;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import data.Employee;
 import data.Entry;
@@ -37,22 +37,28 @@ public class ParserJsonTest {
         "]" +
     "}";
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseTimeSheetJsonBothJsonEmpty() throws ParseException {
         // execute
-        Parser.parseTimeSheetJson(JSON_EMPTY, JSON_EMPTY);
+        assertThrows(ParseException.class, () -> {
+            Parser.parseTimeSheetJson(JSON_EMPTY, JSON_EMPTY);
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseTimeSheetJsonGlobalJsonEmpty() throws ParseException {
         // execute
-        Parser.parseTimeSheetJson(JSON_EMPTY, JSON_MONTH_EXAMPLE);
+        assertThrows(ParseException.class, () -> {
+            Parser.parseTimeSheetJson(JSON_EMPTY, JSON_MONTH_EXAMPLE);
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseTimeSheetJsonMonthJsonEmpty() throws ParseException {
         // execute
-        Parser.parseTimeSheetJson(JSON_GLOBAL_EXAMPLE, JSON_EMPTY);
+        assertThrows(ParseException.class, () -> {
+            Parser.parseTimeSheetJson(JSON_GLOBAL_EXAMPLE, JSON_EMPTY);
+        });
     }
 
     @Test

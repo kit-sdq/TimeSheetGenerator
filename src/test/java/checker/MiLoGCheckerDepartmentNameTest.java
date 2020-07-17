@@ -1,12 +1,12 @@
 package checker;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import data.Employee;
 import data.Entry;

@@ -1,10 +1,10 @@
 package etc;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import etc.ContextStringReplacer.ContextStringReplacerIterator;
 import etc.ContextStringReplacer.ContextStringReplacerIterator.ContextStringReplacement;
@@ -28,10 +28,12 @@ public class ContextStringReplacerTest {
         assertEquals("", result);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptySubstring() {
         // execute
-        new ContextStringReplacer("Hello World", Arrays.asList(""));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new ContextStringReplacer("Hello World", Arrays.asList(""));
+        });
     }
     
     @Test
@@ -477,7 +479,7 @@ public class ContextStringReplacerTest {
         }
     }
     
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAccessStoredReplacementAfterNewReplacement() {
         // data
         ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
@@ -486,10 +488,14 @@ public class ContextStringReplacerTest {
         for (ContextStringReplacement replacement : replacer) {
             storedReplacement = replacement;
         }
-        storedReplacement.replace("ooo W");
+
+        final ContextStringReplacement _storedReplacement = storedReplacement;
+        assertThrows(IllegalStateException.class, () -> {
+            _storedReplacement.replace("ooo W");
+        });
     }
     
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAccessStoredIteratorAfterNewIterator() {
         // data
         ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
@@ -497,10 +503,12 @@ public class ContextStringReplacerTest {
         ContextStringReplacerIterator storedIterator = replacer.iterator();
         replacer.iterator();
         // execute
-        storedIterator.next();
+        assertThrows(IllegalStateException.class, () -> {
+            storedIterator.next();
+        });
     }
     
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAccessStoredReplacementAfterNewIterator() {
         // data
         ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
@@ -509,7 +517,9 @@ public class ContextStringReplacerTest {
         ContextStringReplacement storedReplacement = storedIterator.next();
         replacer.iterator();
         // execute
-        storedReplacement.replace("ooo W");
+        assertThrows(IllegalStateException.class, () -> {
+            storedReplacement.replace("ooo W");
+        });
     }
     
     @Test

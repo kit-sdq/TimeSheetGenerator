@@ -1,14 +1,14 @@
 package checker;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import data.Employee;
 import data.Entry;
@@ -32,8 +32,8 @@ public class MiLoGCheckerDayTimeBoundsTest {
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
-    @Before
-    public void init() {
+    @BeforeAll
+    public static void beforeAll() {
         CHECKER_WORKDAY_LOWER_BOUND = MiLoGChecker.getWorkdayLowerBound();
         CHECKER_WORKDAY_UPPER_BOUND = MiLoGChecker.getWorkdayUpperBound();
     }

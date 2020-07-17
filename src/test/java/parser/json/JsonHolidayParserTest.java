@@ -1,12 +1,12 @@
 package parser.json;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import checker.holiday.Holiday;
 import parser.IHolidayParser;
@@ -43,7 +43,7 @@ public class JsonHolidayParserTest {
         assertEquals(0, holidays.size());
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testGetHolidaysMissingDate() throws ParseException {
         // data
         String json = "{" +
@@ -54,10 +54,12 @@ public class JsonHolidayParserTest {
         IHolidayParser parser = new JsonHolidayParser(json);
 
         // execute
-        parser.getHolidays();
+        assertThrows(ParseException.class, () -> {
+            parser.getHolidays();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testGetHolidaysAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -69,10 +71,12 @@ public class JsonHolidayParserTest {
         IHolidayParser parser = new JsonHolidayParser(json);
 
         // execute
-        parser.getHolidays();
+        assertThrows(ParseException.class, () -> {
+            parser.getHolidays();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testGetHolidaysWrongDateFormat() throws ParseException {
         // data
         String json = "{" +
@@ -83,7 +87,9 @@ public class JsonHolidayParserTest {
         IHolidayParser parser = new JsonHolidayParser(json);
 
         // execute
-        parser.getHolidays();
+        assertThrows(ParseException.class, () -> {
+            parser.getHolidays();
+        });
     }
 
     @Test

@@ -1,16 +1,15 @@
 package data;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TimeSheetCommonTest {
 
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidTransferVacation() {
         ////Test values
         TimeSpan maxWorkingTime = new TimeSpan(40, 0);
@@ -24,9 +23,10 @@ public class TimeSheetCommonTest {
         Entry[] entries = new Entry[] {
             new Entry("Vacation", LocalDate.of(2019, 11, 29), new TimeSpan(10, 0), new TimeSpan(20, 0), new TimeSpan(0, 0), true)
         };
-        TimeSheet timeSheet = new TimeSheet(employee, profession, yearMonth, entries, succTransfer, predTransfer);
-        
-        ////Assertions
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            new TimeSheet(employee, profession, yearMonth, entries, succTransfer, predTransfer);
+        });
     }
 
     @Test

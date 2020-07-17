@@ -1,10 +1,10 @@
 package data;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TimeSpanParseTest {
 
@@ -63,18 +63,18 @@ public class TimeSpanParseTest {
         assertTrue(timeSpan.compareTo(checkTS) == 0);
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testInvalidUpperMinuteBound() {
         ////Test values
         String timeString = "0:60";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testInvalidMinutesRandom() {
         ////Random
         Random rand = new Random();
@@ -84,7 +84,9 @@ public class TimeSpanParseTest {
         String timeString = "0:" + minutes;
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
     @Test
@@ -193,63 +195,69 @@ public class TimeSpanParseTest {
         }
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testNegativeHours() {
         ////Test values
         String timeString = "-2:00";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testNegativeMinutes() {
         ////Test values
         String timeString = "0:-4";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testEmptyString() {
         ////Test values
         String timeString = "";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testInvalidStringColon() {
         ////Test values
         String timeString = ":";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testInvalidStringNumber() {
         ////Test values
         String timeString = "7";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
     
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class) 
+    @Test
     public void testInvalidStringNaN() {
         ////Test values
         String timeString = "TestString";
         
         ////TimeSpan initialization
-        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        assertThrows(IllegalArgumentException.class, () -> {
+            TimeSpan.parse(timeString);
+        });
     }
 }

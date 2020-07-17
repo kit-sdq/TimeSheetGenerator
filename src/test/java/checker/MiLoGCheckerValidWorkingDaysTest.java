@@ -1,6 +1,6 @@
 package checker;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -11,8 +11,8 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
@@ -35,7 +35,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
     
-    @BeforeClass
+    @BeforeAll
     public static void checkInternetConnection() {
         try {
             InetAddress inetAdress = InetAddress.getByName("kit.edu");

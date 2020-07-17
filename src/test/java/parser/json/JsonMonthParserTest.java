@@ -1,13 +1,13 @@
 package parser.json;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import data.Entry;
 import data.TimeSpan;
@@ -57,16 +57,18 @@ public class JsonMonthParserTest {
         assertNotNull(parser);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseYearMonthEmptyJson() throws ParseException {
         // data
         IMonthParser parser = new JsonMonthParser(JSON_EMPTY);
 
         // execute
-        parser.getYearMonth();
+        assertThrows(ParseException.class, () -> {
+            parser.getYearMonth();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseYearMonthMissingYear() throws ParseException {
         // data
         String json = "{" +
@@ -80,10 +82,12 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getYearMonth();
+        assertThrows(ParseException.class, () -> {
+            parser.getYearMonth();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseYearMonthMissingMonth() throws ParseException {
         // data
         String json = "{" +
@@ -97,10 +101,12 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getYearMonth();
+        assertThrows(ParseException.class, () -> {
+            parser.getYearMonth();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseYearMonthAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -116,7 +122,9 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getYearMonth();
+        assertThrows(ParseException.class, () -> {
+            parser.getYearMonth();
+        });
     }
 
     @Test
@@ -131,16 +139,18 @@ public class JsonMonthParserTest {
         assertEquals(YearMonth.of(2019, 11), yearmonth);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntriesEmptyJson() throws ParseException {
         // data
         IMonthParser parser = new JsonMonthParser(JSON_EMPTY);
 
         // execute
-        parser.getEntries();
+        assertThrows(ParseException.class, () -> {
+            parser.getEntries();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntriesMissingEntries() throws ParseException {
         // data
         String json = "{" +
@@ -150,10 +160,12 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        assertThrows(ParseException.class, () -> {
+            parser.getEntries();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntriesAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -169,7 +181,9 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        assertThrows(ParseException.class, () -> {
+            parser.getEntries();
+        });
     }
 
     @Test
@@ -202,16 +216,18 @@ public class JsonMonthParserTest {
         assert(entryList.contains(new Entry("Urlaub in Italien", LocalDate.of(2019, 11, 11), new TimeSpan(9, 0), new TimeSpan(12, 0), new TimeSpan(0, 0), true)));
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParsePredTransferEmptyJson() throws ParseException {
         // data
         IMonthParser parser = new JsonMonthParser(JSON_EMPTY);
 
         // execute
-        parser.getPredTransfer();
+        assertThrows(ParseException.class, () -> {
+            parser.getPredTransfer();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParsePredTransferAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -230,10 +246,12 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getPredTransfer();
+        assertThrows(ParseException.class, () -> {
+            parser.getPredTransfer();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParsePredTransferWrongFormat() throws ParseException {
         // data
         String json = "{" +
@@ -251,7 +269,9 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getPredTransfer();
+        assertThrows(ParseException.class, () -> {
+            parser.getPredTransfer();
+        });
     }
 
     @Test
@@ -278,16 +298,18 @@ public class JsonMonthParserTest {
         assertEquals(new TimeSpan(0, 0), vacation);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseSuccTransferEmptyJson() throws ParseException {
         // data
         IMonthParser parser = new JsonMonthParser(JSON_EMPTY);
 
         // execute
-        parser.getSuccTransfer();
+        assertThrows(ParseException.class, () -> {
+            parser.getSuccTransfer();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseSuccTransferAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -306,10 +328,12 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getSuccTransfer();
+        assertThrows(ParseException.class, () -> {
+            parser.getSuccTransfer();
+        });
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseSuccTransferWrongFormat() throws ParseException {
         // data
         String json = "{" +
@@ -327,7 +351,9 @@ public class JsonMonthParserTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getSuccTransfer();
+        assertThrows(ParseException.class, () -> {
+            parser.getSuccTransfer();
+        });
     }
 
     @Test

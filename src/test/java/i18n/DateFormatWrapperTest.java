@@ -1,7 +1,6 @@
 package i18n;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.text.DateFormat;
 import java.text.MessageFormat;
@@ -12,7 +11,7 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DateFormatWrapperTest {
 
@@ -30,13 +29,15 @@ public class DateFormatWrapperTest {
         assertEquals("2019/07/11 09:30:17", result);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testDateFormatException() {
         // data
         LocalDateTime date = LocalDateTime.of(2019, 7, 11, 9, 30, 17);
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         // execute
-        format.format(date);
+        assertThrows(IllegalArgumentException.class, () -> {
+            format.format(date);
+        });
     }
     
     @Test

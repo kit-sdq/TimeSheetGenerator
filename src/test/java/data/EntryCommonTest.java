@@ -1,10 +1,10 @@
 package data;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EntryCommonTest {
 
@@ -30,7 +30,7 @@ public class EntryCommonTest {
         assertEquals(entry.getPause().compareTo(pause), 0);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorIllegalArgument1() {
         String action = "Test";
         TimeSpan start = new TimeSpan(14, 0);
@@ -39,10 +39,12 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause, false);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Entry(action, date, start, end, pause, false);
+        });
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorIllegalArgument2() {
         String action = "Test";
         TimeSpan start = new TimeSpan(23, 59);
@@ -51,10 +53,12 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause, false);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Entry(action, date, start, end, pause, false);
+        });
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorIllegalArgument3() {
         String action = "Test";
         TimeSpan start = new TimeSpan(23, 00);
@@ -63,10 +67,12 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause, false);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Entry(action, date, start, end, pause, false);
+        });
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorIllegalArgument4() {
         String action = "Test";
         TimeSpan start = new TimeSpan(25, 00);
@@ -75,10 +81,12 @@ public class EntryCommonTest {
         
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause, false);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Entry(action, date, start, end, pause, false);
+        });
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructorIllegalArgumentPauseAndVacation() {
         String action = "Test";
         TimeSpan start = new TimeSpan(14, 0);
@@ -87,7 +95,9 @@ public class EntryCommonTest {
 
         LocalDate date = LocalDate.of(2019, 11, 16);
         
-        new Entry(action, date, start, end, pause, true);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Entry(action, date, start, end, pause, true);
+        });
     }
     
 }
