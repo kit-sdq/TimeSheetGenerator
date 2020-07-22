@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Random;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -15,11 +15,14 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomInt;
+import utils.randomtest.RandomTestExtension.RandomTest;
 
+@ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerRowNumExceedanceTest {
 
-    //TODO Out source entry generator
-    private static final int RANDOM_ENTRY_BOUND = 50;
+    // TODO: Out source entry generator
     private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntries();
     
     ////Placeholder for time sheet construction
@@ -103,14 +106,10 @@ public class MiLoGCheckerRowNumExceedanceTest {
         assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals( MiLoGChecker.MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE.getErrorMessage())));
     }
     
-    @Test
-    public void testExceedanceRandom() {
-        ////Random
-        Random rand = new Random();
-        
-        ////Test values
-        int numberOfEntries = rand.nextInt(RANDOM_ENTRY_BOUND) + 1; //May not be zero!
-        
+    @RandomTest
+    public void testExceedanceRandom(
+        @RandomInt(lowerBound = 1, upperBound = 50) int numberOfEntries
+    ) {
         ////Entry generator
         Entry[] entries = new Entry[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {

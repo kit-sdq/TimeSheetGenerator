@@ -1,13 +1,14 @@
 package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.randomtest.RandomAssertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Random;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -15,13 +16,12 @@ import data.Profession;
 import data.TimeSheet;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
+import utils.randomtest.RandomTestExtension.RandomTest;
 
+@ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerDayTimeExceedanceTest {
-    
-    //// Placeholder for random tests
-    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
-    private static final int RANDOM_HOUR_BOUND = 24;
-    private static final int RANDOM_MINUTES_BOUND = 60;
     
     //// Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -270,22 +270,16 @@ public class MiLoGCheckerDayTimeExceedanceTest {
         assertEquals(CheckerReturn.VALID, checker.getResult());
     }
     
-    @Test
-    public void testRandomSingleEntry() throws CheckerException {
+    @RandomTest
+    public void testRandomSingleEntry(
+        @RandomTimeSpan TimeSpan start,
+        @RandomTimeSpan TimeSpan end
+    ) throws CheckerException {
         ////Random
-        Random rand = new Random();
-
-        ////Test values
-        TimeSpan fstTimeSpan = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan sndTimeSpan = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
+        randomAssert(start.compareTo(end) < 0);
         
         ////Checker initialization
-        Entry entry;
-        if (fstTimeSpan.compareTo(sndTimeSpan) > 0) {
-            entry = new Entry("Test", WORKINGDAY_VALID, sndTimeSpan, fstTimeSpan, ZERO_TS, false);
-        } else {
-            entry = new Entry("Test", WORKINGDAY_VALID, fstTimeSpan, sndTimeSpan, ZERO_TS, false);
-        }
+        Entry entry = new Entry("Test", WORKINGDAY_VALID, start, end, ZERO_TS, false);
         
         Entry[] entries = {entry};
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, ZERO_TS, ZERO_TS);

@@ -9,10 +9,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Random;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
@@ -24,10 +24,14 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomLocalDate;
+import utils.randomtest.RandomTestExtension.RandomTest;
 
 /**
  * ATTENTION: This test class only runs correctly if the calling machine is connected to the Internet. 
  */
+@ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerValidWorkingDaysTest {
 
     ////Placeholder for time sheet construction
@@ -152,20 +156,15 @@ public class MiLoGCheckerValidWorkingDaysTest {
         assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
     
-    @Test
-    public void testRandomDayBW() throws CheckerException, HolidayFetchException {
-        ////Random
-        Random rand = new Random();
-        int randYear = (rand.nextInt(40) + 1990);
-        int randMonth = (rand.nextInt(12) + 1);
-        int randDay = (rand.nextInt(28) + 1); //To guarantee that the date exists. It is a day between 1 and 28 incl.
-        
+    @RandomTest
+    public void testRandomDayBW(
+        @RandomLocalDate LocalDate date
+    ) throws CheckerException, HolidayFetchException {
         ////Test values
         TimeSpan start = new TimeSpan(0, 0);
         TimeSpan end = new TimeSpan(0, 0);
         TimeSpan pause = new TimeSpan(0, 0);
-        YearMonth yearMonth = YearMonth.of(randYear, randMonth);
-        LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), randDay);
+        YearMonth yearMonth = YearMonth.of(date.getYear(), date.getMonth());
         GermanState state = GermanState.BW;
         
         ////Checker initialization
@@ -175,8 +174,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
         ////Assertions
-        LocalDate randDate = LocalDate.of(randYear, randMonth, randDay);
-        IHolidayChecker holidayChecker = new GermanyHolidayChecker(randDate.getYear(), state);
+        IHolidayChecker holidayChecker = new GermanyHolidayChecker(date.getYear(), state);
         
         ////Executions
         checker.checkValidWorkingDays();
@@ -186,10 +184,10 @@ public class MiLoGCheckerValidWorkingDaysTest {
         String errorHoliday = MiLoGChecker.MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY.getErrorMessage(date);
         
         ////Assertions
-        if (randDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+        if (date.getDayOfWeek() == DayOfWeek.SUNDAY) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
             assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(errorSunday)));
-        } else if (holidayChecker.isHoliday(randDate)) {
+        } else if (holidayChecker.isHoliday(date)) {
             assertEquals(CheckerReturn.INVALID, checker.getResult());
             assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(errorHoliday)));
         } else {

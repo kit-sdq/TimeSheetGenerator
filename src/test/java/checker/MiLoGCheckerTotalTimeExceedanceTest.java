@@ -1,6 +1,7 @@
 package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.randomtest.RandomAssertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -8,6 +9,7 @@ import java.time.YearMonth;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -15,10 +17,14 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomInt;
+import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
+import utils.randomtest.RandomTestExtension.RandomTest;
 
+@ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerTotalTimeExceedanceTest {
     
-    private static final int RANDOM_HOUR_BOUND = 999;
     private static final int RANDOM_DAY_BOUND = 24; 
     //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
     private static final int RANDOM_MINUTES_BOUND = 60;
@@ -412,16 +418,15 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         assertTrue(checker.getErrors().isEmpty());
     }
     
-    @Test
-    public void testExceedanceRandomHoursWithoutPause() {
-        //Random
-        Random rand = new Random();
-        
+    @RandomTest
+    public void testExceedanceRandomHoursWithoutPause(
+        @RandomInt(upperBound = 24) int maxWorkHours,
+        @RandomInt(upperBound = 24) int endHours
+    ) {
         //Test values
-        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
         TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND), 0);
+        TimeSpan end = new TimeSpan(endHours, 0);
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
@@ -448,16 +453,15 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         }
     }
     
-    @Test
-    public void testExceedanceRandomMinutesWithoutPause() {
-        //Random
-        Random rand = new Random();
-        
+    @RandomTest
+    public void testExceedanceRandomMinutesWithoutPause(
+        @RandomInt(upperBound = 24) int maxWorkHours,
+        @RandomInt(upperBound = 60) int endMinutes
+    ) {
         //Test values
-        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
         TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(maxWorkHours, rand.nextInt(RANDOM_MINUTES_BOUND));
+        TimeSpan end = new TimeSpan(maxWorkHours, endMinutes);
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
@@ -484,16 +488,14 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         }
     }
     
-    @Test
-    public void testExceedanceRandomWithoutPause() {
-        //Random
-        Random rand = new Random();
-        
+    @RandomTest
+    public void testExceedanceRandomWithoutPause(
+        @RandomInt(upperBound = 24) int maxWorkHours,
+        @RandomTimeSpan TimeSpan end
+    ) {
         //Test values
-        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
         TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = new TimeSpan(0, 0);
         
         //Checker initialization
@@ -520,18 +522,18 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         }
     }
     
-    @Test
-    public void testExceedanceRandom() {
+    @RandomTest
+    public void testExceedanceRandom(
+        @RandomInt(upperBound = 24) int maxWorkHours,
+        @RandomTimeSpan TimeSpan end,
+        @RandomTimeSpan TimeSpan pause
+    ) {
         ////Random
-        Random rand = new Random();
+        randomAssert(pause.compareTo(end) < 0);
         
         ////Test values
-        int maxWorkHours = rand.nextInt(RANDOM_DAY_BOUND);
         TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         TimeSpan start = new TimeSpan(0, 0);
-        //The end hour has to be greater than 1 to guarantee that the pause is not longer than the work
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan pause = new TimeSpan((rand.nextInt(end.getHour())), rand.nextInt(RANDOM_MINUTES_BOUND));
         
         ////Checker initialization
         Entry entry = new Entry("Test 1", LocalDate.of(2019, 11, 22), start, end, pause, false);
@@ -558,15 +560,16 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         }
     }
     
-    @Test
-    public void testExceedanceRandomMultipleEntries() {
+    @RandomTest
+    public void testExceedanceRandomMultipleEntries(
+        @RandomInt(upperBound = 300) int maxWorkHours,
+        @RandomInt(lowerBound = 1, upperBound = 50) int numberOfEntries
+    ) {
         ////Random
         Random rand = new Random();
         
         ////Test values
-        int maxWorkHours = rand.nextInt(RANDOM_HOUR_BOUND);
         TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
-        int numberOfEntries = rand.nextInt(50) + 1; //May not be zero!
         
         ////Entry generator
         Entry[] entries = new Entry[numberOfEntries];

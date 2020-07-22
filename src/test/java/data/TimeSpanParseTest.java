@@ -2,19 +2,16 @@ package data;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Random;
-
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomInt;
+import utils.randomtest.RandomTestExtension.RandomTest;
+
+@ExtendWith(RandomParameterExtension.class)
 public class TimeSpanParseTest {
 
-    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
-    private static final int RANDOM_HOUR_BOUND = 24;
-    private static final int RANDOM_MINUTES_BOUND = 60;
-    private static final int RANDOM_UPPER_BOUND = 120;
-    
-    private static final int MULTIPLE_TEST_ITERATIONS = 10000;
-    
     @Test
     public void testValidLowerBound() {
         ////Test values
@@ -74,13 +71,11 @@ public class TimeSpanParseTest {
         });
     }
     
-    @Test
-    public void testInvalidMinutesRandom() {
-        ////Random
-        Random rand = new Random();
-        
+    @RandomTest
+    public void testInvalidMinutesRandom(
+        @RandomInt(lowerBound = 60, upperBound = 120) int minutes
+    ) {        
         ////Test values
-        int minutes = rand.nextInt(RANDOM_UPPER_BOUND - 60) + 60;
         String timeString = "0:" + minutes;
         
         ////TimeSpan initialization
@@ -89,13 +84,11 @@ public class TimeSpanParseTest {
         });
     }
     
-    @Test
-    public void testMinutesRandom() {
-        ////Random
-        Random rand = new Random();
-        
+    @RandomTest(iterations = 10000)
+    public void testMinutesMultipleRandom(
+        @RandomInt(upperBound = 120) int minutes
+    ) {        
         ////Test values
-        int minutes = rand.nextInt(RANDOM_UPPER_BOUND);
         String timeString = "0:" + minutes;
         
         ////TimeSpan initialization
@@ -115,84 +108,47 @@ public class TimeSpanParseTest {
         assertEquals(0, timeSpan.getHour());
     }
     
-    @Test
-    public void testMinutesMultiple() {
-        ////Random
-        Random rand = new Random();
+    @RandomTest(iterations = 10000)
+    public void testValidMultipleRandom(
+        @RandomInt(upperBound = 24) int hours,
+        @RandomInt(upperBound = 60) int minutes
+    ) {
+        ////Test values
+        String timeString = hours + ":" + minutes;
         
         ////TimeSpan initialization
-        for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
-            ////Test values
-            int minutes = rand.nextInt(RANDOM_UPPER_BOUND);
-            String timeString = "0:" + minutes;
-            
-            ////TimeSpan initialization
-            TimeSpan timeSpan;
-            TimeSpan checkTS;
-            try {
-                timeSpan = TimeSpan.parse(timeString);
-                checkTS = new TimeSpan(0, minutes);
-            } catch (IllegalArgumentException e) {
-                assertTrue(minutes > 59);
-                continue;
-            }
-            
-            ////Assertions
-            assertTrue(timeSpan.compareTo(checkTS) == 0);
-            assertEquals(minutes, timeSpan.getMinute());
-            assertEquals(0, timeSpan.getHour());
-        }
+        TimeSpan timeSpan = TimeSpan.parse(timeString);
+        TimeSpan checkTS = new TimeSpan(hours, minutes);
+        
+        ////Assertions
+        assertTrue(timeSpan.compareTo(checkTS) == 0);
+        assertEquals(minutes, timeSpan.getMinute());
+        assertEquals(hours, timeSpan.getHour());
     }
     
-    @Test
-    public void testValidMultipleRandom() {
-        ////Random
-        Random rand = new Random();
+    @RandomTest(iterations = 10000)
+    public void testMultipleRandom(
+        @RandomInt(upperBound = 48) int hours,
+        @RandomInt(upperBound = 120) int minutes
+    ) {
+        ////Test values
+        String timeString = hours + ":" + minutes;
         
-        for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
-            ////Test values
-            int hours = rand.nextInt(RANDOM_HOUR_BOUND);
-            int minutes = rand.nextInt(RANDOM_MINUTES_BOUND);
-            String timeString = hours + ":" + minutes;
-            
-            ////TimeSpan initialization
-            TimeSpan timeSpan = TimeSpan.parse(timeString);
-            TimeSpan checkTS = new TimeSpan(hours, minutes);
-            
-            ////Assertions
-            assertTrue(timeSpan.compareTo(checkTS) == 0);
-            assertEquals(minutes, timeSpan.getMinute());
-            assertEquals(hours, timeSpan.getHour());
+        ////TimeSpan initialization
+        TimeSpan timeSpan;
+        TimeSpan checkTS;
+        try {
+            timeSpan = TimeSpan.parse(timeString);
+            checkTS = new TimeSpan(hours, minutes);
+        } catch (IllegalArgumentException e) {
+            assertTrue(minutes > 59);
+            return;
         }
-    }
-    
-    @Test
-    public void testMultipleRandom() {
-        ////Random
-        Random rand = new Random();
         
-        for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
-            ////Test values
-            int hours = rand.nextInt(RANDOM_UPPER_BOUND);
-            int minutes = rand.nextInt(RANDOM_UPPER_BOUND);
-            String timeString = hours + ":" + minutes;
-            
-            ////TimeSpan initialization
-            TimeSpan timeSpan;
-            TimeSpan checkTS;
-            try {
-                timeSpan = TimeSpan.parse(timeString);
-                checkTS = new TimeSpan(hours, minutes);
-            } catch (IllegalArgumentException e) {
-                assertTrue(minutes > 59);
-                continue;
-            }
-            
-            ////Assertions
-            assertTrue(timeSpan.compareTo(checkTS) == 0);
-            assertEquals(minutes, timeSpan.getMinute());
-            assertEquals(hours, timeSpan.getHour());
-        }
+        ////Assertions
+        assertTrue(timeSpan.compareTo(checkTS) == 0);
+        assertEquals(minutes, timeSpan.getMinute());
+        assertEquals(hours, timeSpan.getHour());
     }
     
     @Test

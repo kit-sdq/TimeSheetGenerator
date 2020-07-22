@@ -6,10 +6,15 @@ import java.time.LocalDate;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomLocalDate;
+import utils.randomtest.RandomTestExtension.RandomTest;
+
+@ExtendWith(RandomParameterExtension.class)
 public class HolidayEqualsDateTest {
 
-    private static final int RANDOM_YEAR_BOUND = 200;
     private static final int RANDOM_MONTH_BOUND = 11;
     private static final int RANDOM_DAY_BOUND = 28;
     private static final int MULTIPLE_TEST_ITERATIONS = 10000;
@@ -40,21 +45,17 @@ public class HolidayEqualsDateTest {
         assertEquals(false, holiday.equalsDate(localDate));
     }
 
-    @Test
-    public void testFixpointRandom() {
+    @RandomTest
+    public void testFixpointRandom(
+        @RandomLocalDate(lowerBoundYear = 1950, upperBoundYear = 2150) LocalDate fixDate
+    ) {
         ////Random
         Random rand = new Random();
-        
-        ////Test values
-        int year = rand.nextInt(RANDOM_YEAR_BOUND) + 1950;
-        int fixMonth = rand.nextInt(RANDOM_MONTH_BOUND) + 1;
-        int fixDay = rand.nextInt(RANDOM_DAY_BOUND) + 1;
-        LocalDate fixDate = LocalDate.of(year, fixMonth, fixDay);
         
         for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
             int month = rand.nextInt(RANDOM_MONTH_BOUND) + 1;
             int day = rand.nextInt(RANDOM_DAY_BOUND) + 1;
-            LocalDate dynDate = LocalDate.of(year, month, day);
+            LocalDate dynDate = LocalDate.of(fixDate.getYear(), month, day);
             
             ////Holiday initialization
             Holiday holiday = new Holiday(dynDate, "");

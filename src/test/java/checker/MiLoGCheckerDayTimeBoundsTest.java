@@ -1,14 +1,15 @@
 package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.randomtest.RandomAssertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Random;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -16,15 +17,15 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
+import utils.randomtest.RandomTestExtension.RandomTest;
 
+@ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerDayTimeBoundsTest {
 
     private static TimeSpan CHECKER_WORKDAY_LOWER_BOUND;
     private static TimeSpan CHECKER_WORKDAY_UPPER_BOUND;
-    
-    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
-    private static final int RANDOM_HOUR_BOUND = 24;
-    private static final int RANDOM_MINUTES_BOUND = 60;
     
     ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -167,13 +168,11 @@ public class MiLoGCheckerDayTimeBoundsTest {
         assertTrue(checker.getErrors().isEmpty());
     }
     
-    @Test
-    public void testOutOfLowerBoundRandom() {
-        ////Random
-        Random rand = new Random();
-        
+    @RandomTest
+    public void testOutOfLowerBoundRandom(
+        @RandomTimeSpan(upperBoundHour = 22) TimeSpan start
+    ) {
         ////Test values
-        TimeSpan start = new TimeSpan(rand.nextInt(CHECKER_WORKDAY_UPPER_BOUND.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan end = CHECKER_WORKDAY_UPPER_BOUND;
         TimeSpan pause = new TimeSpan(0, 0);
         
@@ -199,14 +198,15 @@ public class MiLoGCheckerDayTimeBoundsTest {
         }
     }
     
-    @Test
-    public void testOutOfBoundsRandom() {
+    @RandomTest
+    public void testOutOfBoundsRandom(
+        @RandomTimeSpan(upperBoundHour = 22) TimeSpan start,
+        @RandomTimeSpan(lowerBoundHour = 6) TimeSpan end
+    ) {
         ////Random
-        Random rand = new Random();
+        randomAssert(start.compareTo(end) < 0);
         
         ////Test values
-        TimeSpan start = new TimeSpan(rand.nextInt(CHECKER_WORKDAY_UPPER_BOUND.getHour()), 0);
-        TimeSpan end = new TimeSpan(start.getHour() + rand.nextInt(RANDOM_HOUR_BOUND - start.getHour()), 0);
         TimeSpan pause = new TimeSpan(0, 0);
         
         ////Checker initialization

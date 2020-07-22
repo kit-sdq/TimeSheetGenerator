@@ -1,13 +1,14 @@
 package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.randomtest.RandomAssertions.*;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Random;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -15,15 +16,15 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.randomtest.RandomParameterExtension;
+import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
+import utils.randomtest.RandomTestExtension.RandomTest;
 
+@ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerDayPauseTimeTest {
     
     //Checker constants
     TimeSpan[][] PAUSE_RULES = MiLoGChecker.getPauseRules();
-    
-    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
-    private static final int RANDOM_HOUR_BOUND = 24;
-    private static final int RANDOM_MINUTES_BOUND = 60;
     
     ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -93,15 +94,15 @@ public class MiLoGCheckerDayPauseTimeTest {
         assertEquals(CheckerReturn.INVALID, checker.getResult());
         assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
     }
-    
-    @Test
-    public void testRandomSingleEntryNoPause() {
-        ////Random
-        Random rand = new Random();
-        
+
+    @RandomTest(iterations = 5)
+    public void testRandomSingleEntryNoPause(
+        @RandomTimeSpan TimeSpan start,
+        @RandomTimeSpan TimeSpan end
+    ) {
+        randomAssert(start.compareTo(end) < 0);
+
         ////Test values
-        TimeSpan start = zeroTs;
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND), rand.nextInt(RANDOM_MINUTES_BOUND));
         TimeSpan pause = zeroTs;
         
         ////Checker initialization
@@ -128,16 +129,15 @@ public class MiLoGCheckerDayPauseTimeTest {
         assertTrue(checker.getErrors().isEmpty());
     }
     
-    @Test
-    public void testRandomSingleEntry() {
-        ////Random
-        Random rand = new Random();
-        
-        ////Test values
-        TimeSpan start = zeroTs;
-        TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_HOUR_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
-        TimeSpan pause = new TimeSpan(rand.nextInt(end.getHour()), rand.nextInt(RANDOM_MINUTES_BOUND));
-        
+    @RandomTest
+    public void testRandomSingleEntry(
+        @RandomTimeSpan TimeSpan start,
+        @RandomTimeSpan TimeSpan end,
+        @RandomTimeSpan(upperBoundHour = 4) TimeSpan pause
+    ) {
+        randomAssert(start.compareTo(end) < 0);
+        randomAssert(pause.compareTo(end.subtract(start)) < 0);
+
         ////Checker initialization
         Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
         Entry[] entries = {entry};
