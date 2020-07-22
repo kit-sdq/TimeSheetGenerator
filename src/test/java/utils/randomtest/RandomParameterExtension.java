@@ -45,7 +45,9 @@ public class RandomParameterExtension implements ParameterResolver {
      * and its type is assignable from the given parameter type
      */
     private boolean isValidAnnotation(ParameterContext parameterContext, Class<? extends Annotation> annotationType, Class<?> parameterType) {
-        return parameterContext.isAnnotated(annotationType) && parameterContext.getParameter().getType().isAssignableFrom(parameterType);
+        return parameterContext.isAnnotated(annotationType) && (
+            parameterContext.getParameter().getType().isAssignableFrom(parameterType)
+        );
     }
 
     /**
@@ -57,7 +59,10 @@ public class RandomParameterExtension implements ParameterResolver {
         Class<?> parameterWrapperType = ReflectionUtils.getWrapperType(parameterPrimitiveType);
 
         Class<?> actualParameterType = parameterContext.getParameter().getType();
-        return (actualParameterType.isPrimitive() && actualParameterType == parameterPrimitiveType) || actualParameterType.isAssignableFrom(parameterWrapperType);
+        return parameterContext.isAnnotated(annotationType) && (
+            (actualParameterType.isPrimitive() && actualParameterType == parameterPrimitiveType) ||
+            actualParameterType.isAssignableFrom(parameterWrapperType)
+        );
     }
 
     @Override
