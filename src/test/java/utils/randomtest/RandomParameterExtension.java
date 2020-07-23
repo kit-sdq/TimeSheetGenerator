@@ -6,7 +6,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.time.LocalDate;
-import java.util.Random;
+import java.util.Iterator;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ParameterContext;
@@ -22,22 +25,35 @@ import utils.ReflectionUtils;
 public class RandomParameterExtension implements ParameterResolver {
 
     /**
-     * Create the extension.
-     */
-    public RandomParameterExtension() {
-        this.random = new Random();
-    }
-
-    private final Random random;
-
-    /**
-     * Create a uniformly distributed random int
+     * Create a pseudo-random int
      * between start (inclusive) and end (exclusive).
      * 
-     * see {@link java.util.Random#nextInt(int)}
+     * see {@link java.util.concurrent.ThreadLocalRandom#nextInt(int, int)}
      */
     private int randomInt(int start, int end) {
-        return start + random.nextInt(end - start);
+        return ThreadLocalRandom.current().nextInt(start, end);
+    }
+
+    /**
+     * Create a pseudo-random long
+     * between start (inclusive) and end (exclusive).
+     * 
+     * see {@link java.util.concurrent.ThreadLocalRandom#nextInt(long, long)}
+     */
+    private long randomLong(long start, long end) {
+        return ThreadLocalRandom.current().nextLong(start, end);
+    }
+
+    /**
+     * Get a single value or an infinite stream from the supplier,
+     * depending on the parameter context.
+     */
+    private <T> Object getValueOrIterator(ParameterContext parameterContext, Supplier<T> supplier) {
+        if (parameterContext.getParameter().getType().isAssignableFrom(Iterator.class)) {
+            return Stream.generate(supplier).iterator();
+        } else {
+            return supplier.get();
+        }
     }
 
     /**
@@ -46,7 +62,8 @@ public class RandomParameterExtension implements ParameterResolver {
      */
     private boolean isValidAnnotation(ParameterContext parameterContext, Class<? extends Annotation> annotationType, Class<?> parameterType) {
         return parameterContext.isAnnotated(annotationType) && (
-            parameterContext.getParameter().getType().isAssignableFrom(parameterType)
+            parameterContext.getParameter().getType().isAssignableFrom(parameterType) ||
+            parameterContext.getParameter().getType().isAssignableFrom(Iterator.class)
         );
     }
 
@@ -61,7 +78,8 @@ public class RandomParameterExtension implements ParameterResolver {
         Class<?> actualParameterType = parameterContext.getParameter().getType();
         return parameterContext.isAnnotated(annotationType) && (
             (actualParameterType.isPrimitive() && actualParameterType == parameterPrimitiveType) ||
-            actualParameterType.isAssignableFrom(parameterWrapperType)
+            actualParameterType.isAssignableFrom(parameterWrapperType) ||
+            parameterContext.getParameter().getType().isAssignableFrom(Iterator.class)
         );
     }
 
@@ -74,39 +92,42 @@ public class RandomParameterExtension implements ParameterResolver {
 
     @Override
     public Object resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
+        Supplier<?> parameterSupplier;
+
         if (parameterContext.isAnnotated(RandomInt.class)) {
             // random int
             RandomInt randomContext = parameterContext.findAnnotation(RandomInt.class).get();
 
-            return randomInt(randomContext.lowerBound(), randomContext.upperBound());
+            parameterSupplier = () -> randomInt(randomContext.lowerBound(), randomContext.upperBound());
         } else if (parameterContext.isAnnotated(RandomTimeSpan.class)) {
             // random TimeSpan
             RandomTimeSpan randomContext = parameterContext.findAnnotation(RandomTimeSpan.class).get();
 
-            int hour = randomInt(randomContext.lowerBoundHour(), randomContext.upperBoundHour());
-            int minute = randomInt(
-                hour == randomContext.lowerBoundHour() ? randomContext.lowerBoundMinute() : 0,
-                hour == randomContext.upperBoundHour() - 1 ? randomContext.upperBoundMinute() : 60
-            );
+            parameterSupplier = () -> {
+                int hour = randomInt(randomContext.lowerBoundHour(), randomContext.upperBoundHour());
+                int minute = randomInt(
+                    hour == randomContext.lowerBoundHour() ? randomContext.lowerBoundMinute() : 0,
+                    hour == randomContext.upperBoundHour() - 1 ? randomContext.upperBoundMinute() : 60
+                );
 
-            return new TimeSpan(hour, minute);
+                return new TimeSpan(hour, minute);
+            };
         } else if (parameterContext.isAnnotated(RandomLocalDate.class)) {
             // random LocalDate
             RandomLocalDate randomContext = parameterContext.findAnnotation(RandomLocalDate.class).get();
 
-            long lowerBound = LocalDate.of(randomContext.lowerBoundYear(), 1, 1).toEpochDay();
-            long upperBound = LocalDate.of(randomContext.upperBoundYear(), 1, 1).toEpochDay();
+            parameterSupplier = () -> {
+                long lowerBound = LocalDate.of(randomContext.lowerBoundYear(), 1, 1).toEpochDay();
+                long upperBound = LocalDate.of(randomContext.upperBoundYear(), 1, 1).toEpochDay();
 
-            // TODO: check if random longs are possible
-            if (lowerBound < Integer.MIN_VALUE || lowerBound > Integer.MAX_VALUE) throw new IllegalStateException();
-            if (upperBound < Integer.MIN_VALUE || upperBound > Integer.MAX_VALUE) throw new IllegalStateException();
-
-            long epochDay = randomInt((int)lowerBound, (int)upperBound);
-
-            return LocalDate.ofEpochDay(epochDay);
+                long epochDay = randomLong(lowerBound, upperBound);
+                return LocalDate.ofEpochDay(epochDay);
+            };
         } else {
             return null;
         }
+
+        return getValueOrIterator(parameterContext, parameterSupplier);
     }
 
     /**

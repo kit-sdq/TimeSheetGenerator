@@ -6,7 +6,7 @@ import static utils.randomtest.RandomAssertions.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
-import java.util.Random;
+import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +17,7 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.IteratorUtils;
 import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomInt;
 import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
@@ -24,10 +25,6 @@ import utils.randomtest.RandomTestExtension.RandomTest;
 
 @ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerTotalTimeExceedanceTest {
-    
-    private static final int RANDOM_DAY_BOUND = 24; 
-    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
-    private static final int RANDOM_MINUTES_BOUND = 60;
     
     ////Placeholder for time sheet construction
     private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -563,11 +560,10 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
     @RandomTest
     public void testExceedanceRandomMultipleEntries(
         @RandomInt(upperBound = 300) int maxWorkHours,
-        @RandomInt(lowerBound = 1, upperBound = 50) int numberOfEntries
+        @RandomInt(lowerBound = 1, upperBound = 50) int numberOfEntries,
+        @RandomTimeSpan(lowerBoundHour = 1) Iterator<TimeSpan> ends,
+        @RandomTimeSpan Iterator<TimeSpan> pauses
     ) {
-        ////Random
-        Random rand = new Random();
-        
         ////Test values
         TimeSpan maxWorkTime = new TimeSpan(maxWorkHours, 0);
         
@@ -575,9 +571,8 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         Entry[] entries = new Entry[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {
             TimeSpan start = new TimeSpan(0, 0);
-            //The end hour has to be greater than 1 to guarantee that the pause is not longer than the work
-            TimeSpan end = new TimeSpan(rand.nextInt(RANDOM_DAY_BOUND - 1) + 1, rand.nextInt(RANDOM_MINUTES_BOUND));
-            TimeSpan pause = new TimeSpan((rand.nextInt(end.getHour())), rand.nextInt(RANDOM_MINUTES_BOUND));
+            TimeSpan end = ends.next();
+            TimeSpan pause = IteratorUtils.nextWhere(pauses, item -> item.compareTo(end) < 0);
             
             Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
             entries[i] = entry;

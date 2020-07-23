@@ -5,23 +5,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Random;
+import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomInt;
+import utils.randomtest.RandomParameterExtension.RandomLocalDate;
 import utils.randomtest.RandomTestExtension.RandomTest;
 
 @ExtendWith(RandomParameterExtension.class)
 public class GermanyHolidayCheckerTest {
 
-    //Exclusively. Refer to https://docs.oracle.com/javase/8/docs/api/java/util/Random.html
-    private static final int RANDOM_MONTH_BOUND = 11;
-    private static final int RANDOM_DAY_BOUND = 28;
-    private static final int MULTIPLE_TEST_ITERATIONS = 3650;
-    
     @Test
     public void testChristmas2019() throws HolidayFetchException {
         ////Test values
@@ -61,21 +57,17 @@ public class GermanyHolidayCheckerTest {
         assertEquals(true, holidayChecker.isHoliday(localDate));
     }
     
-    @RandomTest
+    @RandomTest(iterations = 10)
     public void testIsHolidayRandom(
-        @RandomInt(lowerBound = 1950, upperBound = 2150) int year
+        @RandomInt(lowerBound = 1950, upperBound = 2150) int year,
+        @RandomLocalDate Iterator<LocalDate> localDates
     ) throws HolidayFetchException {
-        //Random
-        Random rand = new Random();
-        
         ////Test values
         GermanState state = GermanState.BW;
         IHolidayChecker holidayChecker = new GermanyHolidayChecker(year, state);
         
-        for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
-            int month = rand.nextInt(RANDOM_MONTH_BOUND) + 1;
-            int day = rand.nextInt(RANDOM_DAY_BOUND) + 1;
-            LocalDate localDate = LocalDate.of(year, month, day);
+        for (int i = 0; i < 365; i++) {
+            LocalDate localDate = localDates.next().withYear(year);
             
             ////HolidayChecker initialization
             Collection<Holiday> holidays = holidayChecker.getHolidays();
