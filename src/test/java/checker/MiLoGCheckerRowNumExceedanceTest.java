@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,6 +16,7 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import utils.StreamUtils;
 import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomInt;
 import utils.randomtest.RandomTestExtension.RandomTest;
@@ -22,7 +24,6 @@ import utils.randomtest.RandomTestExtension.RandomTest;
 @ExtendWith(RandomParameterExtension.class)
 public class MiLoGCheckerRowNumExceedanceTest {
 
-    // TODO: Out source entry generator
     private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntries();
     
     ////Placeholder for time sheet construction
@@ -30,13 +31,23 @@ public class MiLoGCheckerRowNumExceedanceTest {
     private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
     private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
     private static final TimeSpan zeroTs = new TimeSpan(0, 0);
+
+    private Stream<Entry> getTestEntryStream() {
+        return Stream.generate(() -> new Entry(
+            "Test", LocalDate.of(2019, 11, 22),
+            new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0),
+            false
+        ));
+    }
+
+    private Entry[] getTestEntryArray(int limit) {
+        return StreamUtils.toArray(getTestEntryStream().limit(limit), Entry.class);
+    }
     
     @Test
     public void testNoExceedanceLowerBound() {
         ////Checker initialization
-        Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22),
-                new TimeSpan(0, 0), new TimeSpan(0, 0), new TimeSpan(0, 0), false);
-        Entry[] entries = {entry};
+        Entry[] entries = getTestEntryArray(1);
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
         MiLoGChecker checker = new MiLoGChecker(timeSheet);
         
@@ -54,15 +65,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         int numberOfEntries = CHECKER_ENTRY_MAX;
         
         ////Entry generator
-        Entry[] entries = new Entry[numberOfEntries];
-        for (int i = 0; i < numberOfEntries; i++) {
-            TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = new TimeSpan(0, 0);
-            TimeSpan pause = new TimeSpan(0, 0);
-            
-            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
-            entries[i] = entry;
-        }
+        Entry[] entries = getTestEntryArray(numberOfEntries);
         
         ////Checker initialization
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
@@ -83,15 +86,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         int numberOfEntries = CHECKER_ENTRY_MAX + 1;
         
         ////Entry generator
-        Entry[] entries = new Entry[numberOfEntries];
-        for (int i = 0; i < numberOfEntries; i++) {
-            TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = new TimeSpan(0, 0);
-            TimeSpan pause = new TimeSpan(0, 0);
-            
-            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
-            entries[i] = entry;
-        }
+        Entry[] entries = getTestEntryArray(numberOfEntries);
         
         ////Checker initialization
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);
@@ -111,15 +106,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
         @RandomInt(lowerBound = 1, upperBound = 50) int numberOfEntries
     ) {
         ////Entry generator
-        Entry[] entries = new Entry[numberOfEntries];
-        for (int i = 0; i < numberOfEntries; i++) {
-            TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = new TimeSpan(0, 0);
-            TimeSpan pause = new TimeSpan(0, 0);
-            
-            Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
-            entries[i] = entry;
-        }
+        Entry[] entries = getTestEntryArray(numberOfEntries);
         
         ////Checker initialization
         TimeSheet timeSheet = new TimeSheet(EMPLOYEE, PROFESSION, YEAR_MONTH, entries, zeroTs, zeroTs);

@@ -1,5 +1,6 @@
 package utils;
 
+import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.Spliterators;
@@ -18,6 +19,14 @@ public class StreamUtils {
      */
     public static <T> Stream<T> infiniteStreamFromIterator(Iterator<T> iterator) {
         return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+    }
+
+    /**
+     * Converts a stream to an array.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T[] toArray(Stream<T> stream, Class<T> elementClass) {
+        return stream.toArray(i -> (T[])Array.newInstance(elementClass, i));
     }
 
 }
