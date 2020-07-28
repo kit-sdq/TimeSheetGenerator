@@ -2,6 +2,7 @@ package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static utils.randomtest.RandomAssertions.*;
+import static utils.IteratorUtils.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -16,8 +17,8 @@ import data.Entry;
 import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
+import data.Tuple;
 import data.WorkingArea;
-import utils.IteratorUtils;
 import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomInt;
 import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
@@ -561,7 +562,7 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
     public void testExceedanceRandomMultipleEntries(
         @RandomInt(upperBound = 300) int maxWorkHours,
         @RandomInt(lowerBound = 1, upperBound = 50) int numberOfEntries,
-        @RandomTimeSpan(lowerBoundHour = 1) Iterator<TimeSpan> ends,
+        @RandomTimeSpan Iterator<TimeSpan> ends,
         @RandomTimeSpan Iterator<TimeSpan> pauses
     ) {
         ////Test values
@@ -570,9 +571,11 @@ public class MiLoGCheckerTotalTimeExceedanceTest {
         ////Entry generator
         Entry[] entries = new Entry[numberOfEntries];
         for (int i = 0; i < numberOfEntries; i++) {
+            Tuple<TimeSpan, TimeSpan> zipEndPause = nextWhere(zip(ends, pauses), (end, pause) -> pause.compareTo(end) <= 0);
+
             TimeSpan start = new TimeSpan(0, 0);
-            TimeSpan end = ends.next();
-            TimeSpan pause = IteratorUtils.nextWhere(pauses, item -> item.compareTo(end) < 0);
+            TimeSpan end = zipEndPause.getFirst();
+            TimeSpan pause = zipEndPause.getSecond();
             
             Entry entry = new Entry("Test", LocalDate.of(2019, 11, 22), start, end, pause, false);
             entries[i] = entry;

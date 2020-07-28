@@ -1,6 +1,7 @@
 package data;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static utils.IteratorUtils.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -10,7 +11,6 @@ import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import utils.IteratorUtils;
 import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomBoolean;
 import utils.randomtest.RandomParameterExtension.RandomInt;
@@ -26,13 +26,13 @@ public class TimeSheetArithmeticTest {
     private static final TimeSpan ZERO_TS = new TimeSpan(0, 0);
 
     private Entry getRandomEntry(Iterator<TimeSpan> timeSpans, Iterator<Boolean> booleans) {
-        final TimeSpan maxStart = new TimeSpan(16, 0);
-
         boolean isVacation = booleans.next();
 
-        TimeSpan start = IteratorUtils.nextWhere(timeSpans, timeSpan -> timeSpan.compareTo(maxStart) <= 0); // for performance reasons
-        TimeSpan end = IteratorUtils.nextWhere(timeSpans, timeSpan -> timeSpan.compareTo(start) >= 0);
-        TimeSpan pause = isVacation ? ZERO_TS : IteratorUtils.nextWhere(timeSpans, timeSpan -> timeSpan.compareTo(end.subtract(start)) <= 0);
+        Tuple<TimeSpan, TimeSpan> zipStartEnd = nextWhere(zip(timeSpans, timeSpans), (start, end) -> start.compareTo(end) <= 0);
+
+        TimeSpan start = zipStartEnd.getFirst();
+        TimeSpan end = zipStartEnd.getSecond();
+        TimeSpan pause = isVacation ? ZERO_TS : nextWhere(timeSpans, timeSpan -> timeSpan.compareTo(end.subtract(start)) <= 0);
 
         return new Entry("Test", LocalDate.now(), start, end, pause, isVacation);
     }
