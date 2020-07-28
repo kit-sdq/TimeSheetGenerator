@@ -5,13 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomLocalDate;
 import utils.randomtest.RandomTestExtension.RandomTest;
+import utils.randomtest.RandomTestExtension.RandomTestClass;
 
-@ExtendWith(RandomParameterExtension.class)
+@RandomTestClass
 public class HolidayEqualsDateTest {
 
     @Test
@@ -40,7 +39,7 @@ public class HolidayEqualsDateTest {
         assertEquals(false, holiday.equalsDate(localDate));
     }
 
-    @RandomTest(iterations = 10000)
+    @RandomTest(iterations = 1000)
     public void testEqualsDateRandom(
         @RandomLocalDate(lowerBoundYear = 1950, upperBoundYear = 2150) LocalDate holidayDate,
         @RandomLocalDate LocalDate localDate

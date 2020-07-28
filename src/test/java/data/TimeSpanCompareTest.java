@@ -3,13 +3,12 @@ package data;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
 import utils.randomtest.RandomTestExtension.RandomTest;
+import utils.randomtest.RandomTestExtension.RandomTestClass;
 
-@ExtendWith(RandomParameterExtension.class)
+@RandomTestClass
 public class TimeSpanCompareTest {
 
     @Test

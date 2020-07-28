@@ -8,7 +8,6 @@ import java.time.YearMonth;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -17,11 +16,11 @@ import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
 import utils.StreamUtils;
-import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomInt;
 import utils.randomtest.RandomTestExtension.RandomTest;
+import utils.randomtest.RandomTestExtension.RandomTestClass;
 
-@ExtendWith(RandomParameterExtension.class)
+@RandomTestClass
 public class MiLoGCheckerRowNumExceedanceTest {
 
     private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntries();

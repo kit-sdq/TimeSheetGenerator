@@ -3,13 +3,12 @@ package data;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
-import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomInt;
 import utils.randomtest.RandomTestExtension.RandomTest;
+import utils.randomtest.RandomTestExtension.RandomTestClass;
 
-@ExtendWith(RandomParameterExtension.class)
+@RandomTestClass(iterations = 1000)
 public class TimeSpanParseTest {
 
     @Test
@@ -84,7 +83,7 @@ public class TimeSpanParseTest {
         });
     }
     
-    @RandomTest(iterations = 10000)
+    @RandomTest
     public void testMinutesMultipleRandom(
         @RandomInt(upperBound = 120) int minutes
     ) {        
@@ -108,7 +107,7 @@ public class TimeSpanParseTest {
         assertEquals(0, timeSpan.getHour());
     }
     
-    @RandomTest(iterations = 10000)
+    @RandomTest
     public void testValidMultipleRandom(
         @RandomInt(upperBound = 24) int hours,
         @RandomInt(upperBound = 60) int minutes
@@ -126,7 +125,7 @@ public class TimeSpanParseTest {
         assertEquals(hours, timeSpan.getHour());
     }
     
-    @RandomTest(iterations = 10000)
+    @RandomTest
     public void testMultipleRandom(
         @RandomInt(upperBound = 48) int hours,
         @RandomInt(upperBound = 120) int minutes

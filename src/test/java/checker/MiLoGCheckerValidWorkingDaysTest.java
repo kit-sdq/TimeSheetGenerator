@@ -12,7 +12,6 @@ import java.time.YearMonth;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import checker.holiday.HolidayFetchException;
 import checker.holiday.IHolidayChecker;
@@ -24,14 +23,14 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
-import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomLocalDate;
 import utils.randomtest.RandomTestExtension.RandomTest;
+import utils.randomtest.RandomTestExtension.RandomTestClass;
 
 /**
  * ATTENTION: This test class only runs correctly if the calling machine is connected to the Internet. 
  */
-@ExtendWith(RandomParameterExtension.class)
+@RandomTestClass
 public class MiLoGCheckerValidWorkingDaysTest {
 
     ////Placeholder for time sheet construction

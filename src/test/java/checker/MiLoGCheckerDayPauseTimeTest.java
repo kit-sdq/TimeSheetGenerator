@@ -8,7 +8,6 @@ import java.time.Month;
 import java.time.YearMonth;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import data.Employee;
 import data.Entry;
@@ -16,11 +15,11 @@ import data.TimeSheet;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
-import utils.randomtest.RandomParameterExtension;
 import utils.randomtest.RandomParameterExtension.RandomTimeSpan;
 import utils.randomtest.RandomTestExtension.RandomTest;
+import utils.randomtest.RandomTestExtension.RandomTestClass;
 
-@ExtendWith(RandomParameterExtension.class)
+@RandomTestClass
 public class MiLoGCheckerDayPauseTimeTest {
     
     //Checker constants

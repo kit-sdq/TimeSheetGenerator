@@ -6,6 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.TestTemplate;
@@ -42,8 +43,13 @@ public class RandomTestExtension implements TestTemplateInvocationContextProvide
     @Override
     public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(ExtensionContext context) {
         RandomTest test = context.getRequiredTestMethod().getAnnotation(RandomTest.class);
+        RandomTestClass testClass = context.getRequiredTestClass().getAnnotation(RandomTestClass.class);
 
-        RandomTestIterator iterator = new RandomTestIterator(test.iterations(), test.retries(), test.retriesAll());
+        int iterations = fallback(test.iterations(), evaluateOrNull(testClass, t -> t.iterations()), 1);
+        int retries = fallback(test.retries(), evaluateOrNull(testClass, t -> t.retries()), -1);
+        int retriesAll = fallback(test.retriesAll(), evaluateOrNull(testClass, t -> t.retriesAll()), -1);
+
+        RandomTestIterator iterator = new RandomTestIterator(iterations, retries, retriesAll);
         ContextStore.get(context).setTestIterator(iterator);
 
         return StreamUtils.infiniteStreamFromIterator(iterator);
@@ -66,6 +72,25 @@ public class RandomTestExtension implements TestTemplateInvocationContextProvide
         } else {
             throw throwable;
         }
+    }
+
+    /**
+     * Fallback function for integer values. The function moves to the next
+     * candidate, if the integer object is null or its value is less than zero.
+     * The first two arguments may be null, but the third may not.
+     */
+    private static int fallback(Integer value, Integer fallback, int defaultValue) {
+        if (value != null && value >= 0) return value;
+        else if (fallback != null && fallback >= 0) return fallback;
+        else return defaultValue;
+    }
+
+    /**
+     * Evaluate the given function with the provider,
+     * if the provider is not null; return null otherwise.
+     */
+    private static <T, U> U evaluateOrNull(T provider, Function<T, U> evaluate) {
+        return provider == null ? null : evaluate.apply(provider);
     }
 
     /**
@@ -199,7 +224,27 @@ public class RandomTestExtension implements TestTemplateInvocationContextProvide
     @TestTemplate
     public @interface RandomTest {
 
-        int iterations() default 1;
+        int iterations() default -1;
+        int retries() default -1;
+        int retriesAll() default -1;
+
+    }
+
+    /**
+     * Annotation to specify default values for random test
+     * iterations and retries. The values from  the
+     * {@code RandomTest} annotation have precedence.
+     * <p>
+     * This annotation includes
+     * {@code @ExtendWith(RandomParameterExtension.class)}
+     * for convenience.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.TYPE)
+    @ExtendWith(RandomParameterExtension.class)
+    public @interface RandomTestClass {
+
+        int iterations() default -1;
         int retries() default -1;
         int retriesAll() default -1;
 
