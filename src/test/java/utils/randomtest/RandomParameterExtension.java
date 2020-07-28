@@ -25,6 +25,15 @@ import utils.ReflectionUtils;
 public class RandomParameterExtension implements ParameterResolver {
 
     /**
+     * Create a pseudo-random boolean
+     * 
+     * see {@link java.util.concurrent.ThreadLocalRandom#nextBoolean()}
+     */
+    private boolean randomBoolean() {
+        return ThreadLocalRandom.current().nextBoolean();
+    }
+
+    /**
      * Create a pseudo-random int
      * between start (inclusive) and end (exclusive).
      * 
@@ -86,6 +95,7 @@ public class RandomParameterExtension implements ParameterResolver {
     @Override
     public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
         return  isValidAnnotationPrimitive(parameterContext, RandomInt.class, int.class) ||
+                isValidAnnotationPrimitive(parameterContext, RandomBoolean.class, boolean.class) ||
                 isValidAnnotation(parameterContext, RandomTimeSpan.class, TimeSpan.class) ||
                 isValidAnnotation(parameterContext, RandomLocalDate.class, LocalDate.class);
     }
@@ -99,6 +109,9 @@ public class RandomParameterExtension implements ParameterResolver {
             RandomInt randomContext = parameterContext.findAnnotation(RandomInt.class).get();
 
             parameterSupplier = () -> randomInt(randomContext.lowerBound(), randomContext.upperBound());
+        } else if (parameterContext.isAnnotated(RandomBoolean.class)) {
+            // random boolean
+            parameterSupplier = () -> randomBoolean();
         } else if (parameterContext.isAnnotated(RandomTimeSpan.class)) {
             // random TimeSpan
             RandomTimeSpan randomContext = parameterContext.findAnnotation(RandomTimeSpan.class).get();
@@ -145,6 +158,15 @@ public class RandomParameterExtension implements ParameterResolver {
          * Exclusive upper bound.
          */
         int upperBound();
+
+    }
+
+    /**
+     * Annotation for a random boolean parameter.
+     */
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target(ElementType.PARAMETER)
+    public @interface RandomBoolean {
 
     }
 
