@@ -31,7 +31,7 @@ public class MiLoGChecker implements IChecker {
     
     //TODO Replace with enum
     private static final TimeSpan[][] PAUSE_RULES = {{new TimeSpan(6, 0), new TimeSpan(0, 30)},{new TimeSpan(9, 0), new TimeSpan(0, 45)}};
-    private static final int MAX_ROW_NUM = 22;
+    private static final int MAX_ROW_NUM = 20;
     private static final GermanState STATE = GermanState.BW;
 
     private final TimeSheet timeSheet;
