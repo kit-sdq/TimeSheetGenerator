@@ -20,10 +20,7 @@ import parser.ParseException;
  */
 public class JsonHolidayParser implements IHolidayParser {
 
-    private static final String SCHOOL_HOLIDAY_NOTE = "Gemäß § 4 Abs. 3 des Feiertagsgesetzes von " +
-            "Baden-Württemberg[10] haben Schüler am Gründonnerstag und am Reformationstag schulfrei. In der Regel " +
-            "legt das Kultusministerium die Ferientermine so fest, dass diese beiden Tage in die Osterferien bzw. " +
-            "in die Herbstferien fallen.";
+    private static final String SCHOOL_HOLIDAY_NOTE = "schulfrei";
     
     private final String json;
     
@@ -56,7 +53,8 @@ public class JsonHolidayParser implements IHolidayParser {
             HolidayMapJson holidayMap = parseJson();
             
             return holidayMap.getHolidays().entrySet().stream()
-                    .filter(e -> e.getValue().getNote() == null || !e.getValue().getNote().equals(SCHOOL_HOLIDAY_NOTE))
+                    .filter(e -> e.getValue().getNote() == null ||
+                            !e.getValue().getNote().contains(SCHOOL_HOLIDAY_NOTE))
                     .map(e -> new Holiday(
                             e.getValue().getDate(),
                             e.getKey()
