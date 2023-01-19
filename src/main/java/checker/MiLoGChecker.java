@@ -250,8 +250,9 @@ public class MiLoGChecker implements IChecker {
      * Checks whether the number of entries exceeds the maximum number of rows of the template document.
      */
     protected void checkRowNumExceedance() {
-        if (timeSheet.getEntries().size() > MAX_ROW_NUM) {
-            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE));
+        int rowCount = timeSheet.getEntries().size();
+        if (rowCount > MAX_ROW_NUM) {
+            errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE, MAX_ROW_NUM, rowCount - MAX_ROW_NUM));
             result = CheckerReturn.INVALID;
         }
     }
