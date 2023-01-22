@@ -1,3 +1,4 @@
+/* Licensed under MIT 2023. */
 package checker.holiday;
 
 /**
@@ -5,89 +6,89 @@ package checker.holiday;
  */
 public enum GermanState {
 
-    /**
-     * Baden-Württemberg
-     */
-    BW,
+	/**
+	 * Baden-Württemberg
+	 */
+	BW,
 
-    /**
-     * Bayern
-     */
-    BY,
+	/**
+	 * Bayern
+	 */
+	BY,
 
-    /**
-     * Berlin
-     */
-    BE,
+	/**
+	 * Berlin
+	 */
+	BE,
 
-    /**
-     * Brandenburg
-     */
-    BB,
+	/**
+	 * Brandenburg
+	 */
+	BB,
 
-    /**
-     * Bremen
-     */
-    HB,
+	/**
+	 * Bremen
+	 */
+	HB,
 
-    /**
-     * Hamburg
-     */
-    HH,
+	/**
+	 * Hamburg
+	 */
+	HH,
 
-    /**
-     * Hessen
-     */
-    HE,
+	/**
+	 * Hessen
+	 */
+	HE,
 
-    /**
-     * Mecklenburg-Vorpommern
-     */
-    MV,
+	/**
+	 * Mecklenburg-Vorpommern
+	 */
+	MV,
 
-    /**
-     * Niedersachsen
-     */
-    NI,
+	/**
+	 * Niedersachsen
+	 */
+	NI,
 
-    /**
-     * Nordrhein-Westfalen
-     */
-    NW,
+	/**
+	 * Nordrhein-Westfalen
+	 */
+	NW,
 
-    /**
-     * Rheinland-Pfalz
-     */
-    RP,
+	/**
+	 * Rheinland-Pfalz
+	 */
+	RP,
 
-    /**
-     * Saarland
-     */
-    SL,
+	/**
+	 * Saarland
+	 */
+	SL,
 
-    /**
-     * Sachsen
-     */
-    SN,
+	/**
+	 * Sachsen
+	 */
+	SN,
 
-    /**
-     * Sachsen-Anhalt
-     */
-    ST,
+	/**
+	 * Sachsen-Anhalt
+	 */
+	ST,
 
-    /**
-     * Schleswig-Holstein
-     */
-    SH,
+	/**
+	 * Schleswig-Holstein
+	 */
+	SH,
 
-    /**
-     * Thüringen
-     */
-    TH,
+	/**
+	 * Thüringen
+	 */
+	TH,
 
-    /**
-     * Deutschland
-     */
-    NATIONAL;
+	/**
+	 * Deutschland
+	 */
+	NATIONAL;
 
 }

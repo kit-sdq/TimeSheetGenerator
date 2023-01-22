@@ -1,3 +1,4 @@
+/* Licensed under MIT 2023. */
 package parser.json;
 
 import java.util.Collection;
@@ -15,48 +16,43 @@ import parser.IHolidayParser;
 import parser.ParseException;
 
 /**
- * A JsonHolidayParser provides the functionality to parse the
- * elements specified by {@link IHolidayParser} from a json string.
+ * A JsonHolidayParser provides the functionality to parse the elements
+ * specified by {@link IHolidayParser} from a json string.
  */
 public class JsonHolidayParser implements IHolidayParser {
-    
-    private final String json;
-    
-    private HolidayMapJson holidayMap; // caching
-    
-    /**
-     * Constructs a new {@link JsonHolidayParser} instance.
-     * @param json - to parse the data from.
-     */
-    public JsonHolidayParser(String json) {
-        this.json = json;
-    }
-    
-    private HolidayMapJson parseJson() throws JsonProcessingException {
-        if (holidayMap == null) {
-            ObjectMapper mapper = JsonMapper.builder()
-                .addModule(new ParameterNamesModule())
-                .addModule(new Jdk8Module())
-                .addModule(new JavaTimeModule())
-                .build();
-            holidayMap = mapper.readValue(json, HolidayMapJson.class);
-        }
-        
-        return holidayMap;
-    }
 
-    @Override
-    public Collection<Holiday> getHolidays() throws ParseException {
-        try {
-            HolidayMapJson holidayMap = parseJson();
-            
-            return holidayMap.getHolidays().entrySet().stream().map(e -> new Holiday(
-                e.getValue().getDate(),
-                e.getKey()
-            )).collect(Collectors.toList());
-        } catch (JsonProcessingException e) {
-            throw new ParseException(e.getMessage());
-        }
-    }
+	private final String json;
+
+	private HolidayMapJson holidayMap; // caching
+
+	/**
+	 * Constructs a new {@link JsonHolidayParser} instance.
+	 * 
+	 * @param json - to parse the data from.
+	 */
+	public JsonHolidayParser(String json) {
+		this.json = json;
+	}
+
+	private HolidayMapJson parseJson() throws JsonProcessingException {
+		if (holidayMap == null) {
+			ObjectMapper mapper = JsonMapper.builder().addModule(new ParameterNamesModule()).addModule(new Jdk8Module()).addModule(new JavaTimeModule())
+					.build();
+			holidayMap = mapper.readValue(json, HolidayMapJson.class);
+		}
+
+		return holidayMap;
+	}
+
+	@Override
+	public Collection<Holiday> getHolidays() throws ParseException {
+		try {
+			HolidayMapJson holidayMap = parseJson();
+
+			return holidayMap.getHolidays().entrySet().stream().map(e -> new Holiday(e.getValue().getDate(), e.getKey())).collect(Collectors.toList());
+		} catch (JsonProcessingException e) {
+			throw new ParseException(e.getMessage());
+		}
+	}
 
 }
