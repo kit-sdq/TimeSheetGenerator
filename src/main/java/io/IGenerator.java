@@ -3,6 +3,7 @@ package io;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import data.Entry;
 import data.TimeSheet;
 
 /**

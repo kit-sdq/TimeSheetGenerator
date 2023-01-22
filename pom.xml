@@ -130,6 +130,8 @@
                             <mainClass>main.Main</mainClass>
                         </manifest>
                     </archive>
+                    <finalName>timesheetgenerator</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
                 <executions>
                     <execution>

@@ -15,7 +15,7 @@ public class CheckerException extends Exception {
 	/**
 	 * Constructs a new {@link CheckerException}.
 	 * 
-	 * @param error - message of the error that occurred.
+	 * @param message - message of the error that occurred.
 	 */
 	public CheckerException(String message) {
 		super(message);

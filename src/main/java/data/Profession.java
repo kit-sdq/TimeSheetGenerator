@@ -14,12 +14,12 @@ public class Profession {
 	/**
 	 * Constructs a new {@link Profession profession} instance.
 	 * 
-	 * @param departmentName  - Name of the department this profession is associated
-	 *                        with.
-	 * @param workingArea     - {@link WorkingArea} of this profession.
-	 * @param maxWorkingHours - Maximum number of hours an {@link Employee employee}
-	 *                        may work per month.
-	 * @param wage            - Wage per hour an {@link Employee employee} earns.
+	 * @param departmentName - Name of the department this profession is associated
+	 *                       with.
+	 * @param workingArea    - {@link WorkingArea} of this profession.
+	 * @param maxWorkingTime - Maximum number of hours an {@link Employee employee}
+	 *                       may work per month.
+	 * @param wage           - Wage per hour an {@link Employee employee} earns.
 	 */
 	public Profession(String departmentName, WorkingArea workingArea, TimeSpan maxWorkingTime, double wage) {
 		this.departmentName = departmentName;

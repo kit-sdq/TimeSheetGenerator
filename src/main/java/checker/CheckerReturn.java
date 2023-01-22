@@ -1,6 +1,8 @@
 /* Licensed under MIT 2023. */
 package checker;
 
+import data.TimeSheet;
+
 /**
  * Represents the possible return values of the checker class.
  */

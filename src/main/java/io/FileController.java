@@ -72,7 +72,6 @@ public class FileController {
 	 * 
 	 * @param content - The {@link String} to be saved.
 	 * @param file    - The {@link File} to save the content to.
-	 * @return a {@link String} read from the {@link URL}
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static void saveStringToFile(String content, File file) throws IOException {

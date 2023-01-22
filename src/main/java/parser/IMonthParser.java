@@ -4,6 +4,7 @@ package parser;
 import java.time.YearMonth;
 
 import data.Entry;
+import data.TimeSheet;
 import data.TimeSpan;
 
 /**
