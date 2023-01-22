@@ -1,8 +1,9 @@
 package data;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class WorkingAreaParseTest {
 
@@ -101,54 +102,49 @@ public class WorkingAreaParseTest {
         ////Assertions
         assertEquals(WorkingArea.GF, fromString);
     }
-    
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void testInvalidSubstring_1() {
         ////Test values
         String toParse = "gfbutNotCorrect";
         
         ////WorkingArea initialization
-        WorkingArea fromString = WorkingArea.parse(toParse);
+        Assertions.assertThrows(IllegalArgumentException.class, () ->WorkingArea.parse(toParse));
     }
-    
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void testInvalidSubstring_2() {
         ////Test values
         String toParse = "gf ";
         
         ////WorkingArea initialization
-        WorkingArea fromString = WorkingArea.parse(toParse);
+        Assertions.assertThrows(IllegalArgumentException.class, () ->WorkingArea.parse(toParse));
     }
-    
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void testInvalidSubstring_3() {
         ////Test values
         String toParse = "gfub";
         
         ////WorkingArea initialization
-        WorkingArea fromString = WorkingArea.parse(toParse);
+        Assertions.assertThrows(IllegalArgumentException.class, () ->WorkingArea.parse(toParse));
     }
-    
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void testInvalidEmpty() {
         ////Test values
         String toParse = "";
         
         ////WorkingArea initialization
-        WorkingArea fromString = WorkingArea.parse(toParse);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> WorkingArea.parse(toParse));
     }
-    
-    @SuppressWarnings("unused")
-    @Test(expected = IllegalArgumentException.class)
+
+    @Test
     public void testInvalidSpace() {
         ////Test values
         String toParse = " ";
         
         ////WorkingArea initialization
-        WorkingArea fromString = WorkingArea.parse(toParse);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> WorkingArea.parse(toParse));
     }
 }

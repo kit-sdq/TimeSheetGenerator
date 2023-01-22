@@ -1,8 +1,9 @@
 package data;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TimeSpanCommonTest {
 
@@ -22,24 +23,24 @@ public class TimeSpanCommonTest {
         assertEquals(ts.getMinute(), 0);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructor3() {
-        new TimeSpan(-1, 3);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new TimeSpan(-1, 3));
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructor4() {
-        new TimeSpan(1, -3);
+        Assertions.assertThrows(IllegalArgumentException.class, () ->new TimeSpan(1, -3));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructor5() {
-        new TimeSpan(2, 60);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> new TimeSpan(2, 60));
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testConstructor6() {
-        new TimeSpan(0, 322);
+        Assertions.assertThrows(IllegalArgumentException.class, () ->new TimeSpan(0, 322));
     }
     
     @Test

@@ -1,6 +1,6 @@
 package io;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.Month;
 import java.time.YearMonth;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import data.Employee;
 import data.Entry;

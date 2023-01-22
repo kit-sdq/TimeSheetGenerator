@@ -1,10 +1,11 @@
 package parser.json;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import data.Entry;
 import data.TimeSpan;
@@ -42,16 +43,16 @@ public class JsonMonthParserEntryTest {
         "]" +
     "}";
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryEmptyJsonObject() throws ParseException {
         // data
         IMonthParser parser = new JsonMonthParser(JSON_EXAMPLE_EMPTY);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryMissingAction() throws ParseException {
         // data
         String json = "{" +
@@ -64,10 +65,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryMissingDay() throws ParseException {
         // data
         String json = "{" +
@@ -80,10 +81,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryMissingStart() throws ParseException {
         // data
         String json = "{" +
@@ -96,10 +97,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryMissingEnd() throws ParseException {
         // data
         String json = "{" +
@@ -112,10 +113,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -128,10 +129,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryWrongStartFormat() throws ParseException {
         // data
         String json = "{" +
@@ -144,10 +145,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryWrongEndFormat() throws ParseException {
         // data
         String json = "{" +
@@ -160,10 +161,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryWrongPauseFormat() throws ParseException {
         // data
         String json = "{" +
@@ -176,10 +177,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
     
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryWrongVacationFormat() throws ParseException {
         // data
         String json = "{" +
@@ -192,10 +193,10 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
     
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEntryPauseAndVacation() throws ParseException {
         // data
         String json = "{" +
@@ -208,7 +209,7 @@ public class JsonMonthParserEntryTest {
         IMonthParser parser = new JsonMonthParser(json);
 
         // execute
-        parser.getEntries();
+        Assertions.assertThrows(ParseException.class, parser::getEntries);
     }
 
     @Test

@@ -1,18 +1,18 @@
 package i18n;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.Locale;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import i18n.ResourceHandler.ResourceHandlerInstance;
 
 public class ResourceHandlerTest {
     
-    @Before
+    @BeforeEach
     public void setUp() {
         resourceHandler = new ResourceHandlerInstance("i18n_test/MessageBundle");
     }

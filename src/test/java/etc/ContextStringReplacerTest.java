@@ -1,10 +1,12 @@
 package etc;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Arrays;
+import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import etc.ContextStringReplacer.ContextStringReplacerIterator;
 import etc.ContextStringReplacer.ContextStringReplacerIterator.ContextStringReplacement;
@@ -18,7 +20,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testEmptyString() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("", Arrays.asList("abc"));
+        ContextStringReplacer replacer = new ContextStringReplacer("", List.of("abc"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("xyz");
@@ -28,16 +30,16 @@ public class ContextStringReplacerTest {
         assertEquals("", result);
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testEmptySubstring() {
         // execute
-        new ContextStringReplacer("Hello World", Arrays.asList(""));
+        Assertions.assertThrows(IllegalArgumentException.class, () ->new ContextStringReplacer("Hello World", List.of("")));
     }
     
     @Test
     public void testStringNotContainsSubstring() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("abc"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("abc"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("xyz");
@@ -50,7 +52,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringNoIterator() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         String result = replacer.getString();
         // assert
@@ -60,7 +62,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringNoReplace() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         for (@SuppressWarnings("unused") ContextStringReplacement replacement : replacer) {
             // do nothing
@@ -73,7 +75,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringReplace() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("ooo+W");
@@ -86,7 +88,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringReplaceEmpty() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("");
@@ -99,7 +101,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringReplaceContainsSubstring() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("ooo W");
@@ -112,7 +114,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringReplaceContainsSubstringMultipleTimes() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("ooo W");
@@ -128,7 +130,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringMultipleReplace() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("_");
@@ -141,7 +143,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringMultipleReplaceContainsSubstring() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("<l>");
@@ -154,7 +156,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringMultipleReplaceFirst() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("_");
@@ -168,7 +170,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsOneOfMultipleSubstrings() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("e", "x"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("e", "x"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("_");
@@ -181,7 +183,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstrings() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("e", "r"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("e", "r"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("_");
@@ -194,7 +196,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsReplaceDifferent() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("e", "r"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("e", "r"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             if (replacement.getSubstring().equals("e"))
@@ -210,7 +212,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsReplaceEdgeCases() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("H", "d"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("H", "d"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("_");
@@ -223,7 +225,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsEqualPrefixShorterSubstringFirst() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("ll", "llo"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("ll", "llo"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("ll", replacement.getSubstring());
@@ -233,7 +235,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsEqualPrefixLongerSubstringFirst() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("llo", "ll"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("llo", "ll"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("llo", replacement.getSubstring());
@@ -243,7 +245,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsOverlappingSubstringsReplaceDifferent() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", List.of("oo"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("__");
@@ -256,7 +258,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsOverlappingSubstringsReplaceMatch() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", List.of("oo"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.replace("_o");
@@ -269,7 +271,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsOverlappingSubstringsIgnoreFirst() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", List.of("oo"));
         // execute
         int c = 0;
         for (ContextStringReplacement replacement : replacer) {
@@ -284,7 +286,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsSubstringSkip() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.skip();
@@ -297,7 +299,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsSkipAll() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // execute
         for (ContextStringReplacement replacement : replacer) {
             replacement.skip();
@@ -310,7 +312,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsSkipFirst() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // execute
         int c = 0;
         for (ContextStringReplacement replacement : replacer) {
@@ -327,7 +329,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsOverlappingSubstringsNoSkip() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", List.of("oo"));
         // execute
         int c = 0;
         for (@SuppressWarnings("unused") ContextStringReplacement replacement : replacer) {
@@ -340,7 +342,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsOverlappingSubstringsSkip() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", Arrays.asList("oo"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello Wooorld", List.of("oo"));
         // execute
         int c = 0;
         for (ContextStringReplacement replacement : replacer) {
@@ -354,7 +356,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsGetIndex() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // assert
         int c = 0;
         for (ContextStringReplacement replacement : replacer) {
@@ -372,7 +374,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testStringContainsMultipleSubstringsReplaceGetIndex() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("l"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("l"));
         // assert
         int c = 0;
         for (ContextStringReplacement replacement : replacer) {
@@ -391,7 +393,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadSize0() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("", replacement.getLookbehind(0));
@@ -402,7 +404,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadSize1() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("l", replacement.getLookbehind(1));
@@ -413,7 +415,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadSizeGreater1() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             assertEquals("ell", replacement.getLookbehind(3));
@@ -424,7 +426,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadMultiple() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o"));
         // assert
         int c = 0;
         for (ContextStringReplacement replacement : replacer) {
@@ -441,7 +443,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadEdgeCases() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("ello", "Worl"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("ello", "Worl"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             if (replacement.getSubstring().equals("ello"))
@@ -454,7 +456,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadOverflow() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("llo", "Wor"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("llo", "Wor"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             if (replacement.getSubstring().equals("llo"))
@@ -467,7 +469,7 @@ public class ContextStringReplacerTest {
     @Test
     public void testLookbehindLookaheadOverflowEdgeCases() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("Hello", "World"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("Hello", "World"));
         // assert
         for (ContextStringReplacement replacement : replacer) {
             if (replacement.getSubstring().equals("Hello"))
@@ -477,45 +479,46 @@ public class ContextStringReplacerTest {
         }
     }
     
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAccessStoredReplacementAfterNewReplacement() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         // execute
         ContextStringReplacement storedReplacement = null;
         for (ContextStringReplacement replacement : replacer) {
             storedReplacement = replacement;
         }
-        storedReplacement.replace("ooo W");
+        ContextStringReplacement finalStoredReplacement = storedReplacement;
+        Assertions.assertThrows(IllegalStateException.class, () -> finalStoredReplacement.replace("ooo W"));
     }
     
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAccessStoredIteratorAfterNewIterator() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         
         ContextStringReplacerIterator storedIterator = replacer.iterator();
         replacer.iterator();
         // execute
-        storedIterator.next();
+        Assertions.assertThrows(IllegalStateException.class, storedIterator::next);
     }
     
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void testAccessStoredReplacementAfterNewIterator() {
         // data
-        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", Arrays.asList("o W"));
+        ContextStringReplacer replacer = new ContextStringReplacer("Hello World", List.of("o W"));
         
         ContextStringReplacerIterator storedIterator = replacer.iterator();
         ContextStringReplacement storedReplacement = storedIterator.next();
         replacer.iterator();
         // execute
-        storedReplacement.replace("ooo W");
+        Assertions.assertThrows(IllegalStateException.class, () ->storedReplacement.replace("ooo W"));
     }
     
     @Test
     public void testStaticReplaceFunction() {
         // execute
-        String result = ContextStringReplacer.replace("Hello World", Arrays.asList("l", "o"), (replacement) -> {
+        String result = ContextStringReplacer.replace("Hello World", List.of("l", "o"), (replacement) -> {
             if (replacement.getSubstring().equals("l"))
                 replacement.replace("_");
             else if (replacement.getLookahead(1).equals(" "))

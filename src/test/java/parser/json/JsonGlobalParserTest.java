@@ -1,8 +1,9 @@
 package parser.json;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import data.Employee;
 import data.Profession;
@@ -30,16 +31,16 @@ public class JsonGlobalParserTest {
         assertNotNull(parser);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEmployeeEmptyJson() throws ParseException {
         // data
         IGlobalParser parser = new JsonGlobalParser(JSON_EMPTY);
 
         // execute
-        parser.getEmployee();
+        Assertions.assertThrows(ParseException.class, parser::getEmployee);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEmployeeMissingName() throws ParseException {
         // data
         String json = "{" +
@@ -52,10 +53,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getEmployee();
+        Assertions.assertThrows(ParseException.class, parser::getEmployee);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEmployeeMissingStaffId() throws ParseException {
         // data
         String json = "{" +
@@ -68,10 +69,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getEmployee();
+        Assertions.assertThrows(ParseException.class, parser::getEmployee);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseEmployeeAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -86,7 +87,7 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getEmployee();
+        Assertions.assertThrows(ParseException.class, parser::getEmployee);
     }
 
     @Test
@@ -101,16 +102,16 @@ public class JsonGlobalParserTest {
         assertEquals(new Employee("Max Mustermann", 1234567), employee);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionEmptyJson() throws ParseException {
         // data
         IGlobalParser parser = new JsonGlobalParser(JSON_EMPTY);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionMissingDepartment() throws ParseException {
         // data
         String json = "{" +
@@ -123,10 +124,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionMissingWorkingTime() throws ParseException {
         // data
         String json = "{" +
@@ -139,10 +140,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionMissingWage() throws ParseException {
         // data
         String json = "{" +
@@ -155,10 +156,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionMissingWorkingArea() throws ParseException {
         // data
         String json = "{" +
@@ -171,10 +172,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionAdditionalProperty() throws ParseException {
         // data
         String json = "{" +
@@ -189,10 +190,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionWrongWorkingTimeFormat() throws ParseException {
         // data
         String json = "{" +
@@ -206,10 +207,10 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
-    @Test(expected = ParseException.class)
+    @Test
     public void testParseProfessionWrongWorkingAreaFormat() throws ParseException {
         // data
         String json = "{" +
@@ -223,7 +224,7 @@ public class JsonGlobalParserTest {
         IGlobalParser parser = new JsonGlobalParser(json);
 
         // execute
-        parser.getProfession();
+        Assertions.assertThrows(ParseException.class, parser::getProfession);
     }
 
     @Test

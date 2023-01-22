@@ -4,7 +4,7 @@ TimeSheetGenerator is an application that checks and builds time sheet documents
 
 ## Execution
 
-Run TimeSheetGenerator (requires Java 8 or higher):
+Run TimeSheetGenerator (requires Java 17 or higher):
 
 `$ java -jar TimeSheetGenerator.jar [--help] [--version] [--gui] [--file <global.json> <month.json> <output.tex>]`
 
