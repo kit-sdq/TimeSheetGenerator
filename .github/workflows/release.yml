@@ -13,6 +13,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
@@ -21,10 +23,20 @@ jobs:
       - name: Build with Maven
         run: mvn -U -B package
 
-      - name: GitHub Release
-        uses: softprops/action-gh-release@v1
+      - name: Create Changelog
+        shell: bash
+        run: |
+          DIFF=$(git log $(git tag --sort=-creatordate | sed '2q;d')..HEAD --oneline)
+          if [ -z "$DIFF" ]; then
+            echo "Defaulting to full log"
+            DIFF=$(git log --oneline)
+          fi
+          echo "# Commits since last release" > CHANGELOG.txt
+          echo "$DIFF" | sed 's/^/* /' | sed '/Auto-Update Depedencies/{s/Updated/\n\t* Updated/g}' >> CHANGELOG.txt
+      - uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
-          generate_release_notes: true
+          body_path: CHANGELOG.txt
+          generateReleaseNotes: true
           files: |
             target/timesheetgenerator.jar
