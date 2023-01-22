@@ -1,0 +1,30 @@
+name: Create Release
+on:
+  workflow_dispatch:
+  push:
+    # Publish `v1.2.3` tags as releases.
+    tags:
+      - v*
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Build with Maven
+        run: mvn -U -B package
+
+      - name: GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          generate_release_notes: true
+          files: |
+            target/timesheetgenerator.jar

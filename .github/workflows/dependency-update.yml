@@ -1,0 +1,14 @@
+name: Maven Dependency Updates
+
+on:
+  schedule:
+    - cron: "00 11 * * 2"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  update:
+    uses: dfuchss/actions/.github/workflows/maven-update.yml@main
+    secrets:
+      PAT: ${{ secrets.PAT }}

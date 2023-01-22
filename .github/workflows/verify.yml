@@ -1,0 +1,21 @@
+name: Maven Verify
+
+on:
+  push: # Ignore releases and main dev branch
+    tags-ignore:
+      - 'v*'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  verify:
+    uses: dfuchss/actions/.github/workflows/maven.yml@main
+    with:
+      deploy: false
+    secrets:
+      OSSRH_USER: ""
+      OSSRH_TOKEN: ""
+      GPG_KEY: ""
