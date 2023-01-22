@@ -4,13 +4,13 @@
 
     <groupId>edu.kit.kastel.sdq</groupId>
     <artifactId>timesheetgenerator</artifactId>
-    <version>0.3.0-SNAPSHOT</version>
+    <version>0.3.0</version>
 
     <name>TimeSheetGenerator</name>
     <scm>
         <connection>scm:git:git://github.com/kit-sdq/TimeSheetGenerator.git</connection>
         <developerConnection>scm:git:ssh://github.com:kit-sdq/TimeSheetGenerator.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>v0.3.0</tag>
         <url>https://github.com/kit-sdq/TimeSheetGenerator/tree/master</url>
     </scm>
 
@@ -155,7 +155,7 @@
                             <!--suppress UnresolvedMavenProperty -->
                             <file>${maven.multiModuleProjectDirectory}/formatter.xml</file>
                         </eclipse>
-                        <removeUnusedImports></removeUnusedImports>
+                        <removeUnusedImports />
                         <licenseHeader>
                             <!--suppress UnresolvedMavenProperty -->
                             <file>${maven.multiModuleProjectDirectory}/license-header.txt</file>
