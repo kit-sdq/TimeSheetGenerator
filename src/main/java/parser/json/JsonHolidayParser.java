@@ -21,6 +21,7 @@ import parser.ParseException;
  */
 public class JsonHolidayParser implements IHolidayParser {
 
+  private static final String SCHOOL_HOLIDAY_NOTE = "schulfrei";
 	private final String json;
 
 	private HolidayMapJson holidayMap; // caching
@@ -49,7 +50,9 @@ public class JsonHolidayParser implements IHolidayParser {
 		try {
 			HolidayMapJson holidayMap = parseJson();
 
-			return holidayMap.getHolidays().entrySet().stream().map(e -> new Holiday(e.getValue().getDate(), e.getKey())).collect(Collectors.toList());
+			return holidayMap.getHolidays().entrySet().stream()
+          .filter(e -> e.getValue().getNote() == null || !e.getValue().getNote().contains(SCHOOL_HOLIDAY_NOTE))
+          .map(e -> new Holiday(e.getValue().getDate(), e.getKey())).collect(Collectors.toList());
 		} catch (JsonProcessingException e) {
 			throw new ParseException(e.getMessage());
 		}
