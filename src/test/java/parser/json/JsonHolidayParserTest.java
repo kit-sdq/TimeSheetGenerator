@@ -1,109 +1,92 @@
+/* Licensed under MIT 2023. */
 package parser.json;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import checker.holiday.Holiday;
 import parser.IHolidayParser;
 import parser.ParseException;
 
 public class JsonHolidayParserTest {
-    
-    private static final String JSON_EMPTY = "{}";
-    private static final String JSON_EXAMPLE = "{" +
-        "\"1. Weihnachtstag\": {" +
-            "\"datum\": \"2019-12-25\"," +
-            "\"hinweis\": \"Weihnachten\"" +
-        "}, \"2. Weihnachtstag\": {" +
-            "\"datum\": \"2019-12-26\"" +
-        "}" +
-    "}";
 
-    @Test
-    public void testCreate() {
-        IHolidayParser parser = new JsonHolidayParser(JSON_EXAMPLE);
+	private static final String JSON_EMPTY = "{}";
+	private static final String JSON_EXAMPLE = "{" + "\"1. Weihnachtstag\": {" + "\"datum\": \"2019-12-25\"," + "\"hinweis\": \"Weihnachten\""
+			+ "}, \"2. Weihnachtstag\": {" + "\"datum\": \"2019-12-26\"" + "}" + "}";
 
-        assertNotNull(parser);
-    }
+	@Test
+	public void testCreate() {
+		IHolidayParser parser = new JsonHolidayParser(JSON_EXAMPLE);
 
-    @Test
-    public void testGetHolidaysEmptyJson() throws ParseException {
-        // data
-        IHolidayParser parser = new JsonHolidayParser(JSON_EMPTY);
+		assertNotNull(parser);
+	}
 
-        // execute
-        Collection<Holiday> holidays = parser.getHolidays();
+	@Test
+	public void testGetHolidaysEmptyJson() throws ParseException {
+		// data
+		IHolidayParser parser = new JsonHolidayParser(JSON_EMPTY);
 
-        // assert
-        assertEquals(0, holidays.size());
-    }
+		// execute
+		Collection<Holiday> holidays = parser.getHolidays();
 
-    @Test(expected = ParseException.class)
-    public void testGetHolidaysMissingDate() throws ParseException {
-        // data
-        String json = "{" +
-            "\"1. Weihnachtstag\": {" +
-                "\"hinweis\": \"Weihnachten\"" +
-            "}" +
-        "}";
-        IHolidayParser parser = new JsonHolidayParser(json);
+		// assert
+		assertEquals(0, holidays.size());
+	}
 
-        // execute
-        parser.getHolidays();
-    }
+	@Test
+	public void testGetHolidaysMissingDate() throws ParseException {
+		// data
+		String json = "{" + "\"1. Weihnachtstag\": {" + "\"hinweis\": \"Weihnachten\"" + "}" + "}";
+		IHolidayParser parser = new JsonHolidayParser(json);
 
-    @Test(expected = ParseException.class)
-    public void testGetHolidaysAdditionalProperty() throws ParseException {
-        // data
-        String json = "{" +
-            "\"2. Weihnachtstag\": {" +
-                "\"datum\": \"2019-12-26\"," +
-                "\"something\": \"else\"" +
-            "}" +
-        "}";
-        IHolidayParser parser = new JsonHolidayParser(json);
+		// execute
+		Assertions.assertThrows(ParseException.class, parser::getHolidays);
+	}
 
-        // execute
-        parser.getHolidays();
-    }
+	@Test
+	public void testGetHolidaysAdditionalProperty() throws ParseException {
+		// data
+		String json = "{" + "\"2. Weihnachtstag\": {" + "\"datum\": \"2019-12-26\"," + "\"something\": \"else\"" + "}" + "}";
+		IHolidayParser parser = new JsonHolidayParser(json);
 
-    @Test(expected = ParseException.class)
-    public void testGetHolidaysWrongDateFormat() throws ParseException {
-        // data
-        String json = "{" +
-            "\"2. Weihnachtstag\": {" +
-                "\"datum\": \"26.12.2019\"" +
-            "}" +
-        "}";
-        IHolidayParser parser = new JsonHolidayParser(json);
+		// execute
+		Assertions.assertThrows(ParseException.class, parser::getHolidays);
+	}
 
-        // execute
-        parser.getHolidays();
-    }
+	@Test
+	public void testGetHolidaysWrongDateFormat() throws ParseException {
+		// data
+		String json = "{" + "\"2. Weihnachtstag\": {" + "\"datum\": \"26.12.2019\"" + "}" + "}";
+		IHolidayParser parser = new JsonHolidayParser(json);
 
-    @Test
-    public void testGetHolidays() throws ParseException {
-        // data
-        Collection<Holiday> expectedHolidays = new ArrayList<Holiday>();
-        expectedHolidays.add(new Holiday(LocalDate.of(2019, 12, 25), "1. Weihnachtstag"));
-        expectedHolidays.add(new Holiday(LocalDate.of(2019, 12, 26), "2. Weihnachtstag"));
+		// execute
+		Assertions.assertThrows(ParseException.class, parser::getHolidays);
+	}
 
-        IHolidayParser parser = new JsonHolidayParser(JSON_EXAMPLE);
+	@Test
+	public void testGetHolidays() throws ParseException {
+		// data
+		Collection<Holiday> expectedHolidays = new ArrayList<Holiday>();
+		expectedHolidays.add(new Holiday(LocalDate.of(2019, 12, 25), "1. Weihnachtstag"));
+		expectedHolidays.add(new Holiday(LocalDate.of(2019, 12, 26), "2. Weihnachtstag"));
 
-        // execute
-        Collection<Holiday> holidays = parser.getHolidays();
+		IHolidayParser parser = new JsonHolidayParser(JSON_EXAMPLE);
 
-        // assert
-        assertEquals(expectedHolidays.size(), holidays.size());
+		// execute
+		Collection<Holiday> holidays = parser.getHolidays();
 
-        for (Holiday expectedHoliday : expectedHolidays) {
-            assert(holidays.contains(expectedHoliday));
-        }
-    }
+		// assert
+		assertEquals(expectedHolidays.size(), holidays.size());
+
+		for (Holiday expectedHoliday : expectedHolidays) {
+			assert (holidays.contains(expectedHoliday));
+		}
+	}
 
 }
