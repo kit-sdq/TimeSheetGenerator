@@ -1,0 +1,22 @@
+name: Stale PRs
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "1 12 * * *"
+
+jobs:
+  stale:
+    if: github.repository_owner == 'kit-sdq'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for stale PRs
+        uses: actions/stale@v7
+        with:
+          days-before-stale: 7
+          days-before-close: 14
+          days-before-issue-stale: -1
+          remove-stale-when-updated: true
+          stale-pr-label: "stale"
+          exempt-pr-labels: "no-stale"
+          stale-pr-message: 'This PR is stale because it has been open 7 days with no activity. Remove stale label or comment or this will be closed in 7 days.'
+          close-pr-message: 'This PR was closed because it has been stalled for 14 days with no activity.'
