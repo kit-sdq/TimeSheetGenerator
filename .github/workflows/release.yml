@@ -32,7 +32,7 @@ jobs:
             DIFF=$(git log --oneline)
           fi
           echo "# Commits since last release" > CHANGELOG.txt
-          echo "$DIFF" | sed 's/^/* /' | sed '/Auto-Update Depedencies/{s/Updated/\n\t* Updated/g}' >> CHANGELOG.txt
+          echo "$DIFF" | sed 's/^/* /' | sed '/Auto-Update Dependencies/{s/Updated/\n\t* Updated/g}' >> CHANGELOG.txt
       - uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
         with:
