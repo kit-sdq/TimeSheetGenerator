@@ -37,6 +37,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           body_path: CHANGELOG.txt
-          generateReleaseNotes: true
+          generate_release_notes: true
           files: |
             target/timesheetgenerator.jar
