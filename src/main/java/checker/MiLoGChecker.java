@@ -43,7 +43,7 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * Constructs a new {@link MiLoGChecker} instance.
-	 * 
+	 *
 	 * @param timeSheet - to be checked.
 	 */
 	public MiLoGChecker(TimeSheet timeSheet) {
@@ -56,7 +56,7 @@ public class MiLoGChecker implements IChecker {
 	/**
 	 * Runs all of the needed tests in order to validate the {@link TimeSheet}
 	 * instance.
-	 * 
+	 *
 	 * @return {@link CheckerReturn} value with error or validity message
 	 * @throws CheckerException Thrown if an error occurs while checking the
 	 *                          validity
@@ -82,7 +82,7 @@ public class MiLoGChecker implements IChecker {
 	/**
 	 * Returns a collection of all occurred checker errors during the execution of
 	 * the last call to {@link #check()}
-	 * 
+	 *
 	 * @return {@link Collection} of occurred checker errors.
 	 */
 	@Override
@@ -204,7 +204,7 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * Checks whether all of the days are valid working days.
-	 * 
+	 *
 	 * @throws CheckerException Thrown if an error occurs while fetching holidays
 	 */
 	protected void checkValidWorkingDays() throws CheckerException {
@@ -254,8 +254,9 @@ public class MiLoGChecker implements IChecker {
 	 * the template document.
 	 */
 	protected void checkRowNumExceedance() {
-		if (timeSheet.getEntries().size() > MAX_ROW_NUM) {
-			errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE));
+		int rowCount = timeSheet.getEntries().size();
+		if (rowCount > MAX_ROW_NUM) {
+			errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE, MAX_ROW_NUM, rowCount - MAX_ROW_NUM));
 			result = CheckerReturn.INVALID;
 		}
 	}
@@ -273,7 +274,7 @@ public class MiLoGChecker implements IChecker {
 	//// Following methods are primarily for testing purposes.
 	/**
 	 * This method gets the result of the last call to {@link #check()}
-	 * 
+	 *
 	 * @return The result of the last call to {@link #check()}
 	 */
 	protected CheckerReturn getResult() {
@@ -283,7 +284,7 @@ public class MiLoGChecker implements IChecker {
 	/**
 	 * This method gets the maximally allowed number of entries inside a
 	 * {@link TimeSheet}.
-	 * 
+	 *
 	 * @return The maximum number of {@link Entry entries}.
 	 */
 	protected static int getMaxEntries() {
@@ -292,7 +293,7 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * This method gets the legal lower bound of time to start a working day.
-	 * 
+	 *
 	 * @return The legal lower bound of time to start a working day.
 	 */
 	protected static TimeSpan getWorkdayLowerBound() {
@@ -301,7 +302,7 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * This method gets the legal upper bound of time to end a working day.
-	 * 
+	 *
 	 * @return The legal upper bound of time to end a working day.
 	 */
 	protected static TimeSpan getWorkdayUpperBound() {
@@ -310,7 +311,7 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * This method gets the legal daily maximum working time to conform to laws.
-	 * 
+	 *
 	 * @return The daily maximum working time.
 	 */
 	protected static TimeSpan getWorkdayMaxWorkingTime() {
@@ -319,7 +320,7 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * This method gets the legal pause rules to conform to laws.
-	 * 
+	 *
 	 * @return The legal pause rules.
 	 */
 	protected static TimeSpan[][] getPauseRules() {
