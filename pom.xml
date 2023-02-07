@@ -4,13 +4,13 @@
 
     <groupId>edu.kit.kastel.sdq</groupId>
     <artifactId>timesheetgenerator</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4-SNAPSHOT</version>
 
     <name>TimeSheetGenerator</name>
     <scm>
         <connection>scm:git:git://github.com/kit-sdq/TimeSheetGenerator.git</connection>
         <developerConnection>scm:git:ssh://github.com:kit-sdq/TimeSheetGenerator.git</developerConnection>
-        <tag>v0.3.3</tag>
+        <tag>HEAD</tag>
         <url>https://github.com/kit-sdq/TimeSheetGenerator/tree/master</url>
     </scm>
 
