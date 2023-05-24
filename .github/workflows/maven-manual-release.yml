@@ -1,0 +1,23 @@
+name: Maven Release (Manual)
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      release-version:
+        type: string
+        description: The version for release. E.g., "1.2.3"
+        required: true
+      next-version:
+        type: string
+        description: The version after release. E.g., "2.0.0-SNAPSHOT"
+        required: true
+jobs:
+  release:
+    uses: dfuchss/actions/.github/workflows/maven-manual-release.yml@main
+    secrets:
+      # Needs to be a personal access token to push as a certain user; otherwise actions won't be triggered.
+      PAT: ${{ secrets.PAT }}
+    with:
+      release-version: ${{ github.event.inputs.release-version }}
+      next-version: ${{ github.event.inputs.next-version }}
