@@ -9,6 +9,6 @@ on:
 
 jobs:
   update:
-    uses: dfuchss/actions/.github/workflows/maven-update.yml@main
+    uses: kit-sdq/actions/.github/workflows/maven-update.yml@main
     secrets:
       PAT: ${{ secrets.PAT }}

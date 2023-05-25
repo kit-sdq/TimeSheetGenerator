@@ -14,7 +14,7 @@ on:
 
 jobs:
   verify:
-    uses: dfuchss/actions/.github/workflows/maven.yml@main
+    uses: kit-sdq/actions/.github/workflows/maven.yml@main
     with:
       deploy: false
     secrets:
