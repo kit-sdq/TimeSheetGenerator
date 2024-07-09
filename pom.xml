@@ -19,7 +19,7 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
 
-        <jackson.version>2.17.1</jackson.version>
+        <jackson.version>2.17.2</jackson.version>
         <junit.version>5.11.0-M2</junit.version>
         <spotless.version>2.44.0.BETA1</spotless.version>
     </properties>
