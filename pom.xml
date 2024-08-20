@@ -4,7 +4,7 @@
 
     <groupId>edu.kit.kastel.sdq</groupId>
     <artifactId>timesheetgenerator</artifactId>
-    <version>0.19.13</version>
+    <version>0.19.14-SNAPSHOT</version>
 
     <name>TimeSheetGenerator</name>
     <scm>
