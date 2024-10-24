@@ -21,7 +21,7 @@
 
         <jackson.version>2.18.0</jackson.version>
         <junit.version>5.11.3</junit.version>
-        <spotless.version>2.44.0.BETA3</spotless.version>
+        <spotless.version>2.44.0.BETA4</spotless.version>
     </properties>
     <dependencies>
         <dependency>
