@@ -1,14 +1,13 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDateTime;
 
 public class Main {
 
     private static JFrame frame;
-    private static DefaultListModel<String> listModel;
+    private static DefaultListModel<TimesheetEntry> listModel;
+    private static int selectedItemIndex = -1, previousSelectedItemIndex = -1;
 
     private GlobalSettingsBar globalSettingsBar;
     private ActionBar buttonActionBar;
@@ -62,21 +61,33 @@ public class Main {
 
         // Main Content Area with Vertical List
         listModel = new DefaultListModel<>();
-        JList<String> itemList = new JList<>(listModel);
+        JList<TimesheetEntry> itemList = new JList<>(listModel);
         itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         // Double-click to Edit Entry
         itemList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
+                int index = itemList.locationToIndex(e.getPoint());
+                selectedItemIndex = index < 0 ? -1 : index;
                 if (e.getClickCount() == 2) {
-                    int index = itemList.locationToIndex(e.getPoint());
                     if (index >= 0) {
-                        DialogueHelper.showEntryDialog("Edit Entry", listModel.getElementAt(index));
+                        DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(index));
+                        listModel.removeElementAt(index);
                     }
                 }
             }
         });
+        /* For the remove button
+        itemList.addFocusListener(new FocusAdapter() {
+            public void focusGained(FocusEvent e) {
+                selectedItemIndex = previousSelectedItemIndex;
+            }
+            public void focusLost(FocusEvent e) {
+                previousSelectedItemIndex = selectedItemIndex;
+                selectedItemIndex = -1;
+            }
+        });*/
 
         JScrollPane listScrollPane = new JScrollPane(itemList);
         System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(), globalSettingsBar.getHeight(), buttonActionBar.getLocation().y, globalSettingsBar.getLocation().y);
@@ -91,6 +102,15 @@ public class Main {
 
         // Show Frame
         frame.setVisible(true);
+    }
+
+    public static void addEntry(TimesheetEntry entry) {
+        listModel.addElement(entry);
+    }
+
+    public static void removeSelectedListEntry() {
+        if (selectedItemIndex < 0) return;
+        listModel.removeElementAt(selectedItemIndex);
     }
 
     private void showSimpleDialog(String message) {

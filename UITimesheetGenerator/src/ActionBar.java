@@ -25,8 +25,10 @@ public class ActionBar extends JPanel {
         printButton.setPreferredSize(new Dimension(70, 50));
         this.add(printButton);
 
-        addButton.addActionListener(e -> Main.showEntryDialog3("Add Entry", "", -1));
-        printButton.addActionListener(e -> DialogueHelper.showEntryDialog("Add Entry", "My Activity"));
+        addButton.addActionListener(e -> DialogHelper.showEntryDialog("Add Entry", ""));
+        removeButton.addActionListener((l) -> {
+            Main.removeSelectedListEntry();
+        });
     }
 
 }
