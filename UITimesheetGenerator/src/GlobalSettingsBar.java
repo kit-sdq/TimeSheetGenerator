@@ -27,7 +27,7 @@ public class GlobalSettingsBar extends JPanel {
         selectorsPanel.add(monthSelector);
 
         // SS/WS Selector
-        semesterSelector = new JComboBox<>(new String[]{"SS", "WS"});
+        semesterSelector = new JComboBox<>(new String[] {"SS", "WS"});
         selectorsPanel.add(semesterSelector);
 
         semesterTextField = new JTextField(2);
