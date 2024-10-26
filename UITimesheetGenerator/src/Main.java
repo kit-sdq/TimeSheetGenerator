@@ -7,7 +7,7 @@ public class Main {
 
     private static JFrame frame;
     private static DefaultListModel<TimesheetEntry> listModel;
-    private static int selectedItemIndex = -1, previousSelectedItemIndex = -1;
+    private static int selectedItemIndex = -1;
 
     private GlobalSettingsBar globalSettingsBar;
     private ActionBar buttonActionBar;
@@ -53,10 +53,12 @@ public class Main {
         frame.setJMenuBar(menuBar);
 
         globalSettingsBar = new GlobalSettingsBar();
+        globalSettingsBar.setFont(globalSettingsBar.getFont().deriveFont(14f));
         frame.add(globalSettingsBar, BorderLayout.NORTH);
 
         // Row of Buttons with '+'
         buttonActionBar = new ActionBar();
+        globalSettingsBar.setFont(globalSettingsBar.getFont().deriveFont(14f));
         frame.add(buttonActionBar, BorderLayout.WEST);
 
         // Main Content Area with Vertical List
@@ -64,6 +66,18 @@ public class Main {
         JList<TimesheetEntry> itemList = new JList<>(listModel);
         itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        itemList.setFont(itemList.getFont().deriveFont(16f));
+
+        // Table header setup
+        JLabel tableHeader = new JLabel();
+        tableHeader.setText(String.format(TimesheetEntry.TIMESHEET_FORMAT_HEADER,
+                "Activity",
+                "Start Time",
+                "End Time",
+                "Break Time",
+                "Vacation"));
+        tableHeader.setFont(tableHeader.getFont().deriveFont(16f));
+        tableHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
 
         // Double-click to Edit Entry
         itemList.addMouseListener(new MouseAdapter() {
@@ -88,11 +102,18 @@ public class Main {
                 selectedItemIndex = -1;
             }
         });*/
+        System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(), globalSettingsBar.getHeight(), buttonActionBar.getLocation().y, globalSettingsBar.getLocation().y);
+
 
         JScrollPane listScrollPane = new JScrollPane(itemList);
-        System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(), globalSettingsBar.getHeight(), buttonActionBar.getLocation().y, globalSettingsBar.getLocation().y);
-        listScrollPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 160));
-        frame.add(listScrollPane, BorderLayout.SOUTH);
+        listScrollPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
+
+        // Panel to hold the header and list together
+        JPanel listPanel = new JPanel(new BorderLayout());
+        listPanel.add(tableHeader, BorderLayout.NORTH);
+        listPanel.add(listScrollPane, BorderLayout.CENTER);
+
+        frame.add(listPanel, BorderLayout.SOUTH);
 
         // Action Listeners
         //addButton.addActionListener(e -> showEntryDialog("Add Entry", "", -1));

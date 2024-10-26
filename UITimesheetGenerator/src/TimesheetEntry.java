@@ -1,7 +1,9 @@
-import java.time.Duration;
 import java.time.LocalTime;
 
 public class TimesheetEntry {
+
+    public static final String TIMESHEET_FORMAT_HEADER = "         %-40s %-25s %-25s %-25s %-10s"; //"%-20s %-10s %-10s %-10s %-10s";
+    public static final String TIMESHEET_FORMAT = " %-40s         %-25s %-25s %-25s %-10s"; //"%-20s %-10s %-10s %-10s %-10s";
 
     public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry(
             "", -1, -1, -1, -1, -1, -1, false
@@ -70,7 +72,21 @@ public class TimesheetEntry {
         return isVacation;
     }
 
+    public String isVacationStr() {
+        return isVacation ? "yes" : "no";
+    }
+
     public boolean isEmpty() {
         return fromHour == -1 && fromMinute == -1 && toHour == -1 && toMinute == -1;
+    }
+
+    @Override
+    public String toString() {
+        return String.format(TIMESHEET_FORMAT,
+                getActivity(),
+                getStartTimeString(),
+                getEndTimeString(),
+                getBreakTimeString(),
+                isVacationStr());
     }
 }

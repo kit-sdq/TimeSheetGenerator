@@ -431,7 +431,7 @@ public class DialogHelper {
 
         discardButton.addActionListener(e -> {
             // Since the old entry will be deleted, we need to add it back
-            if (entry.isEmpty()) Main.addEntry(entry);
+            if (!entry.isEmpty()) Main.addEntry(entry);
             dialog.dispose();
         });
 
