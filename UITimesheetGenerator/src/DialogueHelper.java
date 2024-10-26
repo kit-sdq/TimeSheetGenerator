@@ -14,135 +14,6 @@ import java.util.regex.Pattern;
 
 public class DialogueHelper {
 
-    public static void showEntryDialog_old(String title, String existingText, int index) {
-        JDialog dialog = new JDialog();
-        dialog.setTitle(title);
-        dialog.setSize(600, 400);
-        dialog.setModal(true);
-        dialog.setLocationRelativeTo(null); // Center the dialog
-
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding of 10
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5, 10, 5, 10); // Spacing between components
-
-        int row = 0;
-
-        // 3. Action field: multiline text area
-        JLabel actionLabel = new JLabel("Activity:");
-        actionLabel.setHorizontalAlignment(JLabel.RIGHT);
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        panel.add(actionLabel, gbc);
-
-        JTextArea actionTextArea = new JTextArea(2, 20);
-        actionTextArea.setText(existingText);
-        addPlaceholderText_old(actionTextArea, "Describe the activity"); // 9. Placeholder text
-
-        gbc.gridx = 1;
-        gbc.gridy = row;
-        gbc.weightx = 1;
-        gbc.fill = GridBagConstraints.BOTH;
-        panel.add(new JScrollPane(actionTextArea), gbc);
-
-        row++;
-
-        // 4. Time fields
-        String[] labels = {"Start Time:", "End Time:", "Break Time:"};
-        JTextField[] timeFields = new JTextField[3];
-        String[] placeholders = {"HH:MM", "HH:MM", "HH:MM"};
-
-        for (int i = 0; i < labels.length; i++) {
-            JLabel timeLabel = new JLabel(labels[i]);
-            timeLabel.setHorizontalAlignment(JLabel.RIGHT);
-            gbc.gridx = 0;
-            gbc.gridy = row;
-            gbc.weightx = 0;
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-            panel.add(timeLabel, gbc);
-
-            JTextField timeField = new JTextField(20);
-            addPlaceholderText_old(timeField, placeholders[i]); // 9. Placeholder text
-            timeFields[i] = timeField;
-
-            gbc.gridx = 1;
-            gbc.gridy = row;
-            gbc.weightx = 1;
-            panel.add(timeField, gbc);
-
-            row++;
-        }
-
-        // 5. Vacation checkbox
-        JLabel vacationLabel = new JLabel("Vacation:");
-        vacationLabel.setHorizontalAlignment(JLabel.RIGHT);
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.weightx = 0;
-        panel.add(vacationLabel, gbc);
-
-        JCheckBox vacationCheckBox = new JCheckBox();
-        gbc.gridx = 1;
-        gbc.gridy = row;
-        gbc.weightx = 1;
-        panel.add(vacationCheckBox, gbc);
-
-        row++;
-
-        // 8. Buttons at the bottom
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton makeEntryButton = new JButton("Make Entry");
-        JButton discardButton = new JButton("Discard");
-        buttonPanel.add(makeEntryButton);
-        buttonPanel.add(discardButton);
-
-        gbc.gridx = 0;
-        gbc.gridy = row;
-        gbc.gridwidth = 2;
-        gbc.weighty = 1;
-        gbc.anchor = GridBagConstraints.SOUTHEAST;
-        gbc.fill = GridBagConstraints.NONE;
-        panel.add(buttonPanel, gbc);
-
-        // Action listeners for buttons
-        makeEntryButton.addActionListener(e -> {
-            // Handle make entry logic here
-            dialog.dispose();
-        });
-
-        discardButton.addActionListener(e -> {
-            dialog.dispose();
-        });
-
-        dialog.add(panel);
-        dialog.setVisible(true);
-    }
-
-    // Helper method to add placeholder text
-    public static void addPlaceholderText_old(JTextComponent component, String placeholder) {
-        component.setForeground(Color.GRAY);
-        component.setText(placeholder);
-
-        component.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (component.getText().equals(placeholder)) {
-                    component.setText("");
-                    component.setForeground(Color.BLACK);
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                if (component.getText().isEmpty()) {
-                    component.setForeground(Color.GRAY);
-                    component.setText(placeholder);
-                }
-            }
-        });
-    }
-
     private static final String TIME_PLACEHOLDER = "HH:MM";
     private static final String TIME_BREAK_PLACEHOLDER = "(HH:)MM";
     private static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
@@ -338,6 +209,10 @@ public class DialogueHelper {
 
         dialog.add(panel);
         dialog.setVisible(true);
+    }
+
+    public static void showEntryDialog(String title, TimesheetEntry entry) {
+
     }
 
     // Helper method to add placeholder text
