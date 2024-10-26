@@ -75,7 +75,8 @@ public class Main {
                 "Start Time",
                 "End Time",
                 "Break Time",
-                "Vacation"));
+                "Vacation",
+                "Total Time Worked"));
         tableHeader.setFont(tableHeader.getFont().deriveFont(16f));
         tableHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
 
@@ -132,6 +133,14 @@ public class Main {
     public static void removeSelectedListEntry() {
         if (selectedItemIndex < 0) return;
         listModel.removeElementAt(selectedItemIndex);
+        selectedItemIndex = -1;
+    }
+
+    public static void editSelectedListEntry() {
+        if (selectedItemIndex < 0) return;
+        DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(selectedItemIndex));
+        listModel.removeElementAt(selectedItemIndex);
+        selectedItemIndex = -1;
     }
 
     private void showSimpleDialog(String message) {

@@ -14,15 +14,19 @@ import java.util.regex.Pattern;
 
 public class DialogHelper {
 
+    private static final String DAY_PLACEHOLDER = "DAY";
     private static final String TIME_PLACEHOLDER = "HH:MM";
     private static final String TIME_BREAK_PLACEHOLDER = "(HH:)MM";
+    private static final Pattern DAY_PATTERN = Pattern.compile("^(\\d{1,2})$");
     private static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
     private static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
     private static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
     private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 
-    public static void showEntryDialog(String title, String existingText) {
+    private static final int INDEX_DAY = 0, INDEX_START_TIME = 1, INDEX_END_TIME = 2, INDEX_BREAK_TIME = 3;
+
+    public static void showEntryDialog(String title) {
 
         /*
         JDialog dialog = new JDialog();
@@ -266,11 +270,11 @@ public class DialogHelper {
         row++;
 
         // 4. Time fields
-        String[] labels = {"Start Time:", "End Time:", "Break Time:"};
-        JTextField[] timeFields = new JTextField[3];
-        JLabel[] errorLabels = new JLabel[3]; // For validation error messages
-        String[] placeholders = {TIME_PLACEHOLDER, TIME_PLACEHOLDER, TIME_BREAK_PLACEHOLDER}; // 2. Changed placeholder
-        String[] otherTexts = {entry.getStartTimeString(), entry.getEndTimeString(), entry.getBreakTimeString()}; // 2. Changed placeholder
+        String[] labels = {"Day:", "Start Time:", "End Time:", "Break Time:"};
+        JTextField[] timeFields = new JTextField[4];
+        JLabel[] errorLabels = new JLabel[4]; // For validation error messages
+        String[] placeholders = {DAY_PLACEHOLDER, TIME_PLACEHOLDER, TIME_PLACEHOLDER, TIME_BREAK_PLACEHOLDER}; // 2. Changed placeholder
+        String[] otherTexts = {entry.getDayString(), entry.getStartTimeString(), entry.getEndTimeString(), entry.getBreakTimeString()}; // 2. Changed placeholder
 
         for (int i = 0; i < labels.length; i++) {
             JLabel timeLabel = new JLabel(labels[i]);
@@ -303,20 +307,24 @@ public class DialogHelper {
 
             timeField.addFocusListener(new FocusAdapter() {
                 public void focusLost(FocusEvent e) {
-                    validateTimeField(timeFields[index], errorLabels[index], index == labels.length - 1);
-                    checkStartEndTime(timeFields[0], timeFields[1]);
-                    updateDurationSummary(durationSummaryValue, timeFields[0], timeFields[1], timeFields[2], durationWarningLabel, vacationCheckBox);
+                    if (index == 0) checkDay(timeFields[INDEX_DAY], errorLabels[INDEX_DAY]);
+                    else {
+                        validateTimeField(timeFields[index], errorLabels[index], index == labels.length - 1);
+                        checkStartEndTime(timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME]);
+                        updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME], durationWarningLabel, vacationCheckBox);
+                    }
                 }
             });
 
-            if (!otherTexts[i].isEmpty()) {
+            if (i > 0 && !otherTexts[i].isEmpty()) {
                 validateTimeField(timeFields[index], errorLabels[index], index == labels.length - 1);
             }
 
             row++;
         }
-        checkStartEndTime(timeFields[0], timeFields[1]);
-        updateDurationSummary(durationSummaryValue, timeFields[0], timeFields[1], timeFields[2], durationWarningLabel, vacationCheckBox);
+        checkDay(timeFields[INDEX_DAY], errorLabels[INDEX_DAY]);
+        checkStartEndTime(timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME]);
+        updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME], durationWarningLabel, vacationCheckBox);
 
         // 5. Vacation checkbox
         JLabel vacationLabel = new JLabel("Vacation:");
@@ -329,7 +337,7 @@ public class DialogHelper {
         gbc.gridx = 1;
         gbc.gridy = row;
         gbc.weightx = 1;
-        vacationCheckBox.addChangeListener((l) -> updateDurationSummary(durationSummaryValue, timeFields[0], timeFields[1], timeFields[2], durationWarningLabel, vacationCheckBox));
+        vacationCheckBox.addChangeListener((l) -> updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME], durationWarningLabel, vacationCheckBox));
         panel.add(vacationCheckBox, gbc);
 
         row++;
@@ -393,10 +401,13 @@ public class DialogHelper {
                     durationWarningLabel.setText(ACTIVITY_MESSAGE);
                 }
                 // warning label is updated automatically when fields are edited
-                if (timeFields[0].getText().isBlank() || timeFields[2].getText().equals(TIME_PLACEHOLDER)) {
+                if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
                     durationWarningLabel.setText("You need to enter a start time!");
                 }
-                if (timeFields[1].getText().isBlank() || timeFields[2].getText().equals(TIME_PLACEHOLDER)) {
+                if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
+                    durationWarningLabel.setText("You need to enter a start time!");
+                }
+                if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
                     durationWarningLabel.setText("You need to enter an end time!");
                 }
             }
@@ -419,12 +430,12 @@ public class DialogHelper {
             }
 
             // No break
-            if (timeFields[2].getText().isBlank() || timeFields[2].getText().equals(TIME_BREAK_PLACEHOLDER)) {
-                timeFields[2].setText("00:00");
+            if (timeFields[INDEX_BREAK_TIME].getText().isBlank() || timeFields[INDEX_BREAK_TIME].getText().equals(TIME_BREAK_PLACEHOLDER)) {
+                timeFields[INDEX_BREAK_TIME].setText("00:00");
             }
 
             TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextArea.getText(),
-                    timeFields[0].getText(), timeFields[1].getText(), timeFields[2].getText(), vacationCheckBox.isSelected());
+                    Integer.parseInt(timeFields[INDEX_DAY].getText()), timeFields[INDEX_START_TIME].getText(), timeFields[INDEX_END_TIME].getText(), timeFields[INDEX_BREAK_TIME].getText(), vacationCheckBox.isSelected());
             Main.addEntry(newEntry);
             dialog.dispose();
         });
@@ -455,7 +466,7 @@ public class DialogHelper {
                 taskSummaryValue.setText(actionTextArea.getText());
                 if (!actionTextArea.getText().isBlank() && durationWarningLabel.getText().equals(ACTIVITY_MESSAGE)) {
                     durationWarningLabel.setText(" ");
-                    updateDurationSummary(durationSummaryValue, timeFields[0], timeFields[1], timeFields[2], durationWarningLabel, vacationCheckBox);
+                    updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME], durationWarningLabel, vacationCheckBox);
                 }
             }
         });
@@ -531,11 +542,32 @@ public class DialogHelper {
         }
     }
 
+    private static void checkDay(JTextField dayField, JLabel errorLabel) {
+        String dayText = dayField.getText().trim();
+        if (dayText.equals(DAY_PLACEHOLDER)) {
+            return;
+        }
+
+        if (DAY_PATTERN.matcher(dayText).matches()) {
+            int day = Integer.parseInt(dayText);
+            if (day >= 1 && day <= 31) {
+                dayField.setForeground(Color.BLACK);
+                errorLabel.setText(" ");
+            } else {
+                dayField.setForeground(Color.RED);
+                errorLabel.setText("Day out of range");
+            }
+        } else {
+            dayField.setForeground(Color.RED);
+            errorLabel.setText("Day must be a number");
+        }
+    }
+
     // 6. Check if start time is after end time
     private static void checkStartEndTime(JTextField startField, JTextField endField) {
         String startText = startField.getText();
         String endText = endField.getText();
-        if (startText.equals("HH:MM") || endText.equals("HH:MM")) {
+        if (startText.equals(TIME_PLACEHOLDER) || endText.equals(TIME_PLACEHOLDER)) {
             return;
         }
         LocalTime startTime = parseTime(startText);
@@ -556,7 +588,7 @@ public class DialogHelper {
         String startText = startField.getText();
         String endText = endField.getText();
         String breakText = breakField.getText();
-        if (startText.equals("HH:MM") || endText.equals("HH:MM") || breakText.equals("HH:MM")) {
+        if (startText.equals(TIME_PLACEHOLDER) || endText.equals(TIME_PLACEHOLDER) || breakText.equals(TIME_PLACEHOLDER)) {
             durationSummaryLabel.setText("");
             durationWarningLabel.setText(" ");
             return;
@@ -564,6 +596,7 @@ public class DialogHelper {
         LocalTime startTime = parseTime(startText);
         LocalTime endTime = parseTime(endText);
         LocalTime breakTime = parseTime(breakText);
+        if (breakTime == null) breakTime = LocalTime.of(0, 0);
         if (startTime != null && endTime != null && breakTime != null) {
             Duration workDuration = Duration.between(startTime, endTime).minus(Duration.ofHours(breakTime.getHour()).plusMinutes(breakTime.getMinute()));
             if (workDuration.isNegative()) {
@@ -571,7 +604,14 @@ public class DialogHelper {
             } else {
                 long hours = workDuration.toHours();
                 long minutes = workDuration.toMinutes() % 60;
-                durationSummaryLabel.setText(String.format("%d hours %d minutes", hours, minutes));
+
+                String hoursUnit = hours == 1 ? "hour" : "hours";
+                String minutesUnit = minutes == 1 ? "minute" : "minutes";
+
+                if (hours == 0 && minutes == 0) durationSummaryLabel.setText("none");
+                else if (hours == 0) durationSummaryLabel.setText(String.format("%d %s", minutes, minutesUnit));
+                else if (minutes == 0) durationSummaryLabel.setText(String.format("%d %s", hours, hoursUnit));
+                else durationSummaryLabel.setText(String.format("%d %s %d %s", hours, hoursUnit, minutes, minutesUnit));
 
                 // Check break time requirements, (of course only when no vacation)
                 if (!isVacation.isSelected()) {

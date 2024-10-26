@@ -2,20 +2,21 @@ import java.time.LocalTime;
 
 public class TimesheetEntry {
 
-    public static final String TIMESHEET_FORMAT_HEADER = "         %-40s %-25s %-25s %-25s %-10s"; //"%-20s %-10s %-10s %-10s %-10s";
-    public static final String TIMESHEET_FORMAT = " %-40s         %-25s %-25s %-25s %-10s"; //"%-20s %-10s %-10s %-10s %-10s";
+    public static final String TIMESHEET_FORMAT_HEADER = "         %-40s %-25s %-25s %-25s %-25s %-25s"; //"%-20s %-10s %-10s %-10s %-10s";
+    public static final String TIMESHEET_FORMAT = " %-40s         %-25s %-25s %-25s %-25s %-25s"; //"%-20s %-10s %-10s %-10s %-10s";
 
     public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry(
-            "", -1, -1, -1, -1, -1, -1, false
+            "", -1, -1, -1, -1, -1, -1, -1, false
     );
 
     private String activity;
+    private int day;
     private int fromHour, fromMinute;
     private int toHour, toMinute;
     private int breakHour, breakMinutes;
     private boolean isVacation;
 
-    public static TimesheetEntry generateTimesheetEntry(String activity, String startText, String endText, String breakText, boolean isVacation) {
+    public static TimesheetEntry generateTimesheetEntry(String activity, int day, String startText, String endText, String breakText, boolean isVacation) {
         LocalTime startTime = DialogHelper.parseTime(startText);
         LocalTime endTime = DialogHelper.parseTime(endText);
         LocalTime breakTime = DialogHelper.parseTime(breakText);
@@ -30,16 +31,17 @@ public class TimesheetEntry {
             breakHour = breakTime.getHour();
             breakMinutes = breakTime.getMinute();
         }
-        return new TimesheetEntry(activity, fromHour, fromMinute, toHour, toMinute, breakHour, breakMinutes, isVacation);
+        return new TimesheetEntry(activity, day, fromHour, fromMinute, toHour, toMinute, breakHour, breakMinutes, isVacation);
     }
 
-    public TimesheetEntry(String activity,
+    public TimesheetEntry(String activity, int day,
                           int fromHour, int fromMinute,
                           int toHour, int toMinute,
                           int breakHour, int breakMinutes,
                           boolean isVacation)
     {
         this.activity = activity.trim();
+        this.day = day;
         this.fromHour = fromHour;
         this.fromMinute = fromMinute;
         this.toHour = toHour;
@@ -51,6 +53,11 @@ public class TimesheetEntry {
 
     public String getActivity() {
         return activity;
+    }
+
+    public String getDayString() {
+        if (day == -1) return "";
+        return String.format("%d", day);
     }
 
     public String getStartTimeString() {
@@ -66,6 +73,21 @@ public class TimesheetEntry {
     public String getBreakTimeString() {
         if (fromHour == -1) return "";
         return String.format("%02d:%02d", breakHour, breakMinutes);
+    }
+
+    public String getTotalTimeWorkedString() {
+        if (fromHour == -1) return "";
+        int hoursWorked = toHour - fromHour - breakHour;
+        int minutesWorked = toMinute - fromMinute - breakMinutes;
+        while (minutesWorked > 60) {
+            minutesWorked -= 60;
+            hoursWorked++;
+        }
+        while (minutesWorked < 0) {
+            minutesWorked += 60;
+            hoursWorked--;
+        }
+        return String.format("%02d:%02d", hoursWorked, minutesWorked);
     }
 
     public boolean isVacation() {
@@ -87,6 +109,7 @@ public class TimesheetEntry {
                 getStartTimeString(),
                 getEndTimeString(),
                 getBreakTimeString(),
-                isVacationStr());
+                isVacationStr(),
+                getTotalTimeWorkedString());
     }
 }
