@@ -102,6 +102,20 @@ public class TimesheetEntry {
         return fromHour == -1 && fromMinute == -1 && toHour == -1 && toMinute == -1;
     }
 
+    public boolean isLaterThan(TimesheetEntry other) {
+        if (this.day < other.day) return false;
+        if (this.day > other.day) return true;
+        if (this.fromHour < other.fromHour) return false;
+        if (this.fromHour > other.fromHour) return true;
+        if (this.fromMinute < other.fromMinute) return false;
+        if (this.fromMinute > other.fromMinute) return true;
+        // If none of those, select the one that ends later is later
+        if (this.toHour < other.toHour) return false;
+        if (this.toHour > other.toHour) return true;
+        // Return true if this.toMinute >= other.toMinute
+        return this.toMinute >= other.toMinute;
+    }
+
     @Override
     public String toString() {
         return String.format(TIMESHEET_FORMAT,

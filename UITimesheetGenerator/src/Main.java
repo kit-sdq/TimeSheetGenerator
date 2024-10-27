@@ -1,3 +1,5 @@
+import json.JSONHandler;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -122,12 +124,20 @@ public class Main {
 
         fileOptionNew.addActionListener(e -> showSimpleDialog("File Option 1"));
         fileOptionOpen.addActionListener(e -> showSimpleDialog("File Option 2"));
+        fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog());
 
         // Show Frame
         frame.setVisible(true);
     }
 
     public static void addEntry(TimesheetEntry entry) {
+        for (int i = 0; i < listModel.getSize(); i++) {
+            if (listModel.getElementAt(i).isLaterThan(entry)) {
+                listModel.insertElementAt(entry, i);
+                return;
+            }
+        }
+        // Add to end of list
         listModel.addElement(entry);
     }
 
@@ -149,6 +159,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        JSONHandler.initialize();
         // Ensure the application uses the system look and feel
         SwingUtilities.invokeLater(() -> {
             try {

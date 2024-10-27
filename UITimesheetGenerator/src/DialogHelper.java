@@ -643,4 +643,8 @@ public class DialogHelper {
         }
     }
 
+    public static boolean isValidTimeFormat(String s) {
+        return TIME_PATTERN.matcher(s).matches();
+    }
+
 }
