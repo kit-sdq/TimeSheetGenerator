@@ -72,6 +72,7 @@ public class Main {
         JLabel tableHeader = new JLabel();
         tableHeader.setText(String.format(TimesheetEntry.TIMESHEET_FORMAT_HEADER,
                 "Activity",
+                "Day",
                 "Start Time",
                 "End Time",
                 "Break Time",
@@ -153,6 +154,8 @@ public class Main {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new Main();
+                addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
+                addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
             } catch (Exception e) {
                 e.printStackTrace();
             }
