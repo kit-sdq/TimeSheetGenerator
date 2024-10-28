@@ -1,6 +1,9 @@
 package net.justonedev.kit;
 
+import net.justonedev.kit.json.Month;
+
 import java.time.LocalTime;
+import java.util.regex.Matcher;
 
 public class TimesheetEntry {
 
@@ -52,6 +55,48 @@ public class TimesheetEntry {
         this.breakHour = breakHour;
         this.breakMinutes = breakMinutes;
         this.isVacation = isVacation;
+    }
+
+    public TimesheetEntry(Month.Entry entry)
+    {
+        this.activity = entry.getAction();
+        this.day = entry.getDay();
+        LocalTime time = DialogHelper.parseTime(entry.getStart());
+        if (time != null) {
+            this.fromHour = time.getHour();
+            this.fromMinute = time.getMinute();
+        } else {
+            this.fromHour = 0;
+            this.fromMinute = 0;
+        }
+        time = DialogHelper.parseTime(entry.getEnd());
+        if (time != null) {
+            this.toHour = time.getHour();
+            this.toMinute = time.getMinute();
+        } else {
+            this.toHour = 0;
+            this.toMinute = 0;
+        }
+        time = DialogHelper.parseTime(entry.getPause());
+        if (time != null) {
+            this.breakHour = time.getHour();
+            this.breakMinutes = time.getMinute();
+        } else {
+            this.breakHour = 0;
+            this.breakMinutes = 0;
+        }
+        this.isVacation = entry.isVacation();
+    }
+
+    public Month.Entry toMonthEntry() {
+        Month.Entry entry = new Month.Entry();
+        entry.setAction(activity);
+        entry.setDay(day);
+        entry.setStart(getStartTimeString());
+        entry.setEnd(getEndTimeString());
+        entry.setPause(getBreakTimeString());
+        entry.setVacation(isVacation);
+        return entry;
     }
 
     public String getActivity() {

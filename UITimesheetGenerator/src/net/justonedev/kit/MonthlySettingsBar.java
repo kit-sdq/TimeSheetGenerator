@@ -1,5 +1,7 @@
 package net.justonedev.kit;
 
+import net.justonedev.kit.json.Month;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -77,6 +79,25 @@ public class MonthlySettingsBar extends JPanel {
 
     public void reset() {
         setTimeFromCurrentDate();
+    }
+
+    public void importMonthSettings(Month month) {
+        String yearString = String.valueOf(month.getYear());
+        semesterTextField.setText(yearString.substring(yearString.length() - 2));
+        monthSelector.setSelectedIndex(month.getMonth() - 1);
+        if (month.getMonth() >= 4 && month.getMonth() <= 9) {
+            semesterSelector.setSelectedIndex(0);
+        } else {
+            semesterSelector.setSelectedIndex(1);
+        }
+        // Todo pred_transfer
+        // Todo succ_transfer
+        updateSemesterView();
+    }
+
+    public void fillMonth(Month month) {
+        month.setYear(2000 + Integer.parseInt(semesterTextField.getText()));
+        month.setMonth(monthSelector.getSelectedIndex() + 1);
     }
 
     private void setTimeFromCurrentDate() {

@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 public class Month {
+
+    @JsonProperty("$schema")
+    private String schema;
+
     private int year;
     private int month;
 
@@ -16,7 +20,9 @@ public class Month {
     private List<Entry> entries;
 
     // Constructors, Getters, and Setters
-    public Month() {}
+    public Month() {
+        schema = "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/master/examples/schemas/month.json";
+    }
 
     // Nested class for individual entries
     public static class Entry {
@@ -51,6 +57,9 @@ public class Month {
     }
 
     // Getters and Setters for Month class fields
+
+    public String getSchema() { return schema; }
+    public void setSchema(String action) { this.schema = schema; }
 
     public int getYear() { return year; }
     public void setYear(int year) { this.year = year; }

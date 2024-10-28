@@ -1,6 +1,7 @@
 package net.justonedev.kit;
 
 import net.justonedev.kit.json.JSONHandler;
+import net.justonedev.kit.json.Month;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -195,7 +196,12 @@ public class Main {
 
         // Open the file
 
-        //listModel.addAll(JSONHandler.loadMonth());
+        JSONHandler.loadMonth(openFile);
+        setHasUnsavedChanges(false);
+    }
+
+    public static void importMonthBarSettings(Month month) {
+        monthSettingsBar.importMonthSettings(month);
     }
 
     public static void setHasUnsavedChanges(boolean hasUnsavedChanges) {
@@ -272,12 +278,13 @@ public class Main {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new Main();
+                setHasUnsavedChanges(false);
 
                 // Debug:
 
-                addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
-                addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
-                setEditorFile(new File("C:\\Users\\Benni\\Downloads\\month.json"));
+                //addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
+                //addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
+                //setEditorFile(new File("C:\\Users\\Benni\\Downloads\\month.json"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

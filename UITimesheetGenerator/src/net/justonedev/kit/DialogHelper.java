@@ -639,6 +639,7 @@ public class DialogHelper {
 
     // Helper method to parse time strings
     static LocalTime parseTime(String timeStr) {
+        if (timeStr == null) return LocalTime.of(0, 0);
         try {
             return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
         } catch (DateTimeParseException e) {

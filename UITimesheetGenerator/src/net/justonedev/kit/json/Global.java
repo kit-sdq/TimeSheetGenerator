@@ -3,6 +3,8 @@ package net.justonedev.kit.json;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Global {
+    @JsonProperty("$schema")
+    private String schema;
     private String name;
     private int staffId;
     private String department;
@@ -10,7 +12,14 @@ public class Global {
     private double wage;
     private String workingArea;
 
+    public Global() {
+        schema = "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/master/examples/schemas/global.json";
+    }
+
     // Constructors, Getters, and Setters
+
+    public String getSchema() { return schema; }
+    public void setSchema(String schema) { this.schema = schema; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }

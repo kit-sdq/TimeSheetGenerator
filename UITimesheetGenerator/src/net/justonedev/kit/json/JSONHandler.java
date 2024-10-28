@@ -2,12 +2,15 @@ package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import net.justonedev.kit.Main;
 import net.justonedev.kit.MonthlySettingsBar;
 import net.justonedev.kit.TimesheetEntry;
 
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class JSONHandler {
@@ -72,10 +75,37 @@ public class JSONHandler {
         }
     }
 
+    public static void loadMonth(File monthFile) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            Month month = objectMapper.readValue(monthFile, Month.class);
+
+            Main.importMonthBarSettings(month);
+
+            for (Month.Entry entry : month.getEntries()) {
+                Main.addEntry(new TimesheetEntry(entry));
+            }
+
+            System.out.println("Year: " + month.getYear() + ", Month: " + month.getMonth());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void saveMonth(File saveFile, MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
+
+            Month month = new Month();
+            List<Month.Entry> monthEntries = new ArrayList<>();
+            settingsBar.fillMonth(month);
+            entries.elements().asIterator().forEachRemaining(entry -> {
+                monthEntries.add(entry.toMonthEntry());
+            });
+            month.setEntries(monthEntries);
+
             objectMapper.writeValue(saveFile, settingsBar);
             System.out.println("Saved month.");
         } catch (IOException e) {
