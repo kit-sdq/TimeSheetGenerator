@@ -4,6 +4,7 @@ public class TimesheetEntry {
 
     public static final String TIMESHEET_FORMAT_HEADER = "         %-40s %-10s %-25s %-25s %-25s %-25s %-25s"; //"%-20s %-10s %-10s %-10s %-10s";
     public static final String TIMESHEET_FORMAT = " %-40s      %-10s %-25s %-25s %-25s %-25s %-25s"; //"%-20s %-10s %-10s %-10s %-10s";
+    public static final String COMPRESSED_TIMESHEET_FORMAT = "%s, %s. %s - %s, Break: %s, Vacation: %s";
 
     public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry(
             "", -1, -1, -1, -1, -1, -1, -1, false
@@ -126,5 +127,15 @@ public class TimesheetEntry {
                 getBreakTimeString(),
                 isVacationStr(),
                 getTotalTimeWorkedString());
+    }
+
+    public String toShortString() {
+        return String.format(COMPRESSED_TIMESHEET_FORMAT,
+                getActivity(),
+                getDayString(),
+                getStartTimeString(),
+                getEndTimeString(),
+                getBreakTimeString(),
+                isVacationStr());
     }
 }

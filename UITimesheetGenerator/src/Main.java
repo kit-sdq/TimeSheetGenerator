@@ -143,6 +143,9 @@ public class Main {
 
     public static void removeSelectedListEntry() {
         if (selectedItemIndex < 0) return;
+
+        if (!showOKCancelDialog("Delete Entry?", "Delete Entry: %s?".formatted(listModel.getElementAt(selectedItemIndex).toShortString()))) return;
+
         listModel.removeElementAt(selectedItemIndex);
         selectedItemIndex = -1;
     }
@@ -158,6 +161,14 @@ public class Main {
         JOptionPane.showMessageDialog(frame, message, "Dialog", JOptionPane.INFORMATION_MESSAGE);
     }
 
+    private static boolean showOKCancelDialog(String title, String message) {
+        // Result:
+        // OK: 0
+        // Cancel: 2
+        // Close via X or Esc: -1
+        return 0 == JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
+    }
+
     public static void main(String[] args) {
         JSONHandler.initialize();
         // Ensure the application uses the system look and feel
@@ -165,8 +176,8 @@ public class Main {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new Main();
-                addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
                 addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
+                addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
             } catch (Exception e) {
                 e.printStackTrace();
             }
