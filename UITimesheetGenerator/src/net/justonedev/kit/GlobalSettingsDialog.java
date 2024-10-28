@@ -14,18 +14,6 @@ import java.util.regex.Pattern;
 
 public class GlobalSettingsDialog {
 
-    private static final String DAY_PLACEHOLDER = "DAY";
-    private static final String TIME_PLACEHOLDER = "HH:MM";
-    private static final String TIME_BREAK_PLACEHOLDER = "(HH:)MM";
-    private static final Pattern DAY_PATTERN = Pattern.compile("^(\\d{1,2})$");
-    private static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
-    private static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
-    private static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
-
-    private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
-
-    private static final int INDEX_DAY = 0, INDEX_START_TIME = 1, INDEX_END_TIME = 2, INDEX_BREAK_TIME = 3;
-
     public static void showGlobalSettingsDialog() {
         JDialog dialog = new JDialog();
         dialog.setTitle("Global Settings");
@@ -209,15 +197,6 @@ public class GlobalSettingsDialog {
                     errorLabel.setText(" ");
                 }
                 break;
-        }
-    }
-
-    // Helper method to parse time strings
-    static LocalTime parseTime(String timeStr) {
-        try {
-            return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
-        } catch (DateTimeParseException e) {
-            return null;
         }
     }
 

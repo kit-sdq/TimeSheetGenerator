@@ -6,11 +6,14 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
 
 public class Main {
 
     private static final String APP_NAME = "Timesheet Generator";
     private static final String TITLE = "%s: %s";
+
+    private static File editorFile;
 
     private static JFrame frame;
     private static DefaultListModel<TimesheetEntry> listModel;
@@ -136,8 +139,16 @@ public class Main {
         frame.setVisible(true);
     }
 
+    public static void setEditorFilepath(String editorFilepath) {
+        File file = new File(editorFilepath);
+        if (!file.exists()) return;
+        String name = file.getName();
+        if (!name.endsWith(".json")) return;
+        setTitle("%s/%s".formatted(file.getParentFile().getName(), file.getName()));
+    }
+
     private static void setTitle(String title) {
-        if (title == null) {
+        if (title == null || title.isBlank()) {
             frame.setTitle(APP_NAME);
             return;
         }
@@ -190,8 +201,12 @@ public class Main {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new Main();
+
+                // Debug:
+
                 addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
                 addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
+                setEditorFilepath("C:\\Users\\Benni\\Downloads\\month.json");
             } catch (Exception e) {
                 e.printStackTrace();
             }

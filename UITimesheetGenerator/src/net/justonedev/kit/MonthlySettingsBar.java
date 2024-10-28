@@ -6,7 +6,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.LocalDateTime;
 
-public class GlobalSettingsBar extends JPanel {
+public class MonthlySettingsBar extends JPanel {
 
     private static final String[] MONTHS = new String[] {
             "January", "February", "March", "April", "May", "June",
@@ -19,7 +19,7 @@ public class GlobalSettingsBar extends JPanel {
     private final JLabel semesterTextFieldLabel;
     private final JButton settingsButton;
 
-    public GlobalSettingsBar() {
+    public MonthlySettingsBar() {
         super(new BorderLayout());
         // Top Panel with Selectors and Button
         JPanel selectorsPanel = new JPanel();
