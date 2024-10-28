@@ -1,6 +1,7 @@
 package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class Month {
     }
 
     // Nested class for individual entries
+    @JsonSerialize(using = EntrySerializer.class)
     public static class Entry {
         private String action;
         private int day;

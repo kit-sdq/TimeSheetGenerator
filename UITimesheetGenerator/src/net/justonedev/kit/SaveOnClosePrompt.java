@@ -26,12 +26,12 @@ public class SaveOnClosePrompt {
 
         // Button actions
         saveButton.addActionListener((ActionEvent e) -> {
-            System.out.println("Save button pressed");
+            Main.saveFile(null);    // Gets the current open file to save
             dialog.dispose();
         });
 
         saveAsButton.addActionListener((ActionEvent e) -> {
-            System.out.println("Save as button pressed");
+            Main.saveFileAs();
             dialog.dispose();
         });
 

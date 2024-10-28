@@ -175,7 +175,7 @@ public class Main {
     }
 
     public static void saveFileAs() {
-        File newSaveFile = FileChooser.chooseFile("Save as...");
+        File newSaveFile = FileChooser.chooseCreateFile("Save as...");
         if (newSaveFile == null) return;
         saveFileCommon(newSaveFile);
         setEditorFile(newSaveFile);
@@ -213,6 +213,7 @@ public class Main {
         if (!file.exists()) return false;
         String name = file.getName();
         if (!name.endsWith(".json")) return false;
+        currentOpenFile = file;
         updateTitle();
         return true;
     }

@@ -106,7 +106,7 @@ public class JSONHandler {
             });
             month.setEntries(monthEntries);
 
-            objectMapper.writeValue(saveFile, settingsBar);
+            objectMapper.writeValue(saveFile, month);
             System.out.println("Saved month.");
         } catch (IOException e) {
             e.printStackTrace();
