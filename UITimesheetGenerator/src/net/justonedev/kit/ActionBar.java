@@ -18,6 +18,8 @@ public class ActionBar extends JPanel {
 
     private static final String HOURS_FORMAT = "Total Time: %s/%s          ";
 
+    private final Font fontNormal, fontBold;
+
     public ActionBar() {
         this.setPreferredSize(new Dimension(Main.getWidth(), 70));
         this.setLayout(new BorderLayout());
@@ -52,7 +54,9 @@ public class ActionBar extends JPanel {
         editButton.addActionListener((l) -> Main.editSelectedListEntry());
 
         hoursWorkedLabel = new JLabel();
-        hoursWorkedLabel.setFont(hoursWorkedLabel.getFont().deriveFont(18f));
+        fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);
+        fontBold = fontNormal.deriveFont(Font.BOLD);
+        hoursWorkedLabel.setFont(fontNormal);
         this.add(hoursWorkedLabel, BorderLayout.EAST);
         updateHours(new Time());   // Todo
     }
@@ -73,9 +77,14 @@ public class ActionBar extends JPanel {
             displayedWorkedHours = totalHours;
             succHours = new Time(workedHours);
             succHours.subtractTime(totalHours);
+            hoursWorkedLabel.setFont(fontBold);
         } else {
             displayedWorkedHours = workedHours;
             succHours = new Time(0, 0);
+            
+            // Same Length
+            if (!totalHours.isLongerThan(workedHours)) hoursWorkedLabel.setFont(fontBold);
+            else hoursWorkedLabel.setFont(fontNormal);
         }
 
         hoursWorkedLabel.setText(HOURS_FORMAT.formatted(displayedWorkedHours, totalHours));

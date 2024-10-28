@@ -273,7 +273,7 @@ public class Main {
         if (selectedItemIndex < 0) return;
         setHasUnsavedChanges(true);
 
-        addEntry(listModel.getElementAt(selectedItemIndex));
+        addEntry(listModel.getElementAt(selectedItemIndex).clone());
         selectedItemIndex++;    // 1 more, there is the duplicate
         editSelectedListEntry();
     }

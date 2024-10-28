@@ -14,6 +14,9 @@ import java.util.regex.Pattern;
 
 public class GlobalSettingsDialog {
 
+    private static final String WORK_AREA_UB = "Unibereich (ub)";
+    private static final String WORK_AREA_GF = "Großforschung (gf)";
+
     public static void showGlobalSettingsDialog() {
         JDialog dialog = new JDialog();
         dialog.setTitle("Global Settings");
@@ -36,7 +39,11 @@ public class GlobalSettingsDialog {
         JLabel[] errorLabels = new JLabel[6];
 
         // Fields array for text fields
-        JTextField[] fields = new JTextField[6];
+        JTextField[] fields = new JTextField[5];
+        JComboBox<String> workAreaSelector = new JComboBox<>();
+        workAreaSelector.addItem(WORK_AREA_UB);
+        workAreaSelector.addItem(WORK_AREA_GF);
+        workAreaSelector.setSelectedIndex(getIndexValue(globalSettings.getWorkingArea()));
 
         String[] labels = {"Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:"};
         String[] placeholders = {"Enter your name", "Enter your staff ID", "Enter your department",
@@ -46,8 +53,7 @@ public class GlobalSettingsDialog {
                 String.valueOf(globalSettings.getStaffId()),
                 globalSettings.getDepartment(),
                 globalSettings.getWorkingTime(),
-                String.valueOf(globalSettings.getWage()),
-                globalSettings.getWorkingArea()
+                String.valueOf(globalSettings.getWage())
         };
 
         for (int i = 0; i < labels.length; i++) {
@@ -59,14 +65,9 @@ public class GlobalSettingsDialog {
             gbc.fill = GridBagConstraints.HORIZONTAL;
             panel.add(label, gbc);
 
-            JTextField textField = new JTextField(20);
-            DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
-            fields[i] = textField;
-
             gbc.gridx = 1;
             gbc.gridy = row;
             gbc.weightx = 1;
-            panel.add(textField, gbc);
 
             // Error label for validation messages
             JLabel errorLabel = new JLabel(" ");
@@ -77,14 +78,22 @@ public class GlobalSettingsDialog {
             gbc.weightx = 0;
             panel.add(errorLabel, gbc);
 
-            final int index = i;
+            if (i < labels.length - 1) {
+                JTextField textField = new JTextField(20);
+                DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
+                fields[i] = textField;
+                panel.add(textField, gbc);
+                final int index = i;
 
-            // Add focus listener for validation when focus is lost
-            textField.addFocusListener(new FocusAdapter() {
-                public void focusLost(FocusEvent e) {
-                    validateField(fields[index], errorLabels[index], index);
-                }
-            });
+                // Add focus listener for validation when focus is lost
+                textField.addFocusListener(new FocusAdapter() {
+                    public void focusLost(FocusEvent e) {
+                        validateField(fields[index], errorLabels[index], index);
+                    }
+                });
+            } else {
+                panel.add(workAreaSelector, gbc);
+            }
 
             row++;
         }
@@ -127,7 +136,7 @@ public class GlobalSettingsDialog {
             globalSettings.setDepartment(fields[2].getText());
             globalSettings.setWorkingTime(fields[3].getText());
             globalSettings.setWage(Double.parseDouble(fields[4].getText()));
-            globalSettings.setWorkingArea(fields[5].getText());
+            globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
             // Save globalSettings to file or database as needed
             JSONHandler.saveGlobal(globalSettings);
@@ -141,6 +150,17 @@ public class GlobalSettingsDialog {
 
         dialog.add(panel);
         dialog.setVisible(true);
+    }
+
+    private static int getIndexValue(String configValue) {
+        if (configValue == null) return 0;
+        if (configValue.equals("ub")) return 0;
+        return 1;
+    }
+
+    private static String getConfigValue(Object selectorValue) {
+        if (selectorValue == null) return "ub";
+        return selectorValue.toString().equals(WORK_AREA_UB) ? "ub" : "gf";
     }
 
     // Helper method to add placeholder text

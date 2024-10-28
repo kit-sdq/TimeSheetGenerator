@@ -172,6 +172,14 @@ public class TimesheetEntry {
     }
 
     @Override
+    public TimesheetEntry clone() {
+        return new TimesheetEntry(
+                activity, day, fromHour, fromMinute,
+                toHour, toMinute, breakHour, breakMinutes, isVacation
+        );
+    }
+
+    @Override
     public String toString() {
         return String.format(TIMESHEET_FORMAT,
                 getActivity(),
