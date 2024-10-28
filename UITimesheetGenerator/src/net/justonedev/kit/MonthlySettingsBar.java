@@ -45,7 +45,7 @@ public class MonthlySettingsBar extends JPanel {
         settingsButton = new JButton("Global Settings");
         this.add(settingsButton, BorderLayout.EAST);
 
-        setTimeFromCurrentDate();
+        reset();
 
         // Add Events
 
@@ -73,6 +73,10 @@ public class MonthlySettingsBar extends JPanel {
             }
             updateSemesterView();
         });
+    }
+
+    public void reset() {
+        setTimeFromCurrentDate();
     }
 
     private void setTimeFromCurrentDate() {
@@ -105,6 +109,7 @@ public class MonthlySettingsBar extends JPanel {
         } else {
             semesterTextFieldLabel.setText("/%d".formatted(year + 1));
         }
+        Main.setHasUnsavedChanges(true);
     }
 
 }

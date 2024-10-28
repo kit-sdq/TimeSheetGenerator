@@ -13,13 +13,14 @@ public class Main {
     private static final String APP_NAME = "Timesheet Generator";
     private static final String TITLE = "%s: %s";
 
-    private static File editorFile;
+    private static File currentOpenFile;
+    public static boolean hasUnsavedChanges = false;
 
     private static JFrame frame;
     private static DefaultListModel<TimesheetEntry> listModel;
     private static int selectedItemIndex = -1;
 
-    private GlobalSettingsBar globalSettingsBar;
+    private static MonthlySettingsBar monthSettingsBar;
     private ActionBar buttonActionBar;
 
     public Main() {
@@ -63,13 +64,13 @@ public class Main {
 
         frame.setJMenuBar(menuBar);
 
-        globalSettingsBar = new GlobalSettingsBar();
-        globalSettingsBar.setFont(globalSettingsBar.getFont().deriveFont(14f));
-        frame.add(globalSettingsBar, BorderLayout.NORTH);
+        monthSettingsBar = new MonthlySettingsBar();
+        monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
+        frame.add(monthSettingsBar, BorderLayout.NORTH);
 
         // Row of Buttons with '+'
         buttonActionBar = new ActionBar();
-        globalSettingsBar.setFont(globalSettingsBar.getFont().deriveFont(14f));
+        monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
         frame.add(buttonActionBar, BorderLayout.WEST);
 
         // Main Content Area with Vertical List
@@ -115,7 +116,7 @@ public class Main {
                 selectedItemIndex = -1;
             }
         });*/
-        System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(), globalSettingsBar.getHeight(), buttonActionBar.getLocation().y, globalSettingsBar.getLocation().y);
+        System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(), monthSettingsBar.getHeight(), buttonActionBar.getLocation().y, monthSettingsBar.getLocation().y);
 
 
         JScrollPane listScrollPane = new JScrollPane(itemList);
@@ -131,20 +132,83 @@ public class Main {
         // Action Listeners
         //addButton.addActionListener(e -> showEntryDialog("Add Entry", "", -1));
 
-        fileOptionNew.addActionListener(e -> showSimpleDialog("File Option 1"));
-        fileOptionOpen.addActionListener(e -> showSimpleDialog("File Option 2"));
+        fileOptionNew.addActionListener(e -> clearWorkspace());
+        fileOptionOpen.addActionListener(e -> openFile());
         fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog());
+        fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
+        fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
         // Show Frame
         frame.setVisible(true);
+
+        frame.addWindowListener(
+                new WindowAdapter() {
+                    public void windowClosing(WindowEvent e) {
+                        closeCurrentOpenFile();
+                    }
+                }
+        );
     }
 
-    public static void setEditorFilepath(String editorFilepath) {
-        File file = new File(editorFilepath);
-        if (!file.exists()) return;
+    public static void clearWorkspace() {
+        closeCurrentOpenFile();
+        // Delete all content
+        monthSettingsBar.reset();
+        listModel.clear();
+        setHasUnsavedChanges(false);
+    }
+
+    public static void closeCurrentOpenFile() {
+        if (!hasUnsavedChanges) return;
+        // Prompt to save
+        SaveOnClosePrompt.showDialog();
+    }
+
+    public static void saveFile(File newSaveFile) {
+        if (newSaveFile == null) newSaveFile = currentOpenFile;
+        if (newSaveFile == null) {
+            saveFileAs();
+            return;
+        }
+        saveFileCommon(newSaveFile);
+    }
+
+    public static void saveFileAs() {
+        File newSaveFile = FileChooser.chooseFile("Save as...");
+        if (newSaveFile == null) return;
+        saveFileCommon(newSaveFile);
+        setEditorFile(newSaveFile);
+    }
+
+    public static void saveFileCommon(File newSaveFile) {
+        JSONHandler.saveMonth(newSaveFile, monthSettingsBar, listModel);
+
+        currentOpenFile = newSaveFile;
+        setHasUnsavedChanges(false);
+    }
+
+    public static void openFile() {
+        File openFile = FileChooser.chooseFile("Open a file");
+        if (openFile == null) return;
+        if (!setEditorFile(openFile)) return;
+        clearWorkspace();
+
+        // Open the file
+
+        //listModel.addAll(JSONHandler.loadMonth());
+    }
+
+    public static void setHasUnsavedChanges(boolean hasUnsavedChanges) {
+        Main.hasUnsavedChanges = hasUnsavedChanges;
+        updateTitle();
+    }
+
+    public static boolean setEditorFile(File file) {
+        if (!file.exists()) return false;
         String name = file.getName();
-        if (!name.endsWith(".json")) return;
-        setTitle("%s/%s".formatted(file.getParentFile().getName(), file.getName()));
+        if (!name.endsWith(".json")) return false;
+        updateTitle();
+        return true;
     }
 
     private static void setTitle(String title) {
@@ -153,6 +217,12 @@ public class Main {
             return;
         }
         frame.setTitle(TITLE.formatted(APP_NAME, title));
+    }
+
+    private static void updateTitle() {
+        String filename = currentOpenFile == null ? "" : "%s/%s".formatted(currentOpenFile.getParentFile().getName(), currentOpenFile.getName());
+        if (hasUnsavedChanges) filename += '*';
+        setTitle(filename);
     }
 
     public static void addEntry(TimesheetEntry entry) {
@@ -171,6 +241,7 @@ public class Main {
 
         if (!showOKCancelDialog("Delete Entry?", "Delete Entry: %s?".formatted(listModel.getElementAt(selectedItemIndex).toShortString()))) return;
 
+        setHasUnsavedChanges(true);
         listModel.removeElementAt(selectedItemIndex);
         selectedItemIndex = -1;
     }
@@ -206,7 +277,7 @@ public class Main {
 
                 addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
                 addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
-                setEditorFilepath("C:\\Users\\Benni\\Downloads\\month.json");
+                setEditorFile(new File("C:\\Users\\Benni\\Downloads\\month.json"));
             } catch (Exception e) {
                 e.printStackTrace();
             }

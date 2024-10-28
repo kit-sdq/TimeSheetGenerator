@@ -2,7 +2,10 @@ package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import net.justonedev.kit.MonthlySettingsBar;
+import net.justonedev.kit.TimesheetEntry;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
@@ -69,8 +72,15 @@ public class JSONHandler {
         }
     }
 
-    public static void saveMonth(Global globalSettings) {
-
+    public static void saveMonth(File saveFile, MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            objectMapper.writeValue(saveFile, settingsBar);
+            System.out.println("Saved month.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private static File getConfigFile() {
