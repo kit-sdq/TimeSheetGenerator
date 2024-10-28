@@ -283,6 +283,7 @@ public class Main {
         DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(selectedItemIndex));
         listModel.removeElementAt(selectedItemIndex);
         selectedItemIndex = -1;
+        updateTotalTimeWorkedUI();
     }
 
     public static void removeSelectedListEntry() {
