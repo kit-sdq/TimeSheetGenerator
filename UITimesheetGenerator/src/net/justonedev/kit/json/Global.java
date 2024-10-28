@@ -1,4 +1,4 @@
-package json;
+package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

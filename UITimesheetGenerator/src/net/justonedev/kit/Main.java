@@ -1,4 +1,6 @@
-import json.JSONHandler;
+package net.justonedev.kit;
+
+import net.justonedev.kit.json.JSONHandler;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -6,6 +8,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Main {
+
+    private static final String APP_NAME = "Timesheet Generator";
+    private static final String TITLE = "%s: %s";
 
     private static JFrame frame;
     private static DefaultListModel<TimesheetEntry> listModel;
@@ -20,7 +25,8 @@ public class Main {
 
     private void initialize() {
         // Main Frame
-        frame = new JFrame("Custom Swing Application");
+        frame = new JFrame();
+        setTitle(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
@@ -128,6 +134,14 @@ public class Main {
 
         // Show Frame
         frame.setVisible(true);
+    }
+
+    private static void setTitle(String title) {
+        if (title == null) {
+            frame.setTitle(APP_NAME);
+            return;
+        }
+        frame.setTitle(TITLE.formatted(APP_NAME, title));
     }
 
     public static void addEntry(TimesheetEntry entry) {

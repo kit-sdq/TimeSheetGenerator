@@ -1,3 +1,5 @@
+package net.justonedev.kit;
+
 import java.time.LocalTime;
 
 public class TimesheetEntry {

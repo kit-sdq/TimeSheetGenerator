@@ -1,4 +1,4 @@
-package json;
+package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

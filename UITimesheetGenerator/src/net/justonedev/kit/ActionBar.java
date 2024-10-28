@@ -1,3 +1,5 @@
+package net.justonedev.kit;
+
 import javax.swing.*;
 import java.awt.*;
 

@@ -1,18 +1,15 @@
-import json.Global;
-import json.JSONHandler;
+package net.justonedev.kit;
+
+import net.justonedev.kit.json.Global;
+import net.justonedev.kit.json.JSONHandler;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GlobalSettingsDialog {
