@@ -98,7 +98,7 @@ public class Main {
         itemList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int index = itemList.locationToIndex(e.getPoint());
-                selectedItemIndex = index < 0 ? -1 : index;
+                selectedItemIndex = index;
                 if (e.getClickCount() == 2) {
                     if (index >= 0) {
                         DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(index));
@@ -243,19 +243,28 @@ public class Main {
         listModel.addElement(entry);
     }
 
+    public static void duplicateSelectedListEntry() {
+        if (selectedItemIndex < 0) return;
+        setHasUnsavedChanges(true);
+
+        addEntry(listModel.getElementAt(selectedItemIndex));
+        selectedItemIndex++;    // 1 more, there is the duplicate
+        editSelectedListEntry();
+    }
+
+    public static void editSelectedListEntry() {
+        if (selectedItemIndex < 0) return;
+        DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(selectedItemIndex));
+        listModel.removeElementAt(selectedItemIndex);
+        selectedItemIndex = -1;
+    }
+
     public static void removeSelectedListEntry() {
         if (selectedItemIndex < 0) return;
 
         if (!showOKCancelDialog("Delete Entry?", "Delete Entry: %s?".formatted(listModel.getElementAt(selectedItemIndex).toShortString()))) return;
 
         setHasUnsavedChanges(true);
-        listModel.removeElementAt(selectedItemIndex);
-        selectedItemIndex = -1;
-    }
-
-    public static void editSelectedListEntry() {
-        if (selectedItemIndex < 0) return;
-        DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(selectedItemIndex));
         listModel.removeElementAt(selectedItemIndex);
         selectedItemIndex = -1;
     }

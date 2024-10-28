@@ -6,6 +6,7 @@ import java.awt.*;
 public class ActionBar extends JPanel {
 
     private final JButton addButton;
+    private final JButton duplicateButton;
     private final JButton editButton;
     private final JButton removeButton;
     private final JButton printButton;
@@ -14,6 +15,10 @@ public class ActionBar extends JPanel {
         addButton = new JButton("+");
         addButton.setPreferredSize(new Dimension(50, 50));
         this.add(addButton);
+
+        duplicateButton = new JButton("Duplicate");
+        duplicateButton.setPreferredSize(new Dimension(90, 50));
+        this.add(duplicateButton);
 
         editButton = new JButton("Edit");
         editButton.setPreferredSize(new Dimension(50, 50));
@@ -28,12 +33,9 @@ public class ActionBar extends JPanel {
         this.add(printButton);
 
         addButton.addActionListener(e -> DialogHelper.showEntryDialog("Add Entry"));
-        removeButton.addActionListener((l) -> {
-            Main.removeSelectedListEntry();
-        });
-        editButton.addActionListener((l) -> {
-            Main.editSelectedListEntry();
-        });
+        duplicateButton.addActionListener((l) -> Main.duplicateSelectedListEntry());
+        removeButton.addActionListener((l) -> Main.removeSelectedListEntry());
+        editButton.addActionListener((l) -> Main.editSelectedListEntry());
     }
 
 }
