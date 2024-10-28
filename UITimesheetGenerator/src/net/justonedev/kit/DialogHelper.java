@@ -17,12 +17,12 @@ import java.util.regex.Pattern;
 public class DialogHelper {
 
     private static final String DAY_PLACEHOLDER = "DAY";
-    private static final String TIME_PLACEHOLDER = "HH:MM";
+    static final String TIME_PLACEHOLDER = "HH:MM";
     private static final String TIME_BREAK_PLACEHOLDER = "(HH:)MM";
     private static final Pattern DAY_PATTERN = Pattern.compile("^(\\d{1,2})$");
-    private static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
-    private static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
-    private static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
+    static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
+    static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
+    static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
     private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 

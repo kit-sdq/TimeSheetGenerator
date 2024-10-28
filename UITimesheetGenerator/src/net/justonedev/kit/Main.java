@@ -139,6 +139,21 @@ public class Main {
         fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
         fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
+        // Add Strg + S to save
+        // Define the KeyStroke for Ctrl+S or Command+S on Mac
+        KeyStroke saveKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S,
+                Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+
+        // Bind the KeyStroke to the save action in the InputMap and ActionMap
+        frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(saveKeyStroke, "saveAction");
+        frame.getRootPane().getActionMap().put("saveAction", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveFile(currentOpenFile);
+            }
+        });
+
         // Show Frame
         frame.setVisible(true);
 

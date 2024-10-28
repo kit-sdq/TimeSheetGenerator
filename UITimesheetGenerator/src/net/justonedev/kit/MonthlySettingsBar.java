@@ -20,6 +20,8 @@ public class MonthlySettingsBar extends JPanel {
     private final JTextField semesterTextField;
     private final JLabel semesterTextFieldLabel;
     private final JButton settingsButton;
+    private final JTimeField predTimeField;
+    private final JLabel succTimeValue;
 
     public MonthlySettingsBar() {
         super(new BorderLayout());
@@ -42,6 +44,29 @@ public class MonthlySettingsBar extends JPanel {
         selectorsPanel.add(semesterTextFieldLabel);
 
         this.add(selectorsPanel, BorderLayout.WEST);
+
+        JPanel timeCarryPanel = new JPanel();
+        timeCarryPanel.setLayout(new FlowLayout());
+
+        // Pred. Time
+        JLabel predTimeLabel = new JLabel();
+        predTimeLabel.setText("Predecessor Time:");
+        timeCarryPanel.add(predTimeLabel);
+
+        predTimeField = new JTimeField();
+        timeCarryPanel.add(predTimeField);
+
+        // Pred. Time
+        JLabel succTimeLabel = new JLabel();
+        succTimeLabel.setText("    Successor Time: ");
+        timeCarryPanel.add(succTimeLabel);
+
+        // Pred. Time
+        succTimeValue = new JLabel();
+        succTimeValue.setText("00:00");
+        timeCarryPanel.add(succTimeValue);
+
+        this.add(timeCarryPanel, BorderLayout.CENTER);
 
         // Right Side Button
         settingsButton = new JButton("Global Settings");
@@ -75,6 +100,8 @@ public class MonthlySettingsBar extends JPanel {
             }
             updateSemesterView();
         });
+
+        settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog());
     }
 
     public void reset() {
@@ -90,14 +117,16 @@ public class MonthlySettingsBar extends JPanel {
         } else {
             semesterSelector.setSelectedIndex(1);
         }
-        // Todo pred_transfer
-        // Todo succ_transfer
+        predTimeField.setText(month.getPredTransfer());
+        // Succ Transfer is Calculated
         updateSemesterView();
     }
 
     public void fillMonth(Month month) {
         month.setYear(2000 + Integer.parseInt(semesterTextField.getText()));
         month.setMonth(monthSelector.getSelectedIndex() + 1);
+        month.setPredTransfer(predTimeField.getText());
+        month.setSuccTransfer(succTimeValue.getText());
     }
 
     private void setTimeFromCurrentDate() {
