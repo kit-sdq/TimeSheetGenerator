@@ -25,6 +25,7 @@ public class JTimeField extends JTextField {
             public void focusLost(FocusEvent e) {
                 if (getText().isEmpty()) return;
                 validateField();
+                Main.updateTotalTimeWorkedUI();
             }
         });
     }
@@ -48,7 +49,7 @@ public class JTimeField extends JTextField {
     }
 
     public boolean isValid() {
-        return getForeground() == Color.RED;
+        return getForeground() != Color.RED;
     }
 
     public void setText(String text) {

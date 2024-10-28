@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class MonthlySettingsBar extends JPanel {
 
@@ -102,6 +103,14 @@ public class MonthlySettingsBar extends JPanel {
         });
 
         settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog());
+    }
+
+    public Time getPredTime() {
+        return predTimeField.isValid() ? Time.parseTime(predTimeField.getText()) : new Time(0, 0);
+    }
+
+    public void setSuccTime(String time) {
+        succTimeValue.setText(time);
     }
 
     public void reset() {

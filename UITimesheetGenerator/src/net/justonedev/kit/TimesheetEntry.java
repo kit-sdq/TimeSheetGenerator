@@ -2,6 +2,7 @@ package net.justonedev.kit;
 
 import net.justonedev.kit.json.Month;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.regex.Matcher;
 
@@ -136,6 +137,12 @@ public class TimesheetEntry {
             hoursWorked--;
         }
         return String.format("%02d:%02d", hoursWorked, minutesWorked);
+    }
+
+    public Time getWorkedTime() {
+        Duration workDuration = Duration.between(LocalTime.of(fromHour, fromMinute), LocalTime.of(toHour, toMinute))
+                .minus(Duration.ofHours(breakHour).plusMinutes(breakMinutes));
+        return new Time((int) workDuration.toHours(), (int) workDuration.toMinutes() % 60);
     }
 
     public boolean isVacation() {

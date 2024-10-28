@@ -450,7 +450,7 @@ public class DialogHelper {
         try {
             return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
         } catch (DateTimeParseException e) {
-            return null;
+            return LocalTime.of(0, 0);
         }
     }
 

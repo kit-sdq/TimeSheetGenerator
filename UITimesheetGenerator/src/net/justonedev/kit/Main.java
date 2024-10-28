@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.time.LocalTime;
 
 public class Main {
 
@@ -22,7 +23,7 @@ public class Main {
     private static int selectedItemIndex = -1;
 
     private static MonthlySettingsBar monthSettingsBar;
-    private ActionBar buttonActionBar;
+    private static ActionBar buttonActionBar;
 
     public Main() {
         initialize();
@@ -166,6 +167,14 @@ public class Main {
         );
     }
 
+    public static Time getPredTime() {
+        return monthSettingsBar.getPredTime();
+    }
+
+    public static int getWidth() {
+        return frame.getWidth();
+    }
+
     public static void clearWorkspace() {
         closeCurrentOpenFile();
         // Delete all content
@@ -251,11 +260,13 @@ public class Main {
         for (int i = 0; i < listModel.getSize(); i++) {
             if (listModel.getElementAt(i).isLaterThan(entry)) {
                 listModel.insertElementAt(entry, i);
+                updateTotalTimeWorkedUI();
                 return;
             }
         }
         // Add to end of list
         listModel.addElement(entry);
+        updateTotalTimeWorkedUI();
     }
 
     public static void duplicateSelectedListEntry() {
@@ -282,6 +293,21 @@ public class Main {
         setHasUnsavedChanges(true);
         listModel.removeElementAt(selectedItemIndex);
         selectedItemIndex = -1;
+    }
+
+    public static void updateTotalTimeWorkedUI() {
+        Time worked = calculateTotalTimeWorked();
+        Time succTime = buttonActionBar.updateHours(worked);
+        monthSettingsBar.setSuccTime(succTime.toString());
+    }
+
+    private static Time calculateTotalTimeWorked() {
+        Time workedTime = new Time();
+        for (int i = 0; i < listModel.getSize(); i++) {
+            TimesheetEntry entry = listModel.getElementAt(i);
+            workedTime.addTime(entry.getWorkedTime());
+        }
+        return workedTime;
     }
 
     private void showSimpleDialog(String message) {
