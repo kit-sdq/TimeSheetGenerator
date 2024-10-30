@@ -194,7 +194,7 @@ public class Main {
         TexCompiler.compileToTex(monthFile, texFile);
         if (tempMonth) monthFile.deleteOnExit();
 
-        if (!texFile.exists()) {gtfzffjgfjzfj
+        if (!texFile.exists()) {
             showSimpleDialog("Tex file creation failed!");
             return texFile;
         }
