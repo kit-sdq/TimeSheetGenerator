@@ -62,6 +62,7 @@ public class Time {
     }
 
     public static Time parseTime(String string) {
+        if (string == null) return new Time(0, 0);
         Matcher matcher = DialogHelper.TIME_PATTERN.matcher(string);
         if (!matcher.matches()) return new Time();
         return new Time(Integer.parseInt(matcher.group(1)), Integer.parseInt(matcher.group(2)));

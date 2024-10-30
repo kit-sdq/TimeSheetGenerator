@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
 
+@JsonSerialize(using = MonthSerializer.class)
 public class Month {
 
     @JsonProperty("$schema")

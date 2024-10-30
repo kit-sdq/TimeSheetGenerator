@@ -1,7 +1,9 @@
 package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+@JsonSerialize(using = GlobalSerialzer.class)
 public class Global {
     @JsonProperty("$schema")
     private String schema;

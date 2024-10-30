@@ -10,7 +10,7 @@ public class TexCompiler {
 
         File globalFile = JSONHandler.getConfigFile();
 
-        main.Main.main(new String[]{"-f", monthFile.getAbsolutePath(), globalFile.getAbsolutePath(), texFile.getAbsolutePath()});
+        main.Main.main(new String[]{"-f", globalFile.getAbsolutePath(), monthFile.getAbsolutePath(), texFile.getAbsolutePath()});
     }
 
 }

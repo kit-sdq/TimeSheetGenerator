@@ -25,7 +25,7 @@ public class FileChooser {
         return chooseCreateFile(title, "month", "json", "JSON Files (*.json)");
     }
     public static File chooseCreateTexFile(String title) {
-        return chooseCreateFile(title, "timesheet", "json", "LaTeX Files (*.tex)");
+        return chooseCreateFile(title, "timesheet", "tex", "LaTeX Files (*.tex)");
     }
     public static File chooseCreatePDFFile(String title) {
         return chooseCreateFile(title, "timesheet", "pdf", "PDF Files (*.pdf)");
