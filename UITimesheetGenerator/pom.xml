@@ -34,6 +34,11 @@
             <artifactId>timesheetgenerator</artifactId>
             <version>0.19.16-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>edu.kit.kastel.sdq</groupId>
+            <artifactId>TimesheetCompiler</artifactId>
+            <version>0.19.16-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

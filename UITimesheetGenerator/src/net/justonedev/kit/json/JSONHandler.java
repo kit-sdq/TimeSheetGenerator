@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public class JSONHandler {
 
@@ -113,7 +114,30 @@ public class JSONHandler {
         }
     }
 
-    private static File getConfigFile() {
+    public static File generateTemporaryJSONFile(MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
+        File f;
+        do {
+            f = new File(configDir, "/temp-%s.json".formatted(UUID.randomUUID()));
+        } while (f.exists());
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        saveMonth(f, settingsBar, entries);
+        return f;
+    }
+
+    public static File getTemporaryTexFile() {
+        File f;
+        do {
+            f = new File(configDir, "/temp-%s.tex".formatted(UUID.randomUUID()));
+        } while (f.exists());
+        return f;
+    }
+
+    public static File getConfigFile() {
         return new File(configDir, configFile);
     }
 

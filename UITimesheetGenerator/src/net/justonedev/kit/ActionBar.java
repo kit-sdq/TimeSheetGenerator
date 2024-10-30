@@ -12,6 +12,7 @@ public class ActionBar extends JPanel {
     private final JButton duplicateButton;
     private final JButton editButton;
     private final JButton removeButton;
+    private final JButton compileButton;
     private final JButton printButton;
 
     private final JLabel hoursWorkedLabel;
@@ -42,8 +43,12 @@ public class ActionBar extends JPanel {
         removeButton.setPreferredSize(new Dimension(50, 50));
         buttonPanel.add(removeButton);
 
-        printButton = new JButton("Print");
-        printButton.setPreferredSize(new Dimension(70, 50));
+        compileButton = new JButton("Compile to Tex");
+        compileButton.setPreferredSize(new Dimension(110, 50));
+        buttonPanel.add(compileButton);
+
+        printButton = new JButton("Print to PDF");
+        printButton.setPreferredSize(new Dimension(95, 50));
         buttonPanel.add(printButton);
 
         this.add(buttonPanel, BorderLayout.WEST);
@@ -52,6 +57,9 @@ public class ActionBar extends JPanel {
         duplicateButton.addActionListener((l) -> Main.duplicateSelectedListEntry());
         removeButton.addActionListener((l) -> Main.removeSelectedListEntry());
         editButton.addActionListener((l) -> Main.editSelectedListEntry());
+
+        compileButton.addActionListener((l) -> Main.printTex(false));
+        printButton.addActionListener((l) -> Main.printTex(true));
 
         hoursWorkedLabel = new JLabel();
         fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);

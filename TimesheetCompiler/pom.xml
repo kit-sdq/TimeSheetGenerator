@@ -7,7 +7,7 @@
         <artifactId>timesheetgenerator</artifactId>
         <version>0.19.16-SNAPSHOT</version>
     </parent>
-    <artifactId>UITimesheetGenerator</artifactId>
+    <artifactId>TimesheetCompiler</artifactId>
     <version>0.19.16-SNAPSHOT</version>
     <packaging>jar</packaging>
 

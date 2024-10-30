@@ -6,6 +6,8 @@ import java.io.File;
 
 public class FileChooser {
 
+    // TODO Timesheet Format
+
     public static File chooseFile(String title) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle(title);
@@ -19,15 +21,24 @@ public class FileChooser {
         }
     }
 
-    public static File chooseCreateFile(String title) {
+    public static File chooseCreateJSONFile(String title) {
+        return chooseCreateFile(title, "month", "json", "JSON Files (*.json)");
+    }
+    public static File chooseCreateTexFile(String title) {
+        return chooseCreateFile(title, "timesheet", "json", "LaTeX Files (*.tex)");
+    }
+    public static File chooseCreatePDFFile(String title) {
+        return chooseCreateFile(title, "timesheet", "pdf", "PDF Files (*.pdf)");
+    }
+    public static File chooseCreateFile(String title, String defaultFileName, String extension, String extensionDescription) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle(title);
 
         // Suggest a default file name
-        fileChooser.setSelectedFile(new File("month.json"));
+        fileChooser.setSelectedFile(new File("%s.%s".formatted(defaultFileName, extension == null ? "" : extension)));
 
         // Set up file filter for .json files
-        FileNameExtensionFilter jsonFilter = new FileNameExtensionFilter("JSON Files (*.json)", "json");
+        FileNameExtensionFilter jsonFilter = new FileNameExtensionFilter(extensionDescription, extension);
         fileChooser.setFileFilter(jsonFilter);
 
         int userSelection = fileChooser.showSaveDialog(null);

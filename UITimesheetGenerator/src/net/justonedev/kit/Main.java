@@ -167,6 +167,52 @@ public class Main {
         );
     }
 
+    public static File printTex(boolean generatePDF) {
+        File monthFile;
+        boolean tempMonth = false;
+        if (hasUnsavedChanges || currentOpenFile == null) {
+            monthFile = JSONHandler.generateTemporaryJSONFile(monthSettingsBar, listModel);
+            tempMonth = true;
+        } else {
+            monthFile = currentOpenFile;
+        }
+        if (monthFile == null) {
+            showSimpleDialog("Could not create month.json file. If you have unsaved changes, try saving.");
+            return null;
+        }
+
+        // Todo if PDF generation, use this, otherwise use some other file.
+        File texFile, pdfFile;
+        if (generatePDF) {
+            texFile = JSONHandler.getTemporaryTexFile();
+            pdfFile = FileChooser.chooseCreatePDFFile("Print to PDF");
+        } else {
+            texFile = FileChooser.chooseCreateTexFile("Compile to Tex");
+            pdfFile = null;
+        }
+
+        TexCompiler.compileToTex(monthFile, texFile);
+        if (tempMonth) monthFile.deleteOnExit();
+
+        if (!texFile.exists()) {
+            showSimpleDialog("Tex file creation failed!");
+            return texFile;
+        }
+
+        if (!generatePDF || pdfFile == null) return texFile;
+
+        PDFCompiler.compileToPDF(texFile, pdfFile);
+        texFile.deleteOnExit();
+
+        if (!pdfFile.exists()) {
+            showSimpleDialog("PDF file creation failed!");
+            // Todo perhaps add a keep tex file option
+            return pdfFile;
+        }
+
+        return pdfFile;
+    }
+
     public static Time getPredTime() {
         return monthSettingsBar.getPredTime();
     }
@@ -199,7 +245,7 @@ public class Main {
     }
 
     public static void saveFileAs() {
-        File newSaveFile = FileChooser.chooseCreateFile("Save as...");
+        File newSaveFile = FileChooser.chooseCreateJSONFile("Save as...");
         if (newSaveFile == null) return;
         saveFileCommon(newSaveFile);
         setEditorFile(newSaveFile);
@@ -311,7 +357,7 @@ public class Main {
         return workedTime;
     }
 
-    private void showSimpleDialog(String message) {
+    private static void showSimpleDialog(String message) {
         JOptionPane.showMessageDialog(frame, message, "Dialog", JOptionPane.INFORMATION_MESSAGE);
     }
 
