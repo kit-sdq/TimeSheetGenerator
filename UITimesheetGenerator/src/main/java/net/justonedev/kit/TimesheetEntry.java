@@ -11,7 +11,7 @@ import java.time.LocalTime;
 
 public class TimesheetEntry {
 
-    public static final String TIMESHEET_FORMAT_HEADER = "         %-40s %-10s %-25s %-25s %-25s %-25s %-25s"; //"%-20s %-10s %-10s %-10s %-10s";
+    public static final String TIMESHEET_FORMAT_HEADER = "            %-55s %-15s %-20s %-20s %-20s %-20s %-20s"; //"%-20s %-10s %-10s %-10s %-10s";
     public static final String TIMESHEET_FORMAT = " %-40s      %-10s %-25s %-25s %-25s %-25s %-25s"; //"%-20s %-10s %-10s %-10s %-10s";
     public static final String COMPRESSED_TIMESHEET_FORMAT = "%s, %s. %s - %s, Break: %s, Vacation: %s";
 
@@ -193,6 +193,52 @@ public class TimesheetEntry {
                 isVacationStr(),
                 getTotalTimeWorkedString());
     }
+
+    public String toHtmlString() {
+        return String.format(
+                "<html>"
+                        + "<table width='100%%' cellpadding='0' cellspacing='0'>"
+                        + "<tr>"
+                        + "<td width='360' style='text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;'>%s</td>"
+                        + "<td width='105' style='text-align:left;'>%s</td>"
+                        + "<td width='133' style='text-align:left;'>%s</td>"
+                        + "<td width='145' style='text-align:left;'>%s</td>"
+                        + "<td width='105' style='text-align:left;'>%s</td>"
+                        + "<td width='100' style='text-align:center;'>%s</td>"
+                        + "<td width='140' style='text-align:right;'>%s</td>"
+                        + "</tr>"
+                        + "</table>"
+                        + "</html>",
+                getActivity(),
+                getDayString() + ".",
+                getStartTimeString(),
+                getEndTimeString(),
+                getBreakTimeString(),
+                isVacationStr(),
+                getTotalTimeWorkedString()
+        );
+    }
+
+    /*
+    This works for the following header:
+    "         %-40s %-10s %-25s %-25s %-25s %-25s %-25s"
+                "<html>"
+                        + "<table width='100%%' cellpadding='0' cellspacing='0'>"
+                        + "<tr>"
+                        + "<td width='270' style='text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;'>%s</td>"
+                        + "<td width='80' style='text-align:left;'>%s</td>"
+                        + "<td width='156' style='text-align:left;'>%s</td>"
+                        + "<td width='170' style='text-align:left;'>%s</td>"
+                        + "<td width='170' style='text-align:left;'>%s</td>"
+                        + "<td width='180' style='text-align:left;'>%s</td>"
+                        + "<td width='100' style='text-align:left;'>%s</td>"
+                        + "</tr>"
+                        + "</table>"
+                        + "</html>",
+
+                        Problem: Activity field not wide enough
+
+    * */
 
     public String toShortString() {
         return String.format(COMPRESSED_TIMESHEET_FORMAT,

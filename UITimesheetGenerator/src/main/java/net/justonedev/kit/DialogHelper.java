@@ -32,7 +32,7 @@ public class DialogHelper {
     static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
     static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
-    private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
+    private static final int MAX_TEXT_LENGTH_ACTIVITY = 27;
 
     private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 

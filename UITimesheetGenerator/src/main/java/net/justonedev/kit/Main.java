@@ -42,6 +42,7 @@ public class Main {
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
+        frame.setResizable(false);
 
         // Menu Bar
         JMenuBar menuBar = new JMenuBar();
@@ -60,15 +61,6 @@ public class Main {
         fileMenu.add(fileOptionSaveAs);
         menuBar.add(fileMenu);
 
-        /* Edit Menu
-        JMenu editMenu = new JMenu("Edit");
-        JMenuItem editOption1 = new JMenuItem("Option 1");
-        JMenuItem editOption2 = new JMenuItem("Option 2");
-        editMenu.add(editOption1);
-        editMenu.add(editOption2);
-        menuBar.add(editMenu);
-        */
-
         frame.setJMenuBar(menuBar);
 
         monthSettingsBar = new MonthlySettingsBar();
@@ -83,6 +75,15 @@ public class Main {
         // Main Content Area with Vertical List
         listModel = new DefaultListModel<>();
         JList<TimesheetEntry> itemList = new JList<>(listModel);
+        itemList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+                String text = ((TimesheetEntry) value).toHtmlString();
+                return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+            }
+        });
         itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
         itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         itemList.setFont(itemList.getFont().deriveFont(16f));
@@ -107,8 +108,7 @@ public class Main {
                 selectedItemIndex = index;
                 if (e.getClickCount() == 2) {
                     if (index >= 0) {
-                        DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(index));
-                        listModel.removeElementAt(index);
+                        editSelectedListEntry();
                     }
                 }
             }
@@ -127,6 +127,7 @@ public class Main {
 
 
         JScrollPane listScrollPane = new JScrollPane(itemList);
+        listScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         listScrollPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
 
         // Panel to hold the header and list together
@@ -305,8 +306,9 @@ public class Main {
 
     public static void editSelectedListEntry() {
         if (selectedItemIndex < 0) return;
-        DialogHelper.showEntryDialog("Edit Entry", listModel.getElementAt(selectedItemIndex));
-        listModel.removeElementAt(selectedItemIndex);
+        TimesheetEntry entry = listModel.getElementAt(selectedItemIndex);
+        DialogHelper.showEntryDialog("Edit Entry", entry);
+        listModel.removeElement(entry);
         selectedItemIndex = -1;
         updateTotalTimeWorkedUI();
     }
@@ -359,8 +361,8 @@ public class Main {
 
                 // Debug:
 
-                //addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
-                //addEntry(new TimesheetEntry("Folien machen    ", 23, 11, 0, 15, 0, 0, 30, false));
+                addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
+                addEntry(new TimesheetEntry("Folien", 23, 11, 0, 15, 0, 0, 30, false));
                 //setEditorFile(new File("C:\\Users\\Benni\\Downloads\\month.json"));
             } catch (Exception e) {
                 e.printStackTrace();
