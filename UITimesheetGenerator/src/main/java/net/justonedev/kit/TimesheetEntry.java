@@ -8,7 +8,6 @@ import net.justonedev.kit.json.Month;
 
 import java.time.Duration;
 import java.time.LocalTime;
-import java.util.regex.Matcher;
 
 public class TimesheetEntry {
 

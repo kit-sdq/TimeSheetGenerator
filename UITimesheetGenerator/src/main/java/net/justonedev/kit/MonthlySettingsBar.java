@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class MonthlySettingsBar extends JPanel {
 

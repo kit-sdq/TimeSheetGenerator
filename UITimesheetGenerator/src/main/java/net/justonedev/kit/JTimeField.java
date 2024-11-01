@@ -9,9 +9,6 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-import static net.justonedev.kit.DialogHelper.TIME_PATTERN_SEMI_SMALL;
-import static net.justonedev.kit.DialogHelper.TIME_PATTERN_SMALL;
-
 public class JTimeField extends JTextField {
 
     private static final String PLACEHOLDER = "00:00";
@@ -37,10 +34,10 @@ public class JTimeField extends JTextField {
     private void validateField() {
         String text = this.getText();
 
-        if (TIME_PATTERN_SMALL.matcher(text).matches()) {
+        if (DialogHelper.TIME_PATTERN_SMALL.matcher(text).matches()) {
             text += ":00";
             super.setText(text);
-        } else if (TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
+        } else if (DialogHelper.TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
             text += "0";
             super.setText(text);
         }

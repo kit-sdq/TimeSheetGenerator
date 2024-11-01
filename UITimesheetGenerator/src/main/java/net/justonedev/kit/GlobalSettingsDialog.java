@@ -11,10 +11,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.regex.Pattern;
 
 public class GlobalSettingsDialog {
 
