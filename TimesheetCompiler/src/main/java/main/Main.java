@@ -1,4 +1,5 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023.
+ * Modifications (c) 2024 Benjamin Claus */
 package main;
 
 import java.io.File;

@@ -1,3 +1,7 @@
+/*
+ * Licensed under the MIT License (MIT)
+ * Copyright (c) 2024 Benjamin Claus
+ */
 package net.justonedev.kit.export;
 
 import net.justonedev.kit.FileChooser;
