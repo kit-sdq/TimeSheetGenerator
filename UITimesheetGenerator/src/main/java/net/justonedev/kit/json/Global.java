@@ -57,4 +57,21 @@ public class Global {
         }
         return name.toString();
     }
+
+    /**
+     * Like getFormattedName but without comma and underscored instead of spaces.
+     * @return Formatted name but for file exporting.
+     */
+    public String getFormattedName2() {
+        if (!getName().contains(" ")) {
+            return getName();
+        }
+        StringBuilder name = new StringBuilder();
+        String[] names = getName().split(" ");
+        name.append(names[names.length - 1]);
+        for (int i = 0; i < names.length - 1; ++i) {
+            name.append("_").append(names[i]);
+        }
+        return name.toString();
+    }
 }

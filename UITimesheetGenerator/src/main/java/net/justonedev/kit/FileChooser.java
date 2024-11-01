@@ -4,13 +4,22 @@
  */
 package net.justonedev.kit;
 
+import net.justonedev.kit.json.JSONHandler;
+import net.justonedev.kit.json.Month;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
 public class FileChooser {
 
-    // TODO Timesheet Format
+    // Timesheet Format: Nachname_Vorname_Monat Jahr.pdf
+    private static final String FORMAT = "%s_%s 20%s";
+
+    public static String getDefaultFileName() {
+        return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(),
+                Main.getCurrentMonthName(), Main.getYear());
+    }
 
     public static File chooseFile(String title) {
         JFileChooser fileChooser = new JFileChooser();
@@ -26,13 +35,15 @@ public class FileChooser {
     }
 
     public static File chooseCreateJSONFile(String title) {
-        return chooseCreateFile(title, "month", "json", "JSON Files (*.json)");
+        String month = Main.getCurrentMonthName();
+        if (month.isBlank()) month = "month";
+        return chooseCreateFile(title, "%s%s".formatted(month, Main.getYear()), "json", "JSON Files (*.json)");
     }
     public static File chooseCreateTexFile(String title) {
-        return chooseCreateFile(title, "timesheet", "tex", "LaTeX Files (*.tex)");
+        return chooseCreateFile(title, getDefaultFileName(), "tex", "LaTeX Files (*.tex)");
     }
     public static File chooseCreatePDFFile(String title) {
-        return chooseCreateFile(title, "timesheet", "pdf", "PDF Files (*.pdf)");
+        return chooseCreateFile(title, getDefaultFileName(), "pdf", "PDF Files (*.pdf)");
     }
     public static File chooseCreateFile(String title, String defaultFileName, String extension, String extensionDescription) {
         JFileChooser fileChooser = new JFileChooser();
@@ -52,7 +63,7 @@ public class FileChooser {
             if (fileToSave.exists()) {
                 int result = JOptionPane.showConfirmDialog(
                         null,
-                        "The file already exists. Do you want to replace it?",
+                        "The file already exists. Do you want to override it?",
                         "Existing file",
                         JOptionPane.YES_NO_OPTION
                 );

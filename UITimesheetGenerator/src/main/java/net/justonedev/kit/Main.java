@@ -187,6 +187,14 @@ public class Main {
         return JSONHandler.getMonth(monthSettingsBar, listModel);
     }
 
+    public static String getCurrentMonthName() {
+        return monthSettingsBar.getSelectedMonth();
+    }
+
+    public static String getYear() {
+        return monthSettingsBar.getYear();
+    }
+
     public static File getCurrentOpenFile() {
         return currentOpenFile;
     }

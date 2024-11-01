@@ -66,9 +66,6 @@ public class PDFCompiler {
         if (form == null) {
             return Optional.of("No form found in the document. Nothing we can do, sorry.");
         }
-        List<PDField> fields = form.getFields();
-        System.out.println("Available fields:");
-        fields.forEach(field -> System.out.println(field.getFullyQualifiedName()));
 
         form.getField("GF").setValue(global.getFormattedName());                // Name
         form.getField("abc").setValue(String.valueOf(month.getMonth()));        // Month

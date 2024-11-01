@@ -21,6 +21,7 @@ public class FileExporter {
         }
 
         File texFile = FileChooser.chooseCreateTexFile("Compile to Tex");
+        if (texFile == null) return;    // Cancelled
 
         TexCompiler.compileToTex(tempFiles.getMonthFile(), texFile);
 
@@ -37,6 +38,7 @@ public class FileExporter {
         if (tempFiles == null) return;
 
         File pdfFile = FileChooser.chooseCreatePDFFile("Print to PDF");
+        if (pdfFile == null) return;    // Cancelled
         Optional<String> error = TexCompiler.validateContents(tempFiles);
 
         if (error.isPresent()) {

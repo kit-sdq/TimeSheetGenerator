@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MonthlySettingsBar extends JPanel {
 
@@ -106,6 +107,19 @@ public class MonthlySettingsBar extends JPanel {
         });
 
         settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog());
+    }
+
+    public String getSelectedMonth() {
+        int index = monthSelector.getSelectedIndex();
+        if (index < 0 || index >= monthSelector.getItemCount()) return "";
+        return monthSelector.getItemAt(index);
+    }
+
+    public String getYear() {
+        if (semesterTextField.getForeground() == Color.BLACK && !semesterTextField.getText().isBlank()) {
+            return semesterTextField.getText();
+        }
+        return DateTimeFormatter.ofPattern("yy").format(LocalDateTime.now());
     }
 
     public Time getPredTime() {
