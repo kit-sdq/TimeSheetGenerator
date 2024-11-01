@@ -1,7 +1,9 @@
 /* Licensed under MIT 2023. */
 package main;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.swing.JOptionPane;
 
@@ -81,7 +83,7 @@ public class Main {
 		try {
 			checkerReturn = checker.check();
 		} catch (CheckerException e) { // exception does not mean that the time sheet is invalid, but that the process
-										// of checking failed
+			// of checking failed
 			System.out.println(e.getMessage());
 			System.exit(1);
 			return;
@@ -115,6 +117,54 @@ public class Main {
 			System.exit(1);
 			return;
 		}
+	}
+
+	/**
+	 * Addendum to the timesheet generator. This method only validated the contents of a given timesheet file.
+	 * If the given file, for any reason, is not a valid timesheet, this method returns an optional containing
+	 * the error message. If it is, this method will return an empty optional.
+	 * @param globalFile The global.json file.
+	 * @param monthFile The month.json file.
+	 * @return An optional of the error message.
+	 */
+	public static Optional<String> validateTimesheet(File globalFile, File monthFile) {
+		if (globalFile == null || monthFile == null) return Optional.of("The global or month file were null. Try saving.");
+		String globalStr, monthStr;
+		try {
+			globalStr = FileController.readFileToString(globalFile);
+			monthStr = FileController.readFileToString(monthFile);
+		} catch (IOException e) {
+			return Optional.of(e.getMessage());
+		}
+
+		// Validation code from above.
+
+		// Initialize time sheet
+		TimeSheet timeSheet;
+		try {
+			timeSheet = Parser.parseTimeSheetJson(globalStr, monthStr);
+		} catch (ParseException e) {
+			return Optional.of(e.getMessage());
+		}
+
+		// Check time sheet
+		IChecker checker = new MiLoGChecker(timeSheet);
+		CheckerReturn checkerReturn;
+		try {
+			checkerReturn = checker.check();
+		} catch (CheckerException e) {
+			return Optional.of(e.getMessage());
+		}
+
+		if (checkerReturn == CheckerReturn.INVALID) {
+			StringBuilder errorList = new StringBuilder();
+			for (CheckerError error : checker.getErrors()) {
+				errorList.append(error.getErrorMessage()).append(System.lineSeparator());
+			}
+			return Optional.of(errorList.toString());
+		}
+
+		return Optional.empty();
 	}
 
 }
