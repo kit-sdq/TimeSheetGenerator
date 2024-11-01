@@ -1,5 +1,6 @@
 package net.justonedev.kit;
 
+import net.justonedev.kit.export.FileExporter;
 import net.justonedev.kit.json.JSONHandler;
 
 import javax.swing.*;
@@ -58,8 +59,8 @@ public class ActionBar extends JPanel {
         removeButton.addActionListener((l) -> Main.removeSelectedListEntry());
         editButton.addActionListener((l) -> Main.editSelectedListEntry());
 
-        compileButton.addActionListener((l) -> Main.printTex(false));
-        printButton.addActionListener((l) -> Main.printTex(true));
+        compileButton.addActionListener((l) -> FileExporter.printTex());
+        printButton.addActionListener((l) -> FileExporter.printPDF());
 
         hoursWorkedLabel = new JLabel();
         fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);
