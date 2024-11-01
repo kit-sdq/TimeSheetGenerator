@@ -398,12 +398,6 @@ public class Main {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new Main();
                 setHasUnsavedChanges(false);
-
-                // Debug:
-
-                addEntry(new TimesheetEntry("Tut Vorbereitung", 24, 12, 0, 18, 0, 1, 0, false));
-                addEntry(new TimesheetEntry("Folien", 23, 11, 0, 15, 0, 0, 30, false));
-                //setEditorFile(new File("C:\\Users\\Benni\\Downloads\\month.json"));
             } catch (Exception e) {
                 e.printStackTrace();
             }
