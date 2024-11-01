@@ -20,13 +20,19 @@ public class FileExporter {
             return;
         }
 
+        Optional<String> error = TexCompiler.validateContents(tempFiles);
+        if (error.isPresent()) {
+            error(error.get());
+            return;
+        }
+
         File texFile = FileChooser.chooseCreateTexFile("Compile to Tex");
         if (texFile == null) return;    // Cancelled
 
         TexCompiler.compileToTex(tempFiles.getMonthFile(), texFile);
 
         if (!texFile.exists()) {
-            Main.showSimpleDialog("Tex file creation failed!");
+            error("Tex file creation failed!");
         }
 
         tempFiles.close();
@@ -37,14 +43,14 @@ public class FileExporter {
         TempFiles tempFiles = TempFiles.generateNewTemp();
         if (tempFiles == null) return;
 
-        File pdfFile = FileChooser.chooseCreatePDFFile("Print to PDF");
-        if (pdfFile == null) return;    // Cancelled
         Optional<String> error = TexCompiler.validateContents(tempFiles);
-
         if (error.isPresent()) {
             error(error.get());
             return;
         }
+
+        File pdfFile = FileChooser.chooseCreatePDFFile("Print to PDF");
+        if (pdfFile == null) return;    // Cancelled
 
         error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, Main.getCurrentMonth(), pdfFile);
 
