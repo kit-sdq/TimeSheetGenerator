@@ -7,10 +7,13 @@ package net.justonedev.kit;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SaveOnClosePrompt {
 
-    static void showDialog() {
+    static boolean showDialog() {
+        final AtomicBoolean proceed = new AtomicBoolean(false);
+
         // Create the dialog
         JDialog dialog = new JDialog((Frame) null, "Save Changes?", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -27,19 +30,28 @@ public class SaveOnClosePrompt {
         JButton saveButton = new JButton("Save");
         JButton saveAsButton = new JButton("Save as");
         JButton discardButton = new JButton("Discard");
+        JButton cancelButton = new JButton("Cancel");
 
         // Button actions
         saveButton.addActionListener((ActionEvent e) -> {
             Main.saveFile(null);    // Gets the current open file to save
+            proceed.set(true);
             dialog.dispose();
         });
 
         saveAsButton.addActionListener((ActionEvent e) -> {
             Main.saveFileAs();
+            proceed.set(true);
             dialog.dispose();
         });
 
         discardButton.addActionListener((ActionEvent e) -> {
+            proceed.set(true);
+            dialog.dispose();
+        });
+
+        cancelButton.addActionListener((ActionEvent e) -> {
+            proceed.set(false);
             dialog.dispose();
         });
 
@@ -47,12 +59,15 @@ public class SaveOnClosePrompt {
         buttonPanel.add(saveButton);
         buttonPanel.add(saveAsButton);
         buttonPanel.add(discardButton);
+        buttonPanel.add(cancelButton);
 
         // Add button panel to dialog
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         // Display dialog
         dialog.setVisible(true);
+
+        return proceed.get();
     }
 
 }

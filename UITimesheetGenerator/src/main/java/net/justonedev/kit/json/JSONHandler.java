@@ -98,6 +98,17 @@ public class JSONHandler {
         }
     }
 
+    public static boolean isFileValidMonth(File monthFile) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        try {
+            objectMapper.readValue(monthFile, Month.class);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     public static Month getMonth(MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
         Month month = new Month();
         List<Month.Entry> monthEntries = new ArrayList<>();

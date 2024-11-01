@@ -24,6 +24,8 @@ public class Main {
     public static boolean hasUnsavedChanges = false;
 
     private static JFrame frame;
+    private static JPanel listPanel;
+    private static JList<TimesheetEntry> itemList;
     private static DefaultListModel<TimesheetEntry> listModel;
     private static int selectedItemIndex = -1;
 
@@ -36,9 +38,9 @@ public class Main {
 
     private void initialize() {
         // Main Frame
-        frame = new JFrame();
+        frame = new DragDropJFrame();
         setTitle(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
         frame.setSize(1200, 800);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new BorderLayout());
@@ -74,7 +76,7 @@ public class Main {
 
         // Main Content Area with Vertical List
         listModel = new DefaultListModel<>();
-        JList<TimesheetEntry> itemList = new JList<>(listModel);
+        itemList = new JList<>(listModel);
         itemList.setCellRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(
@@ -126,14 +128,14 @@ public class Main {
         System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(), monthSettingsBar.getHeight(), buttonActionBar.getLocation().y, monthSettingsBar.getLocation().y);
 
 
-        JScrollPane listScrollPane = new JScrollPane(itemList);
-        listScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        listScrollPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
+        JScrollPane itemListPane = new JScrollPane(itemList);
+        itemListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        itemListPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
 
         // Panel to hold the header and list together
-        JPanel listPanel = new JPanel(new BorderLayout());
+        listPanel = new JPanel(new BorderLayout());
         listPanel.add(tableHeader, BorderLayout.NORTH);
-        listPanel.add(listScrollPane, BorderLayout.CENTER);
+        listPanel.add(itemListPane, BorderLayout.CENTER);
 
         frame.add(listPanel, BorderLayout.SOUTH);
 
@@ -167,10 +169,18 @@ public class Main {
         frame.addWindowListener(
                 new WindowAdapter() {
                     public void windowClosing(WindowEvent e) {
-                        closeCurrentOpenFile();
+                        if (closeCurrentOpenFile()) {
+                            frame.dispose();
+                            System.exit(0);
+                        }
                     }
                 }
         );
+    }
+
+    public static void setBackgroundColor(Color color) {
+        if (listPanel != null) listPanel.setBackground(color);
+        if (itemList != null) itemList.setBackground(color);
     }
 
     public static Month getCurrentMonth() {
@@ -197,18 +207,31 @@ public class Main {
         return frame.getWidth();
     }
 
-    public static void clearWorkspace() {
-        closeCurrentOpenFile();
+    /**
+     * Clears the workspace. Will prompt to save changes if there are any.
+     * Returns if to proceed (true) or not (false). If false is returned, there are unsaved
+     * changes and the cancel button was pressed.
+     * @return If proceed or not.
+     */
+    public static boolean clearWorkspace() {
+        if (!closeCurrentOpenFile()) return false;
         // Delete all content
         monthSettingsBar.reset();
         listModel.clear();
         setHasUnsavedChanges(false);
+        return true;
     }
 
-    public static void closeCurrentOpenFile() {
-        if (!hasUnsavedChanges) return;
+    /**
+     * Closes the currently open file. Will prompt to save changes if there are any.
+     * Returns if to proceed (true) or not (false). If false is returned, there are unsaved
+     * changes and the cancel button was pressed.
+     * @return If proceed or not.
+     */
+    public static boolean closeCurrentOpenFile() {
+        if (!hasUnsavedChanges) return true;
         // Prompt to save
-        SaveOnClosePrompt.showDialog();
+        return SaveOnClosePrompt.showDialog();
     }
 
     public static void saveFile(File newSaveFile) {
@@ -236,9 +259,14 @@ public class Main {
 
     public static void openFile() {
         File openFile = FileChooser.chooseFile("Open a file");
+        openFile(openFile);
+    }
+
+    public static void openFile(File openFile) {
         if (openFile == null) return;
         if (!setEditorFile(openFile)) return;
-        clearWorkspace();
+        boolean proceed = clearWorkspace();
+        if (!proceed) return;
 
         // Open the file
 
@@ -259,6 +287,10 @@ public class Main {
         if (!file.exists()) return false;
         String name = file.getName();
         if (!name.endsWith(".json")) return false;
+        if (!JSONHandler.isFileValidMonth(file)) {
+            showSimpleDialog("The file is not a valid month.json file or could not be parsed.");
+            return false;
+        }
         currentOpenFile = file;
         updateTitle();
         return true;

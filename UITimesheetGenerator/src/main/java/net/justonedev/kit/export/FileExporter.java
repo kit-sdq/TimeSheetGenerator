@@ -57,7 +57,7 @@ public class FileExporter {
         }
 
         tempFiles.close();
-        Main.showSimpleDialog("Compiled to %s".formatted(pdfFile.getName()));
+        Main.showSimpleDialog("Exported as %s".formatted(pdfFile.getName()));
     }
 
     private static void error(String error) {
