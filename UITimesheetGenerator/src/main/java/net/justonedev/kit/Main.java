@@ -15,6 +15,8 @@ import java.io.File;
 
 public class Main {
 
+    public static final int MAX_ENTRIES = 22;
+
     private static final String APP_NAME = "Timesheet Generator";
     private static final String TITLE = "%s: %s";
 
@@ -170,6 +172,10 @@ public class Main {
         );
     }
 
+    public static Month getCurrentMonth() {
+        return JSONHandler.getMonth(monthSettingsBar, listModel);
+    }
+
     public static File getCurrentOpenFile() {
         return currentOpenFile;
     }
@@ -269,6 +275,10 @@ public class Main {
         String filename = currentOpenFile == null ? "" : "%s/%s".formatted(currentOpenFile.getParentFile().getName(), currentOpenFile.getName());
         if (hasUnsavedChanges) filename += '*';
         setTitle(filename);
+    }
+
+    public static boolean isSpaceForNewEntry() {
+        return listModel.size() < MAX_ENTRIES;
     }
 
     public static void addEntry(TimesheetEntry entry) {

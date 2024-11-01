@@ -6,6 +6,7 @@ package net.justonedev.kit.export;
 
 import net.justonedev.kit.FileChooser;
 import net.justonedev.kit.Main;
+import net.justonedev.kit.json.JSONHandler;
 
 import java.io.File;
 import java.util.Optional;
@@ -39,11 +40,16 @@ public class FileExporter {
         Optional<String> error = TexCompiler.validateContents(tempFiles);
 
         if (error.isPresent()) {
-            Main.showSimpleDialog("%s%s%s".formatted("Error: Invalid Timesheet:", System.lineSeparator(), error.get()));
+            error(error.get());
             return;
         }
 
-        PDFCompiler.compileToPDF(tempFiles, pdfFile);
+        error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, Main.getCurrentMonth(), pdfFile);
+
+        if (error.isPresent()) {
+            error(error.get());
+            return;
+        }
 
         if (!pdfFile.exists()) {
             Main.showSimpleDialog("PDF file creation failed! Perhaps try to compile to tex?");
@@ -52,5 +58,9 @@ public class FileExporter {
 
         tempFiles.close();
         Main.showSimpleDialog("Compiled to %s".formatted(pdfFile.getName()));
+    }
+
+    private static void error(String error) {
+        Main.showSimpleDialog("%s%s%s".formatted("Error: Invalid Timesheet:", System.lineSeparator(), error));
     }
 }

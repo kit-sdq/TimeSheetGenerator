@@ -98,19 +98,22 @@ public class JSONHandler {
         }
     }
 
+    public static Month getMonth(MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
+        Month month = new Month();
+        List<Month.Entry> monthEntries = new ArrayList<>();
+        settingsBar.fillMonth(month);
+        entries.elements().asIterator().forEachRemaining(entry -> {
+            monthEntries.add(entry.toMonthEntry());
+        });
+        month.setEntries(monthEntries);
+        return month;
+    }
+
     public static void saveMonth(File saveFile, MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         try {
-
-            Month month = new Month();
-            List<Month.Entry> monthEntries = new ArrayList<>();
-            settingsBar.fillMonth(month);
-            entries.elements().asIterator().forEachRemaining(entry -> {
-                monthEntries.add(entry.toMonthEntry());
-            });
-            month.setEntries(monthEntries);
-
+            Month month = getMonth(settingsBar, entries);
             objectMapper.writeValue(saveFile, month);
             System.out.println("Saved month.");
         } catch (IOException e) {

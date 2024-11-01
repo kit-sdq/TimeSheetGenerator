@@ -57,7 +57,13 @@ public class ActionBar extends JPanel {
 
         this.add(buttonPanel, BorderLayout.WEST);
 
-        addButton.addActionListener(e -> DialogHelper.showEntryDialog("Add Entry"));
+        addButton.addActionListener(e -> {
+            if (Main.isSpaceForNewEntry()) {
+                DialogHelper.showEntryDialog("Add Entry");
+            } else {
+                Main.showSimpleDialog("You have reached the maximum of %d entries".formatted(Main.MAX_ENTRIES));
+            }
+        });
         duplicateButton.addActionListener((l) -> Main.duplicateSelectedListEntry());
         removeButton.addActionListener((l) -> Main.removeSelectedListEntry());
         editButton.addActionListener((l) -> Main.editSelectedListEntry());

@@ -7,6 +7,10 @@ package net.justonedev.kit;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -27,6 +31,8 @@ public class DialogHelper {
     static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
     static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
     static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
+
+    private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
 
     private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 
@@ -67,18 +73,23 @@ public class DialogHelper {
         gbc.anchor = GridBagConstraints.NORTHWEST;
         panel.add(actionLabel, gbc);
 
-        JTextArea actionTextArea = new JTextArea(2, 20);
+        JTextArea actionTextArea = new JTextArea(1, MAX_TEXT_LENGTH_ACTIVITY);
+        JScrollPane scrollPane = new JScrollPane(actionTextArea);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+
         addPlaceholderText(actionTextArea, "Describe the activity", entry.getActivity());
         if (!entry.getActivity().isEmpty()) {
             actionTextArea.setText(entry.getActivity());
             taskSummaryValue.setText(entry.getActivity());
         }
+        ((AbstractDocument) actionTextArea.getDocument()).setDocumentFilter(new DocumentSizeFilter(MAX_TEXT_LENGTH_ACTIVITY));
 
         gbc.gridx = 1;
         gbc.gridy = row;
         gbc.weightx = 1;
         gbc.fill = GridBagConstraints.BOTH;
-        panel.add(new JScrollPane(actionTextArea), gbc);
+        panel.add(scrollPane, gbc);
 
         row++;
 
@@ -215,7 +226,7 @@ public class DialogHelper {
                 }
                 // warning label is updated automatically when fields are edited
                 if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
-                    durationWarningLabel.setText("You need to enter a start time!");
+                    durationWarningLabel.setText("You need to enter a day!");
                 }
                 if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
                     durationWarningLabel.setText("You need to enter a start time!");
@@ -449,7 +460,7 @@ public class DialogHelper {
     }
 
     // Helper method to parse time strings
-    static LocalTime parseTime(String timeStr) {
+    public static LocalTime parseTime(String timeStr) {
         if (timeStr == null) return LocalTime.of(0, 0);
         try {
             return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
@@ -460,6 +471,52 @@ public class DialogHelper {
 
     public static boolean isValidTimeFormat(String s) {
         return TIME_PATTERN.matcher(s).matches();
+    }
+
+    private static class DocumentSizeFilter extends DocumentFilter {
+        private final int maxCharacters;
+
+        public DocumentSizeFilter(int maxChars) {
+            maxCharacters = maxChars;
+        }
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string == null) return;
+
+            // Check if the insertion exceeds the limit
+            if ((fb.getDocument().getLength() + string.length()) <= maxCharacters) {
+                super.insertString(fb, offset, string, attr);
+            } else {
+                // If it exceeds, truncate the string to fit
+                int available = maxCharacters - fb.getDocument().getLength();
+                if (available > 0) {
+                    string = string.substring(0, available);
+                    super.insertString(fb, offset, string, attr);
+                }
+                // Optionally, provide feedback (like a beep)
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text == null) return;
+
+            // Check if the replacement exceeds the limit
+            if ((fb.getDocument().getLength() + text.length() - length) <= maxCharacters) {
+                super.replace(fb, offset, length, text, attrs);
+            } else {
+                // If it exceeds, truncate the text to fit
+                int available = maxCharacters - fb.getDocument().getLength() + length;
+                if (available > 0) {
+                    text = text.substring(0, available);
+                    super.replace(fb, offset, length, text, attrs);
+                }
+                // Optionally, provide feedback (like a beep)
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
     }
 
 }

@@ -47,6 +47,10 @@ public class Time {
         this.minutes += minutes;
         this.hours += this.minutes / 60;
         this.minutes %= 60;
+        if (this.minutes < 0) {
+            this.minutes += 60;
+            hours--;
+        }
     }
 
     public void addTime(Time time) {

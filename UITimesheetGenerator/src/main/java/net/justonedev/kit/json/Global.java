@@ -44,4 +44,17 @@ public class Global {
 
     public String getWorkingArea() { return workingArea; }
     public void setWorkingArea(String workingArea) { this.workingArea = workingArea; }
+
+    public String getFormattedName() {
+        if (!getName().contains(" ")) {
+            return getName();
+        }
+        StringBuilder name = new StringBuilder();
+        String[] names = getName().split(" ");
+        name.append(names[names.length - 1]).append(",");
+        for (int i = 0; i < names.length - 1; ++i) {
+            name.append(" ").append(names[i]);
+        }
+        return name.toString();
+    }
 }
