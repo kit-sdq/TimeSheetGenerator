@@ -109,7 +109,7 @@ public class TimesheetEntry {
 
     public String getDayString() {
         if (day == -1) return "";
-        return String.format("%d", day);
+        return String.format("%02d", day);
     }
 
     public String getStartTimeString() {

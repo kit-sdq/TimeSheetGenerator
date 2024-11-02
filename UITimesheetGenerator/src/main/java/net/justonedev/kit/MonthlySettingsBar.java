@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -59,6 +61,13 @@ public class MonthlySettingsBar extends JPanel {
         timeCarryPanel.add(predTimeLabel);
 
         predTimeField = new JTimeField();
+        predTimeField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if ((e.getKeyChar() < '0' || e.getKeyChar() > '9') && e.getKeyChar() != ':') return;
+                Main.setHasUnsavedChanges(true);
+            }
+        });
         timeCarryPanel.add(predTimeField);
 
         // Pred. Time

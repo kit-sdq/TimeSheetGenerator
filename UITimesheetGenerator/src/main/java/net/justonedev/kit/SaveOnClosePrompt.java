@@ -18,7 +18,7 @@ public class SaveOnClosePrompt {
         JDialog dialog = new JDialog((Frame) null, "Save Changes?", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setLayout(new BorderLayout(10, 10));
-        dialog.setSize(300, 150);
+        dialog.setSize(400, 150);
         dialog.setLocationRelativeTo(null);
 
         // Add message

@@ -42,7 +42,8 @@ public class JTimeField extends JTextField {
         } else if (DialogHelper.TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
             text += "0";
             super.setText(text);
-        } else if (TIME_PATTERN_SEMI_SMALL_2.matcher(text).matches()) {
+        }
+        if (TIME_PATTERN_SEMI_SMALL_2.matcher(text).matches()) {
             text = "0" + text;
             super.setText(text);
         }
