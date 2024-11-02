@@ -8,10 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.regex.Pattern;
 
 public class JTimeField extends JTextField {
 
     private static final String PLACEHOLDER = "00:00";
+    static final Pattern TIME_PATTERN_SEMI_SMALL_2 = Pattern.compile("^(\\d):(\\d{2})$");
 
     public JTimeField() {
         this(null);
@@ -39,6 +41,9 @@ public class JTimeField extends JTextField {
             super.setText(text);
         } else if (DialogHelper.TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
             text += "0";
+            super.setText(text);
+        } else if (TIME_PATTERN_SEMI_SMALL_2.matcher(text).matches()) {
+            text = "0" + text;
             super.setText(text);
         }
 

@@ -36,7 +36,6 @@ public class FileExporter {
         }
 
         tempFiles.close();
-        Main.showSimpleDialog("Compiled to %s".formatted(texFile.getName()));
     }
 
     public static void printPDF() {
@@ -65,7 +64,6 @@ public class FileExporter {
         }
 
         tempFiles.close();
-        Main.showSimpleDialog("Exported as %s".formatted(pdfFile.getName()));
     }
 
     private static void error(String error) {
