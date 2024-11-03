@@ -160,7 +160,7 @@
                             <!--suppress UnresolvedMavenProperty -->
                             <file>${maven.multiModuleProjectDirectory}/formatter.xml</file>
                         </eclipse>
-                        <removeUnusedImports />
+                        <removeUnusedImports></removeUnusedImports>
                         <licenseHeader>
                             <!--suppress UnresolvedMavenProperty -->
                             <file>${maven.multiModuleProjectDirectory}/license-header.txt</file>
@@ -174,7 +174,7 @@
                             <nrOfIndentSpace>4</nrOfIndentSpace>
                         </sortPom>
                     </pom>
-                    <ratchetFrom>origin/master</ratchetFrom>
+                    <ratchetFrom>origin/main</ratchetFrom>
                 </configuration>
             </plugin>
         </plugins>

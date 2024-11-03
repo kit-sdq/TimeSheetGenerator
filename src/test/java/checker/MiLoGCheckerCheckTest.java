@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +21,7 @@ public class MiLoGCheckerCheckTest {
 	//// Placeholder for time sheet construction
 	private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
 	private static final Profession PROFESSION = new Profession("Fakultät für Informatik", WorkingArea.UB, new TimeSpan(40, 0), 10.31);
-	private static final YearMonth YEAR_MONTH = YearMonth.of(2019, Month.NOVEMBER);
+	private static final YearMonth YEAR_MONTH = YearMonth.of(2024, Month.NOVEMBER);
 	private static final TimeSpan zeroTs = new TimeSpan(0, 0);
 
 	@Test
@@ -30,7 +30,7 @@ public class MiLoGCheckerCheckTest {
 		TimeSpan start = new TimeSpan(8, 0);
 		TimeSpan end = new TimeSpan(12, 0);
 		TimeSpan pause = zeroTs;
-		LocalDate date = LocalDate.of(2019, 11, 22); // Valid working day
+		LocalDate date = LocalDate.of(2024, 11, 22); // Valid working day
 
 		//// Checker initialization
 		Entry entry = new Entry("Test", date, start, end, pause, false);
@@ -49,7 +49,7 @@ public class MiLoGCheckerCheckTest {
 		TimeSpan start = new TimeSpan(8, 0);
 		TimeSpan end = new TimeSpan(12, 0);
 		TimeSpan pause = zeroTs;
-		LocalDate date = LocalDate.of(2019, 12, 25); // Holiday
+		LocalDate date = LocalDate.of(2024, 12, 25); // Holiday
 
 		//// Checker initialization
 		Entry entry = new Entry("Test", date, start, end, pause, false);
@@ -71,7 +71,7 @@ public class MiLoGCheckerCheckTest {
 		TimeSpan start = new TimeSpan(8, 0);
 		TimeSpan end = new TimeSpan(12, 0);
 		TimeSpan pause = zeroTs;
-		LocalDate date = LocalDate.of(2019, 12, 1); // Sunday
+		LocalDate date = LocalDate.of(2024, 12, 1); // Sunday
 
 		//// Checker initialization
 		Entry entry = new Entry("Test", date, start, end, pause, false);
