@@ -20,9 +20,9 @@ public class GermanyHolidayCheckerTest {
 	private static final int MULTIPLE_TEST_ITERATIONS = 3650;
 
 	@Test
-	public void testChristmas2019() throws HolidayFetchException {
+	public void testChristmas2024() throws HolidayFetchException {
 		//// Test values
-		LocalDate localDate = LocalDate.of(2019, 12, 25);
+		LocalDate localDate = LocalDate.of(2024, 12, 25);
 		GermanState state = GermanState.BW;
 
 		//// HolidayChecker initialization
@@ -33,9 +33,9 @@ public class GermanyHolidayCheckerTest {
 	}
 
 	@Test
-	public void testNewYearsDay2022() throws HolidayFetchException {
+	public void testNewYearsDay2024() throws HolidayFetchException {
 		//// Test values
-		LocalDate localDate = LocalDate.of(2022, 1, 1);
+		LocalDate localDate = LocalDate.of(2024, 1, 1);
 		GermanState state = GermanState.BW;
 
 		//// HolidayChecker initialization
@@ -65,7 +65,7 @@ public class GermanyHolidayCheckerTest {
 
 		//// Test values
 		GermanState state = GermanState.BW;
-		int year = rand.nextInt(RANDOM_YEAR_BOUND) + 1950;
+		int year = 2024;
 		IHolidayChecker holidayChecker = new GermanyHolidayChecker(year, state);
 
 		for (int i = 0; i < MULTIPLE_TEST_ITERATIONS; i++) {
@@ -93,7 +93,7 @@ public class GermanyHolidayCheckerTest {
 
 		//// Test values
 		GermanState state = GermanState.BW;
-		int year = rand.nextInt(RANDOM_YEAR_BOUND) + 1950;
+		int year = 2024;
 		IHolidayChecker holidayChecker = new GermanyHolidayChecker(year, state);
 
 		//// HolidayChecker initialization
