@@ -27,7 +27,6 @@ public class Main {
     private static JPanel listPanel;
     private static JList<TimesheetEntry> itemList;
     private static DefaultListModel<TimesheetEntry> listModel;
-    private static int selectedItemIndex = -1;
 
     private static MonthlySettingsBar monthSettingsBar;
     private static ActionBar buttonActionBar;
@@ -107,7 +106,6 @@ public class Main {
         itemList.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 int index = itemList.locationToIndex(e.getPoint());
-                selectedItemIndex = index;
                 if (e.getClickCount() == 2) {
                     if (index >= 0) {
                         editSelectedListEntry();
@@ -296,7 +294,7 @@ public class Main {
         String name = file.getName();
         if (!name.endsWith(".json")) return false;
         if (!JSONHandler.isFileValidMonth(file)) {
-            showSimpleDialog("The file is not a valid month.json file or could not be parsed.");
+            showError("The file is not a valid month.json file or could not be parsed.");
             return false;
         }
         currentOpenFile = file;
@@ -336,31 +334,34 @@ public class Main {
     }
 
     public static void duplicateSelectedListEntry() {
+        final int selectedItemIndex = itemList.getSelectedIndex();
         if (selectedItemIndex < 0) return;
         setHasUnsavedChanges(true);
 
         addEntry(listModel.getElementAt(selectedItemIndex).clone());
-        selectedItemIndex++;    // 1 more, there is the duplicate
+        itemList.setSelectedIndex(selectedItemIndex + 1);    // 1 more, there is the duplicate
         editSelectedListEntry();
     }
 
     public static void editSelectedListEntry() {
+        final int selectedItemIndex = itemList.getSelectedIndex();
         if (selectedItemIndex < 0) return;
         TimesheetEntry entry = listModel.getElementAt(selectedItemIndex);
         DialogHelper.showEntryDialog("Edit Entry", entry);
         listModel.removeElement(entry);
-        selectedItemIndex = -1;
+        itemList.setSelectedIndex(-1);
         updateTotalTimeWorkedUI();
     }
 
     public static void removeSelectedListEntry() {
+        final int selectedItemIndex = itemList.getSelectedIndex();
         if (selectedItemIndex < 0) return;
 
         if (!showOKCancelDialog("Delete Entry?", "Delete Entry: %s?".formatted(listModel.getElementAt(selectedItemIndex).toShortString()))) return;
 
         setHasUnsavedChanges(true);
         listModel.removeElementAt(selectedItemIndex);
-        selectedItemIndex = -1;
+        itemList.setSelectedIndex(-1);
     }
 
     public static void updateTotalTimeWorkedUI() {
@@ -379,7 +380,11 @@ public class Main {
     }
 
     public static void showSimpleDialog(String message) {
-        JOptionPane.showMessageDialog(frame, message, "Dialog", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    public static void showError(String error) {
+        JOptionPane.showMessageDialog(frame, error, "Unknown error", JOptionPane.ERROR_MESSAGE);
     }
 
     private static boolean showOKCancelDialog(String title, String message) {

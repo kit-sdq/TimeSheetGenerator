@@ -6,6 +6,7 @@ package net.justonedev.kit;
 
 import net.justonedev.kit.json.Global;
 import net.justonedev.kit.json.JSONHandler;
+import net.justonedev.kit.json.OtherSettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class GlobalSettingsDialog {
         dialog.setLocationRelativeTo(null); // Center the dialog
 
         Global globalSettings = JSONHandler.globalSettings;
+        OtherSettings otherSettings = JSONHandler.otherSettings;
 
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding of 10
@@ -36,7 +38,7 @@ public class GlobalSettingsDialog {
         int row = 0;
 
         // Error labels array for validation messages
-        JLabel[] errorLabels = new JLabel[6];
+        JLabel[] errorLabels = new JLabel[7];
 
         // Fields array for text fields
         JTextField[] fields = new JTextField[5];
@@ -44,10 +46,12 @@ public class GlobalSettingsDialog {
         workAreaSelector.addItem(WORK_AREA_UB);
         workAreaSelector.addItem(WORK_AREA_GF);
         workAreaSelector.setSelectedIndex(getIndexValue(globalSettings.getWorkingArea()));
+        JCheckBox addSignatureBox = new JCheckBox();
+        addSignatureBox.setSelected(otherSettings.getAddSignature());
 
-        String[] labels = {"Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:"};
+        String[] labels = {"Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:"};
         String[] placeholders = {"Enter your name", "Enter your staff ID", "Enter your department",
-                "Enter working time (HH:MM)", "Enter your wage", "Enter working area"};
+                "Enter working time (HH:MM)", "Enter your wage"};
         String[] initialValues = {
                 globalSettings.getName(),
                 String.valueOf(globalSettings.getStaffId()),
@@ -78,7 +82,7 @@ public class GlobalSettingsDialog {
             gbc.weightx = 0;
             panel.add(errorLabel, gbc);
 
-            if (i < labels.length - 1) {
+            if (i < labels.length - 2) {
                 JTextField textField = new JTextField(20);
                 DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
                 fields[i] = textField;
@@ -91,8 +95,10 @@ public class GlobalSettingsDialog {
                         validateField(fields[index], errorLabels[index], index);
                     }
                 });
-            } else {
+            } else if (i == labels.length - 2) {
                 panel.add(workAreaSelector, gbc);
+            } else {
+                panel.add(addSignatureBox, gbc);
             }
 
             row++;
@@ -138,8 +144,11 @@ public class GlobalSettingsDialog {
             globalSettings.setWage(Double.parseDouble(fields[4].getText()));
             globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
+            otherSettings.setAddSignature(addSignatureBox.isSelected());
+
             // Save globalSettings to file or database as needed
             JSONHandler.saveGlobal(globalSettings);
+            JSONHandler.saveOtherSettings(otherSettings);
 
             dialog.dispose();
         });

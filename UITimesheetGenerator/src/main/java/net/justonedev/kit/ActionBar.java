@@ -61,7 +61,7 @@ public class ActionBar extends JPanel {
             if (Main.isSpaceForNewEntry()) {
                 DialogHelper.showEntryDialog("Add Entry");
             } else {
-                Main.showSimpleDialog("You have reached the maximum of %d entries".formatted(Main.MAX_ENTRIES));
+                Main.showError("You have reached the maximum of %d entries".formatted(Main.MAX_ENTRIES));
             }
         });
         duplicateButton.addActionListener((l) -> Main.duplicateSelectedListEntry());
