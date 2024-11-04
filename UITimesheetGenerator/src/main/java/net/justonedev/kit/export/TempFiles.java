@@ -9,7 +9,7 @@ import net.justonedev.kit.json.JSONHandler;
 
 import java.io.File;
 
-class TempFiles {
+class TempFiles implements AutoCloseable {
 
     private final File globalFile;
     private final File monthFile;
@@ -30,9 +30,11 @@ class TempFiles {
         return monthFile;
     }
 
+    @Override
     public void close() {
         if (isTempMonthFile) {
-            monthFile.deleteOnExit();
+            if (!monthFile.delete())
+                monthFile.deleteOnExit();
         }
     }
 

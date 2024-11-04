@@ -6,6 +6,7 @@ package net.justonedev.kit.export;
 
 import net.justonedev.kit.Time;
 import net.justonedev.kit.json.Global;
+import net.justonedev.kit.json.JSONHandler;
 import net.justonedev.kit.json.Month;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
@@ -90,7 +91,8 @@ public class PDFCompiler {
         form.getField("monatliche SollArbeitszeit").setValue(global.getWorkingTime());  // Again hours probably
 
         form.getField("Ich bestätige die Richtigkeit der Angaben").setValue("%s, %s"
-                .formatted(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()), global.getName()));
+                .formatted(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()),
+                        JSONHandler.otherSettings.getAddSignature() ? global.getName() : ""));
 
         final DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd.MM.yy");
 
@@ -107,12 +109,12 @@ public class PDFCompiler {
             time.subtractTime(Time.parseTime(entry.getStart()));
             time.subtractTime(Time.parseTime(entry.getPause()));
 
+            String timeFieldValue = time.toString();
             if (entry.isVacation()) {
                 timeVacation.addTime(time);
-                form.getField("hhmmRow%d_4".formatted(m)).setValue("U");                // U = Urlaub, engl.: Vacation
-            } else {
-                form.getField("hhmmRow%d_4".formatted(m)).setValue(time.toString());
+                timeFieldValue += "U";
             }
+            form.getField("hhmmRow%d_4".formatted(m)).setValue(timeFieldValue);
             timeSum.addTime(time);
 
         }
