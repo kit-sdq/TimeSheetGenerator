@@ -49,6 +49,8 @@ public class JSONHandler {
         createDefaultOtherGlobalSettings();
         loadGlobal();
         loadOtherSettings();
+
+        cleanUp();
     }
 
     public static void loadGlobal() {
@@ -222,6 +224,16 @@ public class JSONHandler {
         settings.setAddSignature(false);
         saveOtherSettings(settings);
         System.out.println("Created Default Other Settings.");
+    }
+
+    private static void cleanUp() {
+        File[] files = new File(configDir).listFiles();
+        if (files == null) return;
+        for (File file : files) {
+            if (file.getName().startsWith("temp")) {
+                if (!file.delete()) file.deleteOnExit();
+            }
+        }
     }
 
 }
