@@ -18,7 +18,7 @@ public class FileChooser {
 
     public static String getDefaultFileName() {
         return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(),
-                Main.getCurrentMonthName(), Main.getYear());
+                getGermanMonth(Main.getCurrentMonthNumber()), Main.getYear());
     }
 
     public static File chooseFile(String title) {
@@ -77,6 +77,29 @@ public class FileChooser {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Gets the german name for a month from 1-12.
+     * @param monthName The month number, from 1-12.
+     * @return The name of the month.
+     */
+    private static String getGermanMonth(int monthName) {
+        return switch (monthName) {
+            case 1 -> "Januar";
+            case 2 -> "Februar";
+            case 3 -> "März";
+            case 4 -> "April";
+            case 5 -> "Mai";
+            case 6 -> "Juni";
+            case 7 -> "Juli";
+            case 8 -> "August";
+            case 9 -> "September";
+            case 10 -> "Oktober";
+            case 11 -> "November";
+            case 12 -> "Dezember";
+            default -> "unbekannt";
+        };
     }
 
 }

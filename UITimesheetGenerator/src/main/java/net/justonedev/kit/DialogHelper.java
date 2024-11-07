@@ -443,9 +443,9 @@ public class DialogHelper {
                     long totalMinutes = workDuration.toMinutes();
                     long breakMinutes = breakTime.getHour() * 60 + breakTime.getMinute();
                     if (totalMinutes >= 540 && breakMinutes < 60) {
-                        durationWarningLabel.setText("Break must be at least 1 hour for work of 8 hours or more");
+                        durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
                     } else if (totalMinutes >= 360 && breakMinutes < 30) {
-                        durationWarningLabel.setText("Break must be at least 30 minutes for work over 4 hours");
+                        durationWarningLabel.setText("Break must be at least 30 minutes for work over 6 hours");
                     } else {
                         durationWarningLabel.setText(" ");
                     }

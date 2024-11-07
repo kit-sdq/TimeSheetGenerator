@@ -118,10 +118,14 @@ public class MonthlySettingsBar extends JPanel {
         settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog());
     }
 
-    public String getSelectedMonth() {
+    public String getSelectedMonthName() {
         int index = monthSelector.getSelectedIndex();
         if (index < 0 || index >= monthSelector.getItemCount()) return "";
         return monthSelector.getItemAt(index);
+    }
+
+    public int getSelectedMonthNumber() {
+        return monthSelector.getSelectedIndex() + 1;
     }
 
     public String getYear() {

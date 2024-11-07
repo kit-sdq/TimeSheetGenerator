@@ -186,7 +186,11 @@ public class Main {
     }
 
     public static String getCurrentMonthName() {
-        return monthSettingsBar.getSelectedMonth();
+        return monthSettingsBar.getSelectedMonthName();
+    }
+
+    public static int getCurrentMonthNumber() {
+        return monthSettingsBar.getSelectedMonthNumber();
     }
 
     public static String getYear() {
