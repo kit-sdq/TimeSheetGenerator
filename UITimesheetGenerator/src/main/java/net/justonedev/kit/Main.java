@@ -4,6 +4,7 @@
  */
 package net.justonedev.kit;
 
+import net.justonedev.kit.fileexplorer.FileChooserType;
 import net.justonedev.kit.json.JSONHandler;
 import net.justonedev.kit.json.Month;
 
@@ -268,7 +269,7 @@ public class Main {
     }
 
     public static void openFile() {
-        File openFile = FileChooser.chooseFile("Open a file");
+        File openFile = FileChooser.chooseFile("Open a file", FileChooserType.MONTH_PATH);
         openFile(openFile);
     }
 
@@ -400,6 +401,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
+
+        File file;
+        if (args.length == 1) {
+            File f = new File(args[0]);
+            if (f.exists()) file = f;
+            else file = null;
+        } else {
+            file = null;
+        }
+
         JSONHandler.initialize();
         // Ensure the application uses the system look and feel
         SwingUtilities.invokeLater(() -> {
@@ -407,8 +418,9 @@ public class Main {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
                 new Main();
                 setHasUnsavedChanges(false);
+                if (file != null) openFile(file);
             } catch (Exception e) {
-                e.printStackTrace();
+                showError(e.getMessage());
             }
         });
     }

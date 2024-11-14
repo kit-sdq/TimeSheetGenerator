@@ -4,8 +4,15 @@
  */
 package net.justonedev.kit.json;
 
+import net.justonedev.kit.fileexplorer.FileChooserType;
+
+import java.io.File;
+
 public class OtherSettings {
     private boolean addSignature;
+    private String monthPath;
+    private String texPath;
+    private String pdfPath;
 
     public OtherSettings() { }
 
@@ -14,25 +21,50 @@ public class OtherSettings {
     public boolean getAddSignature() { return addSignature; }
     public void setAddSignature(boolean addSignature) { this.addSignature = addSignature; }
 
-    /*
+    public String getMonthPath() { return monthPath; }
+    public void setMonthPath(String openMonthPath) { this.monthPath = openMonthPath; save(); }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getTexPath() { return texPath; }
+    public void setTexPath(String texPath) { this.texPath = texPath; save(); }
 
-    public int getStaffId() { return staffId; }
-    public void setStaffId(int staffId) { this.staffId = staffId; }
+    public String getPdfPath() { return pdfPath; }
+    public void setPdfPath(String pdfPath) { this.pdfPath = pdfPath; save(); }
 
-    public String getDepartment() { return department; }
-    public void setDepartment(String department) { this.department = department; }
+    public void setPath(FileChooserType type, File selectedFile) {
+        String folderPath;
+        if (selectedFile == null) folderPath = "";
+        else folderPath = selectedFile.getParent();
+        switch (type) {
+            case MONTH_PATH -> setMonthPath(folderPath);
+            case TEX_PATH -> setTexPath(folderPath);
+            case PDF_PATH -> setPdfPath(folderPath);
+        }
+    }
 
-    public String getWorkingTime() { return workingTime; }
-    public void setWorkingTime(String workingTime) { this.workingTime = workingTime; }
+    public File getPath(FileChooserType type) {
+        String pathStr = switch (type) {
+            case MONTH_PATH -> getMonthPath();
+            case TEX_PATH -> getTexPath();
+            case PDF_PATH -> getPdfPath();
+        };
+        // If Pdf path is empty but tex isn't, use tex path for pdf default and vice versa
+        if (pathStr == null || pathStr.isEmpty()) {
+            if (type == FileChooserType.PDF_PATH) {
+                pathStr = getTexPath();
+                if (pathStr == null || pathStr.isEmpty()) return null;
+            } else if (type == FileChooserType.TEX_PATH) {
+                pathStr = getPdfPath();
+                if (pathStr == null || pathStr.isEmpty()) return null;
+            } else {
+                return null;
+            }
+        }
+        File pathFile = new File(pathStr);
+        if (!pathFile.exists()) return null;
+        return pathFile;
+    }
 
-    public double getWage() { return wage; }
-    public void setWage(double wage) { this.wage = wage; }
-
-    public String getWorkingArea() { return workingArea; }
-    public void setWorkingArea(String workingArea) { this.workingArea = workingArea; }
-
-     */
+    public void save() {
+        JSONHandler.saveOtherSettings(this);
+    }
 }

@@ -4,12 +4,16 @@
  */
 package net.justonedev.kit;
 
+import net.justonedev.kit.fileexplorer.FileChooserType;
 import net.justonedev.kit.json.JSONHandler;
 import net.justonedev.kit.json.Month;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class FileChooser {
 
@@ -21,14 +25,30 @@ public class FileChooser {
                 getGermanMonth(Main.getCurrentMonthNumber()), Main.getYear());
     }
 
-    public static File chooseFile(String title) {
-        JFileChooser fileChooser = new JFileChooser();
+    public static File chooseFile(String title, FileChooserType chooserType) {
+        if (false && System.getProperty("os.name").toLowerCase().contains("win")) {
+            return chooseFileWindows(title);
+        } else {
+            return chooseFileSwing(title, chooserType);
+        }
+    }
+
+    private static File chooseFileWindows(String title) {
+        return null;
+    }
+
+    private static File chooseFileSwing(String title, FileChooserType chooserType) {
+        JFileChooser fileChooser = getFileChooser(chooserType);
+
+
         fileChooser.setDialogTitle(title);
 
         int userSelection = fileChooser.showOpenDialog(null);
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
-            return fileChooser.getSelectedFile();
+            File file = fileChooser.getSelectedFile();
+            JSONHandler.otherSettings.setPath(chooserType, file);
+            return file;
         } else {
             return null;
         }
@@ -37,16 +57,16 @@ public class FileChooser {
     public static File chooseCreateJSONFile(String title) {
         String month = Main.getCurrentMonthName();
         if (month.isBlank()) month = "month";
-        return chooseCreateFile(title, "%s%s".formatted(month, Main.getYear()), "json", "JSON Files (*.json)");
+        return chooseCreateFile(title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, Main.getYear()), "json", "JSON Files (*.json)");
     }
     public static File chooseCreateTexFile(String title) {
-        return chooseCreateFile(title, getDefaultFileName(), "tex", "LaTeX Files (*.tex)");
+        return chooseCreateFile(title, FileChooserType.TEX_PATH, getDefaultFileName(), "tex", "LaTeX Files (*.tex)");
     }
     public static File chooseCreatePDFFile(String title) {
-        return chooseCreateFile(title, getDefaultFileName(), "pdf", "PDF Files (*.pdf)");
+        return chooseCreateFile(title, FileChooserType.PDF_PATH, getDefaultFileName(), "pdf", "PDF Files (*.pdf)");
     }
-    public static File chooseCreateFile(String title, String defaultFileName, String extension, String extensionDescription) {
-        JFileChooser fileChooser = new JFileChooser();
+    public static File chooseCreateFile(String title, FileChooserType chooserType, String defaultFileName, String extension, String extensionDescription) {
+        JFileChooser fileChooser = getFileChooser(chooserType);
         fileChooser.setDialogTitle(title);
 
         // Suggest a default file name
@@ -73,6 +93,7 @@ public class FileChooser {
                 }
             }
 
+            JSONHandler.otherSettings.setPath(chooserType, fileToSave);
             return fileToSave;
         } else {
             return null;
@@ -100,6 +121,14 @@ public class FileChooser {
             case 12 -> "Dezember";
             default -> "unbekannt";
         };
+    }
+
+    private static JFileChooser getFileChooser(FileChooserType chooserType) {
+        JFileChooser fileChooser = new JFileChooser();
+        File parent = JSONHandler.otherSettings.getPath(chooserType);
+        if (parent == null) fileChooser = new JFileChooser();
+        else fileChooser = new JFileChooser(parent);
+        return fileChooser;
     }
 
 }
