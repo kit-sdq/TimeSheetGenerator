@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,8 +55,8 @@ public class MiLoGCheckerValidWorkingDaysTest {
 		TimeSpan start = new TimeSpan(0, 0);
 		TimeSpan end = new TimeSpan(0, 0);
 		TimeSpan pause = new TimeSpan(0, 0);
-		YearMonth yearMonth = YearMonth.of(2019, Month.NOVEMBER);
-		LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 22); // Friday, 22. November 2019, no Holiday in BW Germany
+		YearMonth yearMonth = YearMonth.of(2024, Month.NOVEMBER);
+		LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 22); // Friday, 22. November 2024, no Holiday in BW Germany
 
 		//// Checker initialization
 		Entry entry = new Entry("Test", date, start, end, pause, false);
@@ -73,12 +73,12 @@ public class MiLoGCheckerValidWorkingDaysTest {
 	}
 
 	@Test
-	public void testNewYearsDay2019() throws CheckerException {
+	public void testNewYearsDay2024() throws CheckerException {
 		//// Test values
 		TimeSpan start = new TimeSpan(0, 0);
 		TimeSpan end = new TimeSpan(0, 0);
 		TimeSpan pause = new TimeSpan(0, 0);
-		YearMonth yearMonth = YearMonth.of(2019, Month.JANUARY);
+		YearMonth yearMonth = YearMonth.of(2024, Month.JANUARY);
 		LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1); // New years day: Holiday in BW Germany
 
 		//// Checker initialization
@@ -99,12 +99,12 @@ public class MiLoGCheckerValidWorkingDaysTest {
 	}
 
 	@Test
-	public void testChristmas2020() throws CheckerException {
+	public void testChristmas2024() throws CheckerException {
 		//// Test values
 		TimeSpan start = new TimeSpan(0, 0);
 		TimeSpan end = new TimeSpan(0, 0);
 		TimeSpan pause = new TimeSpan(0, 0);
-		YearMonth yearMonth = YearMonth.of(2020, Month.DECEMBER);
+		YearMonth yearMonth = YearMonth.of(2024, Month.DECEMBER);
 		LocalDate date = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 25);
 
 		//// Checker initialization
@@ -159,7 +159,7 @@ public class MiLoGCheckerValidWorkingDaysTest {
 	public void testRandomDayBW() throws CheckerException, HolidayFetchException {
 		//// Random
 		Random rand = new Random();
-		int randYear = (rand.nextInt(40) + 1990);
+		int randYear = 2024;
 		int randMonth = (rand.nextInt(12) + 1);
 		int randDay = (rand.nextInt(28) + 1); // To guarantee that the date exists. It is a day between 1 and 28 incl.
 
@@ -207,14 +207,14 @@ public class MiLoGCheckerValidWorkingDaysTest {
 		TimeSpan start0 = new TimeSpan(0, 0);
 		TimeSpan end0 = new TimeSpan(0, 0);
 		TimeSpan pause0 = new TimeSpan(0, 0);
-		YearMonth yearMonth0 = YearMonth.of(2020, Month.JANUARY);
+		YearMonth yearMonth0 = YearMonth.of(2024, Month.JANUARY);
 		LocalDate date0 = LocalDate.of(yearMonth0.getYear(), yearMonth0.getMonthValue(), 1);
 		Entry entry0 = new Entry("Test", date0, start0, end0, pause0, false);
 
 		TimeSpan start1 = new TimeSpan(0, 0);
 		TimeSpan end1 = new TimeSpan(0, 0);
 		TimeSpan pause1 = new TimeSpan(0, 0);
-		YearMonth yearMonth1 = YearMonth.of(2020, Month.JANUARY);
+		YearMonth yearMonth1 = YearMonth.of(2024, Month.JANUARY);
 		LocalDate date1 = LocalDate.of(yearMonth1.getYear(), yearMonth1.getMonthValue(), 6);
 		Entry entry1 = new Entry("Test", date1, start1, end1, pause1, false);
 
