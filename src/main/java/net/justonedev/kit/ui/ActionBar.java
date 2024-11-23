@@ -40,11 +40,11 @@ public class ActionBar extends JPanel {
         buttonPanel.add(duplicateButton);
 
         editButton = new JButton("Edit");
-        editButton.setPreferredSize(new Dimension(50, 50));
+        editButton.setPreferredSize(new Dimension(60, 50));
         buttonPanel.add(editButton);
 
-        removeButton = new JButton("-");
-        removeButton.setPreferredSize(new Dimension(50, 50));
+        removeButton = new JButton("Remove");
+        removeButton.setPreferredSize(new Dimension(90, 50));
         buttonPanel.add(removeButton);
 
         compileButton = new JButton("Compile to Tex");
