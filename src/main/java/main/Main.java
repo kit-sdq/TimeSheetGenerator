@@ -34,6 +34,13 @@ public class Main {
 	 * @param args command line arguments that are passed to the apache cli library
 	 */
 	public static void main(String[] args) {
+
+		// If no arguments or a valid file was given, run UI instead
+		if (args.length == 0 || new File(args[0]).exists()) {
+			net.justonedev.kit.ui.Main.main(args);
+			return;
+		}
+
 		// Initialize and parse user input
 		UserInput userInput = new UserInput(args);
 		Request request;

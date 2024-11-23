@@ -2,7 +2,7 @@
  * Licensed under the MIT License (MIT)
  * Copyright (c) 2024 Benjamin Claus
  */
-package net.justonedev.kit;
+package net.justonedev.kit.ui;
 
 import net.justonedev.kit.json.Month;
 

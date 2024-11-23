@@ -4,7 +4,7 @@
  */
 package net.justonedev.kit.export;
 
-import net.justonedev.kit.Main;
+import net.justonedev.kit.ui.Main;
 import net.justonedev.kit.json.JSONHandler;
 
 import java.io.File;

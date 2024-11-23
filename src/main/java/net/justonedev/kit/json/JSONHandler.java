@@ -6,9 +6,9 @@ package net.justonedev.kit.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import net.justonedev.kit.Main;
-import net.justonedev.kit.MonthlySettingsBar;
-import net.justonedev.kit.TimesheetEntry;
+import net.justonedev.kit.ui.Main;
+import net.justonedev.kit.ui.MonthlySettingsBar;
+import net.justonedev.kit.ui.TimesheetEntry;
 
 import javax.swing.*;
 import java.io.File;

@@ -2,18 +2,14 @@
  * Licensed under the MIT License (MIT)
  * Copyright (c) 2024 Benjamin Claus
  */
-package net.justonedev.kit;
+package net.justonedev.kit.ui;
 
 import net.justonedev.kit.fileexplorer.FileChooserType;
 import net.justonedev.kit.json.JSONHandler;
-import net.justonedev.kit.json.Month;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class FileChooser {
 
