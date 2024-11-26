@@ -1,5 +1,4 @@
-/* Licensed under MIT 2023.
- * Modifications (c) 2024 Benjamin Claus */
+/* Licensed under MIT 2023-2024. */
 package main;
 
 import java.io.File;
@@ -37,7 +36,7 @@ public class Main {
 
 		// If no arguments or a valid file was given, run UI instead
 		if (args.length == 0 || new File(args[0]).exists()) {
-			net.justonedev.kit.ui.Main.main(args);
+			ui.Main.main(args);
 			return;
 		}
 
@@ -128,15 +127,18 @@ public class Main {
 	}
 
 	/**
-	 * Addendum to the timesheet generator. This method only validated the contents of a given timesheet file.
-	 * If the given file, for any reason, is not a valid timesheet, this method returns an optional containing
-	 * the error message. If it is, this method will return an empty optional.
+	 * Addendum to the timesheet generator. This method only validated the contents
+	 * of a given timesheet file. If the given file, for any reason, is not a valid
+	 * timesheet, this method returns an optional containing the error message. If
+	 * it is, this method will return an empty optional.
+	 * 
 	 * @param globalFile The global.json file.
-	 * @param monthFile The month.json file.
+	 * @param monthFile  The month.json file.
 	 * @return An optional of the error message.
 	 */
 	public static Optional<String> validateTimesheet(File globalFile, File monthFile) {
-		if (globalFile == null || monthFile == null) return Optional.of("The global or month file were null. Try saving.");
+		if (globalFile == null || monthFile == null)
+			return Optional.of("The global or month file were null. Try saving.");
 		String globalStr, monthStr;
 		try {
 			globalStr = FileController.readFileToString(globalFile);
