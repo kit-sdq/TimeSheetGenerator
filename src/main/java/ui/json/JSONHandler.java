@@ -57,7 +57,6 @@ public class JSONHandler {
 			System.out.println("Loaded Global Settings.");
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -69,7 +68,6 @@ public class JSONHandler {
 			System.out.println("Saved global settings.");
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -80,7 +78,6 @@ public class JSONHandler {
 			System.out.println("Loaded Global Settings.");
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -92,7 +89,6 @@ public class JSONHandler {
 			System.out.println("Saved global settings.");
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -111,7 +107,6 @@ public class JSONHandler {
 			System.out.println("Year: " + month.getYear() + ", Month: " + month.getMonth());
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -146,7 +141,6 @@ public class JSONHandler {
 			System.out.println("Saved month.");
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 		}
 	}
 
@@ -156,10 +150,12 @@ public class JSONHandler {
 			f = new File(configDir, "/temp-%s.json".formatted(UUID.randomUUID()));
 		} while (f.exists());
 		try {
-			f.createNewFile();
+			if (!f.createNewFile()) {
+				// Show error in main and return using catch block
+				throw new IOException("Failed to create temporary json file %s.".formatted(f.getAbsolutePath()));
+			}
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 			return null;
 		}
 		saveMonth(f, settingsBar, entries);
@@ -178,12 +174,18 @@ public class JSONHandler {
 		if (globalConfigExists())
 			return;
 		try {
+			File folder = new File(configDir);
+			if (!folder.exists() && !folder.mkdirs()) {
+				// Show error in main and return using catch block
+				throw new IOException("Failed to create folder %s for the global configuration file.".formatted(configDir));
+			};
 			File f = getConfigFile();
-			new File(configDir).mkdirs();
-			f.createNewFile();
+			if (!f.createNewFile()) {
+				// Show error in main and return using catch block
+				throw new IOException("Failed to create global configuration file %s.".formatted(f.getAbsolutePath()));
+			}
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 			return;
 		}
 
@@ -211,11 +213,17 @@ public class JSONHandler {
 			return;
 		try {
 			File f = getOtherSettingsFile();
-			new File(configDir).mkdirs();
-			f.createNewFile();
+			File folder = new File(configDir);
+			if (!folder.exists() && !folder.mkdirs()) {
+				// Show error in main and return using catch block
+				throw new IOException("Failed to access folder %s for the global settings file.".formatted(configDir));
+			};
+			if (!f.createNewFile()) {
+				// Show error in main and return using catch block
+				throw new IOException("Failed to create global settings file %s.".formatted(f.getAbsolutePath()));
+			}
 		} catch (IOException e) {
 			Main.showError(ERROR.formatted(e.getMessage()));
-			e.printStackTrace();
 			return;
 		}
 

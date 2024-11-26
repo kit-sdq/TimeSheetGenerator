@@ -460,7 +460,7 @@ public class DialogHelper {
 				// Check break time requirements, (of course only when no vacation)
 				if (!isVacation.isSelected()) {
 					long totalMinutes = workDuration.toMinutes();
-					long breakMinutes = breakTime.getHour() * 60 + breakTime.getMinute();
+					long breakMinutes = breakTime.getHour() * 60L + breakTime.getMinute();
 					if (totalMinutes >= 540 && breakMinutes < 60) {
 						durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
 					} else if (totalMinutes >= 360 && breakMinutes < 30) {

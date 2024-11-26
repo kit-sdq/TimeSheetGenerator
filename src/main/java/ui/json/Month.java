@@ -97,7 +97,7 @@ public class Month {
 		return schema;
 	}
 
-	public void setSchema(String action) {
+	public void setSchema(String schema) {
 		this.schema = schema;
 	}
 
