@@ -4,6 +4,7 @@ package ui.json;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+// TODO: Why a custom serializer?
 @JsonSerialize(using = GlobalSerialzer.class)
 public class Global {
 	@JsonProperty("$schema")
@@ -16,7 +17,7 @@ public class Global {
 	private String workingArea;
 
 	public Global() {
-		schema = "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/master/examples/schemas/global.json";
+		schema = "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/main/examples/schemas/global.json";
 	}
 
 	// Constructors, Getters, and Setters
@@ -77,6 +78,7 @@ public class Global {
 		this.workingArea = workingArea;
 	}
 
+	// TODO Naming & Docs
 	public String getFormattedName() {
 		if (!getName().contains(" ")) {
 			return getName();
@@ -95,6 +97,7 @@ public class Global {
 	 * 
 	 * @return Formatted name but for file exporting.
 	 */
+	// TODO Naming
 	public String getFormattedName2() {
 		if (!getName().contains(" ")) {
 			return getName();

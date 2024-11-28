@@ -17,23 +17,13 @@ import java.util.Optional;
 
 public class PDFCompiler {
 
-	private static PDFCompiler singleton;
-
 	private PDFCompiler() {
+		throw new IllegalAccessError();
 	}
 
-	private static PDFCompiler getSingleton() {
-		if (singleton == null)
-			singleton = new PDFCompiler();
-		return singleton;
-	}
-
-	static Optional<String> compileToPDF(Global global, Month month, File targetFile) {
-		return getSingleton()._compileToPDF(global, month, targetFile);
-	}
-
-	private Optional<String> _compileToPDF(Global global, Month month, File targetFile) {
-		try (InputStream templateStream = getClass().getResourceAsStream("/pdf/template.pdf")) {
+	public static Optional<String> compileToPDF(Global global, Month month, File targetFile) {
+		try (InputStream templateStream = new Object() {
+		}.getClass().getResourceAsStream("/pdf/template.pdf")) {
 			if (templateStream == null) {
 				return Optional.of("Template PDF not found in resources.");
 			}
@@ -46,7 +36,7 @@ public class PDFCompiler {
 		}
 	}
 
-	private Optional<String> writeToPDF(PDDocument document, Global global, Month month, File targetFile) throws IOException {
+	private static Optional<String> writeToPDF(PDDocument document, Global global, Month month, File targetFile) throws IOException {
 
 		/*
 		 * This code is for if, theoretically, we'd need more pages. As far as I know,

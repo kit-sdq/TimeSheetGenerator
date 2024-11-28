@@ -22,6 +22,7 @@ public class Main {
 	private static File currentOpenFile;
 	public static boolean hasUnsavedChanges = false;
 
+	// TODO Remove static from these fields.
 	private static JFrame frame;
 	private static JPanel listPanel;
 	private static JList<TimesheetEntry> itemList;
@@ -385,43 +386,28 @@ public class Main {
 		return workedTime;
 	}
 
-	public static void showSimpleDialog(String message) {
-		JOptionPane.showMessageDialog(frame, message, "Information", JOptionPane.INFORMATION_MESSAGE);
-	}
-
 	public static void showError(String error) {
 		JOptionPane.showMessageDialog(frame, error, "Unknown error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	private static boolean showOKCancelDialog(String title, String message) {
-		// Result:
-		// OK: 0
-		// Cancel: 2
-		// Close via X or Esc: -1
-		return 0 == JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
+		int result = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
+		return JOptionPane.OK_OPTION == result;
 	}
 
 	public static void main(String[] args) {
 
-		File file;
-		if (args.length == 1) {
-			File f = new File(args[0]);
-			if (f.exists())
-				file = f;
-			else
-				file = null;
-		} else {
-			file = null;
-		}
+		File file = args.length == 1 ? new File(args[0]) : null;
 
 		JSONHandler.initialize();
 		// Ensure the application uses the system look and feel
 		SwingUtilities.invokeLater(() -> {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				// TODO: Refactor remove new Main()
 				new Main();
 				setHasUnsavedChanges(false);
-				if (file != null)
+				if (file != null && file.exists())
 					openFile(file);
 			} catch (Exception e) {
 				showError(e.getMessage());
