@@ -1,15 +1,14 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package i18n;
 
-import static org.junit.jupiter.api.Assertions.*;
+import i18n.ResourceHandler.ResourceHandlerInstance;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Locale;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import i18n.ResourceHandler.ResourceHandlerInstance;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ResourceHandlerTest {
 

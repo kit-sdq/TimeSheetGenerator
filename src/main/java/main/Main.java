@@ -1,17 +1,7 @@
 /* Licensed under MIT 2023-2024. */
 package main;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Optional;
-
-import javax.swing.JOptionPane;
-
-import checker.CheckerError;
-import checker.CheckerException;
-import checker.CheckerReturn;
-import checker.IChecker;
-import checker.MiLoGChecker;
+import checker.*;
 import data.TimeSheet;
 import i18n.ResourceHandler;
 import io.FileController;
@@ -20,6 +10,11 @@ import io.LatexGenerator;
 import main.UserInput.Request;
 import parser.ParseException;
 import parser.Parser;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Main class of the application containing the main method as entry point for

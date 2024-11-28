@@ -1,21 +1,15 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import data.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
-
-import data.Employee;
-import data.Entry;
-import data.Profession;
-import data.TimeSheet;
-import data.TimeSpan;
-import data.WorkingArea;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MiLoGCheckerDayTimeExceedanceTest {
 
@@ -68,7 +62,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
 				WORKINGDAY_VALID);
 
 		//// Assertions
-		assertTrue(MiLoGChecker.getWorkdayMaxWorkingTime().compareTo(entry.getWorkingTime()) == 0);
+		assertEquals(0, MiLoGChecker.getWorkdayMaxWorkingTime().compareTo(entry.getWorkingTime()));
 		assertFalse(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(error)));
 		assertEquals(CheckerReturn.VALID, checker.getResult());
 	}
@@ -238,7 +232,7 @@ public class MiLoGCheckerDayTimeExceedanceTest {
 		assertEquals(CheckerReturn.INVALID, checker.getResult());
 
 		//// Assertions: Uniqueness
-		assertTrue(checker.getErrors().stream().filter(item -> item.getErrorMessage().equals(error)).count() == 1L);
+		assertEquals(1L, checker.getErrors().stream().filter(item -> item.getErrorMessage().equals(error)).count());
 	}
 
 	@Test

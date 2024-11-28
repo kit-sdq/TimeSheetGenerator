@@ -2,7 +2,6 @@
 package main;
 
 import i18n.ResourceHandler;
-
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 

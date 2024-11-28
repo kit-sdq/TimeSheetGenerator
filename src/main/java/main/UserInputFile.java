@@ -1,9 +1,9 @@
 /* Licensed under MIT 2023-2024. */
 package main;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import i18n.ResourceHandler;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Represents a type of file that is specified by the user

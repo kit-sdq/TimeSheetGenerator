@@ -1,22 +1,16 @@
 /* Licensed under MIT 2023-2024. */
 package main;
 
+import i18n.ResourceHandler;
+import org.apache.commons.cli.*;
+import org.apache.commons.io.FilenameUtils;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Properties;
-
-import javax.swing.JFileChooser;
-
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.io.FilenameUtils;
-
-import i18n.ResourceHandler;
 
 /**
  * Represents the user input from the command line and the GUI

@@ -1,19 +1,18 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
+import checker.holiday.Holiday;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-
-import checker.holiday.Holiday;
 import parser.IHolidayParser;
 import parser.ParseException;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * A JsonHolidayParser provides the functionality to parse the elements
@@ -21,7 +20,7 @@ import parser.ParseException;
  */
 public class JsonHolidayParser implements IHolidayParser {
 
-  private static final String SCHOOL_HOLIDAY_NOTE = "schulfrei";
+	private static final String SCHOOL_HOLIDAY_NOTE = "schulfrei";
 	private final String json;
 
 	private HolidayMapJson holidayMap; // caching
@@ -51,8 +50,8 @@ public class JsonHolidayParser implements IHolidayParser {
 			HolidayMapJson holidayMap = parseJson();
 
 			return holidayMap.getHolidays().entrySet().stream()
-          .filter(e -> e.getValue().getNote() == null || !e.getValue().getNote().contains(SCHOOL_HOLIDAY_NOTE))
-          .map(e -> new Holiday(e.getValue().getDate(), e.getKey())).collect(Collectors.toList());
+					.filter(e -> e.getValue().getNote() == null || !e.getValue().getNote().contains(SCHOOL_HOLIDAY_NOTE))
+					.map(e -> new Holiday(e.getValue().getDate(), e.getKey())).collect(Collectors.toList());
 		} catch (JsonProcessingException e) {
 			throw new ParseException(e.getMessage());
 		}

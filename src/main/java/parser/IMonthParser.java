@@ -1,11 +1,11 @@
 /* Licensed under MIT 2023-2024. */
 package parser;
 
-import java.time.YearMonth;
-
 import data.Entry;
 import data.TimeSheet;
 import data.TimeSpan;
+
+import java.time.YearMonth;
 
 /**
  * A month parser provides the functionality of parsing month-related

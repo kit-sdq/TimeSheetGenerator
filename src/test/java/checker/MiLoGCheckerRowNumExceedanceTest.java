@@ -1,21 +1,16 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import data.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
-
-import data.Employee;
-import data.Entry;
-import data.TimeSheet;
-import data.Profession;
-import data.TimeSpan;
-import data.WorkingArea;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MiLoGCheckerRowNumExceedanceTest {
 
@@ -69,7 +64,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
 		checker.checkRowNumExceedance();
 
 		//// Assertions
-		assertTrue(numberOfEntries == timeSheet.getEntries().size());
+		assertEquals(numberOfEntries, timeSheet.getEntries().size());
 		assertEquals(CheckerReturn.VALID, checker.getResult());
 		assertTrue(checker.getErrors().isEmpty());
 	}
@@ -98,10 +93,10 @@ public class MiLoGCheckerRowNumExceedanceTest {
 		checker.checkRowNumExceedance();
 
 		//// Assertions
-		assertTrue(numberOfEntries == timeSheet.getEntries().size());
+		assertEquals(numberOfEntries, timeSheet.getEntries().size());
 		assertEquals(CheckerReturn.INVALID, checker.getResult());
-		assertTrue(checker.getErrors().stream()
-				.anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE.getErrorMessage(CHECKER_ENTRY_MAX, numberOfEntries - CHECKER_ENTRY_MAX))));
+		assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(
+				MiLoGChecker.MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE.getErrorMessage(CHECKER_ENTRY_MAX, numberOfEntries - CHECKER_ENTRY_MAX))));
 	}
 
 	@Test
@@ -131,11 +126,11 @@ public class MiLoGCheckerRowNumExceedanceTest {
 		checker.checkRowNumExceedance();
 
 		//// Assertions
-		assertTrue(numberOfEntries == timeSheet.getEntries().size());
+		assertEquals(numberOfEntries, timeSheet.getEntries().size());
 		if (timeSheet.getEntries().size() > MiLoGChecker.getMaxEntries()) {
 			assertEquals(CheckerReturn.INVALID, checker.getResult());
-			assertTrue(checker.getErrors().stream()
-					.anyMatch(item -> item.getErrorMessage().equals(MiLoGChecker.MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE.getErrorMessage(CHECKER_ENTRY_MAX, numberOfEntries - CHECKER_ENTRY_MAX))));
+			assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(
+					MiLoGChecker.MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE.getErrorMessage(CHECKER_ENTRY_MAX, numberOfEntries - CHECKER_ENTRY_MAX))));
 		} else {
 			assertEquals(CheckerReturn.VALID, checker.getResult());
 			assertTrue(checker.getErrors().isEmpty());

@@ -1,9 +1,9 @@
 /* Licensed under MIT 2023-2024. */
 package checker;
 
-import java.util.Collection;
-
 import data.TimeSheet;
+
+import java.util.Collection;
 
 /**
  * A checker is able to check the validity of an {@link TimeSheet}.

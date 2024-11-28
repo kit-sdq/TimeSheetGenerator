@@ -1,15 +1,15 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class EntryArithmeticTest {
 
-	private static LocalDate DATE_NOW = LocalDate.now();
+	private static final LocalDate DATE_NOW = LocalDate.now();
 
 	@Test
 	public void testGetWorkingTime1() {

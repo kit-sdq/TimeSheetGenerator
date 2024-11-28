@@ -1,10 +1,10 @@
 /* Licensed under MIT 2023-2024. */
 package io;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import data.Entry;
 import data.TimeSheet;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * A generator is able to generate a document filled with values coming from a

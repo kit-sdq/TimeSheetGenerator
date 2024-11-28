@@ -1,17 +1,16 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import data.Entry;
 import data.TimeSpan;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import parser.IMonthParser;
 import parser.ParseException;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsonMonthParserEntryTest {
 

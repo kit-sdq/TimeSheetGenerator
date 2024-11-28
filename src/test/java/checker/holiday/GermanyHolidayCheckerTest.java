@@ -1,7 +1,5 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker.holiday;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +7,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GermanyHolidayCheckerTest {
 
@@ -29,7 +29,7 @@ public class GermanyHolidayCheckerTest {
 		IHolidayChecker holidayChecker = new GermanyHolidayChecker(localDate.getYear(), state);
 
 		//// Assertions
-		assertEquals(true, holidayChecker.isHoliday(localDate));
+		assertTrue(holidayChecker.isHoliday(localDate));
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class GermanyHolidayCheckerTest {
 		IHolidayChecker holidayChecker = new GermanyHolidayChecker(localDate.getYear(), state);
 
 		//// Assertions
-		assertEquals(true, holidayChecker.isHoliday(localDate));
+		assertTrue(holidayChecker.isHoliday(localDate));
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class GermanyHolidayCheckerTest {
 		IHolidayChecker holidayChecker = new GermanyHolidayChecker(localDate.getYear(), state);
 
 		//// Assertions
-		assertEquals(true, holidayChecker.isHoliday(localDate));
+		assertTrue(holidayChecker.isHoliday(localDate));
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class GermanyHolidayCheckerTest {
 		for (LocalDate holidayDate : holidayDates) {
 			//// Assertions
 			assertFalse(holidays.isEmpty());
-			assertEquals(true, holidayChecker.isHoliday(holidayDate));
+			assertTrue(holidayChecker.isHoliday(holidayDate));
 		}
 	}
 

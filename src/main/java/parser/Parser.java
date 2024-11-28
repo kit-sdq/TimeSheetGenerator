@@ -1,14 +1,11 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser;
 
-import java.time.YearMonth;
-import data.Employee;
-import data.Entry;
-import data.TimeSheet;
-import data.Profession;
-import data.TimeSpan;
+import data.*;
 import parser.json.JsonGlobalParser;
 import parser.json.JsonMonthParser;
+
+import java.time.YearMonth;
 
 /**
  * A Parser provides the functionality to construct a {@link TimeSheet} with the

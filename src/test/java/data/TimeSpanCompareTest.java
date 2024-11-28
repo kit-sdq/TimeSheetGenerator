@@ -1,11 +1,11 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TimeSpanCompareTest {
 
@@ -58,9 +58,9 @@ public class TimeSpanCompareTest {
 		TimeSpan ts1 = new TimeSpan(hoursFst, minutesFst);
 		TimeSpan ts2 = new TimeSpan(hoursSnd, minutesSnd);
 
-		if (Integer.compare(hoursFst, hoursSnd) > 0) {
+		if (hoursFst > hoursSnd) {
 			assertEquals(ts1.compareTo(ts2), 1);
-		} else if (Integer.compare(hoursFst, hoursSnd) == 0) {
+		} else if (hoursFst == hoursSnd) {
 			assertEquals(ts1.compareTo(ts2), Integer.compare(minutesFst, minutesSnd));
 		} else {
 			assertEquals(ts1.compareTo(ts2), -1);

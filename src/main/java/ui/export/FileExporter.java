@@ -1,8 +1,8 @@
 /* Licensed under MIT 2024. */
 package ui.export;
 
-import ui.fileexplorer.FileChooser;
 import ui.Main;
+import ui.fileexplorer.FileChooser;
 import ui.json.JSONHandler;
 
 import java.io.File;

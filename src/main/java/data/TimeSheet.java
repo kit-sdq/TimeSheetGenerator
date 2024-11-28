@@ -1,13 +1,13 @@
 /* Licensed under MIT 2023-2024. */
 package data;
 
+import i18n.ResourceHandler;
+
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import i18n.ResourceHandler;
 
 /**
  * A time sheet represents a whole month of work done by an {@link Employee}.

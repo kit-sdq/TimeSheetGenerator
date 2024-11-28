@@ -1,18 +1,18 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
 
-import static org.junit.jupiter.api.Assertions.*;
+import checker.holiday.Holiday;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import parser.IHolidayParser;
+import parser.ParseException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import checker.holiday.Holiday;
-import parser.IHolidayParser;
-import parser.ParseException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JsonHolidayParserTest {
 

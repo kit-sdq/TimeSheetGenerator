@@ -1,9 +1,9 @@
 /* Licensed under MIT 2023-2024. */
 package data;
 
-import java.time.LocalDate;
-
 import i18n.ResourceHandler;
+
+import java.time.LocalDate;
 
 /**
  * An entry represents a continuous work interval of an {@link Employee}.

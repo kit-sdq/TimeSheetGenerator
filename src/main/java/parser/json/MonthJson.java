@@ -1,15 +1,14 @@
 /* Licensed under MIT 2023-2024. */
 package parser.json;
 
-import java.time.YearMonth;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import data.TimeSpan;
+
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 
 @JsonIgnoreProperties({ "$schema" })
 class MonthJson {

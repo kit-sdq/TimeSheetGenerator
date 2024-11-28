@@ -1,18 +1,17 @@
 /* Licensed under MIT 2023-2024. */
 package io;
 
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
-
 import data.Entry;
 import data.TimeSheet;
 import data.WorkingArea;
 import etc.ContextStringReplacer;
 import i18n.ResourceHandler;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * The LatexGenerator generates a LaTeX string based on a template and fills it

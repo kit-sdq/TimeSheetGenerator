@@ -1,9 +1,9 @@
 /* Licensed under MIT 2023-2024. */
 package parser;
 
-import java.util.Collection;
-
 import checker.holiday.Holiday;
+
+import java.util.Collection;
 
 /**
  * A holiday parser provides the functionality of parsing {@link Holiday

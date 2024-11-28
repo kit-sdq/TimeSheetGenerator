@@ -1,6 +1,10 @@
 /* Licensed under MIT 2023-2024. */
 package checker;
 
+import checker.holiday.GermanState;
+import checker.holiday.GermanyHolidayChecker;
+import checker.holiday.HolidayFetchException;
+import checker.holiday.IHolidayChecker;
 import data.Entry;
 import data.TimeSheet;
 import data.TimeSpan;
@@ -8,17 +12,7 @@ import i18n.ResourceHandler;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import checker.holiday.HolidayFetchException;
-import checker.holiday.IHolidayChecker;
-import checker.holiday.GermanState;
-import checker.holiday.GermanyHolidayChecker;
+import java.util.*;
 
 /**
  * The MiLoGChecker checks whether a {@link TimeSheet} instance is valid or not.

@@ -1,15 +1,14 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package etc;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.List;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import etc.ContextStringReplacer.ContextStringReplacerIterator;
 import etc.ContextStringReplacer.ContextStringReplacerIterator.ContextStringReplacement;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ContextStringReplacerTest {
 

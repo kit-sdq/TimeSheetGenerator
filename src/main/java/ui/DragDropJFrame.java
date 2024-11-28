@@ -3,8 +3,10 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.*;
-import java.awt.datatransfer.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
