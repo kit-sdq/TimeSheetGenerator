@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package i18n;
 
 import java.text.DateFormat;
@@ -66,7 +66,7 @@ public class ResourceHandler {
 
 	}
 
-	private static ResourceHandlerInstance instance = new ResourceHandlerInstance(DEFAULT_MESSAGE_BUNDLE_PATH);
+	private static final ResourceHandlerInstance instance = new ResourceHandlerInstance(DEFAULT_MESSAGE_BUNDLE_PATH);
 
 	/**
 	 * Get the currently used locale.

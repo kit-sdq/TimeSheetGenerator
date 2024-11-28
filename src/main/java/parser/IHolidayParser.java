@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser;
 
 import java.util.Collection;
@@ -17,6 +17,6 @@ public interface IHolidayParser {
 	 * @return A collection of holidays.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public Collection<Holiday> getHolidays() throws ParseException;
+	Collection<Holiday> getHolidays() throws ParseException;
 
 }

@@ -21,7 +21,6 @@ public class MonthlySettingsBar extends JPanel {
 	private final JComboBox<String> semesterSelector;
 	private final JTextField semesterTextField;
 	private final JLabel semesterTextFieldLabel;
-	private final JButton settingsButton;
 	private final JTimeField predTimeField;
 	private final JLabel succTimeValue;
 
@@ -79,20 +78,16 @@ public class MonthlySettingsBar extends JPanel {
 		this.add(timeCarryPanel, BorderLayout.CENTER);
 
 		// Right Side Button
-		settingsButton = new JButton("Global Settings");
+		JButton settingsButton = new JButton("Global Settings");
 		this.add(settingsButton, BorderLayout.EAST);
 
 		reset();
 
 		// Add Events
 
-		semesterSelector.addActionListener((l) -> {
-			updateSemesterView();
-		});
+		semesterSelector.addActionListener((l) -> updateSemesterView());
 
-		semesterTextField.addActionListener((l) -> {
-			updateSemesterView();
-		});
+		semesterTextField.addActionListener((l) -> updateSemesterView());
 
 		semesterTextField.addFocusListener(new FocusAdapter() {
 			@Override
@@ -182,7 +177,7 @@ public class MonthlySettingsBar extends JPanel {
 	private void updateSemesterView() {
 
 		// Catch invalid year on both occasions
-		int year = 0;
+		int year;
 		try {
 			year = Integer.parseInt(semesterTextField.getText().trim());
 		} catch (NumberFormatException ignored) {

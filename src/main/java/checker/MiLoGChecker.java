@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
 import data.Entry;
@@ -50,7 +50,7 @@ public class MiLoGChecker implements IChecker {
 		this.timeSheet = timeSheet;
 
 		this.result = CheckerReturn.VALID;
-		this.errors = Collections.synchronizedCollection(new ArrayList<CheckerError>());
+		this.errors = Collections.synchronizedCollection(new ArrayList<>());
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class MiLoGChecker implements IChecker {
 	 */
 	@Override
 	public Collection<CheckerError> getErrors() {
-		return new ArrayList<CheckerError>(errors);
+		return new ArrayList<>(errors);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class MiLoGChecker implements IChecker {
 	 */
 	protected void checkDayTimeExceedance() {
 		// This map contains all working days and their summed up working times.
-		Map<LocalDate, TimeSpan> workingTimeMap = new HashMap<LocalDate, TimeSpan>();
+		Map<LocalDate, TimeSpan> workingTimeMap = new HashMap<>();
 		for (Entry entry : timeSheet.getEntries()) {
 			if (!entry.isVacation()) {
 				// A check is performed whether a day contains more than one entry.
@@ -146,7 +146,7 @@ public class MiLoGChecker implements IChecker {
 	 */
 	protected void checkDayPauseTime() {
 		// This map contains all dates associated with their working times
-		HashMap<LocalDate, TimeSpan[]> workingDays = new HashMap<LocalDate, TimeSpan[]>();
+		HashMap<LocalDate, TimeSpan[]> workingDays = new HashMap<>();
 
 		for (Entry entry : timeSheet.getEntries()) {
 			if (!entry.isVacation()) {
@@ -224,7 +224,6 @@ public class MiLoGChecker implements IChecker {
 				if (holidayChecker.isHoliday(localDate)) {
 					errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_HOLIDAY, localDate));
 					result = CheckerReturn.INVALID;
-					continue;
 				}
 			} catch (HolidayFetchException e) {
 				throw new CheckerException(e.getMessage());
@@ -237,7 +236,7 @@ public class MiLoGChecker implements IChecker {
 	 */
 	protected void checkTimeOverlap() {
 		List<Entry> entries = timeSheet.getEntries();
-		if (entries.size() == 0) {
+		if (entries.isEmpty()) {
 			return;
 		}
 
@@ -339,7 +338,7 @@ public class MiLoGChecker implements IChecker {
 
 		private static final String messageKeyPrefix = "error.checker.";
 
-		private MiLoGCheckerErrorMessageProvider(String messageKey) {
+		MiLoGCheckerErrorMessageProvider(String messageKey) {
 			this.messageKey = messageKey;
 		}
 

@@ -104,7 +104,7 @@ public class Main {
 			if (userInput.isGui()) {
 				StringBuilder errorList = new StringBuilder();
 				for (CheckerError error : checker.getErrors()) {
-					errorList.append(error.getErrorMessage() + System.lineSeparator());
+					errorList.append(error.getErrorMessage()).append(System.lineSeparator());
 				}
 
 				JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
@@ -122,7 +122,6 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			System.exit(1);
-			return;
 		}
 	}
 

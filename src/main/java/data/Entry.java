@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
 import java.time.LocalDate;
@@ -10,11 +10,13 @@ import i18n.ResourceHandler;
  */
 public class Entry implements Comparable<Entry> {
 
-	private int MAX_HOUR_PER_DAY = 23;
+	private static final int MAX_HOUR_PER_DAY = 23;
 
 	private final String action;
 	private final LocalDate date;
-	private final TimeSpan start, end, pause;
+	private final TimeSpan start;
+	private final TimeSpan end;
+	private final TimeSpan pause;
 	private final boolean vacation;
 
 	/**
@@ -122,7 +124,7 @@ public class Entry implements Comparable<Entry> {
 	 */
 	@Override
 	public int compareTo(Entry o) {
-		if (this.date.compareTo(o.getDate()) != 0) {
+		if (!this.date.isEqual(o.getDate())) {
 			return this.date.compareTo(o.getDate());
 		} else {
 			return this.start.compareTo(o.getStart());
@@ -131,26 +133,12 @@ public class Entry implements Comparable<Entry> {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Entry)) {
+		if (!(other instanceof Entry otherEntry)) {
 			return false;
 		}
 
-		Entry otherEntry = (Entry) other;
-		if (!this.action.equals(otherEntry.action)) {
-			return false;
-		} else if (!this.date.equals(otherEntry.date)) {
-			return false;
-		} else if (!this.start.equals(otherEntry.start)) {
-			return false;
-		} else if (!this.end.equals(otherEntry.end)) {
-			return false;
-		} else if (!this.pause.equals(otherEntry.pause)) {
-			return false;
-		} else if (this.vacation != otherEntry.vacation) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.action.equals(otherEntry.action) && this.date.equals(otherEntry.date) && this.start.equals(otherEntry.start)
+				&& this.end.equals(otherEntry.end) && this.pause.equals(otherEntry.pause) && this.vacation == otherEntry.vacation;
 	}
 
 }

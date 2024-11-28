@@ -18,15 +18,9 @@ public class FileChooser {
 	}
 
 	public static File chooseFile(String title, FileChooserType chooserType) {
-		if (false && System.getProperty("os.name").toLowerCase().contains("win")) {
-			return chooseFileWindows(title);
-		} else {
-			return chooseFileSwing(title, chooserType);
-		}
-	}
+		// TODO Implement Windows Version ?
+		return chooseFileSwing(title, chooserType);
 
-	private static File chooseFileWindows(String title) {
-		return null;
 	}
 
 	private static File chooseFileSwing(String title, FileChooserType chooserType) {

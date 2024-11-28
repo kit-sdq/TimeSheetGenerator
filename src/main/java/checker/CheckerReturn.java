@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
 import data.TimeSheet;
@@ -15,5 +15,5 @@ public enum CheckerReturn {
 	/**
 	 * Returned if the {@link TimeSheet} to be checked is valid.
 	 */
-	VALID;
+	VALID
 }

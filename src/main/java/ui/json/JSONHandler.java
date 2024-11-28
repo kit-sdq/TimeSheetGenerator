@@ -125,9 +125,7 @@ public class JSONHandler {
 		Month month = new Month();
 		List<Month.Entry> monthEntries = new ArrayList<>();
 		settingsBar.fillMonth(month);
-		entries.elements().asIterator().forEachRemaining(entry -> {
-			monthEntries.add(entry.toMonthEntry());
-		});
+		entries.elements().asIterator().forEachRemaining(entry -> monthEntries.add(entry.toMonthEntry()));
 		month.setEntries(monthEntries);
 		return month;
 	}
@@ -178,7 +176,7 @@ public class JSONHandler {
 			if (!folder.exists() && !folder.mkdirs()) {
 				// Show error in main and return using catch block
 				throw new IOException("Failed to create folder %s for the global configuration file.".formatted(configDir));
-			};
+			}
 			File f = getConfigFile();
 			if (!f.createNewFile()) {
 				// Show error in main and return using catch block
@@ -217,7 +215,7 @@ public class JSONHandler {
 			if (!folder.exists() && !folder.mkdirs()) {
 				// Show error in main and return using catch block
 				throw new IOException("Failed to access folder %s for the global settings file.".formatted(configDir));
-			};
+			}
 			if (!f.createNewFile()) {
 				// Show error in main and return using catch block
 				throw new IOException("Failed to create global settings file %s.".formatted(f.getAbsolutePath()));

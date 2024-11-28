@@ -9,18 +9,10 @@ import java.awt.*;
 
 public class ActionBar extends JPanel {
 
-	private final JButton addButton;
-	private final JButton duplicateButton;
-	private final JButton editButton;
-	private final JButton removeButton;
-	private final JButton compileButton;
-	private final JButton printButton;
-
 	private final JLabel hoursWorkedLabel;
-
 	private static final String HOURS_FORMAT = "Total Time: %s/%s          ";
-
-	private final Font fontNormal, fontBold;
+	private final Font fontNormal;
+	private final Font fontBold;
 
 	public ActionBar() {
 		this.setPreferredSize(new Dimension(Main.getWidth(), 70));
@@ -28,27 +20,27 @@ public class ActionBar extends JPanel {
 
 		JPanel buttonPanel = new JPanel();
 
-		addButton = new JButton("+");
+		JButton addButton = new JButton("+");
 		addButton.setPreferredSize(new Dimension(50, 50));
 		buttonPanel.add(addButton);
 
-		duplicateButton = new JButton("Duplicate");
+		JButton duplicateButton = new JButton("Duplicate");
 		duplicateButton.setPreferredSize(new Dimension(90, 50));
 		buttonPanel.add(duplicateButton);
 
-		editButton = new JButton("Edit");
+		JButton editButton = new JButton("Edit");
 		editButton.setPreferredSize(new Dimension(60, 50));
 		buttonPanel.add(editButton);
 
-		removeButton = new JButton("Remove");
+		JButton removeButton = new JButton("Remove");
 		removeButton.setPreferredSize(new Dimension(90, 50));
 		buttonPanel.add(removeButton);
 
-		compileButton = new JButton("Compile to Tex");
+		JButton compileButton = new JButton("Compile to Tex");
 		compileButton.setPreferredSize(new Dimension(110, 50));
 		buttonPanel.add(compileButton);
 
-		printButton = new JButton("Print to PDF");
+		JButton printButton = new JButton("Print to PDF");
 		printButton.setPreferredSize(new Dimension(95, 50));
 		buttonPanel.add(printButton);
 

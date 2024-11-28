@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package main;
 
 import java.io.File;
@@ -119,6 +119,7 @@ public class UserInput {
 				}
 			}
 		} catch (IOException e) {
+			// Ignore exception
 		}
 
 		if (version == null) { // general error
@@ -224,7 +225,7 @@ public class UserInput {
 	 * Action a user requested through the command line arguments
 	 */
 	public enum Request {
-		HELP, VERSION, GENERATE;
+		HELP, VERSION, GENERATE
 	}
 
 }

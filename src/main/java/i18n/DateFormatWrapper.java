@@ -1,6 +1,7 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package i18n;
 
+import java.io.Serial;
 import java.text.DateFormat;
 import java.text.FieldPosition;
 import java.text.Format;
@@ -18,6 +19,7 @@ import java.util.Date;
  */
 class DateFormatWrapper extends Format {
 
+	@Serial
 	private static final long serialVersionUID = -7295077661315897883L;
 
 	/**

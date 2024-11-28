@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser;
 
 import java.time.YearMonth;
@@ -19,7 +19,7 @@ public interface IMonthParser {
 	 * @return A YearMonth.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public YearMonth getYearMonth() throws ParseException;
+	YearMonth getYearMonth() throws ParseException;
 
 	/**
 	 * Returns an array of {@link Entry entries} parsed from data.
@@ -27,7 +27,7 @@ public interface IMonthParser {
 	 * @return An array of entries.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public Entry[] getEntries() throws ParseException;
+	Entry[] getEntries() throws ParseException;
 
 	/**
 	 * Returns {@link TimeSpan} representing the transfered time from the successor
@@ -36,15 +36,15 @@ public interface IMonthParser {
 	 * @return A transfered time {@link TimeSpan}.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public TimeSpan getSuccTransfer() throws ParseException;
+	TimeSpan getSuccTransfer() throws ParseException;
 
 	/**
 	 * Returns {@link TimeSpan} representing the transfered time from the
 	 * predecessor month parsed from data.
 	 * 
-	 * @return A transfered time {@link TimeSpan}.
+	 * @return A transferred time {@link TimeSpan}.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public TimeSpan getPredTransfer() throws ParseException;
+	TimeSpan getPredTransfer() throws ParseException;
 
 }

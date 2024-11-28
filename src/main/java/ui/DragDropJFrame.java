@@ -59,8 +59,7 @@ public class DragDropJFrame extends JFrame {
 										JOptionPane.WARNING_MESSAGE);
 							}
 						}
-					} catch (UnsupportedFlavorException | IOException ex) {
-						return;
+					} catch (UnsupportedFlavorException | IOException ignored) {
 					} finally {
 						setColor(DEFAULT_COLOR);
 						dtde.dropComplete(true);
@@ -87,12 +86,5 @@ public class DragDropJFrame extends JFrame {
 	private void setColor(Color color) {
 		getContentPane().setBackground(color);
 		Main.setBackgroundColor(color);
-	}
-
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(() -> {
-			DragDropJFrame frame = new DragDropJFrame();
-			frame.setVisible(true);
-		});
 	}
 }

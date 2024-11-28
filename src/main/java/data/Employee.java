@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
 /**
@@ -40,18 +40,10 @@ public class Employee {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Employee)) {
+		if (!(other instanceof Employee otherEmployee)) {
 			return false;
 		}
-
-		Employee otherEmployee = (Employee) other;
-		if (!this.name.equals(otherEmployee.name)) {
-			return false;
-		} else if (this.id != otherEmployee.id) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.name.equals(otherEmployee.name) && this.id == otherEmployee.id;
 	}
 
 }

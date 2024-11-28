@@ -1,10 +1,9 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -79,14 +78,14 @@ public class JsonMonthParser implements IMonthParser {
 				} catch (ParseException | RuntimeException e) {
 					throw new RuntimeException(e);
 				}
-			}).collect(Collectors.toList());
+			}).toList();
 		} catch (RuntimeException e) {
 			throw new ParseException(e.getCause().getMessage());
 		} catch (JsonProcessingException e) {
 			throw new ParseException(e.getMessage());
 		}
 
-		return entries.toArray(new Entry[entries.size()]);
+		return entries.toArray(new Entry[0]);
 	}
 
 	@Override

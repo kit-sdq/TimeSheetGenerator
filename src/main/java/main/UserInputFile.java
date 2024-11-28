@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package main;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -32,14 +32,10 @@ public enum UserInputFile {
 	/**
 	 * Create a new type of user input file
 	 * 
-	 * @param dialogTitel Title of the dialog that is used to request the file from
-	 *                    the user
-	 * @param fileFilter  Filter for allowed file extensions
-	 * @param operation   Operation associated with this user file type (OPEN or
-	 *                    SAVE)
+	 * @param operation Operation associated with this user file type (OPEN or SAVE)
 	 */
-	private UserInputFile(String dialogTitelKey, String fileDescriptionKey, String fileExtensionKey, FileOperation operation) {
-		this.dialogTitel = ResourceHandler.getMessage(dialogTitelKey);
+	UserInputFile(String dialogTitleKey, String fileDescriptionKey, String fileExtensionKey, FileOperation operation) {
+		this.dialogTitel = ResourceHandler.getMessage(dialogTitleKey);
 		this.fileFilter = new FileNameExtensionFilter(ResourceHandler.getMessage(fileDescriptionKey), ResourceHandler.getMessage(fileExtensionKey));
 		this.operation = operation;
 	}

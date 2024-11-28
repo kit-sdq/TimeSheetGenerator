@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package io;
 
 import java.time.format.DateTimeFormatter;
@@ -30,7 +30,7 @@ public class LatexGenerator implements IGenerator {
 	/**
 	 * Map of characters that have to be replaced with a command
 	 */
-	private final static Map<String, String> LATEX_SPECIALCHARACTERS_REPLACE = new HashMap<String, String>();
+	private final static Map<String, String> LATEX_SPECIALCHARACTERS_REPLACE = new HashMap<>();
 	static {
 		LATEX_SPECIALCHARACTERS_REPLACE.put("\\", "\\textbackslash");
 		LATEX_SPECIALCHARACTERS_REPLACE.put("~", "\\textasciitilde");
@@ -225,15 +225,15 @@ public class LatexGenerator implements IGenerator {
 
 	/**
 	 * The different elements representing the {@link TimeSheet}, especially the
-	 * {@link Employee} and {@link Profession}, on the document.
+	 * Employee and Profession, on the document.
 	 */
-	private static enum TimeSheetElement {
+	private enum TimeSheetElement {
 		YEAR("!year"), MONTH("!month"), EMPLOYEE_NAME("!employeeName"), EMPLOYEE_ID("!employeeID"), GFUB("!workingArea"), DEPARTMENT("!department"),
 		MAX_HOURS("!workingTime"), WAGE("!wage"), VACATION("!vacation"), HOURS_SUM("!sum"), TRANSFER_PRED("!carryPred"), TRANSFER_SUCC("!carrySucc");
 
 		private final String placeholder;
 
-		private TimeSheetElement(String placeholder) {
+		TimeSheetElement(String placeholder) {
 			this.placeholder = placeholder;
 		}
 
@@ -246,12 +246,12 @@ public class LatexGenerator implements IGenerator {
 	 * The different elements representing the {@link Entry entries} on the
 	 * document.
 	 */
-	private static enum EntryElement {
+	private enum EntryElement {
 		TABLE_ACTION("!action"), TABLE_DATE("!date"), TABLE_START("!begin"), TABLE_END("!end"), TABLE_PAUSE("!break"), TABLE_TIME("!dayTotal");
 
 		private final String placeholder;
 
-		private EntryElement(String placeholder) {
+		EntryElement(String placeholder) {
 			this.placeholder = placeholder;
 		}
 

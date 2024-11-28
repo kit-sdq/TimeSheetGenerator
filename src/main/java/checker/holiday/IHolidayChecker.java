@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker.holiday;
 
 import java.time.LocalDate;
@@ -17,7 +17,7 @@ public interface IHolidayChecker {
 	 * @throws HolidayFetchException if an error occurs while fetching possible
 	 *                               holidays.
 	 */
-	public boolean isHoliday(LocalDate date) throws HolidayFetchException;
+	boolean isHoliday(LocalDate date) throws HolidayFetchException;
 
 	/**
 	 * Returns a {@link Collection} of all {@link Holiday holidays} associated with
@@ -27,6 +27,6 @@ public interface IHolidayChecker {
 	 * @throws HolidayFetchException if an error occurs while fetching possible
 	 *                               holidays.
 	 */
-	public Collection<Holiday> getHolidays() throws HolidayFetchException;
+	Collection<Holiday> getHolidays() throws HolidayFetchException;
 
 }

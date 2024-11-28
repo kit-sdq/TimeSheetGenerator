@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
 
 import java.time.LocalDate;
@@ -16,7 +16,7 @@ class HolidayJson {
 	private final String note;
 
 	@JsonCreator
-	HolidayJson(@JsonProperty(value = "datum", required = true) String date, @JsonProperty(value = "hinweis", required = false) String note) {
+	HolidayJson(@JsonProperty(value = "datum", required = true) String date, @JsonProperty(value = "hinweis") String note) {
 		DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder().appendPattern(DATE_PATTERN).toFormatter();
 
 		this.date = LocalDate.parse(date, dateFormatter);

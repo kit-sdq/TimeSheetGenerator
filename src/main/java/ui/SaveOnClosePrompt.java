@@ -23,6 +23,18 @@ public class SaveOnClosePrompt {
 		dialog.add(messageLabel, BorderLayout.CENTER);
 
 		// Create buttons
+		JPanel buttonPanel = createButtons(proceed, dialog);
+
+		// Add button panel to dialog
+		dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+		// Display dialog
+		dialog.setVisible(true);
+
+		return proceed.get();
+	}
+
+	private static JPanel createButtons(AtomicBoolean proceed, JDialog dialog) {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		JButton saveButton = new JButton("Save");
 		JButton saveAsButton = new JButton("Save as");
@@ -57,14 +69,7 @@ public class SaveOnClosePrompt {
 		buttonPanel.add(saveAsButton);
 		buttonPanel.add(discardButton);
 		buttonPanel.add(cancelButton);
-
-		// Add button panel to dialog
-		dialog.add(buttonPanel, BorderLayout.SOUTH);
-
-		// Display dialog
-		dialog.setVisible(true);
-
-		return proceed.get();
+		return buttonPanel;
 	}
 
 }

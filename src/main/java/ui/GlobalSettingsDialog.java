@@ -144,9 +144,7 @@ public class GlobalSettingsDialog {
 			dialog.dispose();
 		});
 
-		cancelButton.addActionListener(e -> {
-			dialog.dispose();
-		});
+		cancelButton.addActionListener(e -> dialog.dispose());
 
 		dialog.add(panel);
 		dialog.setVisible(true);

@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
 import java.util.Collection;
@@ -18,7 +18,7 @@ public interface IChecker {
 	 * @throws CheckerException if an error occurs while checking the
 	 *                          {@link TimeSheet}.
 	 */
-	public CheckerReturn check() throws CheckerException;
+	CheckerReturn check() throws CheckerException;
 
 	/**
 	 * Returns a {@link Collection} of {@link CheckerError} elements that occurred
@@ -26,6 +26,6 @@ public interface IChecker {
 	 * 
 	 * @return A {@link Collection} of {@link CheckerError CheckerErrors}.
 	 */
-	public Collection<CheckerError> getErrors();
+	Collection<CheckerError> getErrors();
 
 }

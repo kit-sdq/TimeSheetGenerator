@@ -14,12 +14,15 @@ public class TimesheetEntry {
 
 	public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry("", -1, -1, -1, -1, -1, -1, -1, false);
 
-	private String activity;
-	private int day;
-	private int fromHour, fromMinute;
-	private int toHour, toMinute;
-	private int breakHour, breakMinutes;
-	private boolean isVacation;
+	private final String activity;
+	private final int day;
+	private final int fromHour;
+	private final int fromMinute;
+	private final int toHour;
+	private final int toMinute;
+	private final int breakHour;
+	private final int breakMinutes;
+	private final boolean isVacation;
 
 	public static TimesheetEntry generateTimesheetEntry(String activity, int day, String startText, String endText, String breakText, boolean isVacation) {
 		LocalTime startTime = DialogHelper.parseTime(startText);
@@ -177,6 +180,7 @@ public class TimesheetEntry {
 		return this.toMinute >= other.toMinute;
 	}
 
+	// TODO: clone should not be used.
 	@Override
 	public TimesheetEntry clone() {
 		return new TimesheetEntry(activity, day, fromHour, fromMinute, toHour, toMinute, breakHour, breakMinutes, isVacation);

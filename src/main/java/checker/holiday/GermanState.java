@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker.holiday;
 
 /**
@@ -89,6 +89,6 @@ public enum GermanState {
 	/**
 	 * Deutschland
 	 */
-	NATIONAL;
+	NATIONAL
 
 }
