@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
 import i18n.ResourceHandler;
@@ -125,18 +125,11 @@ public class TimeSpan implements Comparable<TimeSpan> {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof TimeSpan)) {
+		if (!(other instanceof TimeSpan otherTimeSpan)) {
 			return false;
 		}
 
-		TimeSpan otherTimeSpan = (TimeSpan) other;
-		if (this.hour != otherTimeSpan.hour) {
-			return false;
-		} else if (this.minute != otherTimeSpan.minute) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.hour == otherTimeSpan.hour && this.minute == otherTimeSpan.minute;
 	}
 
 }

@@ -1,7 +1,11 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package io;
 
-import static org.junit.jupiter.api.Assertions.*;
+import data.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -9,17 +13,7 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-
-import data.Employee;
-import data.Entry;
-import data.Profession;
-import data.TimeSheet;
-import data.TimeSpan;
-import data.WorkingArea;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LatexGeneratorPlaceholderTest {
 

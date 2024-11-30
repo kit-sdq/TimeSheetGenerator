@@ -1,8 +1,7 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package main;
 
 import i18n.ResourceHandler;
-
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 
@@ -36,7 +35,7 @@ public enum UserInputOption {
 	 * 
 	 * @param option Apache CLI option for the user input option
 	 */
-	private UserInputOption(Option option) {
+	UserInputOption(Option option) {
 		this.option = option;
 	}
 

@@ -1,18 +1,17 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker.holiday;
-
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.Year;
-import java.util.Collection;
-
-import javax.net.ssl.SSLHandshakeException;
 
 import io.FileController;
 import parser.IHolidayParser;
 import parser.ParseException;
 import parser.json.JsonHolidayParser;
+
+import javax.net.ssl.SSLHandshakeException;
+import java.io.IOException;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.Year;
+import java.util.Collection;
 
 /**
  * A GermanyHolidayChecker is a holiday checker implementing

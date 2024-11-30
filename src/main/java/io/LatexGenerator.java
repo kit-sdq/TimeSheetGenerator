@@ -1,18 +1,17 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package io;
-
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Matcher;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import data.Entry;
 import data.TimeSheet;
 import data.WorkingArea;
 import etc.ContextStringReplacer;
 import i18n.ResourceHandler;
+
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * The LatexGenerator generates a LaTeX string based on a template and fills it
@@ -21,23 +20,23 @@ import i18n.ResourceHandler;
  */
 public class LatexGenerator implements IGenerator {
 
-	private final static String SHORTHAND_VACATION = "U";
+	private static final String SHORTHAND_VACATION = "U";
 
 	/**
 	 * List of characters that can be escaped by using a backslash (\) as a prefix
 	 */
-	private final static String[] LATEX_SPECIALCHARACTERS_ESCAPE = new String[] { "&", "%", "$", "#", "_", "{", "}" };
+	private static final String[] LATEX_SPECIAL_CHARACTERS_ESCAPE = new String[] { "&", "%", "$", "#", "_", "{", "}" };
 	/**
 	 * Map of characters that have to be replaced with a command
 	 */
-	private final static Map<String, String> LATEX_SPECIALCHARACTERS_REPLACE = new HashMap<String, String>();
+	private static final Map<String, String> LATEX_SPECIAL_CHARACTERS_REPLACE = new HashMap<>();
 	static {
-		LATEX_SPECIALCHARACTERS_REPLACE.put("\\", "\\textbackslash");
-		LATEX_SPECIALCHARACTERS_REPLACE.put("~", "\\textasciitilde");
-		LATEX_SPECIALCHARACTERS_REPLACE.put("^", "\\textasciicircum");
+		LATEX_SPECIAL_CHARACTERS_REPLACE.put("\\", "\\textbackslash");
+		LATEX_SPECIAL_CHARACTERS_REPLACE.put("~", "\\textasciitilde");
+		LATEX_SPECIAL_CHARACTERS_REPLACE.put("^", "\\textasciicircum");
 	}
 
-	private final static String TABLE_DATE_FORMAT = "dd.MM.yy";
+	private static final String TABLE_DATE_FORMAT = "dd.MM.yy";
 
 	private final TimeSheet timeSheet;
 	private final String template;
@@ -206,8 +205,8 @@ public class LatexGenerator implements IGenerator {
 	public static String escapeText(String text) {
 		String escapedText = text;
 
-		escapedText = ContextStringReplacer.replace(escapedText, LATEX_SPECIALCHARACTERS_REPLACE.keySet(), (r) -> {
-			String replaceWith = LATEX_SPECIALCHARACTERS_REPLACE.get(r.getSubstring());
+		escapedText = ContextStringReplacer.replace(escapedText, LATEX_SPECIAL_CHARACTERS_REPLACE.keySet(), r -> {
+			String replaceWith = LATEX_SPECIAL_CHARACTERS_REPLACE.get(r.getSubstring());
 
 			if (r.getLookahead(1).equals(" ")) {
 				r.replace(replaceWith + "\\");
@@ -216,7 +215,7 @@ public class LatexGenerator implements IGenerator {
 			}
 		});
 
-		for (String specialCharacter : LATEX_SPECIALCHARACTERS_ESCAPE) {
+		for (String specialCharacter : LATEX_SPECIAL_CHARACTERS_ESCAPE) {
 			escapedText = escapedText.replace(specialCharacter, "\\" + specialCharacter);
 		}
 
@@ -225,15 +224,15 @@ public class LatexGenerator implements IGenerator {
 
 	/**
 	 * The different elements representing the {@link TimeSheet}, especially the
-	 * {@link Employee} and {@link Profession}, on the document.
+	 * Employee and Profession, on the document.
 	 */
-	private static enum TimeSheetElement {
+	private enum TimeSheetElement {
 		YEAR("!year"), MONTH("!month"), EMPLOYEE_NAME("!employeeName"), EMPLOYEE_ID("!employeeID"), GFUB("!workingArea"), DEPARTMENT("!department"),
 		MAX_HOURS("!workingTime"), WAGE("!wage"), VACATION("!vacation"), HOURS_SUM("!sum"), TRANSFER_PRED("!carryPred"), TRANSFER_SUCC("!carrySucc");
 
 		private final String placeholder;
 
-		private TimeSheetElement(String placeholder) {
+		TimeSheetElement(String placeholder) {
 			this.placeholder = placeholder;
 		}
 
@@ -246,12 +245,12 @@ public class LatexGenerator implements IGenerator {
 	 * The different elements representing the {@link Entry entries} on the
 	 * document.
 	 */
-	private static enum EntryElement {
+	private enum EntryElement {
 		TABLE_ACTION("!action"), TABLE_DATE("!date"), TABLE_START("!begin"), TABLE_END("!end"), TABLE_PAUSE("!break"), TABLE_TIME("!dayTotal");
 
 		private final String placeholder;
 
-		private EntryElement(String placeholder) {
+		EntryElement(String placeholder) {
 			this.placeholder = placeholder;
 		}
 

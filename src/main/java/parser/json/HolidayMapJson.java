@@ -1,17 +1,17 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
+
+import com.fasterxml.jackson.annotation.JsonAnySetter;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonAnySetter;
 
 class HolidayMapJson {
 
 	private final Map<String, HolidayJson> holidays;
 
 	HolidayMapJson() {
-		this.holidays = new HashMap<String, HolidayJson>();
+		this.holidays = new HashMap<>();
 	}
 
 	@JsonAnySetter

@@ -1,5 +1,7 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
+
+import java.io.Serial;
 
 /**
  * A CheckerException is thrown by a {@link IChecker} instance when an
@@ -10,6 +12,7 @@ public class CheckerException extends Exception {
 	/**
 	 * Auto-generated serial version UID
 	 */
+	@Serial
 	private static final long serialVersionUID = 4362647380313599066L;
 
 	/**

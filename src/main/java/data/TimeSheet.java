@@ -1,13 +1,13 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
+
+import i18n.ResourceHandler;
 
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import i18n.ResourceHandler;
 
 /**
  * A time sheet represents a whole month of work done by an {@link Employee}.
@@ -158,26 +158,13 @@ public class TimeSheet {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof TimeSheet)) {
+		if (!(other instanceof TimeSheet otherTimeSheet)) {
 			return false;
 		}
 
-		TimeSheet otherTimeSheet = (TimeSheet) other;
-		if (!this.employee.equals(otherTimeSheet.employee)) {
-			return false;
-		} else if (!this.profession.equals(otherTimeSheet.profession)) {
-			return false;
-		} else if (!this.yearMonth.equals(otherTimeSheet.yearMonth)) {
-			return false;
-		} else if (!this.succTransfer.equals(otherTimeSheet.succTransfer)) {
-			return false;
-		} else if (!this.predTransfer.equals(otherTimeSheet.predTransfer)) {
-			return false;
-		} else if (!this.entries.equals(otherTimeSheet.entries)) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.employee.equals(otherTimeSheet.employee) && this.profession.equals(otherTimeSheet.profession)
+				&& this.yearMonth.equals(otherTimeSheet.yearMonth) && this.succTransfer.equals(otherTimeSheet.succTransfer)
+				&& this.predTransfer.equals(otherTimeSheet.predTransfer) && this.entries.equals(otherTimeSheet.entries);
 	}
 
 }

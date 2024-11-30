@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
 /**
@@ -67,22 +67,12 @@ public class Profession {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Profession)) {
+		if (!(other instanceof Profession otherProfession)) {
 			return false;
 		}
 
-		Profession otherProfession = (Profession) other;
-		if (!this.departmentName.equals(otherProfession.departmentName)) {
-			return false;
-		} else if (!this.workingArea.equals(otherProfession.workingArea)) {
-			return false;
-		} else if (!this.maxWorkingTime.equals(otherProfession.maxWorkingTime)) {
-			return false;
-		} else if (this.wage != otherProfession.wage) {
-			return false;
-		} else {
-			return true;
-		}
+		return (this.departmentName.equals(otherProfession.departmentName) && this.workingArea.equals(otherProfession.workingArea))
+				&& this.maxWorkingTime.equals(otherProfession.maxWorkingTime) && this.wage == otherProfession.wage;
 	}
 
 }

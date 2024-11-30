@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
 import i18n.ResourceHandler;
@@ -17,9 +17,9 @@ public enum WorkingArea {
 	 */
 	UB("ub");
 
-	private String stringValue;
+	private final String stringValue;
 
-	private WorkingArea(String stringValue) {
+	WorkingArea(String stringValue) {
 		this.stringValue = stringValue;
 	}
 

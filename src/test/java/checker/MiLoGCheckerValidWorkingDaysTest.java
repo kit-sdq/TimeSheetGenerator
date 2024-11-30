@@ -1,7 +1,13 @@
 /* Licensed under MIT 2023-2024. */
 package checker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import checker.holiday.GermanState;
+import checker.holiday.GermanyHolidayChecker;
+import checker.holiday.HolidayFetchException;
+import checker.holiday.IHolidayChecker;
+import data.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -12,19 +18,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.util.Random;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import checker.holiday.HolidayFetchException;
-import checker.holiday.IHolidayChecker;
-import checker.holiday.GermanState;
-import checker.holiday.GermanyHolidayChecker;
-import data.Employee;
-import data.Entry;
-import data.TimeSheet;
-import data.Profession;
-import data.TimeSpan;
-import data.WorkingArea;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * ATTENTION: This test class only runs correctly if the calling machine is

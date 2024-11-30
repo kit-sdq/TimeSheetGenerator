@@ -1,11 +1,12 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package data;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EntryCompareToTest {
 
@@ -153,7 +154,7 @@ public class EntryCompareToTest {
 
 		Entry entry1 = new Entry(action1, date1, start1, end1, pause1, false);
 
-		assertTrue(entry0.compareTo(entry1) == 0);
+		assertEquals(0, entry0.compareTo(entry1));
 	}
 
 	@Test
@@ -174,7 +175,7 @@ public class EntryCompareToTest {
 
 		Entry entry1 = new Entry(action1, date1, start1, end1, pause1, false);
 
-		assertTrue(entry0.compareTo(entry1) == 0);
+		assertEquals(0, entry0.compareTo(entry1));
 	}
 
 }

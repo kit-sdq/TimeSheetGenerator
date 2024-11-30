@@ -1,17 +1,17 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
-
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import data.Employee;
 import data.Profession;
 import data.TimeSpan;
 import data.WorkingArea;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import parser.IGlobalParser;
 import parser.ParseException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JsonGlobalParserTest {
 

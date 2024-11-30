@@ -1,10 +1,5 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser.json;
-
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -13,11 +8,14 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-
 import data.Entry;
 import data.TimeSpan;
 import parser.IMonthParser;
 import parser.ParseException;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.List;
 
 /**
  * A JsonMonthParser provides the functionality to parse the elements specified
@@ -79,14 +77,14 @@ public class JsonMonthParser implements IMonthParser {
 				} catch (ParseException | RuntimeException e) {
 					throw new RuntimeException(e);
 				}
-			}).collect(Collectors.toList());
+			}).toList();
 		} catch (RuntimeException e) {
 			throw new ParseException(e.getCause().getMessage());
 		} catch (JsonProcessingException e) {
 			throw new ParseException(e.getMessage());
 		}
 
-		return entries.toArray(new Entry[entries.size()]);
+		return entries.toArray(new Entry[0]);
 	}
 
 	@Override
@@ -110,7 +108,7 @@ public class JsonMonthParser implements IMonthParser {
 	/**
 	 * Parses an {@link Entry} from an {@link MonthEntryJson}.
 	 * 
-	 * @param json - to parse {@link Entry} from
+	 * @param entry - to parse {@link Entry} from
 	 * @return The entry parsed from the {@link MonthEntryJson}.
 	 * @throws ParseException if an error occurs while fetching the
 	 *                        {@link YearMonth}.

@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker.holiday;
 
 import java.time.LocalDate;
@@ -53,18 +53,11 @@ public class Holiday {
 
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Holiday)) {
+		if (!(other instanceof Holiday otherHoliday)) {
 			return false;
 		}
 
-		Holiday otherHoliday = (Holiday) other;
-		if (!this.date.equals(otherHoliday.date)) {
-			return false;
-		} else if (!this.description.equals(otherHoliday.description)) {
-			return false;
-		} else {
-			return true;
-		}
+		return this.date.equals(otherHoliday.date) && this.description.equals(otherHoliday.description);
 	}
 
 }

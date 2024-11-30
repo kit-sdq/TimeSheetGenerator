@@ -1,12 +1,12 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package etc;
+
+import i18n.ResourceHandler;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Consumer;
-
-import i18n.ResourceHandler;
 
 /**
  * Provides functionality to replace substrings in a string. The substrings are
@@ -415,7 +415,7 @@ public class ContextStringReplacer implements Iterable<ContextStringReplacer.Con
 					throw new IllegalStateException();
 
 				String before = string.substring(0, index);
-				String after = string.substring(index + substring.length(), string.length());
+				String after = string.substring(index + substring.length());
 
 				string = before + replacement + after;
 				currentIndex = index + replacement.length();

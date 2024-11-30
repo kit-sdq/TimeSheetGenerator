@@ -1,12 +1,12 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker.holiday;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.util.Random;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HolidayEqualsDateTest {
 
@@ -25,7 +25,7 @@ public class HolidayEqualsDateTest {
 		Holiday holiday = new Holiday(holidayDate, "");
 
 		//// Assertions
-		assertEquals(true, holiday.equalsDate(localDate));
+		assertTrue(holiday.equalsDate(localDate));
 	}
 
 	@Test
@@ -38,7 +38,7 @@ public class HolidayEqualsDateTest {
 		Holiday holiday = new Holiday(holidayDate, "");
 
 		//// Assertions
-		assertEquals(false, holiday.equalsDate(localDate));
+		assertFalse(holiday.equalsDate(localDate));
 	}
 
 	@Test

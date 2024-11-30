@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package i18n;
 
 import java.text.DateFormat;
@@ -66,7 +66,7 @@ public class ResourceHandler {
 
 	}
 
-	private static ResourceHandlerInstance instance = new ResourceHandlerInstance(DEFAULT_MESSAGE_BUNDLE_PATH);
+	private static final ResourceHandlerInstance instance = new ResourceHandlerInstance(DEFAULT_MESSAGE_BUNDLE_PATH);
 
 	/**
 	 * Get the currently used locale.
@@ -78,8 +78,7 @@ public class ResourceHandler {
 	}
 
 	/**
-	 * Set the used locale.
-	 * 
+	 * Set the used locale. <br/>
 	 * The set locale will be the first choice for the i18n message bundle loaded.
 	 * 
 	 * @param locale Locale to use for the loading of i18n message bundles
@@ -89,11 +88,9 @@ public class ResourceHandler {
 	}
 
 	/**
-	 * Get a message string from the i18n message bundles.
-	 * 
+	 * Get a message string from the i18n message bundles. <br/>
 	 * The key will be searched in the i18n message bundle specified by the
-	 * currently used locale and all parent message bundles ("fallback").
-	 * 
+	 * currently used locale and all parent message bundles ("fallback"). <br/>
 	 * The objects provided in <code>args</code> will be inserted in the loaded
 	 * message string with the format specified in the message string.
 	 * 

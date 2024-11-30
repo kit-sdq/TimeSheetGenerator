@@ -1,7 +1,8 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package i18n;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.text.DateFormat;
 import java.text.MessageFormat;
@@ -12,8 +13,7 @@ import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DateFormatWrapperTest {
 
@@ -45,7 +45,7 @@ public class DateFormatWrapperTest {
 		// execute
 		MessageFormat messageFormat = new MessageFormat("{0, date}");
 		// assert
-		assertTrue(messageFormat.getFormats()[0] instanceof DateFormat);
+		assertInstanceOf(DateFormat.class, messageFormat.getFormats()[0]);
 	}
 
 	@Test

@@ -1,15 +1,7 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package main;
 
-import java.io.IOException;
-
-import javax.swing.JOptionPane;
-
-import checker.CheckerError;
-import checker.CheckerException;
-import checker.CheckerReturn;
-import checker.IChecker;
-import checker.MiLoGChecker;
+import checker.*;
 import data.TimeSheet;
 import i18n.ResourceHandler;
 import io.FileController;
@@ -18,6 +10,12 @@ import io.LatexGenerator;
 import main.UserInput.Request;
 import parser.ParseException;
 import parser.Parser;
+import ui.UserInterface;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Main class of the application containing the main method as entry point for
@@ -31,6 +29,13 @@ public class Main {
 	 * @param args command line arguments that are passed to the apache cli library
 	 */
 	public static void main(String[] args) {
+
+		// If no arguments or a valid file was given, run UI instead
+		if (args.length == 0 || (args.length == 1 && new File(args[0]).exists())) {
+			UserInterface.main(args);
+			return;
+		}
+
 		// Initialize and parse user input
 		UserInput userInput = new UserInput(args);
 		Request request;
@@ -81,26 +86,14 @@ public class Main {
 		try {
 			checkerReturn = checker.check();
 		} catch (CheckerException e) { // exception does not mean that the time sheet is invalid, but that the process
-										// of checking failed
+			// of checking failed
 			System.out.println(e.getMessage());
 			System.exit(1);
 			return;
 		}
 		// Print all errors in case the time sheet is invalid
 		if (checkerReturn == CheckerReturn.INVALID) {
-			for (CheckerError error : checker.getErrors()) {
-				System.out.println(error.getErrorMessage());
-			}
-
-			if (userInput.isGui()) {
-				StringBuilder errorList = new StringBuilder();
-				for (CheckerError error : checker.getErrors()) {
-					errorList.append(error.getErrorMessage() + System.lineSeparator());
-				}
-
-				JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
-			}
-
+			handleInvalidTimesheet(checker, userInput);
 			return;
 		}
 
@@ -113,8 +106,74 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			System.exit(1);
-			return;
 		}
+	}
+
+	private static void handleInvalidTimesheet(IChecker checker, UserInput userInput) {
+		for (CheckerError error : checker.getErrors()) {
+			System.out.println(error.getErrorMessage());
+		}
+
+		if (userInput.isGui()) {
+			StringBuilder errorList = new StringBuilder();
+			for (CheckerError error : checker.getErrors()) {
+				errorList.append(error.getErrorMessage()).append(System.lineSeparator());
+			}
+
+			JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	/**
+	 * Addendum to the timesheet generator. This method only validated the contents
+	 * of a given timesheet file. If the given file, for any reason, is not a valid
+	 * timesheet, this method returns an optional containing the error message. If
+	 * it is, this method will return an empty optional.
+	 * 
+	 * @param globalFile The global.json file.
+	 * @param monthFile  The month.json file.
+	 * @return An optional of the error message.
+	 */
+	public static Optional<String> validateTimesheet(File globalFile, File monthFile) {
+		if (globalFile == null || monthFile == null)
+			return Optional.of("The global or month file were null. Try saving.");
+		String globalStr;
+		String monthStr;
+		try {
+			globalStr = FileController.readFileToString(globalFile);
+			monthStr = FileController.readFileToString(monthFile);
+		} catch (IOException e) {
+			return Optional.of(e.getMessage());
+		}
+
+		// Validation code from above.
+
+		// Initialize time sheet
+		TimeSheet timeSheet;
+		try {
+			timeSheet = Parser.parseTimeSheetJson(globalStr, monthStr);
+		} catch (ParseException e) {
+			return Optional.of(e.getMessage());
+		}
+
+		// Check time sheet
+		IChecker checker = new MiLoGChecker(timeSheet);
+		CheckerReturn checkerReturn;
+		try {
+			checkerReturn = checker.check();
+		} catch (CheckerException e) {
+			return Optional.of(e.getMessage());
+		}
+
+		if (checkerReturn == CheckerReturn.INVALID) {
+			StringBuilder errorList = new StringBuilder();
+			for (CheckerError error : checker.getErrors()) {
+				errorList.append(error.getErrorMessage()).append(System.lineSeparator());
+			}
+			return Optional.of(errorList.toString());
+		}
+
+		return Optional.empty();
 	}
 
 }

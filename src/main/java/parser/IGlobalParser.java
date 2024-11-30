@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package parser;
 
 import data.Employee;
@@ -16,7 +16,7 @@ public interface IGlobalParser {
 	 * @return An employee.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public Employee getEmployee() throws ParseException;
+	Employee getEmployee() throws ParseException;
 
 	/**
 	 * Returns a {@link Profession} that got parsed from data.
@@ -24,6 +24,6 @@ public interface IGlobalParser {
 	 * @return A profession.
 	 * @throws ParseException if an error occurs while parsing.
 	 */
-	public Profession getProfession() throws ParseException;
+	Profession getProfession() throws ParseException;
 
 }

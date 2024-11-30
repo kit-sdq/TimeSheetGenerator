@@ -1,20 +1,15 @@
-/* Licensed under MIT 2023. */
+/* Licensed under MIT 2023-2024. */
 package checker;
 
-import static org.junit.jupiter.api.Assertions.*;
+import data.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 
-import org.junit.jupiter.api.Test;
-
-import data.Employee;
-import data.Entry;
-import data.Profession;
-import data.TimeSheet;
-import data.TimeSpan;
-import data.WorkingArea;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MiLoGCheckerTimeOverlapTest {
 
