@@ -11,7 +11,7 @@ public class ActionBar extends JPanel {
 
 	private static final String HOURS_FORMAT = "Total Time: %s/%s          ";
 
-	private transient final UserInterface parentUI;
+	private final transient UserInterface parentUI;
 
 	private final JLabel hoursWorkedLabel;
 	private final Font fontNormal;

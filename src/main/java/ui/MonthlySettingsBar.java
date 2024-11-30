@@ -17,7 +17,7 @@ public class MonthlySettingsBar extends JPanel {
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
 
-	private transient final UserInterface parentUI;
+	private final transient UserInterface parentUI;
 
 	private final JComboBox<String> monthSelector;
 	private final JComboBox<String> semesterSelector;
