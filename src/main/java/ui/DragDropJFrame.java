@@ -16,7 +16,7 @@ public class DragDropJFrame extends JFrame {
 	private static final Color HOVER_COLOR = new Color(160, 160, 160);
 	private static final Color DEFAULT_COLOR = UIManager.getColor("Panel.background");
 
-	private final UserInterface parentUI;
+	private transient final UserInterface parentUI;
 
 	public DragDropJFrame(UserInterface parentUI) {
 		this.parentUI = parentUI;

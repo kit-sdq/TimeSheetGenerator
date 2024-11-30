@@ -27,9 +27,9 @@ public class TimesheetEntry {
 	private final boolean isVacation;
 
 	public static TimesheetEntry generateTimesheetEntry(String activity, int day, String startText, String endText, String breakText, boolean isVacation) {
-		LocalTime startTime = DialogHelper.parseTime(startText);
-		LocalTime endTime = DialogHelper.parseTime(endText);
-		LocalTime breakTime = DialogHelper.parseTime(breakText);
+		LocalTime parsedStartTime = DialogHelper.parseTime(startText);
+		LocalTime parsedEndTime = DialogHelper.parseTime(endText);
+		LocalTime parsedBreakTime = DialogHelper.parseTime(breakText);
 
 		int fromHour = -1;
 		int fromMinute = -1;
@@ -38,20 +38,24 @@ public class TimesheetEntry {
 		int breakHour = -1;
 		int breakMinutes = -1;
 
-		if (startTime != null && endTime != null && breakTime != null) {
-			fromHour = startTime.getHour();
-			fromMinute = startTime.getMinute();
-			toHour = endTime.getHour();
-			toMinute = endTime.getMinute();
-			breakHour = breakTime.getHour();
-			breakMinutes = breakTime.getMinute();
+		if (parsedStartTime != null) {
+			fromHour = parsedStartTime.getHour();
+			fromMinute = parsedStartTime.getMinute();
+		}
+		if (parsedEndTime != null) {
+			toHour = parsedEndTime.getHour();
+			toMinute = parsedEndTime.getMinute();
+		}
+		if (parsedBreakTime != null) {
+			breakHour = parsedBreakTime.getHour();
+			breakMinutes = parsedBreakTime.getMinute();
 		}
 
-		Time start = new Time(fromHour, fromMinute);
-		Time end = new Time(toHour, toMinute);
-		Time _break = new Time(breakHour, breakMinutes);
+		Time startTime = new Time(fromHour, fromMinute);
+		Time endTime = new Time(toHour, toMinute);
+		Time breakTime = new Time(breakHour, breakMinutes);
 
-		return new TimesheetEntry(activity, day, start, end, _break, isVacation);
+		return new TimesheetEntry(activity, day, startTime, endTime, breakTime, isVacation);
 	}
 
 	public TimesheetEntry(String activity, int day, Time startTime, Time endTime, Time breakTime, boolean isVacation) {

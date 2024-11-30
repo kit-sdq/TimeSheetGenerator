@@ -25,7 +25,7 @@ public class UserInterface {
 	private static final String TITLE = "%s: %s";
 
 	private File currentOpenFile;
-	public boolean hasUnsavedChanges = false;
+	private boolean hasUnsavedChanges = false;
 
 	private JFrame frame;
 	private JPanel listPanel;
