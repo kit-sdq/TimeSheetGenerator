@@ -19,7 +19,7 @@ public final class GlobalSettingsDialog {
 	private static final String WORK_AREA_UB = "Unibereich (ub)";
 	private static final String WORK_AREA_GF = "Großforschung (gf)";
 
-	public static void showGlobalSettingsDialog(UserInterface parentUI) {
+	public static void showGlobalSettingsDialog() {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
 		dialog.setSize(600, 400);

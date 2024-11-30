@@ -128,7 +128,7 @@ public class UserInterface {
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
-		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this));
+		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog());
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 

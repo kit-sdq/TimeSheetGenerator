@@ -17,7 +17,7 @@ public class MonthlySettingsBar extends JPanel {
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
 
-	private final UserInterface parentUi;
+	private final transient UserInterface parentUi;
 
 	private final JComboBox<String> monthSelector;
 	private final JComboBox<String> semesterSelector;
@@ -109,7 +109,7 @@ public class MonthlySettingsBar extends JPanel {
 			updateSemesterView();
 		});
 
-		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog(this.parentUi));
+		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog());
 	}
 
 	public String getSelectedMonthName() {
