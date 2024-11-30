@@ -66,7 +66,6 @@ public final class DialogHelper {
 
 		int row = 0;
 
-		// Activity field: multiline text area
 		JLabel actionLabel = new JLabel("Activity:");
 		actionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		gbc.gridx = 0;
@@ -94,7 +93,7 @@ public final class DialogHelper {
 
 		row++;
 
-		// 4. Time fields
+		// Time fields
 		String[] labels = { "Day:", "Start Time:", "End Time:", "Break Time:" };
 		JTextField[] timeFields = new JTextField[4];
 		JLabel[] errorLabels = new JLabel[4]; // For validation error messages
@@ -156,7 +155,7 @@ public final class DialogHelper {
 		updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME],
 				durationWarningLabel, vacationCheckBox);
 
-		// 5. Vacation checkbox
+		// Vacation checkbox
 		JLabel vacationLabel = new JLabel("Vacation:");
 		vacationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		gbc.gridx = 0;
@@ -173,7 +172,7 @@ public final class DialogHelper {
 
 		row++;
 
-		// 3. Summary labels
+		// Summary labels
 		JLabel taskSummaryLabel = new JLabel("Task:");
 		gbc.gridx = 0;
 		gbc.gridy = row;
@@ -316,7 +315,7 @@ public final class DialogHelper {
 		parentUI.setHasUnsavedChanges(true);
 	}
 
-	// Helper method to add placeholder text
+	// Helper methods
 
 	/**
 	 * Adds a placeholder text and listeners. If otherText is not null or empty, no
@@ -411,7 +410,6 @@ public final class DialogHelper {
 		}
 	}
 
-	// 6. Check if start time is after end time
 	private static void checkStartEndTime(JTextField startField, JTextField endField) {
 		String startText = startField.getText();
 		String endText = endField.getText();
@@ -431,7 +429,6 @@ public final class DialogHelper {
 		}
 	}
 
-	// 3 & 7. Update duration summary and check break time validity
 	private static void updateDurationSummary(JLabel durationSummaryLabel, JTextField startField, JTextField endField, JTextField breakField,
 											  JLabel durationWarningLabel, JCheckBox isVacation) {
 		String startText = startField.getText();
