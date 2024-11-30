@@ -18,16 +18,20 @@ public final class FileChooser {
 	private static final String FORMAT = "%s_%s 20%s";
 
 	public static String getDefaultFileName(UserInterface parentUI) {
-		return FORMAT.formatted(JSONHandler.getGlobalSettings().getNameUnderscoreFormat(), getGermanMonth(parentUI.getCurrentMonthNumber()), parentUI.getYear());
+		return FORMAT.formatted(JSONHandler.getGlobalSettings().getNameUnderscoreFormat(), getGermanMonth(parentUI.getCurrentMonthNumber()),
+				parentUI.getYear());
 	}
 
 	public static File chooseFile(UserInterface parentUI, String title, FileChooserType chooserType) {
 		// Later: Implement Windows Version ?
-		//  -> Later, I tried doing it simple and failed, and I don't have the time (currently) to figure it out
-		//     Once I do, I'll make another pull request. It might not be as pretty, but because it remembers the
-		//     folders, you don't need to go through the navigation hassle each time, so I think it's a fair
-		//     compromise for now.
-		//                                      - JustOneDeveloper
+		// -> Later, I tried doing it simple and failed, and I don't have the time
+		// (currently) to figure it out
+		// Once I do, I'll make another pull request. It might not be as pretty, but
+		// because it remembers the
+		// folders, you don't need to go through the navigation hassle each time, so I
+		// think it's a fair
+		// compromise for now.
+		// - JustOneDeveloper
 		return chooseFileSwing(parentUI, title, chooserType);
 
 	}
@@ -63,7 +67,8 @@ public final class FileChooser {
 		return chooseCreateFile(parentUI, title, FileChooserType.PDF_PATH, getDefaultFileName(parentUI), "pdf", "PDF Files (*.pdf)");
 	}
 
-	public static File chooseCreateFile(UserInterface parentUI, String title, FileChooserType chooserType, String defaultFileName, String extension, String extensionDescription) {
+	public static File chooseCreateFile(UserInterface parentUI, String title, FileChooserType chooserType, String defaultFileName, String extension,
+			String extensionDescription) {
 		JFileChooser fileChooser = getFileChooser(chooserType);
 		fileChooser.setDialogTitle(title);
 

@@ -86,6 +86,7 @@ public class Time {
 
 	/**
 	 * Returns a new time object with 0 hours and 0 minutes.
+	 * 
 	 * @return Time object with 0 time stored.
 	 */
 	public static Time none() {

@@ -58,6 +58,7 @@ public final class JSONHandler {
 
 	/**
 	 * Gets a copy of the current global settings.
+	 * 
 	 * @return Copy of global settings
 	 */
 	public static Global getGlobalSettings() {
@@ -66,6 +67,7 @@ public final class JSONHandler {
 
 	/**
 	 * Gets a copy of the current additional ui settings.
+	 * 
 	 * @return Copy of ui settings
 	 */
 	public static UISettings getUISettings() {

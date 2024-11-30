@@ -20,23 +20,23 @@ import java.util.regex.Matcher;
  */
 public class LatexGenerator implements IGenerator {
 
-	private final static String SHORTHAND_VACATION = "U";
+	private static final String SHORTHAND_VACATION = "U";
 
 	/**
 	 * List of characters that can be escaped by using a backslash (\) as a prefix
 	 */
-	private final static String[] LATEX_SPECIALCHARACTERS_ESCAPE = new String[] { "&", "%", "$", "#", "_", "{", "}" };
+	private static final String[] LATEX_SPECIAL_CHARACTERS_ESCAPE = new String[] { "&", "%", "$", "#", "_", "{", "}" };
 	/**
 	 * Map of characters that have to be replaced with a command
 	 */
-	private final static Map<String, String> LATEX_SPECIALCHARACTERS_REPLACE = new HashMap<>();
+	private static final Map<String, String> LATEX_SPECIAL_CHARACTERS_REPLACE = new HashMap<>();
 	static {
-		LATEX_SPECIALCHARACTERS_REPLACE.put("\\", "\\textbackslash");
-		LATEX_SPECIALCHARACTERS_REPLACE.put("~", "\\textasciitilde");
-		LATEX_SPECIALCHARACTERS_REPLACE.put("^", "\\textasciicircum");
+		LATEX_SPECIAL_CHARACTERS_REPLACE.put("\\", "\\textbackslash");
+		LATEX_SPECIAL_CHARACTERS_REPLACE.put("~", "\\textasciitilde");
+		LATEX_SPECIAL_CHARACTERS_REPLACE.put("^", "\\textasciicircum");
 	}
 
-	private final static String TABLE_DATE_FORMAT = "dd.MM.yy";
+	private static final String TABLE_DATE_FORMAT = "dd.MM.yy";
 
 	private final TimeSheet timeSheet;
 	private final String template;
@@ -205,8 +205,8 @@ public class LatexGenerator implements IGenerator {
 	public static String escapeText(String text) {
 		String escapedText = text;
 
-		escapedText = ContextStringReplacer.replace(escapedText, LATEX_SPECIALCHARACTERS_REPLACE.keySet(), (r) -> {
-			String replaceWith = LATEX_SPECIALCHARACTERS_REPLACE.get(r.getSubstring());
+		escapedText = ContextStringReplacer.replace(escapedText, LATEX_SPECIAL_CHARACTERS_REPLACE.keySet(), r -> {
+			String replaceWith = LATEX_SPECIAL_CHARACTERS_REPLACE.get(r.getSubstring());
 
 			if (r.getLookahead(1).equals(" ")) {
 				r.replace(replaceWith + "\\");
@@ -215,7 +215,7 @@ public class LatexGenerator implements IGenerator {
 			}
 		});
 
-		for (String specialCharacter : LATEX_SPECIALCHARACTERS_ESCAPE) {
+		for (String specialCharacter : LATEX_SPECIAL_CHARACTERS_ESCAPE) {
 			escapedText = escapedText.replace(specialCharacter, "\\" + specialCharacter);
 		}
 

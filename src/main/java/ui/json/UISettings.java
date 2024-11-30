@@ -15,6 +15,7 @@ public class UISettings {
 	public UISettings() {
 		// Default Constructor is required
 	}
+
 	public UISettings(UISettings uiSettings) {
 		this.addSignature = uiSettings.addSignature;
 		this.monthPath = uiSettings.monthPath;
@@ -82,17 +83,18 @@ public class UISettings {
 		// versa
 		if (pathStr == null || pathStr.isEmpty()) {
 			switch (type) {
-				case PDF_PATH:
-					pathStr = getTexPath();
-					if (pathStr == null || pathStr.isEmpty())
-						return null;
-					break;
-				case TEX_PATH:
-					pathStr = getPdfPath();
-					if (pathStr == null || pathStr.isEmpty())
-						return null;
-					break;
-				default: return null;
+			case PDF_PATH:
+				pathStr = getTexPath();
+				if (pathStr == null || pathStr.isEmpty())
+					return null;
+				break;
+			case TEX_PATH:
+				pathStr = getPdfPath();
+				if (pathStr == null || pathStr.isEmpty())
+					return null;
+				break;
+			default:
+				return null;
 			}
 		}
 		File pathFile = new File(pathStr);

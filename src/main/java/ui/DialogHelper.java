@@ -132,8 +132,7 @@ public final class DialogHelper {
 			timeField.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					updateTimeFieldView(index, labels.length - 1, timeFields, errorLabels,
-							durationSummaryValue, durationWarningLabel, vacationCheckBox);
+					updateTimeFieldView(index, labels.length - 1, timeFields, errorLabels, durationSummaryValue, durationWarningLabel, vacationCheckBox);
 				}
 			});
 
@@ -262,7 +261,8 @@ public final class DialogHelper {
 		dialog.setVisible(true);
 	}
 
-	private static void makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields, JCheckBox vacationCheckBox) {
+	private static void makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
+			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
 			if (actionTextArea.getText().isBlank()) {
 				durationWarningLabel.setText(ACTIVITY_MESSAGE);
@@ -308,8 +308,8 @@ public final class DialogHelper {
 		parentUI.setHasUnsavedChanges(true);
 	}
 
-	private static void updateTimeFieldView(int index, int breakFieldIndex, JTextField[] timeFields, JLabel[] errorLabels,
-										  JLabel durationSummaryValue, JLabel durationWarningLabel, JCheckBox vacationCheckBox) {
+	private static void updateTimeFieldView(int index, int breakFieldIndex, JTextField[] timeFields, JLabel[] errorLabels, JLabel durationSummaryValue,
+			JLabel durationWarningLabel, JCheckBox vacationCheckBox) {
 		if (index == 0)
 			checkDay(timeFields[INDEX_DAY], errorLabels[INDEX_DAY]);
 		else {
@@ -435,7 +435,7 @@ public final class DialogHelper {
 	}
 
 	private static void updateDurationSummary(JLabel durationSummaryLabel, JTextField startField, JTextField endField, JTextField breakField,
-											  JLabel durationWarningLabel, JCheckBox isVacation) {
+			JLabel durationWarningLabel, JCheckBox isVacation) {
 		String startText = startField.getText();
 		String endText = endField.getText();
 		String breakText = breakField.getText();
@@ -462,8 +462,8 @@ public final class DialogHelper {
 		}
 	}
 
-	private static void updateValidDurationSummary(JLabel durationSummaryLabel, JLabel durationWarningLabel, JCheckBox isVacation,
-												   Duration workDuration, LocalTime breakTime) {
+	private static void updateValidDurationSummary(JLabel durationSummaryLabel, JLabel durationWarningLabel, JCheckBox isVacation, Duration workDuration,
+			LocalTime breakTime) {
 		long hours = workDuration.toHours();
 		long minutes = workDuration.toMinutes() % 60;
 

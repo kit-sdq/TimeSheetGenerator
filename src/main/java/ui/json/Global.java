@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
- * Custom Serializer for Global to provide additional functionality that is ignored
- * when writing to the JSON file.
+ * Custom Serializer for Global to provide additional functionality that is
+ * ignored when writing to the JSON file.
  */
 @JsonSerialize(using = GlobalSerialzer.class)
 public class Global {
@@ -22,6 +22,7 @@ public class Global {
 	public Global() {
 		schema = "https://raw.githubusercontent.com/kit-sdq/TimeSheetGenerator/main/examples/schemas/global.json";
 	}
+
 	public Global(Global global) {
 		this();
 		this.name = global.name;
@@ -91,12 +92,12 @@ public class Global {
 	}
 
 	/**
-	 * Formats the name, e.g. "Firstname-middle Lastname", to be
-	 * "Lastname, Firstname-middle" by splitting the name at the
-	 * spaces and rotating the last String to the front. Everything
-	 * else is interpreted as first- and middle names.
-	 * <br/>
+	 * Formats the name, e.g. "Firstname-middle Lastname", to be "Lastname,
+	 * Firstname-middle" by splitting the name at the spaces and rotating the last
+	 * String to the front. Everything else is interpreted as first- and middle
+	 * names. <br/>
 	 * If the name does not contain any spaces, returns the regular name.
+	 * 
 	 * @return The name, formatted to start with the lastname.
 	 */
 	public String getNameFormalFormat() {
@@ -117,18 +118,17 @@ public class Global {
 
 	/**
 	 * Formats the name, e.g. "Firstname-middle Lastname", to be
-	 * "Lastname_Firstname-middle" by splitting the name at the
-	 * spaces and rotating the last String to the front. Everything
-	 * else is interpreted as first- and middle names.
-	 * <br/>
-	 * This method is similar to {@link Global#getNameFormalFormat()}, but it separates
-	 * the formatted name using underscores, and does not add a comma after
-	 * the lastname.
-	 * <br/>
-	 * This is used when determining the filename when exporting to a PDF.
-	 * <br/>
+	 * "Lastname_Firstname-middle" by splitting the name at the spaces and rotating
+	 * the last String to the front. Everything else is interpreted as first- and
+	 * middle names. <br/>
+	 * This method is similar to {@link Global#getNameFormalFormat()}, but it
+	 * separates the formatted name using underscores, and does not add a comma
+	 * after the lastname. <br/>
+	 * This is used when determining the filename when exporting to a PDF. <br/>
 	 * If the name does not contain any spaces, returns the regular name.
-	 * @return Like {@link Global#getNameFormalFormat()}, but with underscores and no comma.
+	 * 
+	 * @return Like {@link Global#getNameFormalFormat()}, but with underscores and
+	 *         no comma.
 	 */
 	public String getNameUnderscoreFormat() {
 		if (!getName().contains(" ")) {

@@ -69,12 +69,12 @@ public class DragDropJFrame extends JFrame {
 					if (jsonFile.getName().toLowerCase().endsWith(".json")) {
 						performActionWithJSON(jsonFile);
 					} else {
-						JOptionPane.showMessageDialog(DragDropJFrame.this, "Only JSON files are accepted.", "Invalid File",
-								JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showMessageDialog(DragDropJFrame.this, "Only JSON files are accepted.", "Invalid File", JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			} catch (UnsupportedFlavorException | IOException ignored) {
-				// Catch exception, but just ignore it. Nothing happens, we just go back to normal
+				// Catch exception, but just ignore it. Nothing happens, we just go back to
+				// normal
 			} finally {
 				setColor(DEFAULT_COLOR);
 				dtde.dropComplete(true);

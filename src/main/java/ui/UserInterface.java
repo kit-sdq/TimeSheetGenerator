@@ -15,9 +15,8 @@ import java.io.File;
 public class UserInterface {
 
 	/**
-	 * Maximum number of entries on the time sheet.
-	 * Not a technical limitation, but the PDF has 22 rows,
-	 * and it's always supposed to be only one (1) page.
+	 * Maximum number of entries on the time sheet. Not a technical limitation, but
+	 * the PDF has 22 rows, and it's always supposed to be only one (1) page.
 	 */
 	public static final int MAX_ENTRIES = 22;
 
@@ -406,7 +405,8 @@ public class UserInterface {
 			} catch (Exception e) {
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, e.getMessage(), "An error occurred", JOptionPane.ERROR_MESSAGE);
-				// Exit, because if the setup fails, the process shouldn't continue (but it sometimes does otherwise)
+				// Exit, because if the setup fails, the process shouldn't continue (but it
+				// sometimes does otherwise)
 				System.exit(1);
 			}
 		});
