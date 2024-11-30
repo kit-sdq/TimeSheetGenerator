@@ -17,24 +17,19 @@ The files can be compiled to tex or directly compiled to a pdf.
 
 ### User Interface: Images
 
-The User Interface:
-![Image of the TimesheetGenerator open with the example month.json file](/examples/ui/ui_default.png)
+The User Interface:<br/>
 <img src="/examples/ui/ui_default.png" alt="Image of the TimesheetGenerator open with the example month.json file" width="80%">
 
-The User Interface with File options selected:
-![Image of the TimesheetGenerator with File Options selected](/examples/ui/ui_file_dialog.png)
+The User Interface with File options selected:<br/>
 <img src="/examples/ui/ui_file_dialog.png" alt="Image of the TimesheetGenerator with File Options selected" width="80%">
 
-Opening a JSON file with the TimeSheetGenerator:
-![Image of opening a file with the TimesheetGenerator](/examples/ui/ui_open_file_dialog.png)
+Opening a JSON file with the TimeSheetGenerator:<br/>
 <img src="/examples/ui/ui_open_file_dialog.png" alt="Image of opening a file with the TimesheetGenerator" width="80%">
 
-Adding a new entry to the timesheet:
-![Image of the Add Timesheet Entry Dialog](/examples/ui/ui_add_entry.png)
+Adding a new entry to the timesheet:<br/>
 <img src="/examples/ui/ui_add_entry.png" alt="Image of the Add Timesheet Entry Dialog" width="80%">
 
-Editing the global settings:
-![Image of the Edit Global Settings Dialog](/examples/ui/ui_global_settings.png)
+Editing the global settings:<br/>
 <img src="/examples/ui/ui_global_settings.png" alt="Image of the Edit Global Settings Dialog" width="80%">
 
 ## Command Line Execution
