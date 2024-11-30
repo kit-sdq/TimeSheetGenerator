@@ -10,7 +10,11 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class GlobalSettingsDialog {
+public final class GlobalSettingsDialog {
+
+	private GlobalSettingsDialog() {
+		// Don't allow instances of this class
+	}
 
 	private static final String WORK_AREA_UB = "Unibereich (ub)";
 	private static final String WORK_AREA_GF = "Großforschung (gf)";
@@ -22,8 +26,8 @@ public class GlobalSettingsDialog {
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
-		Global globalSettings = JSONHandler.globalSettings;
-		OtherSettings otherSettings = JSONHandler.otherSettings;
+		Global globalSettings = JSONHandler.getGlobalSettings();
+		OtherSettings otherSettings = JSONHandler.getUISettings();
 
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding of 10
@@ -53,7 +57,7 @@ public class GlobalSettingsDialog {
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel label = new JLabel(labels[i]);
-			label.setHorizontalAlignment(JLabel.RIGHT);
+			label.setHorizontalAlignment(SwingConstants.RIGHT);
 			gbc.gridx = 0;
 			gbc.gridy = row;
 			gbc.weightx = 0;
@@ -82,6 +86,7 @@ public class GlobalSettingsDialog {
 
 				// Add focus listener for validation when focus is lost
 				textField.addFocusListener(new FocusAdapter() {
+					@Override
 					public void focusLost(FocusEvent e) {
 						validateField(fields[index], errorLabels[index], index);
 					}
@@ -139,7 +144,7 @@ public class GlobalSettingsDialog {
 
 			// Save globalSettings to file or database as needed
 			JSONHandler.saveGlobal(parentUI, globalSettings);
-			JSONHandler.saveOtherSettings(parentUI, otherSettings);
+			JSONHandler.saveUISettings(parentUI, otherSettings);
 
 			dialog.dispose();
 		});
@@ -174,14 +179,10 @@ public class GlobalSettingsDialog {
 		}
 
 		switch (index) {
-		case 0: // Name
-			if (text.isEmpty()) {
-				errorLabel.setText("Name cannot be empty");
-			} else {
-				errorLabel.setText(" ");
-			}
+		case 0:
+			validateNotEmpty(text, errorLabel, "Name");
 			break;
-		case 1: // Staff ID
+		case 1:
 			try {
 				Integer.parseInt(text);
 				errorLabel.setText(" ");
@@ -189,21 +190,17 @@ public class GlobalSettingsDialog {
 				errorLabel.setText("Invalid staff ID");
 			}
 			break;
-		case 2: // Department
-			if (text.isEmpty()) {
-				errorLabel.setText("Department cannot be empty");
-			} else {
-				errorLabel.setText(" ");
-			}
+		case 2:
+			validateNotEmpty(text, errorLabel, "Department");
 			break;
-		case 3: // Working Time
+		case 3:
 			if (!DialogHelper.isValidTimeFormat(text)) {
 				errorLabel.setText("Invalid time format (HH:MM)");
 			} else {
 				errorLabel.setText(" ");
 			}
 			break;
-		case 4: // Wage
+		case 4:
 			try {
 				Double.parseDouble(text);
 				errorLabel.setText(" ");
@@ -211,13 +208,20 @@ public class GlobalSettingsDialog {
 				errorLabel.setText("Invalid wage");
 			}
 			break;
-		case 5: // Working Area
-			if (text.isEmpty()) {
-				errorLabel.setText("Working area cannot be empty");
-			} else {
-				errorLabel.setText(" ");
-			}
+		case 5:
+			validateNotEmpty(text, errorLabel, "Working area");
 			break;
+		default:
+			// Unknown field, nothing to validate
+			break;
+		}
+	}
+
+	private static void validateNotEmpty(String text, JLabel errorLabel, String setting) {
+		if (text.isEmpty()) {
+			errorLabel.setText("%s cannot be empty".formatted(setting));
+		} else {
+			errorLabel.setText(" ");
 		}
 	}
 

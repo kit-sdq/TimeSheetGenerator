@@ -6,14 +6,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SaveOnClosePrompt {
+public final class SaveOnClosePrompt {
+
+	private SaveOnClosePrompt() {
+		// Don't allow instances of this class
+	}
 
 	static boolean showDialog(UserInterface parentUI) {
 		final AtomicBoolean proceed = new AtomicBoolean(false);
 
 		// Create the dialog
 		JDialog dialog = new JDialog((Frame) null, "Save Changes?", true);
-		dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		dialog.setLayout(new BorderLayout(10, 10));
 		dialog.setSize(400, 150);
 		dialog.setLocationRelativeTo(null);

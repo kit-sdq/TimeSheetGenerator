@@ -15,7 +15,11 @@ import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DialogHelper {
+public final class DialogHelper {
+
+	private DialogHelper() {
+		// Don't allow instances of this class
+	}
 
 	private static final String DAY_PLACEHOLDER = "DAY";
 	static final String TIME_PLACEHOLDER = "HH:MM";
@@ -29,7 +33,10 @@ public class DialogHelper {
 
 	private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 
-	private static final int INDEX_DAY = 0, INDEX_START_TIME = 1, INDEX_END_TIME = 2, INDEX_BREAK_TIME = 3;
+	private static final int INDEX_DAY = 0;
+	private static final int INDEX_START_TIME = 1;
+	private static final int INDEX_END_TIME = 2;
+	private static final int INDEX_BREAK_TIME = 3;
 
 	public static void showEntryDialog(UserInterface parentUI, String title) {
 		showEntryDialog(parentUI, title, TimesheetEntry.EMPTY_ENTRY);
@@ -60,7 +67,7 @@ public class DialogHelper {
 
 		// Activity field: multiline text area
 		JLabel actionLabel = new JLabel("Activity:");
-		actionLabel.setHorizontalAlignment(JLabel.RIGHT);
+		actionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		gbc.gridx = 0;
 		gbc.gridy = row;
 		gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -96,7 +103,7 @@ public class DialogHelper {
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel timeLabel = new JLabel(labels[i]);
-			timeLabel.setHorizontalAlignment(JLabel.RIGHT);
+			timeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 			gbc.gridx = 0;
 			gbc.gridy = row;
 			gbc.weightx = 0;
@@ -124,6 +131,7 @@ public class DialogHelper {
 			final int index = i;
 
 			timeField.addFocusListener(new FocusAdapter() {
+				@Override
 				public void focusLost(FocusEvent e) {
 					if (index == 0)
 						checkDay(timeFields[INDEX_DAY], errorLabels[INDEX_DAY]);
@@ -149,7 +157,7 @@ public class DialogHelper {
 
 		// 5. Vacation checkbox
 		JLabel vacationLabel = new JLabel("Vacation:");
-		vacationLabel.setHorizontalAlignment(JLabel.RIGHT);
+		vacationLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		gbc.gridx = 0;
 		gbc.gridy = row;
 		gbc.weightx = 0;
@@ -324,6 +332,7 @@ public class DialogHelper {
 		}
 
 		component.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				if (component.getText().equals(placeholder)) {
 					component.setText("");
@@ -331,6 +340,7 @@ public class DialogHelper {
 				}
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				if (component.getText().isEmpty()) {
 					component.setForeground(Color.GRAY);

@@ -29,9 +29,8 @@ class TempFiles implements AutoCloseable {
 
 	@Override
 	public void close() {
-		if (isTempMonthFile) {
-			if (!monthFile.delete())
-				monthFile.deleteOnExit();
+		if (isTempMonthFile && !monthFile.delete()) {
+			monthFile.deleteOnExit();
 		}
 	}
 

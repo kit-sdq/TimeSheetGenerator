@@ -79,20 +79,22 @@ public class ActionBar extends JPanel {
 	 * @return Overflowing hours.
 	 */
 	public Time updateHours(Time workedHours) {
-		String totalHoursStr = JSONHandler.globalSettings.getWorkingTime();
+		String totalHoursStr = JSONHandler.getGlobalSettings().getWorkingTime();
 		Time totalHours = Time.parseTime(totalHoursStr);
 
 		workedHours.addTime(this.parentUI.getPredTime());
 
-		Time displayedWorkedHours, succHours;
+		Time displayedWorkedHours;
+		Time successorHours;
+
 		if (workedHours.isLongerThan(totalHours)) {
 			displayedWorkedHours = totalHours;
-			succHours = new Time(workedHours);
-			succHours.subtractTime(totalHours);
+			successorHours = new Time(workedHours);
+			successorHours.subtractTime(totalHours);
 			hoursWorkedLabel.setFont(fontBold);
 		} else {
 			displayedWorkedHours = workedHours;
-			succHours = new Time(0, 0);
+			successorHours = new Time(0, 0);
 
 			// Same Length
 			if (!totalHours.isLongerThan(workedHours))
@@ -102,7 +104,7 @@ public class ActionBar extends JPanel {
 		}
 
 		hoursWorkedLabel.setText(HOURS_FORMAT.formatted(displayedWorkedHours, totalHours));
-		return succHours;
+		return successorHours;
 	}
 
 }

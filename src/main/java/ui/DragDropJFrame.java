@@ -35,10 +35,12 @@ public class DragDropJFrame extends JFrame {
 
 			@Override
 			public void dragOver(DropTargetDragEvent dtde) {
+				// Needs to be implemented, but we're not doing anything here
 			}
 
 			@Override
 			public void dropActionChanged(DropTargetDragEvent dtde) {
+				// Needs to be implemented, but we're not doing anything here
 			}
 
 			@Override
@@ -46,35 +48,40 @@ public class DragDropJFrame extends JFrame {
 				setColor(DEFAULT_COLOR);
 			}
 
-			@SuppressWarnings("unchecked") // :)
 			@Override
 			public void drop(DropTargetDropEvent dtde) {
-				if (isDropAcceptable(dtde)) {
-					dtde.acceptDrop(DnDConstants.ACTION_COPY);
-					Transferable transferable = dtde.getTransferable();
-
-					try {
-						List<File> droppedFiles = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-
-						if (!droppedFiles.isEmpty()) {
-							File jsonFile = droppedFiles.getFirst();
-							if (jsonFile.getName().toLowerCase().endsWith(".json")) {
-								performActionWithJSON(jsonFile);
-							} else {
-								JOptionPane.showMessageDialog(DragDropJFrame.this, "Only JSON files are accepted.", "Invalid File",
-										JOptionPane.WARNING_MESSAGE);
-							}
-						}
-					} catch (UnsupportedFlavorException | IOException ignored) {
-					} finally {
-						setColor(DEFAULT_COLOR);
-						dtde.dropComplete(true);
-					}
-				} else {
-					dtde.rejectDrop();
-				}
+				handleDroppedFileEvent(dtde);
 			}
 		});
+	}
+
+	@SuppressWarnings("unchecked") // :)
+	private void handleDroppedFileEvent(DropTargetDropEvent dtde) {
+		if (isDropAcceptable(dtde)) {
+			dtde.acceptDrop(DnDConstants.ACTION_COPY);
+			Transferable transferable = dtde.getTransferable();
+
+			try {
+				List<File> droppedFiles = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+
+				if (!droppedFiles.isEmpty()) {
+					File jsonFile = droppedFiles.getFirst();
+					if (jsonFile.getName().toLowerCase().endsWith(".json")) {
+						performActionWithJSON(jsonFile);
+					} else {
+						JOptionPane.showMessageDialog(DragDropJFrame.this, "Only JSON files are accepted.", "Invalid File",
+								JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			} catch (UnsupportedFlavorException | IOException ignored) {
+				// Catch exception, but just ignore it. Nothing happens, we just go back to normal
+			} finally {
+				setColor(DEFAULT_COLOR);
+				dtde.dropComplete(true);
+			}
+		} else {
+			dtde.rejectDrop();
+		}
 	}
 
 	private boolean isDragAcceptable(DropTargetDragEvent dtde) {

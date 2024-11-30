@@ -134,7 +134,8 @@ public class Main {
 	public static Optional<String> validateTimesheet(File globalFile, File monthFile) {
 		if (globalFile == null || monthFile == null)
 			return Optional.of("The global or month file were null. Try saving.");
-		String globalStr, monthStr;
+		String globalStr;
+		String monthStr;
 		try {
 			globalStr = FileController.readFileToString(globalFile);
 			monthStr = FileController.readFileToString(monthFile);

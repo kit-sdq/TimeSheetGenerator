@@ -6,7 +6,11 @@ import ui.json.JSONHandler;
 import java.io.File;
 import java.util.Optional;
 
-public class TexCompiler {
+public final class TexCompiler {
+
+	private TexCompiler() {
+		// Don't allow instances of this class
+	}
 
 	public static void compileToTex(File monthFile, File texFile) {
 		File globalFile = JSONHandler.getConfigFile();

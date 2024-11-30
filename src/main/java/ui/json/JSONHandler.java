@@ -15,28 +15,34 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public class JSONHandler {
+public final class JSONHandler {
 
-	public static Global globalSettings;
-	public static OtherSettings otherSettings;
+	private JSONHandler() {
+		// Don't allow instances of this class
+	}
+
+	private static Global globalSettings;
+	private static OtherSettings otherSettings;
 
 	private static String configDir;
-	private static final String configFile = "global.json";
-	private static final String otherSettingsFile = "settings.json";
+	private static final String CONFIG_FILE_NAME = "global.json";
+	private static final String UI_SETTINGS_FILE_NAME = "settings.json";
 
 	private static final String ERROR = "An unexpected error occurred:%s%s".formatted(System.lineSeparator(), "%s");
 
 	public static void initialize(UserInterface parentUI) {
-		String OS = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-		if (OS.contains("win")) {
+		final String homePropertyName = "user.home";
+		String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
+
+		if (os.contains("win")) {
 			configDir = System.getenv("APPDATA");
-		} else if (OS.contains("mac")) {
-			configDir = System.getProperty("user.home") + "/Library/Application Support";
-		} else if (OS.contains("nux") || OS.contains("nix")) {
-			configDir = System.getProperty("user.home") + "/.config";
+		} else if (os.contains("mac")) {
+			configDir = System.getProperty(homePropertyName) + "/Library/Application Support";
+		} else if (os.contains("nux") || os.contains("nix")) {
+			configDir = System.getProperty(homePropertyName) + "/.config";
 		} else {
 			// Default to user home directory
-			configDir = System.getProperty("user.home");
+			configDir = System.getProperty(homePropertyName);
 		}
 
 		// Create a subdirectory for your application
@@ -50,11 +56,34 @@ public class JSONHandler {
 		cleanUp();
 	}
 
+	/**
+	 * Gets a copy of the current global settings.
+	 * @return Copy of global settings
+	 */
+	public static Global getGlobalSettings() {
+		return new Global(globalSettings);
+	}
+
+	/**
+	 * Gets a copy of the current additional ui settings.
+	 * @return Copy of ui settings
+	 */
+	public static OtherSettings getUISettings() {
+		return new OtherSettings(otherSettings);
+	}
+
+	private static void setGlobalSettings(Global globalSettings) {
+		JSONHandler.globalSettings = globalSettings;
+	}
+
+	private static void setUISettings(OtherSettings otherSettings) {
+		JSONHandler.otherSettings = otherSettings;
+	}
+
 	public static void loadGlobal(UserInterface parentUI) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			globalSettings = objectMapper.readValue(getConfigFile(), Global.class);
-			System.out.println("Loaded Global Settings.");
 		} catch (IOException e) {
 			parentUI.showError("Error loading global settings file", ERROR.formatted(e.getMessage()));
 		}
@@ -65,7 +94,7 @@ public class JSONHandler {
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
 			objectMapper.writeValue(getConfigFile(), globalSettings);
-			System.out.println("Saved global settings.");
+			setGlobalSettings(globalSettings);
 		} catch (IOException e) {
 			parentUI.showError("Error saving global settings file", ERROR.formatted(e.getMessage()));
 		}
@@ -75,18 +104,17 @@ public class JSONHandler {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			otherSettings = objectMapper.readValue(getOtherSettingsFile(), OtherSettings.class);
-			System.out.println("Loaded Global Settings.");
 		} catch (IOException e) {
 			parentUI.showError("Error loading UI settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	public static void saveOtherSettings(UserInterface parentUI, OtherSettings otherSettings) {
+	public static void saveUISettings(UserInterface parentUI, OtherSettings uiSettings) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
-			objectMapper.writeValue(getOtherSettingsFile(), otherSettings);
-			System.out.println("Saved global settings.");
+			objectMapper.writeValue(getOtherSettingsFile(), uiSettings);
+			setUISettings(uiSettings);
 		} catch (IOException e) {
 			parentUI.showError("Error saving UI settings file", ERROR.formatted(e.getMessage()));
 		}
@@ -103,8 +131,6 @@ public class JSONHandler {
 			for (Month.Entry entry : month.getEntries()) {
 				parentUI.addEntry(new TimesheetEntry(entry));
 			}
-
-			System.out.println("Year: " + month.getYear() + ", Month: " + month.getMonth());
 		} catch (IOException e) {
 			parentUI.showError("Error loading month file", ERROR.formatted(e.getMessage()));
 		}
@@ -136,7 +162,6 @@ public class JSONHandler {
 		try {
 			Month month = getMonth(settingsBar, entries);
 			objectMapper.writeValue(saveFile, month);
-			System.out.println("Saved month.");
 		} catch (IOException e) {
 			parentUI.showError("Error saving month file", ERROR.formatted(e.getMessage()));
 		}
@@ -161,7 +186,7 @@ public class JSONHandler {
 	}
 
 	public static File getConfigFile() {
-		return new File(configDir, configFile);
+		return new File(configDir, CONFIG_FILE_NAME);
 	}
 
 	private static boolean globalConfigExists() {
@@ -195,11 +220,10 @@ public class JSONHandler {
 		global.setWage(13.25);
 		global.setWorkingArea("ub");
 		saveGlobal(parentUI, global);
-		System.out.println("Created Default Global Settings.");
 	}
 
 	public static File getOtherSettingsFile() {
-		return new File(configDir, otherSettingsFile);
+		return new File(configDir, UI_SETTINGS_FILE_NAME);
 	}
 
 	private static boolean otherSettingsFileExists() {
@@ -227,8 +251,7 @@ public class JSONHandler {
 
 		OtherSettings settings = new OtherSettings();
 		settings.setAddSignature(false);
-		saveOtherSettings(parentUI, settings);
-		System.out.println("Created Default Other Settings.");
+		saveUISettings(parentUI, settings);
 	}
 
 	private static void cleanUp() {
@@ -236,9 +259,8 @@ public class JSONHandler {
 		if (files == null)
 			return;
 		for (File file : files) {
-			if (file.getName().startsWith("temp")) {
-				if (!file.delete())
-					file.deleteOnExit();
+			if (file.getName().startsWith("temp") && !file.delete()) {
+				file.deleteOnExit();
 			}
 		}
 	}

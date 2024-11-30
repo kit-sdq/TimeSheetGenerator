@@ -23,6 +23,7 @@ public class JTimeField extends JTextField {
 		DialogHelper.addPlaceholderText(this, PLACEHOLDER, text);
 
 		this.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(FocusEvent e) {
 				if (getText().isEmpty())
 					return;
@@ -54,10 +55,12 @@ public class JTimeField extends JTextField {
 		}
 	}
 
+	@Override
 	public boolean isValid() {
 		return getForeground() != Color.RED;
 	}
 
+	@Override
 	public void setText(String text) {
 		super.setText(text);
 		validateField();

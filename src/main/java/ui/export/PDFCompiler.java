@@ -22,8 +22,7 @@ public class PDFCompiler {
 	}
 
 	public static Optional<String> compileToPDF(Global global, Month month, File targetFile) {
-		try (InputStream templateStream = new Object() {
-		}.getClass().getResourceAsStream("/pdf/template.pdf")) {
+		try (InputStream templateStream = Object.class.getResourceAsStream("/pdf/template.pdf")) {
 			if (templateStream == null) {
 				return Optional.of("Template PDF not found in resources.");
 			}
@@ -37,25 +36,12 @@ public class PDFCompiler {
 	}
 
 	private static Optional<String> writeToPDF(PDDocument document, Global global, Month month, File targetFile) throws IOException {
-
-		/*
-		 * This code is for if, theoretically, we'd need more pages. As far as I know,
-		 * though, it is not supposed to be > 1 page.
-		 * 
-		 * int pages = (int) Math.max(1, Math.ceil((double) month.getEntries().size() /
-		 * MAX_ENTRIES_PER_PAGE)); PDPage page = document.getPage(0); // PDF has only 1
-		 * page
-		 * 
-		 * for (int i = document.getNumberOfPages(); i < pages; ++i) {
-		 * document.addPage(page); }
-		 */
-
 		PDAcroForm form = document.getDocumentCatalog().getAcroForm();
 		if (form == null) {
 			return Optional.of("No form found in the document. Nothing we can do, sorry.");
 		}
 
-		form.getField("GF").setValue(global.getFormattedName()); // Name
+		form.getField("GF").setValue(global.getNameFormalFormat()); // Name
 		form.getField("abc").setValue(String.valueOf(month.getMonth())); // Month
 		form.getField("abdd").setValue(String.valueOf(month.getYear())); // Year
 		form.getField("Personalnummer").setValue(String.valueOf(global.getStaffId())); // Personalnummer
@@ -78,7 +64,7 @@ public class PDFCompiler {
 		form.getField("monatliche SollArbeitszeit").setValue(global.getWorkingTime()); // Again hours probably
 
 		form.getField("Ich bestätige die Richtigkeit der Angaben").setValue("%s, %s".formatted(
-				DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()), JSONHandler.otherSettings.getAddSignature() ? global.getName() : ""));
+				DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()), JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
 
 		final DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd.MM.yy");
 

@@ -83,4 +83,12 @@ public class Time {
 	public String toString() {
 		return String.format("%02d:%02d", hours, minutes);
 	}
+
+	/**
+	 * Returns a new time object with 0 hours and 0 minutes.
+	 * @return Time object with 0 time stored.
+	 */
+	public static Time none() {
+		return new Time(0, 0);
+	}
 }

@@ -13,6 +13,13 @@ public class OtherSettings {
 	private String pdfPath;
 
 	public OtherSettings() {
+		// Default Constructor is required
+	}
+	public OtherSettings(OtherSettings uiSettings) {
+		this.addSignature = uiSettings.addSignature;
+		this.monthPath = uiSettings.monthPath;
+		this.texPath = uiSettings.texPath;
+		this.pdfPath = uiSettings.pdfPath;
 	}
 
 	// Constructors, Getters, and Setters
@@ -74,16 +81,18 @@ public class OtherSettings {
 		// If Pdf path is empty but tex isn't, use tex path for pdf default and vice
 		// versa
 		if (pathStr == null || pathStr.isEmpty()) {
-			if (type == FileChooserType.PDF_PATH) {
-				pathStr = getTexPath();
-				if (pathStr == null || pathStr.isEmpty())
-					return null;
-			} else if (type == FileChooserType.TEX_PATH) {
-				pathStr = getPdfPath();
-				if (pathStr == null || pathStr.isEmpty())
-					return null;
-			} else {
-				return null;
+			switch (type) {
+				case PDF_PATH:
+					pathStr = getTexPath();
+					if (pathStr == null || pathStr.isEmpty())
+						return null;
+					break;
+				case TEX_PATH:
+					pathStr = getPdfPath();
+					if (pathStr == null || pathStr.isEmpty())
+						return null;
+					break;
+				default: return null;
 			}
 		}
 		File pathFile = new File(pathStr);
@@ -93,6 +102,6 @@ public class OtherSettings {
 	}
 
 	public void save(UserInterface parentUI) {
-		JSONHandler.saveOtherSettings(parentUI, this);
+		JSONHandler.saveUISettings(parentUI, this);
 	}
 }

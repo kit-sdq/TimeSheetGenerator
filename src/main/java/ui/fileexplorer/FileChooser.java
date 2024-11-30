@@ -8,17 +8,21 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.File;
 
-public class FileChooser {
+public final class FileChooser {
+
+	private FileChooser() {
+		// Don't allow instances of this class
+	}
 
 	// Timesheet Format: Nachname_Vorname_Monat Jahr.pdf
 	private static final String FORMAT = "%s_%s 20%s";
 
 	public static String getDefaultFileName(UserInterface parentUI) {
-		return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(), getGermanMonth(parentUI.getCurrentMonthNumber()), parentUI.getYear());
+		return FORMAT.formatted(JSONHandler.getGlobalSettings().getNameUnderscoreFormat(), getGermanMonth(parentUI.getCurrentMonthNumber()), parentUI.getYear());
 	}
 
 	public static File chooseFile(UserInterface parentUI, String title, FileChooserType chooserType) {
-		// TODO Implement Windows Version ?
+		// Later: Implement Windows Version ?
 		//  -> Later, I tried doing it simple and failed, and I don't have the time (currently) to figure it out
 		//     Once I do, I'll make another pull request. It might not be as pretty, but because it remembers the
 		//     folders, you don't need to go through the navigation hassle each time, so I think it's a fair
@@ -37,7 +41,7 @@ public class FileChooser {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			JSONHandler.otherSettings.setPath(parentUI, chooserType, file);
+			JSONHandler.getUISettings().setPath(parentUI, chooserType, file);
 			return file;
 		} else {
 			return null;
@@ -83,7 +87,7 @@ public class FileChooser {
 				}
 			}
 
-			JSONHandler.otherSettings.setPath(parentUI, chooserType, fileToSave);
+			JSONHandler.getUISettings().setPath(parentUI, chooserType, fileToSave);
 			return fileToSave;
 		} else {
 			return null;
@@ -116,7 +120,7 @@ public class FileChooser {
 
 	private static JFileChooser getFileChooser(FileChooserType chooserType) {
 		JFileChooser fileChooser;
-		File parent = JSONHandler.otherSettings.getPath(chooserType);
+		File parent = JSONHandler.getUISettings().getPath(chooserType);
 		if (parent == null)
 			fileChooser = new JFileChooser();
 		else

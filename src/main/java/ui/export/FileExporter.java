@@ -8,7 +8,11 @@ import ui.json.JSONHandler;
 import java.io.File;
 import java.util.Optional;
 
-public class FileExporter {
+public final class FileExporter {
+
+	private FileExporter() {
+		// Don't allow instances of this class
+	}
 
 	public static void printTex(UserInterface parentUI) {
 		try (TempFiles tempFiles = TempFiles.generateNewTemp(parentUI)) {
@@ -50,7 +54,7 @@ public class FileExporter {
 			if (pdfFile == null)
 				return; // Cancelled
 
-			error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, parentUI.getCurrentMonth(), pdfFile);
+			error = PDFCompiler.compileToPDF(JSONHandler.getGlobalSettings(), parentUI.getCurrentMonth(), pdfFile);
 
 			if (error.isPresent()) {
 				error(parentUI, "PDF compiler error", error.get());

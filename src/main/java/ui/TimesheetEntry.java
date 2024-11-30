@@ -8,11 +8,13 @@ import java.time.LocalTime;
 
 public class TimesheetEntry {
 
-	public static final String TIMESHEET_FORMAT_HEADER = "            %-55s %-15s %-20s %-20s %-20s %-20s %-20s"; // "%-20s %-10s %-10s %-10s %-10s";
-	public static final String TIMESHEET_FORMAT = " %-40s      %-10s %-25s %-25s %-25s %-25s %-25s"; // "%-20s %-10s %-10s %-10s %-10s";
+	public static final String TIMESHEET_FORMAT_HEADER = "            %-55s %-15s %-20s %-20s %-20s %-20s %-20s";
+	public static final String TIMESHEET_FORMAT = " %-40s      %-10s %-25s %-25s %-25s %-25s %-25s";
 	public static final String COMPRESSED_TIMESHEET_FORMAT = "%s, %s. %s - %s, Break: %s, Vacation: %s";
 
-	public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry("", -1, -1, -1, -1, -1, -1, -1, false);
+	private static final String TIME_FORMAT = "%02d:%02d";
+
+	public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry("", -1, Time.none(), Time.none(), Time.none(), false);
 
 	private final String activity;
 	private final int day;
@@ -29,7 +31,12 @@ public class TimesheetEntry {
 		LocalTime endTime = DialogHelper.parseTime(endText);
 		LocalTime breakTime = DialogHelper.parseTime(breakText);
 
-		int fromHour = -1, fromMinute = -1, toHour = -1, toMinute = -1, breakHour = -1, breakMinutes = -1;
+		int fromHour = -1;
+		int fromMinute = -1;
+		int toHour = -1;
+		int toMinute = -1;
+		int breakHour = -1;
+		int breakMinutes = -1;
 
 		if (startTime != null && endTime != null && breakTime != null) {
 			fromHour = startTime.getHour();
@@ -39,20 +46,36 @@ public class TimesheetEntry {
 			breakHour = breakTime.getHour();
 			breakMinutes = breakTime.getMinute();
 		}
-		return new TimesheetEntry(activity, day, fromHour, fromMinute, toHour, toMinute, breakHour, breakMinutes, isVacation);
+
+		Time start = new Time(fromHour, fromMinute);
+		Time end = new Time(toHour, toMinute);
+		Time _break = new Time(breakHour, breakMinutes);
+
+		return new TimesheetEntry(activity, day, start, end, _break, isVacation);
 	}
 
-	public TimesheetEntry(String activity, int day, int fromHour, int fromMinute, int toHour, int toMinute, int breakHour, int breakMinutes,
-			boolean isVacation) {
+	public TimesheetEntry(String activity, int day, Time startTime, Time endTime, Time breakTime, boolean isVacation) {
 		this.activity = activity.trim();
 		this.day = day;
-		this.fromHour = fromHour;
-		this.fromMinute = fromMinute;
-		this.toHour = toHour;
-		this.toMinute = toMinute;
-		this.breakHour = breakHour;
-		this.breakMinutes = breakMinutes;
+		this.fromHour = startTime.getHours();
+		this.fromMinute = startTime.getMinutes();
+		this.toHour = endTime.getHours();
+		this.toMinute = endTime.getMinutes();
+		this.breakHour = breakTime.getHours();
+		this.breakMinutes = breakTime.getMinutes();
 		this.isVacation = isVacation;
+	}
+
+	public TimesheetEntry(TimesheetEntry copy) {
+		this.activity = copy.activity;
+		this.day = copy.day;
+		this.fromHour = copy.fromHour;
+		this.fromMinute = copy.fromMinute;
+		this.toHour = copy.toHour;
+		this.toMinute = copy.toMinute;
+		this.breakHour = copy.breakHour;
+		this.breakMinutes = copy.breakMinutes;
+		this.isVacation = copy.isVacation;
 	}
 
 	public TimesheetEntry(Month.Entry entry) {
@@ -109,19 +132,19 @@ public class TimesheetEntry {
 	public String getStartTimeString() {
 		if (fromHour == -1)
 			return "";
-		return String.format("%02d:%02d", fromHour, fromMinute);
+		return String.format(TIME_FORMAT, fromHour, fromMinute);
 	}
 
 	public String getEndTimeString() {
 		if (fromHour == -1)
 			return "";
-		return String.format("%02d:%02d", toHour, toMinute);
+		return String.format(TIME_FORMAT, toHour, toMinute);
 	}
 
 	public String getBreakTimeString() {
 		if (fromHour == -1)
 			return "";
-		return String.format("%02d:%02d", breakHour, breakMinutes);
+		return String.format(TIME_FORMAT, breakHour, breakMinutes);
 	}
 
 	public String getTotalTimeWorkedString() {
@@ -137,7 +160,7 @@ public class TimesheetEntry {
 			minutesWorked += 60;
 			hoursWorked--;
 		}
-		return String.format("%02d:%02d", hoursWorked, minutesWorked);
+		return String.format(TIME_FORMAT, hoursWorked, minutesWorked);
 	}
 
 	public Time getWorkedTime() {
@@ -180,12 +203,6 @@ public class TimesheetEntry {
 		return this.toMinute >= other.toMinute;
 	}
 
-	// TODO: clone should not be used.
-	@Override
-	public TimesheetEntry clone() {
-		return new TimesheetEntry(activity, day, fromHour, fromMinute, toHour, toMinute, breakHour, breakMinutes, isVacation);
-	}
-
 	@Override
 	public String toString() {
 		return String.format(TIMESHEET_FORMAT, getActivity(), getDayString() + ".", getStartTimeString(), getEndTimeString(), getBreakTimeString(),
@@ -201,23 +218,6 @@ public class TimesheetEntry {
 				getActivity(), getDayString() + ".", getStartTimeString(), getEndTimeString(), getBreakTimeString(), isVacationStr(),
 				getTotalTimeWorkedString());
 	}
-
-	/*
-	 * This works for the following header:
-	 * "         %-40s %-10s %-25s %-25s %-25s %-25s %-25s" "<html>" +
-	 * "<table width='100%%' cellpadding='0' cellspacing='0'>" + "<tr>" +
-	 * "<td width='270' style='text-align:left; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;'>%s</td>"
-	 * + "<td width='80' style='text-align:left;'>%s</td>" +
-	 * "<td width='156' style='text-align:left;'>%s</td>" +
-	 * "<td width='170' style='text-align:left;'>%s</td>" +
-	 * "<td width='170' style='text-align:left;'>%s</td>" +
-	 * "<td width='180' style='text-align:left;'>%s</td>" +
-	 * "<td width='100' style='text-align:left;'>%s</td>" + "</tr>" + "</table>" +
-	 * "</html>",
-	 * 
-	 * Problem: Activity field not wide enough
-	 * 
-	 */
 
 	public String toShortString() {
 		return String.format(COMPRESSED_TIMESHEET_FORMAT, getActivity(), getDayString(), getStartTimeString(), getEndTimeString(), getBreakTimeString(),

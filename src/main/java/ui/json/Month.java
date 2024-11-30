@@ -13,7 +13,9 @@ public class Month {
 	private String schema;
 
 	private int year;
-	private int month;
+
+	@JsonProperty("month")
+	private int monthNr;
 
 	@JsonProperty("pred_transfer")
 	private String predTransfer;
@@ -37,10 +39,7 @@ public class Month {
 		private String pause;
 		private boolean vacation;
 
-		// Constructors, Getters, and Setters
-
-		public Entry() {
-		}
+		// Getters, and Setters
 
 		public String getAction() {
 			return action;
@@ -110,11 +109,11 @@ public class Month {
 	}
 
 	public int getMonth() {
-		return month;
+		return monthNr;
 	}
 
 	public void setMonth(int month) {
-		this.month = month;
+		this.monthNr = month;
 	}
 
 	public String getPredTransfer() {

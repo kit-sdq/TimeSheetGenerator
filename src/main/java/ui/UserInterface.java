@@ -5,7 +5,6 @@ import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
 import ui.json.Month;
-import ui.json.OtherSettings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,6 +14,11 @@ import java.io.File;
 
 public class UserInterface {
 
+	/**
+	 * Maximum number of entries on the time sheet.
+	 * Not a technical limitation, but the PDF has 22 rows,
+	 * and it's always supposed to be only one (1) page.
+	 */
 	public static final int MAX_ENTRIES = 22;
 
 	private static final String APP_NAME = "Timesheet Generator";
@@ -39,7 +43,7 @@ public class UserInterface {
 		// Main Frame
 		frame = new DragDropJFrame(this);
 		setTitle(null);
-		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
@@ -100,23 +104,14 @@ public class UserInterface {
 
 		// Double-click to Edit Entry
 		itemList.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				int index = itemList.locationToIndex(e.getPoint());
-				if (e.getClickCount() == 2) {
-					if (index >= 0) {
-						editSelectedListEntry();
-					}
+				if (e.getClickCount() == 2 && index >= 0) {
+					editSelectedListEntry();
 				}
 			}
 		});
-		/*
-		 * For the remove button itemList.addFocusListener(new FocusAdapter() { public
-		 * void focusGained(FocusEvent e) { selectedItemIndex =
-		 * previousSelectedItemIndex; } public void focusLost(FocusEvent e) {
-		 * previousSelectedItemIndex = selectedItemIndex; selectedItemIndex = -1; } });
-		 */
-		System.out.printf("Frame height: %d, bar height: %d, settings height: %d, bar Y: %d, settings Y: %d%n", frame.getHeight(), buttonActionBar.getHeight(),
-				monthSettingsBar.getHeight(), buttonActionBar.getLocation().y, monthSettingsBar.getLocation().y);
 
 		JScrollPane itemListPane = new JScrollPane(itemList);
 		itemListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -130,7 +125,6 @@ public class UserInterface {
 		frame.add(listPanel, BorderLayout.SOUTH);
 
 		// Action Listeners
-		// addButton.addActionListener(e -> showEntryDialog("Add Entry", "", -1));
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
@@ -138,11 +132,9 @@ public class UserInterface {
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
-		// Add Strg + S to save
-		// Define the KeyStroke for Ctrl+S or Command+S on Mac
-		KeyStroke saveKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+		// Add Ctrl + S to save
 
-		// Bind the KeyStroke to the save action in the InputMap and ActionMap
+		KeyStroke saveKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
 		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(saveKeyStroke, "saveAction");
 		frame.getRootPane().getActionMap().put("saveAction", new AbstractAction() {
 			@Override
@@ -155,6 +147,7 @@ public class UserInterface {
 		frame.setVisible(true);
 
 		frame.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				if (closeCurrentOpenFile()) {
 					frame.dispose();
@@ -345,7 +338,7 @@ public class UserInterface {
 			return;
 		setHasUnsavedChanges(true);
 
-		addEntry(listModel.getElementAt(selectedItemIndex).clone());
+		addEntry(new TimesheetEntry(listModel.getElementAt(selectedItemIndex)));
 		itemList.setSelectedIndex(selectedItemIndex + 1); // 1 more, there is the duplicate
 		editSelectedListEntry();
 	}
