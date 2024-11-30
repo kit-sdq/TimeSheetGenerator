@@ -1,14 +1,12 @@
 /* Licensed under MIT 2024. */
 package ui.json;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
- * Custom Serializer for Global to provide additional functionality that is
- * ignored when writing to the JSON file.
+ * Global Settings stored in AppData files.
  */
-@JsonSerialize(using = GlobalSerialzer.class)
 public class Global {
 	@JsonProperty("$schema")
 	private String schema;
@@ -97,9 +95,10 @@ public class Global {
 	 * String to the front. Everything else is interpreted as first- and middle
 	 * names. <br/>
 	 * If the name does not contain any spaces, returns the regular name.
-	 * 
+	 *
 	 * @return The name, formatted to start with the lastname.
 	 */
+	@JsonIgnore
 	public String getNameFormalFormat() {
 		if (!getName().contains(" ")) {
 			return getName();
@@ -126,10 +125,11 @@ public class Global {
 	 * after the lastname. <br/>
 	 * This is used when determining the filename when exporting to a PDF. <br/>
 	 * If the name does not contain any spaces, returns the regular name.
-	 * 
+	 *
 	 * @return Like {@link Global#getNameFormalFormat()}, but with underscores and
 	 *         no comma.
 	 */
+	@JsonIgnore
 	public String getNameUnderscoreFormat() {
 		if (!getName().contains(" ")) {
 			return getName();
