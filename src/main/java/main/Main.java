@@ -10,6 +10,7 @@ import io.LatexGenerator;
 import main.UserInput.Request;
 import parser.ParseException;
 import parser.Parser;
+import ui.UserInterface;
 
 import javax.swing.*;
 import java.io.File;
@@ -31,7 +32,7 @@ public class Main {
 
 		// If no arguments or a valid file was given, run UI instead
 		if (args.length == 0 || new File(args[0]).exists()) {
-			ui.Main.main(args);
+			UserInterface.main(args);
 			return;
 		}
 

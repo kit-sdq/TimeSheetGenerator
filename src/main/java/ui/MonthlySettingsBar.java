@@ -60,7 +60,7 @@ public class MonthlySettingsBar extends JPanel {
 			public void keyTyped(KeyEvent e) {
 				if ((e.getKeyChar() < '0' || e.getKeyChar() > '9') && e.getKeyChar() != ':')
 					return;
-				Main.setHasUnsavedChanges(true);
+				UserInterface.setHasUnsavedChanges(true);
 			}
 		});
 		timeCarryPanel.add(predTimeField);
@@ -190,7 +190,7 @@ public class MonthlySettingsBar extends JPanel {
 		} else {
 			semesterTextFieldLabel.setText("/%d".formatted(year + 1));
 		}
-		Main.setHasUnsavedChanges(true);
+		UserInterface.setHasUnsavedChanges(true);
 	}
 
 }

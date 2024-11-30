@@ -1,7 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui.export;
 
-import ui.Main;
+import ui.UserInterface;
 import ui.json.JSONHandler;
 
 import java.io.File;
@@ -38,11 +38,11 @@ class TempFiles implements AutoCloseable {
 	public static TempFiles generateNewTemp() {
 		File monthFile;
 		boolean tempMonth = false;
-		if (Main.hasUnsavedChanges() || Main.getCurrentOpenFile() == null) {
-			monthFile = Main.generateTempMonthFile();
+		if (UserInterface.hasUnsavedChanges() || UserInterface.getCurrentOpenFile() == null) {
+			monthFile = UserInterface.generateTempMonthFile();
 			tempMonth = true;
 		} else {
-			monthFile = Main.getCurrentOpenFile();
+			monthFile = UserInterface.getCurrentOpenFile();
 		}
 		if (monthFile == null)
 			return null;

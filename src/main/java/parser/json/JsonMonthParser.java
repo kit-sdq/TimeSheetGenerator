@@ -108,7 +108,7 @@ public class JsonMonthParser implements IMonthParser {
 	/**
 	 * Parses an {@link Entry} from an {@link MonthEntryJson}.
 	 * 
-	 * @param json - to parse {@link Entry} from
+	 * @param entry - to parse {@link Entry} from
 	 * @return The entry parsed from the {@link MonthEntryJson}.
 	 * @throws ParseException if an error occurs while fetching the
 	 *                        {@link YearMonth}.

@@ -1,7 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui.fileexplorer;
 
-import ui.Main;
+import ui.UserInterface;
 import ui.json.JSONHandler;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class FileChooser {
 	private static final String FORMAT = "%s_%s 20%s";
 
 	public static String getDefaultFileName() {
-		return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(), getGermanMonth(Main.getCurrentMonthNumber()), Main.getYear());
+		return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(), getGermanMonth(UserInterface.getCurrentMonthNumber()), UserInterface.getYear());
 	}
 
 	public static File chooseFile(String title, FileChooserType chooserType) {
@@ -40,10 +40,10 @@ public class FileChooser {
 	}
 
 	public static File chooseCreateJSONFile(String title) {
-		String month = Main.getCurrentMonthName();
+		String month = UserInterface.getCurrentMonthName();
 		if (month.isBlank())
 			month = "month";
-		return chooseCreateFile(title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, Main.getYear()), "json", "JSON Files (*.json)");
+		return chooseCreateFile(title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, UserInterface.getYear()), "json", "JSON Files (*.json)");
 	}
 
 	public static File chooseCreateTexFile(String title) {
@@ -110,7 +110,7 @@ public class FileChooser {
 	}
 
 	private static JFileChooser getFileChooser(FileChooserType chooserType) {
-		JFileChooser fileChooser = new JFileChooser();
+		JFileChooser fileChooser;
 		File parent = JSONHandler.otherSettings.getPath(chooserType);
 		if (parent == null)
 			fileChooser = new JFileChooser();

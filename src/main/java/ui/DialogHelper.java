@@ -259,15 +259,15 @@ public class DialogHelper {
 			TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextArea.getText(), Integer.parseInt(timeFields[INDEX_DAY].getText()),
 					timeFields[INDEX_START_TIME].getText(), timeFields[INDEX_END_TIME].getText(), timeFields[INDEX_BREAK_TIME].getText(),
 					vacationCheckBox.isSelected());
-			Main.addEntry(newEntry);
-			Main.setHasUnsavedChanges(true);
+			UserInterface.addEntry(newEntry);
+			UserInterface.setHasUnsavedChanges(true);
 			dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> {
 			// Since the old entry will be deleted, we need to add it back
 			if (!entry.isEmpty())
-				Main.addEntry(entry);
+				UserInterface.addEntry(entry);
 			dialog.dispose();
 		});
 

@@ -15,7 +15,7 @@ public class ActionBar extends JPanel {
 	private final Font fontBold;
 
 	public ActionBar() {
-		this.setPreferredSize(new Dimension(Main.getWidth(), 70));
+		this.setPreferredSize(new Dimension(UserInterface.getWidth(), 70));
 		this.setLayout(new BorderLayout());
 
 		JPanel buttonPanel = new JPanel();
@@ -47,15 +47,15 @@ public class ActionBar extends JPanel {
 		this.add(buttonPanel, BorderLayout.WEST);
 
 		addButton.addActionListener(e -> {
-			if (Main.isSpaceForNewEntry()) {
+			if (UserInterface.isSpaceForNewEntry()) {
 				DialogHelper.showEntryDialog("Add Entry");
 			} else {
-				Main.showError("You have reached the maximum of %d entries".formatted(Main.MAX_ENTRIES));
+				UserInterface.showError("You have reached the maximum of %d entries".formatted(UserInterface.MAX_ENTRIES));
 			}
 		});
-		duplicateButton.addActionListener((l) -> Main.duplicateSelectedListEntry());
-		removeButton.addActionListener((l) -> Main.removeSelectedListEntry());
-		editButton.addActionListener((l) -> Main.editSelectedListEntry());
+		duplicateButton.addActionListener((l) -> UserInterface.duplicateSelectedListEntry());
+		removeButton.addActionListener((l) -> UserInterface.removeSelectedListEntry());
+		editButton.addActionListener((l) -> UserInterface.editSelectedListEntry());
 
 		compileButton.addActionListener((l) -> FileExporter.printTex());
 		printButton.addActionListener((l) -> FileExporter.printPDF());
@@ -78,7 +78,7 @@ public class ActionBar extends JPanel {
 		String totalHoursStr = JSONHandler.globalSettings.getWorkingTime();
 		Time totalHours = Time.parseTime(totalHoursStr);
 
-		workedHours.addTime(Main.getPredTime());
+		workedHours.addTime(UserInterface.getPredTime());
 
 		Time displayedWorkedHours, succHours;
 		if (workedHours.isLongerThan(totalHours)) {

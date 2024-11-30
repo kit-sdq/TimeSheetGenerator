@@ -82,11 +82,11 @@ public class DragDropJFrame extends JFrame {
 	}
 
 	private void performActionWithJSON(File jsonFile) {
-		Main.openFile(jsonFile);
+		UserInterface.openFile(jsonFile);
 	}
 
 	private void setColor(Color color) {
 		getContentPane().setBackground(color);
-		Main.setBackgroundColor(color);
+		UserInterface.setBackgroundColor(color);
 	}
 }

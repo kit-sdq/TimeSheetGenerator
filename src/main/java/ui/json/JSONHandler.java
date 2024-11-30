@@ -3,7 +3,7 @@ package ui.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import ui.Main;
+import ui.UserInterface;
 import ui.MonthlySettingsBar;
 import ui.TimesheetEntry;
 
@@ -56,7 +56,7 @@ public class JSONHandler {
 			globalSettings = objectMapper.readValue(getConfigFile(), Global.class);
 			System.out.println("Loaded Global Settings.");
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -67,7 +67,7 @@ public class JSONHandler {
 			objectMapper.writeValue(getConfigFile(), globalSettings);
 			System.out.println("Saved global settings.");
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -77,7 +77,7 @@ public class JSONHandler {
 			otherSettings = objectMapper.readValue(getOtherSettingsFile(), OtherSettings.class);
 			System.out.println("Loaded Global Settings.");
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -88,7 +88,7 @@ public class JSONHandler {
 			objectMapper.writeValue(getOtherSettingsFile(), otherSettings);
 			System.out.println("Saved global settings.");
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -98,15 +98,15 @@ public class JSONHandler {
 		try {
 			Month month = objectMapper.readValue(monthFile, Month.class);
 
-			Main.importMonthBarSettings(month);
+			UserInterface.importMonthBarSettings(month);
 
 			for (Month.Entry entry : month.getEntries()) {
-				Main.addEntry(new TimesheetEntry(entry));
+				UserInterface.addEntry(new TimesheetEntry(entry));
 			}
 
 			System.out.println("Year: " + month.getYear() + ", Month: " + month.getMonth());
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -138,7 +138,7 @@ public class JSONHandler {
 			objectMapper.writeValue(saveFile, month);
 			System.out.println("Saved month.");
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -153,7 +153,7 @@ public class JSONHandler {
 				throw new IOException("Failed to create temporary json file %s.".formatted(f.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 			return null;
 		}
 		saveMonth(f, settingsBar, entries);
@@ -183,7 +183,7 @@ public class JSONHandler {
 				throw new IOException("Failed to create global configuration file %s.".formatted(f.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 			return;
 		}
 
@@ -221,7 +221,7 @@ public class JSONHandler {
 				throw new IOException("Failed to create global settings file %s.".formatted(f.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			Main.showError(ERROR.formatted(e.getMessage()));
+			UserInterface.showError(ERROR.formatted(e.getMessage()));
 			return;
 		}
 

@@ -1,7 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui.export;
 
-import ui.Main;
+import ui.UserInterface;
 import ui.fileexplorer.FileChooser;
 import ui.json.JSONHandler;
 
@@ -13,7 +13,7 @@ public class FileExporter {
 	public static void printTex() {
 		try (TempFiles tempFiles = TempFiles.generateNewTemp()) {
 			if (tempFiles == null) {
-				Main.showError("Could not create month.json file. If you have unsaved changes, try saving.");
+				UserInterface.showError("Could not create month.json file. If you have unsaved changes, try saving.");
 				return;
 			}
 
@@ -50,7 +50,7 @@ public class FileExporter {
 			if (pdfFile == null)
 				return; // Cancelled
 
-			error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, Main.getCurrentMonth(), pdfFile);
+			error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, UserInterface.getCurrentMonth(), pdfFile);
 
 			if (error.isPresent()) {
 				error(error.get());
@@ -58,12 +58,12 @@ public class FileExporter {
 			}
 
 			if (!pdfFile.exists()) {
-				Main.showError("PDF file creation failed! Perhaps try to compile to tex?");
+				UserInterface.showError("PDF file creation failed! Perhaps try to compile to tex?");
 			}
 		}
 	}
 
 	private static void error(String error) {
-		Main.showError("%s%s%s".formatted("Error: Invalid Timesheet:", System.lineSeparator(), error));
+		UserInterface.showError("%s%s%s".formatted("Error: Invalid Timesheet:", System.lineSeparator(), error));
 	}
 }

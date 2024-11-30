@@ -27,7 +27,7 @@ public class JTimeField extends JTextField {
 				if (getText().isEmpty())
 					return;
 				validateField();
-				Main.updateTotalTimeWorkedUI();
+				UserInterface.updateTotalTimeWorkedUI();
 			}
 		});
 	}
