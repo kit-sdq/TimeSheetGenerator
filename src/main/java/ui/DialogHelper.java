@@ -6,6 +6,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.Duration;
@@ -225,50 +226,7 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
-
-			if (durationWarningLabel.getText().isBlank()) {
-				if (actionTextArea.getText().isBlank()) {
-					durationWarningLabel.setText(ACTIVITY_MESSAGE);
-				}
-				// warning label is updated automatically when fields are edited
-				if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
-					durationWarningLabel.setText("You need to enter a day!");
-				}
-				if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
-					durationWarningLabel.setText("You need to enter a start time!");
-				}
-				if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
-					durationWarningLabel.setText("You need to enter an end time!");
-				}
-			}
-
-			if (!durationWarningLabel.getText().isBlank()) {
-				durationWarningLabel.setOpaque(true);
-				durationWarningLabel.setBackground(Color.RED);
-				durationWarningLabel.setForeground(Color.WHITE);
-				// Red Background disappear after 1 second
-				Timer timer = new Timer(2500, e1 -> {
-					durationWarningLabel.setOpaque(false);
-					// Reset the foreground color to default
-					durationWarningLabel.setBackground(null);
-					durationWarningLabel.setForeground(Color.RED);
-				});
-				timer.setRepeats(false); // Only execute once
-				timer.start();
-
-				return;
-			}
-
-			// No break
-			if (timeFields[INDEX_BREAK_TIME].getText().isBlank() || timeFields[INDEX_BREAK_TIME].getText().equals(TIME_BREAK_PLACEHOLDER)) {
-				timeFields[INDEX_BREAK_TIME].setText("00:00");
-			}
-
-			TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextArea.getText(), Integer.parseInt(timeFields[INDEX_DAY].getText()),
-					timeFields[INDEX_START_TIME].getText(), timeFields[INDEX_END_TIME].getText(), timeFields[INDEX_BREAK_TIME].getText(),
-					vacationCheckBox.isSelected());
-			parentUI.addEntry(newEntry);
-			parentUI.setHasUnsavedChanges(true);
+			makeEntryAction(parentUI, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox);
 			dialog.dispose();
 		});
 
@@ -310,6 +268,52 @@ public final class DialogHelper {
 
 		dialog.add(panel);
 		dialog.setVisible(true);
+	}
+
+	private static void makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields, JCheckBox vacationCheckBox) {
+		if (durationWarningLabel.getText().isBlank()) {
+			if (actionTextArea.getText().isBlank()) {
+				durationWarningLabel.setText(ACTIVITY_MESSAGE);
+			}
+			// warning label is updated automatically when fields are edited
+			if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
+				durationWarningLabel.setText("You need to enter a day!");
+			}
+			if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
+				durationWarningLabel.setText("You need to enter a start time!");
+			}
+			if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
+				durationWarningLabel.setText("You need to enter an end time!");
+			}
+		}
+
+		if (!durationWarningLabel.getText().isBlank()) {
+			durationWarningLabel.setOpaque(true);
+			durationWarningLabel.setBackground(Color.RED);
+			durationWarningLabel.setForeground(Color.WHITE);
+			// Red Background disappear after 1 second
+			Timer timer = new Timer(2500, e1 -> {
+				durationWarningLabel.setOpaque(false);
+				// Reset the foreground color to default
+				durationWarningLabel.setBackground(null);
+				durationWarningLabel.setForeground(Color.RED);
+			});
+			timer.setRepeats(false); // Only execute once
+			timer.start();
+
+			return;
+		}
+
+		// No break
+		if (timeFields[INDEX_BREAK_TIME].getText().isBlank() || timeFields[INDEX_BREAK_TIME].getText().equals(TIME_BREAK_PLACEHOLDER)) {
+			timeFields[INDEX_BREAK_TIME].setText("00:00");
+		}
+
+		TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextArea.getText(), Integer.parseInt(timeFields[INDEX_DAY].getText()),
+				timeFields[INDEX_START_TIME].getText(), timeFields[INDEX_END_TIME].getText(), timeFields[INDEX_BREAK_TIME].getText(),
+				vacationCheckBox.isSelected());
+		parentUI.addEntry(newEntry);
+		parentUI.setHasUnsavedChanges(true);
 	}
 
 	// Helper method to add placeholder text
@@ -429,7 +433,7 @@ public final class DialogHelper {
 
 	// 3 & 7. Update duration summary and check break time validity
 	private static void updateDurationSummary(JLabel durationSummaryLabel, JTextField startField, JTextField endField, JTextField breakField,
-			JLabel durationWarningLabel, JCheckBox isVacation) {
+											  JLabel durationWarningLabel, JCheckBox isVacation) {
 		String startText = startField.getText();
 		String endText = endField.getText();
 		String breakText = breakField.getText();
@@ -448,38 +452,43 @@ public final class DialogHelper {
 			if (workDuration.isNegative()) {
 				durationWarningLabel.setText("You actually have to work.");
 			} else {
-				long hours = workDuration.toHours();
-				long minutes = workDuration.toMinutes() % 60;
-
-				String hoursUnit = hours == 1 ? "hour" : "hours";
-				String minutesUnit = minutes == 1 ? "minute" : "minutes";
-
-				if (hours == 0 && minutes == 0)
-					durationSummaryLabel.setText("none");
-				else if (hours == 0)
-					durationSummaryLabel.setText(String.format("%d %s", minutes, minutesUnit));
-				else if (minutes == 0)
-					durationSummaryLabel.setText(String.format("%d %s", hours, hoursUnit));
-				else
-					durationSummaryLabel.setText(String.format("%d %s %d %s", hours, hoursUnit, minutes, minutesUnit));
-
-				// Check break time requirements, (of course only when no vacation)
-				if (!isVacation.isSelected()) {
-					long totalMinutes = workDuration.toMinutes();
-					long breakMinutes = breakTime.getHour() * 60L + breakTime.getMinute();
-					if (totalMinutes >= 540 && breakMinutes < 60) {
-						durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
-					} else if (totalMinutes >= 360 && breakMinutes < 30) {
-						durationWarningLabel.setText("Break must be at least 30 minutes for work over 6 hours");
-					} else {
-						durationWarningLabel.setText(" ");
-					}
-				} else {
-					durationWarningLabel.setText(" ");
-				}
+				updateValidDurationSummary(durationSummaryLabel, durationWarningLabel, isVacation, workDuration, breakTime);
 			}
 		} else {
 			durationSummaryLabel.setText("");
+			durationWarningLabel.setText(" ");
+		}
+	}
+
+	private static void updateValidDurationSummary(JLabel durationSummaryLabel, JLabel durationWarningLabel, JCheckBox isVacation,
+												   Duration workDuration, LocalTime breakTime) {
+		long hours = workDuration.toHours();
+		long minutes = workDuration.toMinutes() % 60;
+
+		String hoursUnit = hours == 1 ? "hour" : "hours";
+		String minutesUnit = minutes == 1 ? "minute" : "minutes";
+
+		if (hours == 0 && minutes == 0)
+			durationSummaryLabel.setText("none");
+		else if (hours == 0)
+			durationSummaryLabel.setText(String.format("%d %s", minutes, minutesUnit));
+		else if (minutes == 0)
+			durationSummaryLabel.setText(String.format("%d %s", hours, hoursUnit));
+		else
+			durationSummaryLabel.setText(String.format("%d %s %d %s", hours, hoursUnit, minutes, minutesUnit));
+
+		// Check break time requirements, (of course only when no vacation)
+		if (!isVacation.isSelected()) {
+			long totalMinutes = workDuration.toMinutes();
+			long breakMinutes = breakTime.getHour() * 60L + breakTime.getMinute();
+			if (totalMinutes >= 540 && breakMinutes < 60) {
+				durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
+			} else if (totalMinutes >= 360 && breakMinutes < 30) {
+				durationWarningLabel.setText("Break must be at least 30 minutes for work over 6 hours");
+			} else {
+				durationWarningLabel.setText(" ");
+			}
+		} else {
 			durationWarningLabel.setText(" ");
 		}
 	}

@@ -93,19 +93,7 @@ public class Main {
 		}
 		// Print all errors in case the time sheet is invalid
 		if (checkerReturn == CheckerReturn.INVALID) {
-			for (CheckerError error : checker.getErrors()) {
-				System.out.println(error.getErrorMessage());
-			}
-
-			if (userInput.isGui()) {
-				StringBuilder errorList = new StringBuilder();
-				for (CheckerError error : checker.getErrors()) {
-					errorList.append(error.getErrorMessage()).append(System.lineSeparator());
-				}
-
-				JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
-			}
-
+			handleInvalidTimesheet(checker, userInput);
 			return;
 		}
 
@@ -118,6 +106,21 @@ public class Main {
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 			System.exit(1);
+		}
+	}
+
+	private static void handleInvalidTimesheet(IChecker checker, UserInput userInput) {
+		for (CheckerError error : checker.getErrors()) {
+			System.out.println(error.getErrorMessage());
+		}
+
+		if (userInput.isGui()) {
+			StringBuilder errorList = new StringBuilder();
+			for (CheckerError error : checker.getErrors()) {
+				errorList.append(error.getErrorMessage()).append(System.lineSeparator());
+			}
+
+			JOptionPane.showMessageDialog(null, errorList.toString(), ResourceHandler.getMessage("gui.errorListWindowTitle"), JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
