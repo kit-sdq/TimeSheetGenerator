@@ -6,7 +6,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.time.Duration;
@@ -133,14 +132,8 @@ public final class DialogHelper {
 			timeField.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent e) {
-					if (index == 0)
-						checkDay(timeFields[INDEX_DAY], errorLabels[INDEX_DAY]);
-					else {
-						validateTimeField(timeFields[index], errorLabels[index], index == labels.length - 1);
-						checkStartEndTime(timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME]);
-						updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME],
-								durationWarningLabel, vacationCheckBox);
-					}
+					updateTimeFieldView(index, labels.length - 1, timeFields, errorLabels,
+							durationSummaryValue, durationWarningLabel, vacationCheckBox);
 				}
 			});
 
@@ -208,7 +201,7 @@ public final class DialogHelper {
 
 		row++;
 
-		// 8. Buttons at the bottom
+		// The buttons at the bottom
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JButton makeEntryButton = new JButton("Make Entry");
 		JButton cancelButton = new JButton("Cancel");
@@ -313,6 +306,18 @@ public final class DialogHelper {
 				vacationCheckBox.isSelected());
 		parentUI.addEntry(newEntry);
 		parentUI.setHasUnsavedChanges(true);
+	}
+
+	private static void updateTimeFieldView(int index, int breakFieldIndex, JTextField[] timeFields, JLabel[] errorLabels,
+										  JLabel durationSummaryValue, JLabel durationWarningLabel, JCheckBox vacationCheckBox) {
+		if (index == 0)
+			checkDay(timeFields[INDEX_DAY], errorLabels[INDEX_DAY]);
+		else {
+			validateTimeField(timeFields[index], errorLabels[index], index == breakFieldIndex);
+			checkStartEndTime(timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME]);
+			updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME],
+					durationWarningLabel, vacationCheckBox);
+		}
 	}
 
 	// Helper methods
