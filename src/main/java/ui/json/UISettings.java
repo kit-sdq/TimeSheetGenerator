@@ -6,16 +6,16 @@ import ui.fileexplorer.FileChooserType;
 
 import java.io.File;
 
-public class OtherSettings {
+public class UISettings {
 	private boolean addSignature;
 	private String monthPath;
 	private String texPath;
 	private String pdfPath;
 
-	public OtherSettings() {
+	public UISettings() {
 		// Default Constructor is required
 	}
-	public OtherSettings(OtherSettings uiSettings) {
+	public UISettings(UISettings uiSettings) {
 		this.addSignature = uiSettings.addSignature;
 		this.monthPath = uiSettings.monthPath;
 		this.texPath = uiSettings.texPath;

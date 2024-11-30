@@ -3,7 +3,7 @@ package ui;
 
 import ui.json.Global;
 import ui.json.JSONHandler;
-import ui.json.OtherSettings;
+import ui.json.UISettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +27,7 @@ public final class GlobalSettingsDialog {
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
 		Global globalSettings = JSONHandler.getGlobalSettings();
-		OtherSettings otherSettings = JSONHandler.getUISettings();
+		UISettings uiSettings = JSONHandler.getUISettings();
 
 		JPanel panel = new JPanel(new GridBagLayout());
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding of 10
@@ -48,7 +48,7 @@ public final class GlobalSettingsDialog {
 		workAreaSelector.addItem(WORK_AREA_GF);
 		workAreaSelector.setSelectedIndex(getIndexValue(globalSettings.getWorkingArea()));
 		JCheckBox addSignatureBox = new JCheckBox();
-		addSignatureBox.setSelected(otherSettings.getAddSignature());
+		addSignatureBox.setSelected(uiSettings.getAddSignature());
 
 		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage" };
@@ -140,11 +140,11 @@ public final class GlobalSettingsDialog {
 			globalSettings.setWage(Double.parseDouble(fields[4].getText()));
 			globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
-			otherSettings.setAddSignature(addSignatureBox.isSelected());
+			uiSettings.setAddSignature(addSignatureBox.isSelected());
 
 			// Save globalSettings to file or database as needed
 			JSONHandler.saveGlobal(parentUI, globalSettings);
-			JSONHandler.saveUISettings(parentUI, otherSettings);
+			JSONHandler.saveUISettings(parentUI, uiSettings);
 
 			dialog.dispose();
 		});

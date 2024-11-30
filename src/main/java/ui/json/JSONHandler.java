@@ -22,7 +22,7 @@ public final class JSONHandler {
 	}
 
 	private static Global globalSettings;
-	private static OtherSettings otherSettings;
+	private static UISettings uiSettings;
 
 	private static String configDir;
 	private static final String CONFIG_FILE_NAME = "global.json";
@@ -68,16 +68,16 @@ public final class JSONHandler {
 	 * Gets a copy of the current additional ui settings.
 	 * @return Copy of ui settings
 	 */
-	public static OtherSettings getUISettings() {
-		return new OtherSettings(otherSettings);
+	public static UISettings getUISettings() {
+		return new UISettings(uiSettings);
 	}
 
 	private static void setGlobalSettings(Global globalSettings) {
 		JSONHandler.globalSettings = globalSettings;
 	}
 
-	private static void setUISettings(OtherSettings otherSettings) {
-		JSONHandler.otherSettings = otherSettings;
+	private static void setUISettings(UISettings otherSettings) {
+		JSONHandler.uiSettings = otherSettings;
 	}
 
 	public static void loadGlobal(UserInterface parentUI) {
@@ -103,13 +103,13 @@ public final class JSONHandler {
 	private static void loadOtherSettings(UserInterface parentUI) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
-			otherSettings = objectMapper.readValue(getOtherSettingsFile(), OtherSettings.class);
+			uiSettings = objectMapper.readValue(getOtherSettingsFile(), UISettings.class);
 		} catch (IOException e) {
 			parentUI.showError("Error loading UI settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	public static void saveUISettings(UserInterface parentUI, OtherSettings uiSettings) {
+	public static void saveUISettings(UserInterface parentUI, UISettings uiSettings) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
@@ -249,7 +249,7 @@ public final class JSONHandler {
 			return;
 		}
 
-		OtherSettings settings = new OtherSettings();
+		UISettings settings = new UISettings();
 		settings.setAddSignature(false);
 		saveUISettings(parentUI, settings);
 	}
