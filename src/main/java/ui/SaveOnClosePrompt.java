@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SaveOnClosePrompt {
 
-	static boolean showDialog() {
+	static boolean showDialog(UserInterface parentUI) {
 		final AtomicBoolean proceed = new AtomicBoolean(false);
 
 		// Create the dialog
@@ -23,7 +23,7 @@ public class SaveOnClosePrompt {
 		dialog.add(messageLabel, BorderLayout.CENTER);
 
 		// Create buttons
-		JPanel buttonPanel = createButtons(proceed, dialog);
+		JPanel buttonPanel = createButtons(parentUI, proceed, dialog);
 
 		// Add button panel to dialog
 		dialog.add(buttonPanel, BorderLayout.SOUTH);
@@ -34,7 +34,7 @@ public class SaveOnClosePrompt {
 		return proceed.get();
 	}
 
-	private static JPanel createButtons(AtomicBoolean proceed, JDialog dialog) {
+	private static JPanel createButtons(UserInterface parentUI, AtomicBoolean proceed, JDialog dialog) {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		JButton saveButton = new JButton("Save");
 		JButton saveAsButton = new JButton("Save as");
@@ -43,13 +43,13 @@ public class SaveOnClosePrompt {
 
 		// Button actions
 		saveButton.addActionListener((ActionEvent e) -> {
-			UserInterface.saveFile(null); // Gets the current open file to save
+			parentUI.saveFile(null); // Gets the current open file to save
 			proceed.set(true);
 			dialog.dispose();
 		});
 
 		saveAsButton.addActionListener((ActionEvent e) -> {
-			UserInterface.saveFileAs();
+			parentUI.saveFileAs();
 			proceed.set(true);
 			dialog.dispose();
 		});

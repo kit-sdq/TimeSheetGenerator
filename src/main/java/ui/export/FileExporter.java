@@ -10,60 +10,60 @@ import java.util.Optional;
 
 public class FileExporter {
 
-	public static void printTex() {
-		try (TempFiles tempFiles = TempFiles.generateNewTemp()) {
+	public static void printTex(UserInterface parentUI) {
+		try (TempFiles tempFiles = TempFiles.generateNewTemp(parentUI)) {
 			if (tempFiles == null) {
-				UserInterface.showError("Could not create month.json file. If you have unsaved changes, try saving.");
+				parentUI.showError("Failed to create temporary file", "Could not create month.json file. If you have unsaved changes, try saving.");
 				return;
 			}
 
 			Optional<String> error = TexCompiler.validateContents(tempFiles);
 			if (error.isPresent()) {
-				error(error.get());
+				error(parentUI, "Validation error", error.get());
 				return;
 			}
 
-			File texFile = FileChooser.chooseCreateTexFile("Compile to Tex");
+			File texFile = FileChooser.chooseCreateTexFile(parentUI, "Compile to Tex");
 			if (texFile == null)
 				return; // Cancelled
 
 			TexCompiler.compileToTex(tempFiles.getMonthFile(), texFile);
 
 			if (!texFile.exists()) {
-				error("Tex file creation failed!");
+				error(parentUI, "Latex compiler error", "Tex file creation failed!");
 			}
 		}
 	}
 
-	public static void printPDF() {
-		try (TempFiles tempFiles = TempFiles.generateNewTemp()) {
+	public static void printPDF(UserInterface parentUI) {
+		try (TempFiles tempFiles = TempFiles.generateNewTemp(parentUI)) {
 			if (tempFiles == null)
 				return;
 
 			Optional<String> error = TexCompiler.validateContents(tempFiles);
 			if (error.isPresent()) {
-				error(error.get());
+				error(parentUI, "Validation error", error.get());
 				return;
 			}
 
-			File pdfFile = FileChooser.chooseCreatePDFFile("Print to PDF");
+			File pdfFile = FileChooser.chooseCreatePDFFile(parentUI, "Print to PDF");
 			if (pdfFile == null)
 				return; // Cancelled
 
-			error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, UserInterface.getCurrentMonth(), pdfFile);
+			error = PDFCompiler.compileToPDF(JSONHandler.globalSettings, parentUI.getCurrentMonth(), pdfFile);
 
 			if (error.isPresent()) {
-				error(error.get());
+				error(parentUI, "PDF compiler error", error.get());
 				return;
 			}
 
 			if (!pdfFile.exists()) {
-				UserInterface.showError("PDF file creation failed! Perhaps try to compile to tex?");
+				error(parentUI, "Failed to create PDF", "PDF file creation failed! Perhaps try to compile to tex?");
 			}
 		}
 	}
 
-	private static void error(String error) {
-		UserInterface.showError("%s%s%s".formatted("Error: Invalid Timesheet:", System.lineSeparator(), error));
+	private static void error(UserInterface parentUI, String title, String error) {
+		parentUI.showError(title, "%s%s%s".formatted("Error: Invalid Timesheet:", System.lineSeparator(), error));
 	}
 }

@@ -5,6 +5,7 @@ import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
 import ui.json.Month;
+import ui.json.OtherSettings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -12,38 +13,40 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 
-public class Main {
+public class UserInterface {
 
 	public static final int MAX_ENTRIES = 22;
 
 	private static final String APP_NAME = "Timesheet Generator";
 	private static final String TITLE = "%s: %s";
 
-	private static File currentOpenFile;
-	public static boolean hasUnsavedChanges = false;
+	private File currentOpenFile;
+	public boolean hasUnsavedChanges = false;
 
-	// TODO Remove static from these fields.
-	private static JFrame frame;
-	private static JPanel listPanel;
-	private static JList<TimesheetEntry> itemList;
-	private static DefaultListModel<TimesheetEntry> listModel;
+	private JFrame frame;
+	private JPanel listPanel;
+	private JList<TimesheetEntry> itemList;
+	private DefaultListModel<TimesheetEntry> listModel;
 
-	private static MonthlySettingsBar monthSettingsBar;
-	private static ActionBar buttonActionBar;
+	private MonthlySettingsBar monthSettingsBar;
+	private ActionBar buttonActionBar;
 
-	public Main() {
+	public UserInterface() {
 		initialize();
 	}
 
 	private void initialize() {
 		// Main Frame
-		frame = new DragDropJFrame();
+		frame = new DragDropJFrame(this);
 		setTitle(null);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
 		frame.setSize(1200, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
+
+		// Initialize JSONHandler. It needs the frame to exist to display error messages
+		JSONHandler.initialize(this);
 
 		// Menu Bar
 		JMenuBar menuBar = new JMenuBar();
@@ -64,12 +67,12 @@ public class Main {
 
 		frame.setJMenuBar(menuBar);
 
-		monthSettingsBar = new MonthlySettingsBar();
+		monthSettingsBar = new MonthlySettingsBar(this);
 		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
 		frame.add(monthSettingsBar, BorderLayout.NORTH);
 
 		// Row of Buttons with '+'
-		buttonActionBar = new ActionBar();
+		buttonActionBar = new ActionBar(this);
 		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
 		frame.add(buttonActionBar, BorderLayout.WEST);
 
@@ -131,7 +134,7 @@ public class Main {
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
-		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog());
+		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this));
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
@@ -161,46 +164,46 @@ public class Main {
 		});
 	}
 
-	public static void setBackgroundColor(Color color) {
+	public void setBackgroundColor(Color color) {
 		if (listPanel != null)
 			listPanel.setBackground(color);
 		if (itemList != null)
 			itemList.setBackground(color);
 	}
 
-	public static Month getCurrentMonth() {
+	public Month getCurrentMonth() {
 		return JSONHandler.getMonth(monthSettingsBar, listModel);
 	}
 
-	public static String getCurrentMonthName() {
+	public String getCurrentMonthName() {
 		return monthSettingsBar.getSelectedMonthName();
 	}
 
-	public static int getCurrentMonthNumber() {
+	public int getCurrentMonthNumber() {
 		return monthSettingsBar.getSelectedMonthNumber();
 	}
 
-	public static String getYear() {
+	public String getYear() {
 		return monthSettingsBar.getYear();
 	}
 
-	public static File getCurrentOpenFile() {
+	public File getCurrentOpenFile() {
 		return currentOpenFile;
 	}
 
-	public static boolean hasUnsavedChanges() {
+	public boolean hasUnsavedChanges() {
 		return hasUnsavedChanges;
 	}
 
-	public static File generateTempMonthFile() {
-		return JSONHandler.generateTemporaryJSONFile(monthSettingsBar, listModel);
+	public File generateTempMonthFile() {
+		return JSONHandler.generateTemporaryJSONFile(this, monthSettingsBar, listModel);
 	}
 
-	public static Time getPredTime() {
+	public Time getPredTime() {
 		return monthSettingsBar.getPredTime();
 	}
 
-	public static int getWidth() {
+	public int getWidth() {
 		return frame.getWidth();
 	}
 
@@ -211,7 +214,7 @@ public class Main {
 	 * 
 	 * @return If proceed or not.
 	 */
-	public static boolean clearWorkspace() {
+	public boolean clearWorkspace() {
 		if (!closeCurrentOpenFile())
 			return false;
 		// Delete all content
@@ -228,14 +231,14 @@ public class Main {
 	 * 
 	 * @return If proceed or not.
 	 */
-	public static boolean closeCurrentOpenFile() {
+	public boolean closeCurrentOpenFile() {
 		if (!hasUnsavedChanges)
 			return true;
 		// Prompt to save
-		return SaveOnClosePrompt.showDialog();
+		return SaveOnClosePrompt.showDialog(this);
 	}
 
-	public static void saveFile(File newSaveFile) {
+	public void saveFile(File newSaveFile) {
 		if (newSaveFile == null)
 			newSaveFile = currentOpenFile;
 		if (newSaveFile == null) {
@@ -245,27 +248,27 @@ public class Main {
 		saveFileCommon(newSaveFile);
 	}
 
-	public static void saveFileAs() {
-		File newSaveFile = FileChooser.chooseCreateJSONFile("Save as...");
+	public void saveFileAs() {
+		File newSaveFile = FileChooser.chooseCreateJSONFile(this, "Save as...");
 		if (newSaveFile == null)
 			return;
 		saveFileCommon(newSaveFile);
 		setEditorFile(newSaveFile);
 	}
 
-	public static void saveFileCommon(File newSaveFile) {
-		JSONHandler.saveMonth(newSaveFile, monthSettingsBar, listModel);
+	public void saveFileCommon(File newSaveFile) {
+		JSONHandler.saveMonth(this, newSaveFile, monthSettingsBar, listModel);
 
 		currentOpenFile = newSaveFile;
 		setHasUnsavedChanges(false);
 	}
 
-	public static void openFile() {
-		File openFile = FileChooser.chooseFile("Open a file", FileChooserType.MONTH_PATH);
+	public void openFile() {
+		File openFile = FileChooser.chooseFile(this, "Open a file", FileChooserType.MONTH_PATH);
 		openFile(openFile);
 	}
 
-	public static void openFile(File openFile) {
+	public void openFile(File openFile) {
 		if (openFile == null)
 			return;
 		if (!setEditorFile(openFile))
@@ -276,27 +279,27 @@ public class Main {
 
 		// Open the file
 
-		JSONHandler.loadMonth(openFile);
+		JSONHandler.loadMonth(this, openFile);
 		setHasUnsavedChanges(false);
 	}
 
-	public static void importMonthBarSettings(Month month) {
+	public void importMonthBarSettings(Month month) {
 		monthSettingsBar.importMonthSettings(month);
 	}
 
-	public static void setHasUnsavedChanges(boolean hasUnsavedChanges) {
-		Main.hasUnsavedChanges = hasUnsavedChanges;
+	public void setHasUnsavedChanges(boolean hasUnsavedChanges) {
+		this.hasUnsavedChanges = hasUnsavedChanges;
 		updateTitle();
 	}
 
-	public static boolean setEditorFile(File file) {
+	public boolean setEditorFile(File file) {
 		if (!file.exists())
 			return false;
 		String name = file.getName();
 		if (!name.endsWith(".json"))
 			return false;
 		if (!JSONHandler.isFileValidMonth(file)) {
-			showError("The file is not a valid month.json file or could not be parsed.");
+			showError("Invalid JSON File", "The file is not a valid month.json file or could not be parsed.");
 			return false;
 		}
 		currentOpenFile = file;
@@ -304,7 +307,7 @@ public class Main {
 		return true;
 	}
 
-	private static void setTitle(String title) {
+	private void setTitle(String title) {
 		if (title == null || title.isBlank()) {
 			frame.setTitle(APP_NAME);
 			return;
@@ -312,18 +315,18 @@ public class Main {
 		frame.setTitle(TITLE.formatted(APP_NAME, title));
 	}
 
-	private static void updateTitle() {
+	private void updateTitle() {
 		String filename = currentOpenFile == null ? "" : "%s/%s".formatted(currentOpenFile.getParentFile().getName(), currentOpenFile.getName());
 		if (hasUnsavedChanges)
 			filename += '*';
 		setTitle(filename);
 	}
 
-	public static boolean isSpaceForNewEntry() {
+	public boolean isSpaceForNewEntry() {
 		return listModel.size() < MAX_ENTRIES;
 	}
 
-	public static void addEntry(TimesheetEntry entry) {
+	public void addEntry(TimesheetEntry entry) {
 		for (int i = 0; i < listModel.getSize(); i++) {
 			if (listModel.getElementAt(i).isLaterThan(entry)) {
 				listModel.insertElementAt(entry, i);
@@ -336,7 +339,7 @@ public class Main {
 		updateTotalTimeWorkedUI();
 	}
 
-	public static void duplicateSelectedListEntry() {
+	public void duplicateSelectedListEntry() {
 		final int selectedItemIndex = itemList.getSelectedIndex();
 		if (selectedItemIndex < 0)
 			return;
@@ -347,18 +350,18 @@ public class Main {
 		editSelectedListEntry();
 	}
 
-	public static void editSelectedListEntry() {
+	public void editSelectedListEntry() {
 		final int selectedItemIndex = itemList.getSelectedIndex();
 		if (selectedItemIndex < 0)
 			return;
 		TimesheetEntry entry = listModel.getElementAt(selectedItemIndex);
-		DialogHelper.showEntryDialog("Edit Entry", entry);
+		DialogHelper.showEntryDialog(this, "Edit Entry", entry);
 		listModel.removeElement(entry);
 		itemList.setSelectedIndex(-1);
 		updateTotalTimeWorkedUI();
 	}
 
-	public static void removeSelectedListEntry() {
+	public void removeSelectedListEntry() {
 		final int selectedItemIndex = itemList.getSelectedIndex();
 		if (selectedItemIndex < 0)
 			return;
@@ -371,13 +374,13 @@ public class Main {
 		itemList.setSelectedIndex(-1);
 	}
 
-	public static void updateTotalTimeWorkedUI() {
+	public void updateTotalTimeWorkedUI() {
 		Time worked = calculateTotalTimeWorked();
 		Time succTime = buttonActionBar.updateHours(worked);
 		monthSettingsBar.setSuccTime(succTime.toString());
 	}
 
-	private static Time calculateTotalTimeWorked() {
+	private Time calculateTotalTimeWorked() {
 		Time workedTime = new Time();
 		for (int i = 0; i < listModel.getSize(); i++) {
 			TimesheetEntry entry = listModel.getElementAt(i);
@@ -386,11 +389,11 @@ public class Main {
 		return workedTime;
 	}
 
-	public static void showError(String error) {
-		JOptionPane.showMessageDialog(frame, error, "Unknown error", JOptionPane.ERROR_MESSAGE);
+	public void showError(String title, String error) {
+		JOptionPane.showMessageDialog(frame, error, title, JOptionPane.ERROR_MESSAGE);
 	}
 
-	private static boolean showOKCancelDialog(String title, String message) {
+	private boolean showOKCancelDialog(String title, String message) {
 		int result = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
 		return JOptionPane.OK_OPTION == result;
 	}
@@ -399,18 +402,19 @@ public class Main {
 
 		File file = args.length == 1 ? new File(args[0]) : null;
 
-		JSONHandler.initialize();
 		// Ensure the application uses the system look and feel
 		SwingUtilities.invokeLater(() -> {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-				// TODO: Refactor remove new Main()
-				new Main();
-				setHasUnsavedChanges(false);
+				UserInterface ui = new UserInterface();
+				ui.setHasUnsavedChanges(false);
 				if (file != null && file.exists())
-					openFile(file);
+					ui.openFile(file);
 			} catch (Exception e) {
-				showError(e.getMessage());
+				JFrame frame = new JFrame();
+				JOptionPane.showMessageDialog(frame, e.getMessage(), "An error occurred", JOptionPane.ERROR_MESSAGE);
+				// Exit, because if the setup fails, the process shouldn't continue (but it sometimes does otherwise)
+				System.exit(1);
 			}
 		});
 	}

@@ -13,17 +13,22 @@ public class FileChooser {
 	// Timesheet Format: Nachname_Vorname_Monat Jahr.pdf
 	private static final String FORMAT = "%s_%s 20%s";
 
-	public static String getDefaultFileName() {
-		return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(), getGermanMonth(UserInterface.getCurrentMonthNumber()), UserInterface.getYear());
+	public static String getDefaultFileName(UserInterface parentUI) {
+		return FORMAT.formatted(JSONHandler.globalSettings.getFormattedName2(), getGermanMonth(parentUI.getCurrentMonthNumber()), parentUI.getYear());
 	}
 
-	public static File chooseFile(String title, FileChooserType chooserType) {
+	public static File chooseFile(UserInterface parentUI, String title, FileChooserType chooserType) {
 		// TODO Implement Windows Version ?
-		return chooseFileSwing(title, chooserType);
+		//  -> Later, I tried doing it simple and failed, and I don't have the time (currently) to figure it out
+		//     Once I do, I'll make another pull request. It might not be as pretty, but because it remembers the
+		//     folders, you don't need to go through the navigation hassle each time, so I think it's a fair
+		//     compromise for now.
+		//                                      - JustOneDeveloper
+		return chooseFileSwing(parentUI, title, chooserType);
 
 	}
 
-	private static File chooseFileSwing(String title, FileChooserType chooserType) {
+	private static File chooseFileSwing(UserInterface parentUI, String title, FileChooserType chooserType) {
 		JFileChooser fileChooser = getFileChooser(chooserType);
 
 		fileChooser.setDialogTitle(title);
@@ -32,29 +37,29 @@ public class FileChooser {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			JSONHandler.otherSettings.setPath(chooserType, file);
+			JSONHandler.otherSettings.setPath(parentUI, chooserType, file);
 			return file;
 		} else {
 			return null;
 		}
 	}
 
-	public static File chooseCreateJSONFile(String title) {
-		String month = UserInterface.getCurrentMonthName();
+	public static File chooseCreateJSONFile(UserInterface parentUI, String title) {
+		String month = parentUI.getCurrentMonthName();
 		if (month.isBlank())
 			month = "month";
-		return chooseCreateFile(title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, UserInterface.getYear()), "json", "JSON Files (*.json)");
+		return chooseCreateFile(parentUI, title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, parentUI.getYear()), "json", "JSON Files (*.json)");
 	}
 
-	public static File chooseCreateTexFile(String title) {
-		return chooseCreateFile(title, FileChooserType.TEX_PATH, getDefaultFileName(), "tex", "LaTeX Files (*.tex)");
+	public static File chooseCreateTexFile(UserInterface parentUI, String title) {
+		return chooseCreateFile(parentUI, title, FileChooserType.TEX_PATH, getDefaultFileName(parentUI), "tex", "LaTeX Files (*.tex)");
 	}
 
-	public static File chooseCreatePDFFile(String title) {
-		return chooseCreateFile(title, FileChooserType.PDF_PATH, getDefaultFileName(), "pdf", "PDF Files (*.pdf)");
+	public static File chooseCreatePDFFile(UserInterface parentUI, String title) {
+		return chooseCreateFile(parentUI, title, FileChooserType.PDF_PATH, getDefaultFileName(parentUI), "pdf", "PDF Files (*.pdf)");
 	}
 
-	public static File chooseCreateFile(String title, FileChooserType chooserType, String defaultFileName, String extension, String extensionDescription) {
+	public static File chooseCreateFile(UserInterface parentUI, String title, FileChooserType chooserType, String defaultFileName, String extension, String extensionDescription) {
 		JFileChooser fileChooser = getFileChooser(chooserType);
 		fileChooser.setDialogTitle(title);
 
@@ -78,7 +83,7 @@ public class FileChooser {
 				}
 			}
 
-			JSONHandler.otherSettings.setPath(chooserType, fileToSave);
+			JSONHandler.otherSettings.setPath(parentUI, chooserType, fileToSave);
 			return fileToSave;
 		} else {
 			return null;

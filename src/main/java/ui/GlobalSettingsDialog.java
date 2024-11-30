@@ -15,7 +15,7 @@ public class GlobalSettingsDialog {
 	private static final String WORK_AREA_UB = "Unibereich (ub)";
 	private static final String WORK_AREA_GF = "Großforschung (gf)";
 
-	public static void showGlobalSettingsDialog() {
+	public static void showGlobalSettingsDialog(UserInterface parentUI) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
 		dialog.setSize(600, 400);
@@ -138,8 +138,8 @@ public class GlobalSettingsDialog {
 			otherSettings.setAddSignature(addSignatureBox.isSelected());
 
 			// Save globalSettings to file or database as needed
-			JSONHandler.saveGlobal(globalSettings);
-			JSONHandler.saveOtherSettings(otherSettings);
+			JSONHandler.saveGlobal(parentUI, globalSettings);
+			JSONHandler.saveOtherSettings(parentUI, otherSettings);
 
 			dialog.dispose();
 		});

@@ -12,11 +12,11 @@ public class JTimeField extends JTextField {
 	private static final String PLACEHOLDER = "00:00";
 	static final Pattern TIME_PATTERN_SEMI_SMALL_2 = Pattern.compile("^(\\d):(\\d{2})$");
 
-	public JTimeField() {
-		this(null);
+	public JTimeField(UserInterface parentUI) {
+		this(parentUI, null);
 	}
 
-	public JTimeField(String text) {
+	public JTimeField(UserInterface parentUI, String text) {
 		super(4);
 		this.setHorizontalAlignment(CENTER);
 
@@ -27,7 +27,7 @@ public class JTimeField extends JTextField {
 				if (getText().isEmpty())
 					return;
 				validateField();
-				UserInterface.updateTotalTimeWorkedUI();
+				parentUI.updateTotalTimeWorkedUI();
 			}
 		});
 	}
@@ -62,40 +62,5 @@ public class JTimeField extends JTextField {
 		super.setText(text);
 		validateField();
 	}
-
-	/*
-	 * private JTextField textField = new JTextField(); private JLabel errorLabel =
-	 * new JLabel();
-	 * 
-	 * public JTimeField() { this(null); } public JTimeField(String text) {
-	 * setLayout(new BorderLayout()); // Explicitly set layout to FlowLayout
-	 * textField = new JTextField(5); errorLabel = new JLabel();
-	 * 
-	 * errorLabel.setText(""); errorLabel.setForeground(Color.RED);
-	 * 
-	 * DialogHelper.addPlaceholderText(textField, "00:00", text);
-	 * 
-	 * this.add(textField); this.add(errorLabel);
-	 * 
-	 * textField.setVisible(true); errorLabel.setVisible(true);
-	 * 
-	 * textField.addFocusListener(new FocusAdapter() { public void
-	 * focusLost(FocusEvent e) { if (textField.getText().isEmpty()) return;
-	 * validateField(); } }); }
-	 * 
-	 * private void validateField() { String text = textField.getText(); if
-	 * (!text.isBlank() && !DialogHelper.TIME_PATTERN.matcher(text).matches()) {
-	 * errorLabel.setText("You must enter a valid time"); } else {
-	 * errorLabel.setText(""); } }
-	 * 
-	 * public boolean isValid() { return errorLabel == null ||
-	 * errorLabel.getText().isEmpty(); }
-	 * 
-	 * public String getText() { // Will return placeholder 00:00 if "empty" return
-	 * textField == null ? "" : textField.getText(); }
-	 * 
-	 * public void setText(String text) { if (textField == null) return;
-	 * textField.setText(text); validateField(); }
-	 */
 
 }

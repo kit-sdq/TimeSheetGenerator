@@ -31,11 +31,11 @@ public class DialogHelper {
 
 	private static final int INDEX_DAY = 0, INDEX_START_TIME = 1, INDEX_END_TIME = 2, INDEX_BREAK_TIME = 3;
 
-	public static void showEntryDialog(String title) {
-		showEntryDialog(title, TimesheetEntry.EMPTY_ENTRY);
+	public static void showEntryDialog(UserInterface parentUI, String title) {
+		showEntryDialog(parentUI, title, TimesheetEntry.EMPTY_ENTRY);
 	}
 
-	public static void showEntryDialog(String title, TimesheetEntry entry) {
+	public static void showEntryDialog(UserInterface parentUI, String title, TimesheetEntry entry) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle(title);
 		dialog.setSize(600, 400);
@@ -259,15 +259,15 @@ public class DialogHelper {
 			TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextArea.getText(), Integer.parseInt(timeFields[INDEX_DAY].getText()),
 					timeFields[INDEX_START_TIME].getText(), timeFields[INDEX_END_TIME].getText(), timeFields[INDEX_BREAK_TIME].getText(),
 					vacationCheckBox.isSelected());
-			UserInterface.addEntry(newEntry);
-			UserInterface.setHasUnsavedChanges(true);
+			parentUI.addEntry(newEntry);
+			parentUI.setHasUnsavedChanges(true);
 			dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> {
 			// Since the old entry will be deleted, we need to add it back
 			if (!entry.isEmpty())
-				UserInterface.addEntry(entry);
+				parentUI.addEntry(entry);
 			dialog.dispose();
 		});
 

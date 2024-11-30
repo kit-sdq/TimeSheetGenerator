@@ -17,6 +17,8 @@ public class MonthlySettingsBar extends JPanel {
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
 
+	private final UserInterface parentUI;
+
 	private final JComboBox<String> monthSelector;
 	private final JComboBox<String> semesterSelector;
 	private final JTextField semesterTextField;
@@ -24,8 +26,9 @@ public class MonthlySettingsBar extends JPanel {
 	private final JTimeField predTimeField;
 	private final JLabel succTimeValue;
 
-	public MonthlySettingsBar() {
+	public MonthlySettingsBar(UserInterface parentUI) {
 		super(new BorderLayout());
+		this.parentUI = parentUI;
 		// Top Panel with Selectors and Button
 		JPanel selectorsPanel = new JPanel();
 
@@ -54,13 +57,13 @@ public class MonthlySettingsBar extends JPanel {
 		predTimeLabel.setText("Predecessor Time:");
 		timeCarryPanel.add(predTimeLabel);
 
-		predTimeField = new JTimeField();
+		predTimeField = new JTimeField(this.parentUI);
 		predTimeField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if ((e.getKeyChar() < '0' || e.getKeyChar() > '9') && e.getKeyChar() != ':')
 					return;
-				UserInterface.setHasUnsavedChanges(true);
+				parentUI.setHasUnsavedChanges(true);
 			}
 		});
 		timeCarryPanel.add(predTimeField);
@@ -106,7 +109,7 @@ public class MonthlySettingsBar extends JPanel {
 			updateSemesterView();
 		});
 
-		settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog());
+		settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog(this.parentUI));
 	}
 
 	public String getSelectedMonthName() {
@@ -190,7 +193,7 @@ public class MonthlySettingsBar extends JPanel {
 		} else {
 			semesterTextFieldLabel.setText("/%d".formatted(year + 1));
 		}
-		UserInterface.setHasUnsavedChanges(true);
+		this.parentUI.setHasUnsavedChanges(true);
 	}
 
 }

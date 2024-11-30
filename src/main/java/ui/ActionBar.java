@@ -9,13 +9,17 @@ import java.awt.*;
 
 public class ActionBar extends JPanel {
 
-	private final JLabel hoursWorkedLabel;
 	private static final String HOURS_FORMAT = "Total Time: %s/%s          ";
+
+	private final UserInterface parentUI;
+
+	private final JLabel hoursWorkedLabel;
 	private final Font fontNormal;
 	private final Font fontBold;
 
-	public ActionBar() {
-		this.setPreferredSize(new Dimension(UserInterface.getWidth(), 70));
+	public ActionBar(UserInterface parentUI) {
+		this.parentUI = parentUI;
+		this.setPreferredSize(new Dimension(this.parentUI.getWidth(), 70));
 		this.setLayout(new BorderLayout());
 
 		JPanel buttonPanel = new JPanel();
@@ -47,25 +51,25 @@ public class ActionBar extends JPanel {
 		this.add(buttonPanel, BorderLayout.WEST);
 
 		addButton.addActionListener(e -> {
-			if (UserInterface.isSpaceForNewEntry()) {
-				DialogHelper.showEntryDialog("Add Entry");
+			if (this.parentUI.isSpaceForNewEntry()) {
+				DialogHelper.showEntryDialog(this.parentUI, "Add Entry");
 			} else {
-				UserInterface.showError("You have reached the maximum of %d entries".formatted(UserInterface.MAX_ENTRIES));
+				this.parentUI.showError("Entry limit reached", "You have reached the maximum of %d entries".formatted(UserInterface.MAX_ENTRIES));
 			}
 		});
-		duplicateButton.addActionListener((l) -> UserInterface.duplicateSelectedListEntry());
-		removeButton.addActionListener((l) -> UserInterface.removeSelectedListEntry());
-		editButton.addActionListener((l) -> UserInterface.editSelectedListEntry());
+		duplicateButton.addActionListener((l) -> this.parentUI.duplicateSelectedListEntry());
+		removeButton.addActionListener((l) -> this.parentUI.removeSelectedListEntry());
+		editButton.addActionListener((l) -> this.parentUI.editSelectedListEntry());
 
-		compileButton.addActionListener((l) -> FileExporter.printTex());
-		printButton.addActionListener((l) -> FileExporter.printPDF());
+		compileButton.addActionListener((l) -> FileExporter.printTex(this.parentUI));
+		printButton.addActionListener((l) -> FileExporter.printPDF(this.parentUI));
 
 		hoursWorkedLabel = new JLabel();
 		fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);
 		fontBold = fontNormal.deriveFont(Font.BOLD);
 		hoursWorkedLabel.setFont(fontNormal);
 		this.add(hoursWorkedLabel, BorderLayout.EAST);
-		updateHours(new Time()); // Todo
+		updateHours(new Time());
 	}
 
 	/**
@@ -78,7 +82,7 @@ public class ActionBar extends JPanel {
 		String totalHoursStr = JSONHandler.globalSettings.getWorkingTime();
 		Time totalHours = Time.parseTime(totalHoursStr);
 
-		workedHours.addTime(UserInterface.getPredTime());
+		workedHours.addTime(this.parentUI.getPredTime());
 
 		Time displayedWorkedHours, succHours;
 		if (workedHours.isLongerThan(totalHours)) {
