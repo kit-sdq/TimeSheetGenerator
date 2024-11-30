@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui.export;
 
+import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import ui.Time;
@@ -27,7 +28,7 @@ public class PDFCompiler {
 				return Optional.of("Template PDF not found in resources.");
 			}
 
-			PDDocument document = PDDocument.load(templateStream);
+			PDDocument document = Loader.loadPDF(templateStream.readAllBytes());
 			return writeToPDF(document, global, month, targetFile);
 
 		} catch (IOException e) {
