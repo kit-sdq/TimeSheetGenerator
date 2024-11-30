@@ -31,7 +31,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		// If no arguments or a valid file was given, run UI instead
-		if (args.length == 0 || new File(args[0]).exists()) {
+		if (args.length == 0 || (args.length == 1 && new File(args[0]).exists())) {
 			UserInterface.main(args);
 			return;
 		}
