@@ -12,7 +12,7 @@ public final class SaveOnClosePrompt {
 		// Don't allow instances of this class
 	}
 
-	static boolean showDialog(UserInterface parentUI) {
+	static boolean showDialog(UserInterface parentUi) {
 		final AtomicBoolean proceed = new AtomicBoolean(false);
 
 		// Create the dialog
@@ -27,7 +27,7 @@ public final class SaveOnClosePrompt {
 		dialog.add(messageLabel, BorderLayout.CENTER);
 
 		// Create buttons
-		JPanel buttonPanel = createButtons(parentUI, proceed, dialog);
+		JPanel buttonPanel = createButtons(parentUi, proceed, dialog);
 
 		// Add button panel to dialog
 		dialog.add(buttonPanel, BorderLayout.SOUTH);
@@ -38,7 +38,7 @@ public final class SaveOnClosePrompt {
 		return proceed.get();
 	}
 
-	private static JPanel createButtons(UserInterface parentUI, AtomicBoolean proceed, JDialog dialog) {
+	private static JPanel createButtons(UserInterface parentUi, AtomicBoolean proceed, JDialog dialog) {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
 		JButton saveButton = new JButton("Save");
 		JButton saveAsButton = new JButton("Save as");
@@ -47,13 +47,13 @@ public final class SaveOnClosePrompt {
 
 		// Button actions
 		saveButton.addActionListener((ActionEvent e) -> {
-			parentUI.saveFile(null); // Gets the current open file to save
+			parentUi.saveFile(null); // Gets the current open file to save
 			proceed.set(true);
 			dialog.dispose();
 		});
 
 		saveAsButton.addActionListener((ActionEvent e) -> {
-			parentUI.saveFileAs();
+			parentUi.saveFileAs();
 			proceed.set(true);
 			dialog.dispose();
 		});

@@ -9,7 +9,7 @@ import java.util.Optional;
 public final class TexCompiler {
 
 	private TexCompiler() {
-		// Don't allow instances of this class
+		throw new IllegalAccessError();
 	}
 
 	public static void compileToTex(File monthFile, File texFile) {

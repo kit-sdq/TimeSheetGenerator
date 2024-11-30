@@ -3,6 +3,8 @@ package ui.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+
+import ui.ErrorHandler;
 import ui.UserInterface;
 import ui.MonthlySettingsBar;
 import ui.TimesheetEntry;
@@ -30,7 +32,7 @@ public final class JSONHandler {
 
 	private static final String ERROR = "An unexpected error occurred:%s%s".formatted(System.lineSeparator(), "%s");
 
-	public static void initialize(UserInterface parentUI) {
+	public static void initialize() {
 		final String homePropertyName = "user.home";
 		String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
 
@@ -48,10 +50,10 @@ public final class JSONHandler {
 		// Create a subdirectory for your application
 		configDir += "/TimeSheetGenerator";
 
-		createDefaultGlobalSettings(parentUI);
-		createDefaultOtherGlobalSettings(parentUI);
-		loadGlobal(parentUI);
-		loadOtherSettings(parentUI);
+		createDefaultGlobalSettings();
+		createDefaultOtherGlobalSettings();
+		loadGlobal();
+		loadOtherSettings();
 
 		cleanUp();
 	}
@@ -82,59 +84,59 @@ public final class JSONHandler {
 		JSONHandler.uiSettings = otherSettings;
 	}
 
-	public static void loadGlobal(UserInterface parentUI) {
+	public static void loadGlobal() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			globalSettings = objectMapper.readValue(getConfigFile(), Global.class);
 		} catch (IOException e) {
-			parentUI.showError("Error loading global settings file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error loading global settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	public static void saveGlobal(UserInterface parentUI, Global globalSettings) {
+	public static void saveGlobal(Global globalSettings) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
 			objectMapper.writeValue(getConfigFile(), globalSettings);
 			setGlobalSettings(globalSettings);
 		} catch (IOException e) {
-			parentUI.showError("Error saving global settings file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error saving global settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	private static void loadOtherSettings(UserInterface parentUI) {
+	private static void loadOtherSettings() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		try {
 			uiSettings = objectMapper.readValue(getOtherSettingsFile(), UISettings.class);
 		} catch (IOException e) {
-			parentUI.showError("Error loading UI settings file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error loading UI settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	public static void saveUISettings(UserInterface parentUI, UISettings uiSettings) {
+	public static void saveUISettings(UISettings uiSettings) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
 			objectMapper.writeValue(getOtherSettingsFile(), uiSettings);
 			setUISettings(uiSettings);
 		} catch (IOException e) {
-			parentUI.showError("Error saving UI settings file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error saving UI settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	public static void loadMonth(UserInterface parentUI, File monthFile) {
+	public static void loadMonth(UserInterface parentUi, File monthFile) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
 			Month month = objectMapper.readValue(monthFile, Month.class);
 
-			parentUI.importMonthBarSettings(month);
+			parentUi.importMonthBarSettings(month);
 
 			for (Month.Entry entry : month.getEntries()) {
-				parentUI.addEntry(new TimesheetEntry(entry));
+				parentUi.addEntry(new TimesheetEntry(entry));
 			}
 		} catch (IOException e) {
-			parentUI.showError("Error loading month file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error loading month file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
@@ -158,18 +160,18 @@ public final class JSONHandler {
 		return month;
 	}
 
-	public static void saveMonth(UserInterface parentUI, File saveFile, MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
+	public static void saveMonth(File saveFile, MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
 			Month month = getMonth(settingsBar, entries);
 			objectMapper.writeValue(saveFile, month);
 		} catch (IOException e) {
-			parentUI.showError("Error saving month file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error saving month file", ERROR.formatted(e.getMessage()));
 		}
 	}
 
-	public static File generateTemporaryJSONFile(UserInterface parentUI, MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
+	public static File generateTemporaryJSONFile(MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
 		File f;
 		do {
 			f = new File(configDir, "/temp-%s.json".formatted(UUID.randomUUID()));
@@ -180,10 +182,10 @@ public final class JSONHandler {
 				throw new IOException("Failed to create temporary json file %s.".formatted(f.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			parentUI.showError("Error generating temp json file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error generating temp json file", ERROR.formatted(e.getMessage()));
 			return null;
 		}
-		saveMonth(parentUI, f, settingsBar, entries);
+		saveMonth(f, settingsBar, entries);
 		return f;
 	}
 
@@ -195,7 +197,7 @@ public final class JSONHandler {
 		return getConfigFile().exists();
 	}
 
-	private static void createDefaultGlobalSettings(UserInterface parentUI) {
+	private static void createDefaultGlobalSettings() {
 		if (globalConfigExists())
 			return;
 		try {
@@ -210,7 +212,7 @@ public final class JSONHandler {
 				throw new IOException("Failed to create global configuration file %s.".formatted(f.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			parentUI.showError("Error creating global settings file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error creating global settings file", ERROR.formatted(e.getMessage()));
 			return;
 		}
 
@@ -221,7 +223,7 @@ public final class JSONHandler {
 		global.setWorkingTime("40:00");
 		global.setWage(13.25);
 		global.setWorkingArea("ub");
-		saveGlobal(parentUI, global);
+		saveGlobal(global);
 	}
 
 	public static File getOtherSettingsFile() {
@@ -232,7 +234,7 @@ public final class JSONHandler {
 		return getOtherSettingsFile().exists();
 	}
 
-	public static void createDefaultOtherGlobalSettings(UserInterface parentUI) {
+	public static void createDefaultOtherGlobalSettings() {
 		if (otherSettingsFileExists())
 			return;
 		try {
@@ -247,13 +249,13 @@ public final class JSONHandler {
 				throw new IOException("Failed to create global settings file %s.".formatted(f.getAbsolutePath()));
 			}
 		} catch (IOException e) {
-			parentUI.showError("Error creating UI settings file", ERROR.formatted(e.getMessage()));
+			ErrorHandler.showError("Error creating UI settings file", ERROR.formatted(e.getMessage()));
 			return;
 		}
 
 		UISettings settings = new UISettings();
 		settings.setAddSignature(false);
-		saveUISettings(parentUI, settings);
+		saveUISettings(settings);
 	}
 
 	private static void cleanUp() {

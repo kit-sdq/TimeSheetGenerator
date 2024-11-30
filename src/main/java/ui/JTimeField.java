@@ -12,11 +12,11 @@ public class JTimeField extends JTextField {
 	private static final String PLACEHOLDER = "00:00";
 	static final Pattern TIME_PATTERN_SEMI_SMALL_2 = Pattern.compile("^(\\d):(\\d{2})$");
 
-	public JTimeField(UserInterface parentUI) {
-		this(parentUI, null);
+	public JTimeField(UserInterface parentUi) {
+		this(parentUi, null);
 	}
 
-	public JTimeField(UserInterface parentUI, String text) {
+	public JTimeField(UserInterface parentUi, String text) {
 		super(4);
 		this.setHorizontalAlignment(CENTER);
 
@@ -28,7 +28,7 @@ public class JTimeField extends JTextField {
 				if (getText().isEmpty())
 					return;
 				validateField();
-				parentUI.updateTotalTimeWorkedUI();
+				parentUi.updateTotalTimeWorkedUI();
 			}
 		});
 	}

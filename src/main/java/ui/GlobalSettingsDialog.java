@@ -143,8 +143,8 @@ public final class GlobalSettingsDialog {
 			uiSettings.setAddSignature(addSignatureBox.isSelected());
 
 			// Save globalSettings to file or database as needed
-			JSONHandler.saveGlobal(parentUI, globalSettings);
-			JSONHandler.saveUISettings(parentUI, uiSettings);
+			JSONHandler.saveGlobal(globalSettings);
+			JSONHandler.saveUISettings(uiSettings);
 
 			dialog.dispose();
 		});

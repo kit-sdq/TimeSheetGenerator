@@ -16,10 +16,10 @@ public class DragDropJFrame extends JFrame {
 	private static final Color HOVER_COLOR = new Color(160, 160, 160);
 	private static final Color DEFAULT_COLOR = UIManager.getColor("Panel.background");
 
-	private final transient UserInterface parentUI;
+	private final transient UserInterface parentUi;
 
-	public DragDropJFrame(UserInterface parentUI) {
-		this.parentUI = parentUI;
+	public DragDropJFrame(UserInterface parentUi) {
+		this.parentUi = parentUi;
 
 		// Setting up drag-and-drop functionality
 		new DropTarget(this, new DropTargetListener() {
@@ -93,11 +93,11 @@ public class DragDropJFrame extends JFrame {
 	}
 
 	private void performActionWithJSON(File jsonFile) {
-		parentUI.openFile(jsonFile);
+		parentUi.openFile(jsonFile);
 	}
 
 	private void setColor(Color color) {
 		getContentPane().setBackground(color);
-		parentUI.setBackgroundColor(color);
+		parentUi.setBackgroundColor(color);
 	}
 }

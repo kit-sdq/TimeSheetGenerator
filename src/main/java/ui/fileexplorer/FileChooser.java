@@ -22,7 +22,7 @@ public final class FileChooser {
 				parentUI.getYear());
 	}
 
-	public static File chooseFile(UserInterface parentUI, String title, FileChooserType chooserType) {
+	public static File chooseFile(String title, FileChooserType chooserType) {
 		// Later: Implement Windows Version ?
 		// -> Later, I tried doing it simple and failed, and I don't have the time
 		// (currently) to figure it out
@@ -32,11 +32,11 @@ public final class FileChooser {
 		// think it's a fair
 		// compromise for now.
 		// - JustOneDeveloper
-		return chooseFileSwing(parentUI, title, chooserType);
+		return chooseFileSwing(title, chooserType);
 
 	}
 
-	private static File chooseFileSwing(UserInterface parentUI, String title, FileChooserType chooserType) {
+	private static File chooseFileSwing(String title, FileChooserType chooserType) {
 		JFileChooser fileChooser = getFileChooser(chooserType);
 
 		fileChooser.setDialogTitle(title);
@@ -45,30 +45,29 @@ public final class FileChooser {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
-			JSONHandler.getUISettings().setPath(parentUI, chooserType, file);
+			JSONHandler.getUISettings().setPath(chooserType, file);
 			return file;
 		} else {
 			return null;
 		}
 	}
 
-	public static File chooseCreateJSONFile(UserInterface parentUI, String title) {
-		String month = parentUI.getCurrentMonthName();
+	public static File chooseCreateJSONFile(UserInterface parentUi, String title) {
+		String month = parentUi.getCurrentMonthName();
 		if (month.isBlank())
 			month = "month";
-		return chooseCreateFile(parentUI, title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, parentUI.getYear()), "json", "JSON Files (*.json)");
+		return chooseCreateFile(title, FileChooserType.MONTH_PATH, "%s%s".formatted(month, parentUi.getYear()), "json", "JSON Files (*.json)");
 	}
 
-	public static File chooseCreateTexFile(UserInterface parentUI, String title) {
-		return chooseCreateFile(parentUI, title, FileChooserType.TEX_PATH, getDefaultFileName(parentUI), "tex", "LaTeX Files (*.tex)");
+	public static File chooseCreateTexFile(UserInterface parentUi, String title) {
+		return chooseCreateFile(title, FileChooserType.TEX_PATH, getDefaultFileName(parentUi), "tex", "LaTeX Files (*.tex)");
 	}
 
-	public static File chooseCreatePDFFile(UserInterface parentUI, String title) {
-		return chooseCreateFile(parentUI, title, FileChooserType.PDF_PATH, getDefaultFileName(parentUI), "pdf", "PDF Files (*.pdf)");
+	public static File chooseCreatePDFFile(UserInterface parentUi, String title) {
+		return chooseCreateFile(title, FileChooserType.PDF_PATH, getDefaultFileName(parentUi), "pdf", "PDF Files (*.pdf)");
 	}
 
-	public static File chooseCreateFile(UserInterface parentUI, String title, FileChooserType chooserType, String defaultFileName, String extension,
-			String extensionDescription) {
+	public static File chooseCreateFile(String title, FileChooserType chooserType, String defaultFileName, String extension, String extensionDescription) {
 		JFileChooser fileChooser = getFileChooser(chooserType);
 		fileChooser.setDialogTitle(title);
 
@@ -92,7 +91,7 @@ public final class FileChooser {
 				}
 			}
 
-			JSONHandler.getUISettings().setPath(parentUI, chooserType, fileToSave);
+			JSONHandler.getUISettings().setPath(chooserType, fileToSave);
 			return fileToSave;
 		} else {
 			return null;

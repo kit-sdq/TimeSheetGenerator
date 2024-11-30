@@ -17,7 +17,7 @@ public class MonthlySettingsBar extends JPanel {
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
 
-	private final transient UserInterface parentUI;
+	private final UserInterface parentUi;
 
 	private final JComboBox<String> monthSelector;
 	private final JComboBox<String> semesterSelector;
@@ -26,9 +26,9 @@ public class MonthlySettingsBar extends JPanel {
 	private final JTimeField predTimeField;
 	private final JLabel succTimeValue;
 
-	public MonthlySettingsBar(UserInterface parentUI) {
+	public MonthlySettingsBar(UserInterface parentUi) {
 		super(new BorderLayout());
-		this.parentUI = parentUI;
+		this.parentUi = parentUi;
 		// Top Panel with Selectors and Button
 		JPanel selectorsPanel = new JPanel();
 
@@ -57,13 +57,13 @@ public class MonthlySettingsBar extends JPanel {
 		predTimeLabel.setText("Predecessor Time:");
 		timeCarryPanel.add(predTimeLabel);
 
-		predTimeField = new JTimeField(this.parentUI);
+		predTimeField = new JTimeField(this.parentUi);
 		predTimeField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				if ((e.getKeyChar() < '0' || e.getKeyChar() > '9') && e.getKeyChar() != ':')
 					return;
-				parentUI.setHasUnsavedChanges(true);
+				parentUi.setHasUnsavedChanges(true);
 			}
 		});
 		timeCarryPanel.add(predTimeField);
@@ -88,9 +88,9 @@ public class MonthlySettingsBar extends JPanel {
 
 		// Add Events
 
-		semesterSelector.addActionListener((l) -> updateSemesterView());
+		semesterSelector.addActionListener(l -> updateSemesterView());
 
-		semesterTextField.addActionListener((l) -> updateSemesterView());
+		semesterTextField.addActionListener(l -> updateSemesterView());
 
 		semesterTextField.addFocusListener(new FocusAdapter() {
 			@Override
@@ -99,7 +99,7 @@ public class MonthlySettingsBar extends JPanel {
 			}
 		});
 
-		monthSelector.addActionListener((l) -> {
+		monthSelector.addActionListener(l -> {
 			int month = monthSelector.getSelectedIndex();
 			if (month >= 3 && month <= 8) {
 				semesterSelector.setSelectedIndex(0);
@@ -109,7 +109,7 @@ public class MonthlySettingsBar extends JPanel {
 			updateSemesterView();
 		});
 
-		settingsButton.addActionListener((l) -> GlobalSettingsDialog.showGlobalSettingsDialog(this.parentUI));
+		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog(this.parentUi));
 	}
 
 	public String getSelectedMonthName() {
@@ -193,7 +193,7 @@ public class MonthlySettingsBar extends JPanel {
 		} else {
 			semesterTextFieldLabel.setText("/%d".formatted(year + 1));
 		}
-		this.parentUI.setHasUnsavedChanges(true);
+		this.parentUi.setHasUnsavedChanges(true);
 	}
 
 }

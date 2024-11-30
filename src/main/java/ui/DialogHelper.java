@@ -38,11 +38,11 @@ public final class DialogHelper {
 	private static final int INDEX_END_TIME = 2;
 	private static final int INDEX_BREAK_TIME = 3;
 
-	public static void showEntryDialog(UserInterface parentUI, String title) {
-		showEntryDialog(parentUI, title, TimesheetEntry.EMPTY_ENTRY);
+	public static void showEntryDialog(UserInterface parentUi, String title) {
+		showEntryDialog(parentUi, title, TimesheetEntry.EMPTY_ENTRY);
 	}
 
-	public static void showEntryDialog(UserInterface parentUI, String title, TimesheetEntry entry) {
+	public static void showEntryDialog(UserInterface parentUi, String title, TimesheetEntry entry) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle(title);
 		dialog.setSize(600, 400);
@@ -158,7 +158,7 @@ public final class DialogHelper {
 		gbc.gridx = 1;
 		gbc.gridy = row;
 		gbc.weightx = 1;
-		vacationCheckBox.addChangeListener((l) -> updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME],
+		vacationCheckBox.addChangeListener(l -> updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME],
 				timeFields[INDEX_BREAK_TIME], durationWarningLabel, vacationCheckBox));
 		panel.add(vacationCheckBox, gbc);
 
@@ -217,14 +217,14 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
-			makeEntryAction(parentUI, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox);
+			makeEntryAction(parentUi, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox);
 			dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> {
 			// Since the old entry will be deleted, we need to add it back
 			if (!entry.isEmpty())
-				parentUI.addEntry(entry);
+				parentUi.addEntry(entry);
 			dialog.dispose();
 		});
 

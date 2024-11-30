@@ -34,14 +34,14 @@ class TempFiles implements AutoCloseable {
 		}
 	}
 
-	public static TempFiles generateNewTemp(UserInterface parentUI) {
+	public static TempFiles generateNewTemp(UserInterface parentUi) {
 		File monthFile;
 		boolean tempMonth = false;
-		if (parentUI.hasUnsavedChanges() || parentUI.getCurrentOpenFile() == null) {
-			monthFile = parentUI.generateTempMonthFile();
+		if (parentUi.hasUnsavedChanges() || parentUi.getCurrentOpenFile() == null) {
+			monthFile = parentUi.generateTempMonthFile();
 			tempMonth = true;
 		} else {
-			monthFile = parentUI.getCurrentOpenFile();
+			monthFile = parentUi.getCurrentOpenFile();
 		}
 		if (monthFile == null)
 			return null;

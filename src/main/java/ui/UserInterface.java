@@ -47,9 +47,10 @@ public class UserInterface {
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
+		ErrorHandler.setParentComponent(frame);
 
 		// Initialize JSONHandler. It needs the frame to exist to display error messages
-		JSONHandler.initialize(this);
+		JSONHandler.initialize();
 
 		// Menu Bar
 		JMenuBar menuBar = new JMenuBar();
@@ -188,7 +189,7 @@ public class UserInterface {
 	}
 
 	public File generateTempMonthFile() {
-		return JSONHandler.generateTemporaryJSONFile(this, monthSettingsBar, listModel);
+		return JSONHandler.generateTemporaryJSONFile(monthSettingsBar, listModel);
 	}
 
 	public Time getPredTime() {
@@ -249,14 +250,14 @@ public class UserInterface {
 	}
 
 	public void saveFileCommon(File newSaveFile) {
-		JSONHandler.saveMonth(this, newSaveFile, monthSettingsBar, listModel);
+		JSONHandler.saveMonth(newSaveFile, monthSettingsBar, listModel);
 
 		currentOpenFile = newSaveFile;
 		setHasUnsavedChanges(false);
 	}
 
 	public void openFile() {
-		File openFile = FileChooser.chooseFile(this, "Open a file", FileChooserType.MONTH_PATH);
+		File openFile = FileChooser.chooseFile("Open a file", FileChooserType.MONTH_PATH);
 		openFile(openFile);
 	}
 
@@ -291,7 +292,7 @@ public class UserInterface {
 		if (!name.endsWith(".json"))
 			return false;
 		if (!JSONHandler.isFileValidMonth(file)) {
-			showError("Invalid JSON File", "The file is not a valid month.json file or could not be parsed.");
+			ErrorHandler.showError("Invalid JSON File", "The file is not a valid month.json file or could not be parsed.");
 			return false;
 		}
 		currentOpenFile = file;
@@ -379,10 +380,6 @@ public class UserInterface {
 			workedTime.addTime(entry.getWorkedTime());
 		}
 		return workedTime;
-	}
-
-	public void showError(String title, String error) {
-		JOptionPane.showMessageDialog(frame, error, title, JOptionPane.ERROR_MESSAGE);
 	}
 
 	private boolean showOKCancelDialog(String title, String message) {

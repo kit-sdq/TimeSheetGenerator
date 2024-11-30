@@ -1,7 +1,6 @@
 /* Licensed under MIT 2024. */
 package ui.json;
 
-import ui.UserInterface;
 import ui.fileexplorer.FileChooserType;
 
 import java.io.File;
@@ -37,39 +36,39 @@ public class UISettings {
 		return monthPath;
 	}
 
-	public void setMonthPath(UserInterface parentUI, String openMonthPath) {
+	public void setMonthPath(String openMonthPath) {
 		this.monthPath = openMonthPath;
-		save(parentUI);
+		save();
 	}
 
 	public String getTexPath() {
 		return texPath;
 	}
 
-	public void setTexPath(UserInterface parentUI, String texPath) {
+	public void setTexPath(String texPath) {
 		this.texPath = texPath;
-		save(parentUI);
+		save();
 	}
 
 	public String getPdfPath() {
 		return pdfPath;
 	}
 
-	public void setPdfPath(UserInterface parentUI, String pdfPath) {
+	public void setPdfPath(String pdfPath) {
 		this.pdfPath = pdfPath;
-		save(parentUI);
+		save();
 	}
 
-	public void setPath(UserInterface parentUI, FileChooserType type, File selectedFile) {
+	public void setPath(FileChooserType type, File selectedFile) {
 		String folderPath;
 		if (selectedFile == null)
 			folderPath = "";
 		else
 			folderPath = selectedFile.getParent();
 		switch (type) {
-		case MONTH_PATH -> setMonthPath(parentUI, folderPath);
-		case TEX_PATH -> setTexPath(parentUI, folderPath);
-		case PDF_PATH -> setPdfPath(parentUI, folderPath);
+		case MONTH_PATH -> setMonthPath(folderPath);
+		case TEX_PATH -> setTexPath(folderPath);
+		case PDF_PATH -> setPdfPath(folderPath);
 		}
 	}
 
@@ -103,7 +102,7 @@ public class UISettings {
 		return pathFile;
 	}
 
-	public void save(UserInterface parentUI) {
-		JSONHandler.saveUISettings(parentUI, this);
+	public void save() {
+		JSONHandler.saveUISettings(this);
 	}
 }
