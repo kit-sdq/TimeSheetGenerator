@@ -20,7 +20,8 @@ import java.util.logging.Logger;
 
 public class PDFCompiler {
 
-	private static final Object LOADER = new Object(){};
+	private static final Object LOADER = new Object() {
+	};
 
 	private PDFCompiler() {
 		throw new IllegalAccessError();
@@ -69,8 +70,9 @@ public class PDFCompiler {
 		form.getField("monatliche SollArbeitszeit").setValue(global.getWorkingTime()); // Again hours probably
 
 		try {
-			form.getField("Ich bestätige die Richtigkeit der Angaben").setValue("%s, %s".formatted(
-					DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()), JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
+			form.getField("Ich bestätige die Richtigkeit der Angaben")
+					.setValue("%s, %s".formatted(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()),
+							JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
 		} catch (EOFException ignored) {
 			Logger.getGlobal().warning("Could not load font for signature field when exporting to PDF. Proceeding with default.");
 		}
@@ -90,7 +92,8 @@ public class PDFCompiler {
 			}
 
 			form.getField("Tätigkeit Stichwort ProjektRow%d".formatted(fieldIndex)).setValue(entry.getAction());
-			form.getField("ttmmjjRow%d".formatted(fieldIndex)).setValue(dayFormatter.format(LocalDateTime.of(month.getYear(), month.getMonth(), entry.getDay(), 0, 0)));
+			form.getField("ttmmjjRow%d".formatted(fieldIndex))
+					.setValue(dayFormatter.format(LocalDateTime.of(month.getYear(), month.getMonth(), entry.getDay(), 0, 0)));
 			form.getField("hhmmRow%d".formatted(fieldIndex)).setValue(entry.getStart());
 			form.getField("hhmmRow%d_2".formatted(fieldIndex)).setValue(entry.getEnd());
 			form.getField("hhmmRow%d_3".formatted(fieldIndex)).setValue(entry.getPause());
