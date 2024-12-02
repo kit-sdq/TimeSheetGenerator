@@ -316,7 +316,14 @@ public class UserInterface {
 	}
 
 	public boolean isSpaceForNewEntry() {
-		return listModel.size() < MAX_ENTRIES;
+		// Loop and exclude holiday entries. Keeping track live invite bugs, and for <= 22 entries
+		// + reasonable holidays, this works. If you really want to just break the program, there
+		// are easier ways of doing it
+		int entries = listModel.size();
+		for (int i = 0; i < itemList.getModel().getSize(); i++) {
+			if (listModel.getElementAt(i).isVacation()) entries--;
+		}
+		return entries < MAX_ENTRIES;
 	}
 
 	public void addEntry(TimesheetEntry entry) {
