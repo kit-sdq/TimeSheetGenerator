@@ -81,6 +81,7 @@ public class PDFCompiler {
 			Time time = Time.parseTime(entry.getEnd());
 			time.subtractTime(Time.parseTime(entry.getStart()));
 			time.subtractTime(Time.parseTime(entry.getPause()));
+			timeSum.addTime(time);
 
 			if (entry.isVacation()) {
 				timeVacation.addTime(time);
@@ -95,7 +96,6 @@ public class PDFCompiler {
 
 			String timeFieldValue = time.toString();
 			form.getField("hhmmRow%d_4".formatted(m)).setValue(timeFieldValue);
-			timeSum.addTime(time);
 			m++;
 		}
 
