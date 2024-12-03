@@ -20,15 +20,12 @@ import java.util.logging.Logger;
 
 public class PDFCompiler {
 
-	private static final Object LOADER = new Object() {
-	};
-
 	private PDFCompiler() {
 		throw new IllegalAccessError();
 	}
 
 	public static Optional<String> compileToPDF(Global global, Month month, File targetFile) {
-		try (InputStream templateStream = LOADER.getClass().getResourceAsStream("/pdf/template.pdf")) {
+		try (InputStream templateStream = PDFCompiler.class.getResourceAsStream("/pdf/template.pdf")) {
 			if (templateStream == null) {
 				return Optional.of("Template PDF not found in resources.");
 			}
@@ -79,7 +76,8 @@ public class PDFCompiler {
 
 		final DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd.MM.yy");
 
-		for (int i = 0, fieldIndex = 1; i < month.getEntries().size(); i++) {
+		int fieldIndex = 1;
+		for (int i = 0; i < month.getEntries().size(); i++) {
 			Month.Entry entry = month.getEntries().get(i);
 			Time time = Time.parseTime(entry.getEnd());
 			time.subtractTime(Time.parseTime(entry.getStart()));
