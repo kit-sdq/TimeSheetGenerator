@@ -30,6 +30,8 @@ public final class DialogHelper {
 	static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
 	private static final int MAX_TEXT_LENGTH_ACTIVITY = 27;
+	private static final int MIN_BREAK_SIX_HOURS = 30;
+	private static final int MIN_BREAK_NINE_HOURS = 45;
 
 	private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 
@@ -498,10 +500,10 @@ public final class DialogHelper {
 			long breakMinutes = breakTime.getHour() * 60L + breakTime.getMinute();
 			// FROM:
 			// https://www.gesetze-im-internet.de/arbzg/__4.html#:~:text=Arbeitszeitgesetz%20(ArbZG),neun%20Stunden%20insgesamt%20zu%20unterbrechen.
-			if (totalMinutes > 540 && breakMinutes < 45) {
-				durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
-			} else if (totalMinutes > 360 && breakMinutes < 30) {
-				durationWarningLabel.setText("Break must be at least 30 minutes for work over 6 hours");
+			if (totalMinutes > 540 && breakMinutes < MIN_BREAK_NINE_HOURS) {
+				durationWarningLabel.setText("Break must be at least %d minutes for work of 9 hours or more".formatted(MIN_BREAK_NINE_HOURS));
+			} else if (totalMinutes > 360 && breakMinutes < MIN_BREAK_SIX_HOURS) {
+				durationWarningLabel.setText("Break must be at least %d minutes for work over 6 hours".formatted(MIN_BREAK_SIX_HOURS));
 			} else {
 				durationWarningLabel.setText(" ");
 			}
