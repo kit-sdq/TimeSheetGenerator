@@ -374,7 +374,7 @@ public final class DialogHelper {
 	}
 
 	private static void validateTimeField(JTextField timeField, JLabel errorLabel, boolean isBreak) {
-		String text = timeField.getText().trim();
+		String text = timeField.getText().trim().replace('.', ':');
 		if (text.equals(TIME_PLACEHOLDER) || text.equals(TIME_BREAK_PLACEHOLDER)) {
 			errorLabel.setText(" ");
 			return;
@@ -519,7 +519,11 @@ public final class DialogHelper {
 		try {
 			return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
 		} catch (DateTimeParseException e) {
-			return LocalTime.of(0, 0);
+			try {
+				return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H.mm"));
+			} catch (DateTimeParseException e1) {
+				return LocalTime.of(0, 0);
+			}
 		}
 	}
 
