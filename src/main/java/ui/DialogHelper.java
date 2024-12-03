@@ -217,8 +217,8 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
-			makeEntryAction(parentUi, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox);
-			dialog.dispose();
+			if (makeEntryAction(parentUi, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox))
+				dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> {
@@ -261,7 +261,18 @@ public final class DialogHelper {
 		dialog.setVisible(true);
 	}
 
-	private static void makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
+	/**
+	 * The Action for the "Make Entry" Button in the "Add/Edit Entry" Dialog.
+	 * Returns if the dialog should be disposed (success) or if it should be
+	 * kept open (failure).
+	 * @param parentUI The parent UserInterface.
+	 * @param durationWarningLabel The warning label for the work time message.
+	 * @param actionTextArea The text area for the activity.
+	 * @param timeFields The array of fields for the times.
+	 * @param vacationCheckBox The vacation checkbox.
+	 * @return True if the dialog should be disposed, false if not.
+	 */
+	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
 			if (actionTextArea.getText().isBlank()) {
@@ -293,7 +304,7 @@ public final class DialogHelper {
 			timer.setRepeats(false); // Only execute once
 			timer.start();
 
-			return;
+			return false;
 		}
 
 		// No break
@@ -306,6 +317,7 @@ public final class DialogHelper {
 				vacationCheckBox.isSelected());
 		parentUI.addEntry(newEntry);
 		parentUI.setHasUnsavedChanges(true);
+		return true;
 	}
 
 	private static void updateTimeFieldView(int index, int breakFieldIndex, JTextField[] timeFields, JLabel[] errorLabels, JLabel durationSummaryValue,
