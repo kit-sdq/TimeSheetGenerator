@@ -263,13 +263,14 @@ public final class DialogHelper {
 
 	/**
 	 * The Action for the "Make Entry" Button in the "Add/Edit Entry" Dialog.
-	 * Returns if the dialog should be disposed (success) or if it should be
-	 * kept open (failure).
-	 * @param parentUI The parent UserInterface.
+	 * Returns if the dialog should be disposed (success) or if it should be kept
+	 * open (failure).
+	 * 
+	 * @param parentUI             The parent UserInterface.
 	 * @param durationWarningLabel The warning label for the work time message.
-	 * @param actionTextArea The text area for the activity.
-	 * @param timeFields The array of fields for the times.
-	 * @param vacationCheckBox The vacation checkbox.
+	 * @param actionTextArea       The text area for the activity.
+	 * @param timeFields           The array of fields for the times.
+	 * @param vacationCheckBox     The vacation checkbox.
 	 * @return True if the dialog should be disposed, false if not.
 	 */
 	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
@@ -495,7 +496,8 @@ public final class DialogHelper {
 		if (!isVacation.isSelected()) {
 			long totalMinutes = workDuration.toMinutes();
 			long breakMinutes = breakTime.getHour() * 60L + breakTime.getMinute();
-			// FROM: https://www.gesetze-im-internet.de/arbzg/__4.html#:~:text=Arbeitszeitgesetz%20(ArbZG),neun%20Stunden%20insgesamt%20zu%20unterbrechen.
+			// FROM:
+			// https://www.gesetze-im-internet.de/arbzg/__4.html#:~:text=Arbeitszeitgesetz%20(ArbZG),neun%20Stunden%20insgesamt%20zu%20unterbrechen.
 			if (totalMinutes > 540 && breakMinutes < 45) {
 				durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
 			} else if (totalMinutes > 360 && breakMinutes < 30) {

@@ -265,7 +265,7 @@ public class UserInterface {
 	public void openFile(File openFile) {
 		if (openFile == null)
 			return;
-		if (!clearWorkspace())	// Don't proceed: Clearing was cancelled
+		if (!clearWorkspace()) // Don't proceed: Clearing was cancelled
 			return;
 		if (!setEditorFile(openFile))
 			return;
