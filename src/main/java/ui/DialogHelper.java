@@ -519,11 +519,7 @@ public final class DialogHelper {
 		try {
 			return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
 		} catch (DateTimeParseException e) {
-			try {
-				return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H.mm"));
-			} catch (DateTimeParseException e1) {
-				return LocalTime.of(0, 0);
-			}
+			return LocalTime.of(0, 0);
 		}
 	}
 
