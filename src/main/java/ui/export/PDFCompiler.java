@@ -9,12 +9,14 @@ import ui.json.Global;
 import ui.json.JSONHandler;
 import ui.json.Month;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class PDFCompiler {
 
@@ -23,7 +25,7 @@ public class PDFCompiler {
 	}
 
 	public static Optional<String> compileToPDF(Global global, Month month, File targetFile) {
-		try (InputStream templateStream = Object.class.getResourceAsStream("/pdf/template.pdf")) {
+		try (InputStream templateStream = PDFCompiler.class.getResourceAsStream("/pdf/template.pdf")) {
 			if (templateStream == null) {
 				return Optional.of("Template PDF not found in resources.");
 			}
@@ -64,31 +66,39 @@ public class PDFCompiler {
 		Time timeVacation = new Time();
 		form.getField("monatliche SollArbeitszeit").setValue(global.getWorkingTime()); // Again hours probably
 
-		form.getField("Ich bestätige die Richtigkeit der Angaben").setValue("%s, %s".formatted(
-				DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()), JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
+		try {
+			form.getField("Ich bestätige die Richtigkeit der Angaben")
+					.setValue("%s, %s".formatted(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()),
+							JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
+		} catch (EOFException ignored) {
+			Logger.getGlobal().warning("Could not load font for signature field when exporting to PDF. Proceeding with default.");
+		}
 
 		final DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd.MM.yy");
 
-		for (int m = 1; m <= month.getEntries().size(); ++m) {
-			Month.Entry entry = month.getEntries().get(m - 1);
-			form.getField("Tätigkeit Stichwort ProjektRow%d".formatted(m)).setValue(entry.getAction());
-			form.getField("ttmmjjRow%d".formatted(m)).setValue(dayFormatter.format(LocalDateTime.of(month.getYear(), month.getMonth(), entry.getDay(), 0, 0)));
-			form.getField("hhmmRow%d".formatted(m)).setValue(entry.getStart());
-			form.getField("hhmmRow%d_2".formatted(m)).setValue(entry.getEnd());
-			form.getField("hhmmRow%d_3".formatted(m)).setValue(entry.getPause());
-
+		int fieldIndex = 1;
+		for (int i = 0; i < month.getEntries().size(); i++) {
+			Month.Entry entry = month.getEntries().get(i);
 			Time time = Time.parseTime(entry.getEnd());
 			time.subtractTime(Time.parseTime(entry.getStart()));
 			time.subtractTime(Time.parseTime(entry.getPause()));
-
-			String timeFieldValue = time.toString();
-			if (entry.isVacation()) {
-				timeVacation.addTime(time);
-				timeFieldValue += "U";
-			}
-			form.getField("hhmmRow%d_4".formatted(m)).setValue(timeFieldValue);
 			timeSum.addTime(time);
 
+			if (entry.isVacation()) {
+				timeVacation.addTime(time);
+				continue;
+			}
+
+			form.getField("Tätigkeit Stichwort ProjektRow%d".formatted(fieldIndex)).setValue(entry.getAction());
+			form.getField("ttmmjjRow%d".formatted(fieldIndex))
+					.setValue(dayFormatter.format(LocalDateTime.of(month.getYear(), month.getMonth(), entry.getDay(), 0, 0)));
+			form.getField("hhmmRow%d".formatted(fieldIndex)).setValue(entry.getStart());
+			form.getField("hhmmRow%d_2".formatted(fieldIndex)).setValue(entry.getEnd());
+			form.getField("hhmmRow%d_3".formatted(fieldIndex)).setValue(entry.getPause());
+
+			String timeFieldValue = time.toString();
+			form.getField("hhmmRow%d_4".formatted(fieldIndex)).setValue(timeFieldValue);
+			fieldIndex++;
 		}
 
 		form.getField("Summe").setValue(timeSum.toString()); // Total time worked
