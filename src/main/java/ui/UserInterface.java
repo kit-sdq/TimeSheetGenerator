@@ -211,8 +211,9 @@ public class UserInterface {
 		if (!closeCurrentOpenFile())
 			return false;
 		// Delete all content
-		monthSettingsBar.reset();
+		currentOpenFile = null;
 		listModel.clear();
+		monthSettingsBar.reset();
 		setHasUnsavedChanges(false);
 		return true;
 	}
@@ -224,7 +225,7 @@ public class UserInterface {
 	 * 
 	 * @return If proceed or not.
 	 */
-	public boolean closeCurrentOpenFile() {
+	private boolean closeCurrentOpenFile() {
 		if (!hasUnsavedChanges)
 			return true;
 		// Prompt to save
@@ -264,10 +265,9 @@ public class UserInterface {
 	public void openFile(File openFile) {
 		if (openFile == null)
 			return;
-		if (!setEditorFile(openFile))
+		if (!clearWorkspace()) // Don't proceed: Clearing was cancelled
 			return;
-		boolean proceed = clearWorkspace();
-		if (!proceed)
+		if (!setEditorFile(openFile))
 			return;
 
 		// Open the file

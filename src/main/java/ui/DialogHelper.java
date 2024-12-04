@@ -30,6 +30,8 @@ public final class DialogHelper {
 	static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
 	private static final int MAX_TEXT_LENGTH_ACTIVITY = 27;
+	private static final int MIN_BREAK_SIX_HOURS = 30;
+	private static final int MIN_BREAK_NINE_HOURS = 45;
 
 	private static final String ACTIVITY_MESSAGE = "You need to enter an activity!";
 
@@ -217,8 +219,8 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
-			makeEntryAction(parentUi, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox);
-			dialog.dispose();
+			if (makeEntryAction(parentUi, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox))
+				dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> {
@@ -261,7 +263,19 @@ public final class DialogHelper {
 		dialog.setVisible(true);
 	}
 
-	private static void makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
+	/**
+	 * The Action for the "Make Entry" Button in the "Add/Edit Entry" Dialog.
+	 * Returns if the dialog should be disposed (success) or if it should be kept
+	 * open (failure).
+	 * 
+	 * @param parentUI             The parent UserInterface.
+	 * @param durationWarningLabel The warning label for the work time message.
+	 * @param actionTextArea       The text area for the activity.
+	 * @param timeFields           The array of fields for the times.
+	 * @param vacationCheckBox     The vacation checkbox.
+	 * @return True if the dialog should be disposed, false if not.
+	 */
+	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
 			if (actionTextArea.getText().isBlank()) {
@@ -293,7 +307,7 @@ public final class DialogHelper {
 			timer.setRepeats(false); // Only execute once
 			timer.start();
 
-			return;
+			return false;
 		}
 
 		// No break
@@ -306,6 +320,7 @@ public final class DialogHelper {
 				vacationCheckBox.isSelected());
 		parentUI.addEntry(newEntry);
 		parentUI.setHasUnsavedChanges(true);
+		return true;
 	}
 
 	private static void updateTimeFieldView(int index, int breakFieldIndex, JTextField[] timeFields, JLabel[] errorLabels, JLabel durationSummaryValue,
@@ -483,10 +498,12 @@ public final class DialogHelper {
 		if (!isVacation.isSelected()) {
 			long totalMinutes = workDuration.toMinutes();
 			long breakMinutes = breakTime.getHour() * 60L + breakTime.getMinute();
-			if (totalMinutes >= 540 && breakMinutes < 60) {
-				durationWarningLabel.setText("Break must be at least 1 hour for work of 9 hours or more");
-			} else if (totalMinutes >= 360 && breakMinutes < 30) {
-				durationWarningLabel.setText("Break must be at least 30 minutes for work over 6 hours");
+			// FROM:
+			// https://www.gesetze-im-internet.de/arbzg/__4.html#:~:text=Arbeitszeitgesetz%20(ArbZG),neun%20Stunden%20insgesamt%20zu%20unterbrechen.
+			if (totalMinutes > 540 && breakMinutes < MIN_BREAK_NINE_HOURS) {
+				durationWarningLabel.setText("Break must be at least %d minutes for work of 9 hours or more".formatted(MIN_BREAK_NINE_HOURS));
+			} else if (totalMinutes > 360 && breakMinutes < MIN_BREAK_SIX_HOURS) {
+				durationWarningLabel.setText("Break must be at least %d minutes for work over 6 hours".formatted(MIN_BREAK_SIX_HOURS));
 			} else {
 				durationWarningLabel.setText(" ");
 			}
