@@ -8,6 +8,8 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -221,10 +223,14 @@ public final class DialogHelper {
 		});
 
 		cancelButton.addActionListener(e -> {
-			// Since the old entry will be deleted, we need to add it back
-			if (!entry.isEmpty())
-				parentUi.addEntry(entry);
-			dialog.dispose();
+			discardChanges(entry, parentUi, dialog);
+		});
+
+		dialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				discardChanges(entry, parentUi, dialog);
+			}
 		});
 
 		// Update task summary when activity text changes
@@ -258,6 +264,13 @@ public final class DialogHelper {
 
 		dialog.add(panel);
 		dialog.setVisible(true);
+	}
+
+	private static void discardChanges(TimesheetEntry entry, UserInterface parentUi, JDialog dialog) {
+		// Since the old entry will be deleted, we need to add it back
+		if (!entry.isEmpty())
+			parentUi.addEntry(entry);
+		dialog.dispose();
 	}
 
 	/**
