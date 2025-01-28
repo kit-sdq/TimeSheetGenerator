@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import javax.swing.*;
@@ -31,7 +31,7 @@ public final class DialogHelper {
 	static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
 	static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
-    private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
+	private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
 	private static final int MIN_BREAK_SIX_HOURS = 30;
 	private static final int MIN_BREAK_NINE_HOURS = 45;
 
