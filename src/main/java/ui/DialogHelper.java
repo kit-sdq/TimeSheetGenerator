@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import javax.swing.*;
@@ -8,6 +8,8 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -29,7 +31,7 @@ public final class DialogHelper {
 	static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
 	static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
 
-	private static final int MAX_TEXT_LENGTH_ACTIVITY = 27;
+	private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
 	private static final int MIN_BREAK_SIX_HOURS = 30;
 	private static final int MIN_BREAK_NINE_HOURS = 45;
 
@@ -74,23 +76,20 @@ public final class DialogHelper {
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		panel.add(actionLabel, gbc);
 
-		JTextArea actionTextArea = new JTextArea(1, MAX_TEXT_LENGTH_ACTIVITY);
-		JScrollPane scrollPane = new JScrollPane(actionTextArea);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		JTextField actionTextField = new JTextField("", MAX_TEXT_LENGTH_ACTIVITY);
 
-		addPlaceholderText(actionTextArea, "Describe the activity", entry.getActivity());
+		addPlaceholderText(actionTextField, "Describe the activity", entry.getActivity());
 		if (!entry.getActivity().isEmpty()) {
-			actionTextArea.setText(entry.getActivity());
+			actionTextField.setText(entry.getActivity());
 			taskSummaryValue.setText(entry.getActivity());
 		}
-		((AbstractDocument) actionTextArea.getDocument()).setDocumentFilter(new DocumentSizeFilter(MAX_TEXT_LENGTH_ACTIVITY));
+		((AbstractDocument) actionTextField.getDocument()).setDocumentFilter(new DocumentSizeFilter(MAX_TEXT_LENGTH_ACTIVITY));
 
 		gbc.gridx = 1;
 		gbc.gridy = row;
 		gbc.weightx = 1;
 		gbc.fill = GridBagConstraints.BOTH;
-		panel.add(scrollPane, gbc);
+		panel.add(actionTextField, gbc);
 
 		row++;
 
@@ -219,19 +218,23 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
-			if (makeEntryAction(parentUi, durationWarningLabel, actionTextArea, timeFields, vacationCheckBox))
+			if (makeEntryAction(parentUi, durationWarningLabel, actionTextField, timeFields, vacationCheckBox))
 				dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> {
-			// Since the old entry will be deleted, we need to add it back
-			if (!entry.isEmpty())
-				parentUi.addEntry(entry);
-			dialog.dispose();
+			discardChanges(entry, parentUi, dialog);
+		});
+
+		dialog.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				discardChanges(entry, parentUi, dialog);
+			}
 		});
 
 		// Update task summary when activity text changes
-		actionTextArea.getDocument().addDocumentListener(new DocumentListener() {
+		actionTextField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
 				update();
@@ -248,10 +251,10 @@ public final class DialogHelper {
 			}
 
 			private void update() {
-				if (actionTextArea.getForeground() != Color.BLACK)
+				if (actionTextField.getForeground() != Color.BLACK)
 					return; // Not if placeholder text
-				taskSummaryValue.setText(actionTextArea.getText());
-				if (!actionTextArea.getText().isBlank() && durationWarningLabel.getText().equals(ACTIVITY_MESSAGE)) {
+				taskSummaryValue.setText(actionTextField.getText());
+				if (!actionTextField.getText().isBlank() && durationWarningLabel.getText().equals(ACTIVITY_MESSAGE)) {
 					durationWarningLabel.setText(" ");
 					updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME],
 							durationWarningLabel, vacationCheckBox);
@@ -263,22 +266,29 @@ public final class DialogHelper {
 		dialog.setVisible(true);
 	}
 
+	private static void discardChanges(TimesheetEntry entry, UserInterface parentUi, JDialog dialog) {
+		// Since the old entry will be deleted, we need to add it back
+		if (!entry.isEmpty())
+			parentUi.addEntry(entry);
+		dialog.dispose();
+	}
+
 	/**
 	 * The Action for the "Make Entry" Button in the "Add/Edit Entry" Dialog.
 	 * Returns if the dialog should be disposed (success) or if it should be kept
 	 * open (failure).
-	 * 
+	 *
 	 * @param parentUI             The parent UserInterface.
 	 * @param durationWarningLabel The warning label for the work time message.
-	 * @param actionTextArea       The text area for the activity.
+	 * @param actionTextField      The text field for the activity.
 	 * @param timeFields           The array of fields for the times.
 	 * @param vacationCheckBox     The vacation checkbox.
 	 * @return True if the dialog should be disposed, false if not.
 	 */
-	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextArea actionTextArea, JTextField[] timeFields,
+	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
-			if (actionTextArea.getText().isBlank()) {
+			if (actionTextField.getText().isBlank()) {
 				durationWarningLabel.setText(ACTIVITY_MESSAGE);
 			}
 			// warning label is updated automatically when fields are edited
@@ -315,7 +325,7 @@ public final class DialogHelper {
 			timeFields[INDEX_BREAK_TIME].setText("00:00");
 		}
 
-		TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextArea.getText(), Integer.parseInt(timeFields[INDEX_DAY].getText()),
+		TimesheetEntry newEntry = TimesheetEntry.generateTimesheetEntry(actionTextField.getText(), Integer.parseInt(timeFields[INDEX_DAY].getText()),
 				timeFields[INDEX_START_TIME].getText(), timeFields[INDEX_END_TIME].getText(), timeFields[INDEX_BREAK_TIME].getText(),
 				vacationCheckBox.isSelected());
 		parentUI.addEntry(newEntry);
@@ -374,7 +384,7 @@ public final class DialogHelper {
 	}
 
 	private static void validateTimeField(JTextField timeField, JLabel errorLabel, boolean isBreak) {
-		String text = timeField.getText().trim();
+		String text = timeField.getText().trim().replace('.', ':');
 		if (text.equals(TIME_PLACEHOLDER) || text.equals(TIME_BREAK_PLACEHOLDER)) {
 			errorLabel.setText(" ");
 			return;

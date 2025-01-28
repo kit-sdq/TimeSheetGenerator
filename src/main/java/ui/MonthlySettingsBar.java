@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import ui.json.Month;
@@ -125,9 +125,18 @@ public class MonthlySettingsBar extends JPanel {
 
 	public String getYear() {
 		if (semesterTextField.getForeground() == Color.BLACK && !semesterTextField.getText().isBlank()) {
-			return semesterTextField.getText();
+			// Winter semester
+			int year;
+			try {
+				year = Integer.parseInt(semesterTextField.getText());
+			} catch (NumberFormatException e) {
+				return DateTimeFormatter.ofPattern("yy").format(LocalDateTime.now());
+			}
+			if (getSelectedMonthNumber() < 6)
+				year++; // New year
+			return String.valueOf(year);
 		}
-		return DateTimeFormatter.ofPattern("yy").format(LocalDateTime.now());
+		return semesterTextField.getText();
 	}
 
 	public Time getPredTime() {

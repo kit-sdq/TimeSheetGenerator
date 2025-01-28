@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import javax.swing.*;
@@ -34,19 +34,17 @@ public class JTimeField extends JTextField {
 	}
 
 	private void validateField() {
-		String text = this.getText();
+		String text = this.getText().trim().replace('.', ':');
 
 		if (DialogHelper.TIME_PATTERN_SMALL.matcher(text).matches()) {
 			text += ":00";
-			super.setText(text);
 		} else if (DialogHelper.TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
 			text += "0";
-			super.setText(text);
 		}
 		if (TIME_PATTERN_SEMI_SMALL_2.matcher(text).matches()) {
 			text = "0" + text;
-			super.setText(text);
 		}
+		super.setText(text);
 
 		if (!text.isBlank() && !DialogHelper.TIME_PATTERN.matcher(text).matches()) {
 			setForeground(Color.RED);
