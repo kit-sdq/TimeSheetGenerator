@@ -373,6 +373,7 @@ public class UserInterface {
 		setHasUnsavedChanges(true);
 		listModel.removeElementAt(selectedItemIndex);
 		itemList.setSelectedIndex(-1);
+		updateTotalTimeWorkedUI();
 	}
 
 	public void updateTotalTimeWorkedUI() {

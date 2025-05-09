@@ -124,7 +124,7 @@ public class MonthlySettingsBar extends JPanel {
 	}
 
 	public String getYear() {
-		if (semesterTextField.getForeground() == Color.BLACK && !semesterTextField.getText().isBlank()) {
+		if (getSelectedMonthNumber() < 4 || getSelectedMonthNumber() > 9) {
 			// Winter semester
 			int year;
 			try {
@@ -166,7 +166,8 @@ public class MonthlySettingsBar extends JPanel {
 	}
 
 	public void fillMonth(Month month) {
-		month.setYear(2000 + Integer.parseInt(semesterTextField.getText()));
+		month.setYear(2000 + Integer.parseInt(semesterTextField.getText())
+		+ (monthSelector.getSelectedIndex() < 3 ? 1 : 0));
 		month.setMonth(monthSelector.getSelectedIndex() + 1);
 		month.setPredTransfer(predTimeField.getText());
 		month.setSuccTransfer(succTimeValue.getText());
@@ -176,13 +177,15 @@ public class MonthlySettingsBar extends JPanel {
 		LocalDateTime time = LocalDateTime.now();
 		int month = time.getMonthValue();
 		monthSelector.setSelectedIndex(month - 1);
+		int year = time.getYear();
 		if (month >= 4 && month <= 9) {
 			semesterSelector.setSelectedIndex(0);
 		} else {
 			semesterSelector.setSelectedIndex(1);
+			if (month < 4) year--;
 		}
-		String year = String.valueOf(time.getYear());
-		semesterTextField.setText(year.substring(year.length() - 2));
+		String yearStr = String.valueOf(year);
+		semesterTextField.setText(yearStr.substring(yearStr.length() - 2));
 		updateSemesterView();
 	}
 

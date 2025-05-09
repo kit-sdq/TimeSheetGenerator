@@ -45,7 +45,7 @@ public class PDFCompiler {
 		}
 
 		form.getField("GF").setValue(global.getNameFormalFormat()); // Name
-		form.getField("abc").setValue(String.valueOf(month.getMonth())); // Month
+		form.getField("abc").setValue("%02d".formatted(month.getMonth())); // Month
 		form.getField("abdd").setValue(String.valueOf(month.getYear())); // Year
 		form.getField("Personalnummer").setValue(String.valueOf(global.getStaffId())); // Personalnummer
 		if (global.getWorkingArea().equals("gf")) {
