@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui.export;
 
+import lombok.Getter;
 import ui.UserInterface;
 import ui.json.JSONHandler;
 
@@ -8,8 +9,10 @@ import java.io.File;
 
 class TempFiles implements AutoCloseable {
 
-	private final File globalFile;
-	private final File monthFile;
+	@Getter
+    private final File globalFile;
+	@Getter
+    private final File monthFile;
 
 	private final boolean isTempMonthFile;
 
@@ -19,15 +22,7 @@ class TempFiles implements AutoCloseable {
 		this.isTempMonthFile = isTempMonthFile;
 	}
 
-	public File getGlobalFile() {
-		return globalFile;
-	}
-
-	public File getMonthFile() {
-		return monthFile;
-	}
-
-	@Override
+    @Override
 	public void close() {
 		if (isTempMonthFile && !monthFile.delete()) {
 			monthFile.deleteOnExit();

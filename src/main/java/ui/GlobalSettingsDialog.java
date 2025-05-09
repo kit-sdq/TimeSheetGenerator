@@ -48,7 +48,7 @@ public final class GlobalSettingsDialog {
 		workAreaSelector.addItem(WORK_AREA_GF);
 		workAreaSelector.setSelectedIndex(getIndexValue(globalSettings.getWorkingArea()));
 		JCheckBox addSignatureBox = new JCheckBox();
-		addSignatureBox.setSelected(uiSettings.getAddSignature());
+		addSignatureBox.setSelected(uiSettings.isAddSignature());
 
 		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage" };

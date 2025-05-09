@@ -3,10 +3,14 @@ package ui.json;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Global Settings stored in AppData files.
  */
+@Getter
+@Setter
 public class Global {
 	@JsonProperty("$schema")
 	private String schema;
@@ -32,62 +36,6 @@ public class Global {
 	}
 
 	// Constructors, Getters, and Setters
-
-	public String getSchema() {
-		return schema;
-	}
-
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getStaffId() {
-		return staffId;
-	}
-
-	public void setStaffId(int staffId) {
-		this.staffId = staffId;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-	public String getWorkingTime() {
-		return workingTime;
-	}
-
-	public void setWorkingTime(String workingTime) {
-		this.workingTime = workingTime;
-	}
-
-	public double getWage() {
-		return wage;
-	}
-
-	public void setWage(double wage) {
-		this.wage = wage;
-	}
-
-	public String getWorkingArea() {
-		return workingArea;
-	}
-
-	public void setWorkingArea(String workingArea) {
-		this.workingArea = workingArea;
-	}
 
 	/**
 	 * Formats the name, e.g. "Firstname-middle Lastname", to be "Lastname,

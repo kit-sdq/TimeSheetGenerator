@@ -1,10 +1,15 @@
 /* Licensed under MIT 2024. */
 package ui;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.regex.Matcher;
 
+@Getter
 public class Time {
-	private int hours;
+	@Setter
+    private int hours;
 	private int minutes;
 
 	public Time() {
@@ -21,23 +26,11 @@ public class Time {
 		setMinutes(time.getMinutes());
 	}
 
-	public int getHours() {
-		return hours;
-	}
-
-	public void setHours(int hours) {
-		this.hours = hours;
-	}
-
-	public void addHours(int hours) {
+    public void addHours(int hours) {
 		this.hours += hours;
 	}
 
-	public int getMinutes() {
-		return minutes;
-	}
-
-	public void setMinutes(int minutes) {
+    public void setMinutes(int minutes) {
 		this.hours += minutes / 60;
 		this.minutes = minutes % 60;
 	}

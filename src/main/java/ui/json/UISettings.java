@@ -1,12 +1,19 @@
 /* Licensed under MIT 2024. */
 package ui.json;
 
+import lombok.Getter;
+import lombok.Setter;
 import ui.fileexplorer.FileChooserType;
 
 import java.io.File;
 
+@Getter
+@Setter
 public class UISettings {
 	private boolean addSignature;
+	private boolean addVacationEntry;
+	private boolean useYYYY;
+	private boolean warnWhenNotPerfectTime;
 	private String monthPath;
 	private String texPath;
 	private String pdfPath;
@@ -17,6 +24,9 @@ public class UISettings {
 
 	public UISettings(UISettings uiSettings) {
 		this.addSignature = uiSettings.addSignature;
+		this.addVacationEntry = uiSettings.addVacationEntry;
+		this.useYYYY = uiSettings.useYYYY;
+		this.warnWhenNotPerfectTime = uiSettings.warnWhenNotPerfectTime;
 		this.monthPath = uiSettings.monthPath;
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;
@@ -24,34 +34,14 @@ public class UISettings {
 
 	// Constructors, Getters, and Setters
 
-	public boolean getAddSignature() {
-		return addSignature;
-	}
-
-	public void setAddSignature(boolean addSignature) {
-		this.addSignature = addSignature;
-	}
-
-	public String getMonthPath() {
-		return monthPath;
-	}
-
 	public void setMonthPath(String openMonthPath) {
 		this.monthPath = openMonthPath;
 		save();
 	}
 
-	public String getTexPath() {
-		return texPath;
-	}
-
 	public void setTexPath(String texPath) {
 		this.texPath = texPath;
 		save();
-	}
-
-	public String getPdfPath() {
-		return pdfPath;
 	}
 
 	public void setPdfPath(String pdfPath) {

@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui;
 
+import lombok.Getter;
 import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
@@ -23,7 +24,8 @@ public class UserInterface {
 	private static final String APP_NAME = "Timesheet Generator";
 	private static final String TITLE = "%s: %s";
 
-	private File currentOpenFile;
+	@Getter
+    private File currentOpenFile;
 	private boolean hasUnsavedChanges = false;
 
 	private JFrame frame;
@@ -180,11 +182,7 @@ public class UserInterface {
 		return monthSettingsBar.getYear();
 	}
 
-	public File getCurrentOpenFile() {
-		return currentOpenFile;
-	}
-
-	public boolean hasUnsavedChanges() {
+    public boolean hasUnsavedChanges() {
 		return hasUnsavedChanges;
 	}
 

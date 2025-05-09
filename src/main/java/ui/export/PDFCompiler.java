@@ -69,7 +69,7 @@ public class PDFCompiler {
 		try {
 			form.getField("Ich bestätige die Richtigkeit der Angaben")
 					.setValue("%s, %s".formatted(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()),
-							JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
+							JSONHandler.getUISettings().isAddSignature() ? global.getName() : ""));
 		} catch (EOFException ignored) {
 			Logger.getGlobal().warning("Could not load font for signature field when exporting to PDF. Proceeding with default.");
 		}
