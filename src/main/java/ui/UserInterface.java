@@ -194,6 +194,13 @@ public class UserInterface {
 		return monthSettingsBar.getPredTime();
 	}
 
+	public boolean hasWorkedHoursMismatch() {
+		// Option 1: worked too little -> Time of action bar will not match
+		Time targetWorkingTime = Time.parseTime(JSONHandler.getGlobalSettings().getWorkingTime());
+		Time actualWorkingTime = calculateTotalTimeWorked();
+		return !targetWorkingTime.sameLengthAs(actualWorkingTime);
+	}
+
 	public int getWidth() {
 		return frame.getWidth();
 	}
@@ -390,7 +397,7 @@ public class UserInterface {
 		return workedTime;
 	}
 
-	private boolean showOKCancelDialog(String title, String message) {
+	public boolean showOKCancelDialog(String title, String message) {
 		int result = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
 		return JOptionPane.OK_OPTION == result;
 	}

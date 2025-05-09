@@ -62,7 +62,13 @@ public class ActionBar extends JPanel {
 		editButton.addActionListener(l -> this.parentUi.editSelectedListEntry());
 
 		compileButton.addActionListener(l -> FileExporter.printTex(this.parentUi));
-		printButton.addActionListener(l -> FileExporter.printPDF(this.parentUi));
+		printButton.addActionListener(l -> {
+			if (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch()
+				&& !parentUi.showOKCancelDialog("Hours mismatch", "Warning: The worked hours do not match the target working hours. Do you want to continue?")) {
+				return;
+			}
+			FileExporter.printPDF(this.parentUi);
+		});
 
 		hoursWorkedLabel = new JLabel();
 		fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);

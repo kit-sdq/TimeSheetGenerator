@@ -89,7 +89,7 @@ public class PDFCompiler {
 
 			if (entry.isVacation()) {
 				timeVacation.addTime(time);
-				continue;
+				if (!uiSettings.isAddVacationEntry()) continue;
 			}
 
 			form.getField("Tätigkeit Stichwort ProjektRow%d".formatted(fieldIndex)).setValue(entry.getAction());
@@ -100,6 +100,7 @@ public class PDFCompiler {
 			form.getField("hhmmRow%d_3".formatted(fieldIndex)).setValue(entry.getPause());
 
 			String timeFieldValue = time.toString();
+			if (entry.isVacation()) timeFieldValue += " U";
 			form.getField("hhmmRow%d_4".formatted(fieldIndex)).setValue(timeFieldValue);
 			fieldIndex++;
 		}

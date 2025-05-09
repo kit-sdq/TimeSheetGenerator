@@ -55,6 +55,10 @@ public class Time {
 		addMinutes(-time.getMinutes());
 	}
 
+	public boolean sameLengthAs(Time other) {
+		return this.hours == other.hours && this.minutes == other.minutes;
+	}
+
 	public boolean isLongerThan(Time other) {
 		if (this.hours > other.hours)
 			return true;
