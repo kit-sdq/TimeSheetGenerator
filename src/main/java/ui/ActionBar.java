@@ -107,4 +107,8 @@ public class ActionBar extends JPanel {
 		return successorHours;
 	}
 
+	public void reset() {
+		updateHours(new Time());
+	}
+
 }

@@ -10,12 +10,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MonthlySettingsBar extends JPanel {
 
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
+
+	private int YEAR_OFFSET = 2000;
 
 	private final transient UserInterface parentUi;
 
@@ -123,20 +124,26 @@ public class MonthlySettingsBar extends JPanel {
 		return monthSelector.getSelectedIndex() + 1;
 	}
 
-	public String getYear() {
-		if (getSelectedMonthNumber() < 4 || getSelectedMonthNumber() > 9) {
-			// Winter semester
-			int year;
-			try {
-				year = Integer.parseInt(semesterTextField.getText());
-			} catch (NumberFormatException e) {
-				year = LocalDateTime.now().getYear() % 2000;
-			}
-			if (getSelectedMonthNumber() < 6)
-				year++; // New year
-			return String.valueOf(year);
+	private int getFullYear() {
+		return getYear() + YEAR_OFFSET;
+	}
+
+	private int getYear() {
+		int year;
+		try {
+			year = Integer.parseInt(semesterTextField.getText());
+		} catch (NumberFormatException e) {
+			year = LocalDateTime.now().getYear() % 2000;
 		}
-		return semesterTextField.getText();
+		if (getSelectedMonthNumber() < 4) {
+			// Winter semester, new year
+			year++;
+		}
+		return year;
+	}
+
+	public String getYearStr() {
+		return String.valueOf(getYear());
 	}
 
 	public Time getPredTime() {
@@ -149,6 +156,8 @@ public class MonthlySettingsBar extends JPanel {
 
 	public void reset() {
 		setTimeFromCurrentDate();
+		setSuccTime("00:00");
+		predTimeField.clear();
 	}
 
 	public void importMonthSettings(Month month) {
@@ -166,8 +175,7 @@ public class MonthlySettingsBar extends JPanel {
 	}
 
 	public void fillMonth(Month month) {
-		month.setYear(2000 + Integer.parseInt(semesterTextField.getText())
-		+ (monthSelector.getSelectedIndex() < 3 ? 1 : 0));
+		month.setYear(getFullYear());
 		month.setMonth(monthSelector.getSelectedIndex() + 1);
 		month.setPredTransfer(predTimeField.getText());
 		month.setSuccTransfer(succTimeValue.getText());

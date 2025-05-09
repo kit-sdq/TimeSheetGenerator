@@ -53,6 +53,14 @@ public class JTimeField extends JTextField {
 		}
 	}
 
+	public void clear() {
+		// Prevent auto-focus on clear
+		super.setFocusable(false);
+		super.setText(PLACEHOLDER);
+		setForeground(Color.GRAY);
+		super.setFocusable(true);
+	}
+
 	@Override
 	public boolean isValid() {
 		return getForeground() != Color.RED;

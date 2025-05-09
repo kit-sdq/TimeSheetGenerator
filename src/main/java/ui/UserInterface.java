@@ -179,7 +179,7 @@ public class UserInterface {
 	}
 
 	public String getYear() {
-		return monthSettingsBar.getYear();
+		return monthSettingsBar.getYearStr();
 	}
 
     public boolean hasUnsavedChanges() {
@@ -212,6 +212,7 @@ public class UserInterface {
 		currentOpenFile = null;
 		listModel.clear();
 		monthSettingsBar.reset();
+		buttonActionBar.reset();
 		setHasUnsavedChanges(false);
 		return true;
 	}

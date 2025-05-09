@@ -56,7 +56,7 @@ public final class FileExporter {
 				return; // Cancelled
 			}
 
-			error = PDFCompiler.compileToPDF(JSONHandler.getGlobalSettings(), parentUi.getCurrentMonth(), pdfFile);
+			error = PDFCompiler.compileToPDF(JSONHandler.getGlobalSettings(), parentUi.getCurrentMonth(), pdfFile, JSONHandler.getUISettings());
 
 			if (error.isPresent()) {
 				error("PDF compiler error", error.get());

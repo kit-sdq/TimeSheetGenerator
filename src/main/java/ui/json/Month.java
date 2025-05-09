@@ -19,7 +19,7 @@ public class Month {
 	private int year;
 
 	@JsonProperty("month")
-	private int monthNr;
+	private int month;
 
 	@JsonProperty("pred_transfer")
 	private String predTransfer;
@@ -48,11 +48,21 @@ public class Month {
 
 	// Getters and Setters for Month class fields
 
-	public int getMonth() {
-		return monthNr;
-	}
-
-	public void setMonth(int month) {
-		this.monthNr = month;
+	public String getGermanName() {
+		return switch (month) {
+			case 1 -> "Januar";
+			case 2 -> "Februar";
+			case 3 -> "März";
+			case 4 -> "April";
+			case 5 -> "Mai";
+			case 6 -> "Juni";
+			case 7 -> "Juli";
+			case 8 -> "August";
+			case 9 -> "September";
+			case 10 -> "Oktober";
+			case 11 -> "November";
+			case 12 -> "Dezember";
+			default -> "null";
+		};
 	}
 }

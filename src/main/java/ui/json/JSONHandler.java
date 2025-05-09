@@ -222,7 +222,7 @@ public final class JSONHandler {
 		global.setStaffId(1234567);
 		global.setDepartment("Fakultät für Informatik");
 		global.setWorkingTime("39:00");
-		global.setWage(13.25);
+		global.setWage(13.98);
 		global.setWorkingArea("ub");
 		saveGlobal(global);
 	}
