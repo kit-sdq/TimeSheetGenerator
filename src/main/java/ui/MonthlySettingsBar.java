@@ -130,7 +130,7 @@ public class MonthlySettingsBar extends JPanel {
 			try {
 				year = Integer.parseInt(semesterTextField.getText());
 			} catch (NumberFormatException e) {
-				return DateTimeFormatter.ofPattern("yy").format(LocalDateTime.now());
+				year = LocalDateTime.now().getYear() % 2000;
 			}
 			if (getSelectedMonthNumber() < 6)
 				year++; // New year

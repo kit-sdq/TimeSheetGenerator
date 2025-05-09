@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.Arrays;
 
 public final class GlobalSettingsDialog {
 
@@ -19,10 +20,12 @@ public final class GlobalSettingsDialog {
 	private static final String WORK_AREA_UB = "Unibereich (ub)";
 	private static final String WORK_AREA_GF = "Großforschung (gf)";
 
+	private static final int SCROLL_SENSITIVITY = 16;
+
 	public static void showGlobalSettingsDialog() {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
-		dialog.setSize(600, 400);
+		dialog.setSize(600, 485);
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
@@ -47,13 +50,26 @@ public final class GlobalSettingsDialog {
 		workAreaSelector.addItem(WORK_AREA_UB);
 		workAreaSelector.addItem(WORK_AREA_GF);
 		workAreaSelector.setSelectedIndex(getIndexValue(globalSettings.getWorkingArea()));
-		JCheckBox addSignatureBox = new JCheckBox();
-		addSignatureBox.setSelected(uiSettings.isAddSignature());
 
-		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:" };
+		// Checkboxes
+		JCheckBox addSignatureBox = new JCheckBox();
+		JCheckBox addVacationEntryBox = new JCheckBox();
+		JCheckBox useYYYYBox = new JCheckBox();
+		JCheckBox useGermanMonthNameBox = new JCheckBox();
+		JCheckBox warnHoursMismatchBox = new JCheckBox();
+		addSignatureBox.setSelected(uiSettings.isAddSignature());
+		addVacationEntryBox.setSelected(uiSettings.isAddVacationEntry());
+		useYYYYBox.setSelected(uiSettings.isUseYYYY());
+		useGermanMonthNameBox.setSelected(uiSettings.isUseGermanMonths());
+		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
+
+		final int TEXTBOXES_COUNT = 5;
+
+		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:", "Explicitly add Vacation Entry:", "Use 4-digit year:", "Use German month names", "Warn when too few/ too many hours:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage" };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()) };
+		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel label = new JLabel(labels[i]);
@@ -64,20 +80,19 @@ public final class GlobalSettingsDialog {
 			gbc.fill = GridBagConstraints.HORIZONTAL;
 			panel.add(label, gbc);
 
-			gbc.gridx = 1;
-			gbc.gridy = row;
-			gbc.weightx = 1;
-
-			// Error label for validation messages
-			JLabel errorLabel = new JLabel(" ");
-			errorLabel.setForeground(Color.RED);
-			errorLabels[i] = errorLabel;
 			gbc.gridx = 2;
 			gbc.gridy = row;
 			gbc.weightx = 0;
-			panel.add(errorLabel, gbc);
 
-			if (i < labels.length - 2) {
+			// Error label for validation messages
+			if (i < errorLabels.length) {
+				JLabel errorLabel = new JLabel(" ");
+				errorLabel.setForeground(Color.RED);
+				errorLabels[i] = errorLabel;
+				panel.add(errorLabel, gbc);
+			}
+
+			if (i < TEXTBOXES_COUNT) {
 				JTextField textField = new JTextField(20);
 				DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
 				fields[i] = textField;
@@ -91,10 +106,10 @@ public final class GlobalSettingsDialog {
 						validateField(fields[index], errorLabels[index], index);
 					}
 				});
-			} else if (i == labels.length - 2) {
+			} else if (i == TEXTBOXES_COUNT) {
 				panel.add(workAreaSelector, gbc);
 			} else {
-				panel.add(addSignatureBox, gbc);
+				panel.add(checkBoxes[i - TEXTBOXES_COUNT - 1], gbc);
 			}
 
 			row++;
@@ -107,12 +122,32 @@ public final class GlobalSettingsDialog {
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
 
+		// Buttons at the bottom
+		JPanel presetButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JButton presetProggenButton = new JButton("Proggen I Preset");
+		JButton presetAlgoButton = new JButton("Algo I Preset");
+		presetProggenButton.addActionListener((e) -> {
+			addVacationEntryBox.setSelected(false);
+			useYYYYBox.setSelected(false);
+			useGermanMonthNameBox.setSelected(false);
+		});
+		presetAlgoButton.addActionListener((e) -> {
+			addVacationEntryBox.setSelected(true);
+			useYYYYBox.setSelected(true);
+			useGermanMonthNameBox.setSelected(true);
+		});
+		presetButtonPanel.add(presetProggenButton);
+		presetButtonPanel.add(presetAlgoButton);
+
 		gbc.gridx = 0;
 		gbc.gridy = row;
 		gbc.gridwidth = 3;
 		gbc.weighty = 1;
-		gbc.anchor = GridBagConstraints.SOUTHEAST;
+		gbc.anchor = GridBagConstraints.SOUTHWEST;
 		gbc.fill = GridBagConstraints.NONE;
+		panel.add(presetButtonPanel, gbc);
+
+		gbc.anchor = GridBagConstraints.SOUTHEAST;
 		panel.add(buttonPanel, gbc);
 
 		// Action listeners for buttons
@@ -141,6 +176,10 @@ public final class GlobalSettingsDialog {
 			globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
 			uiSettings.setAddSignature(addSignatureBox.isSelected());
+			uiSettings.setAddVacationEntry(addVacationEntryBox.isSelected());
+			uiSettings.setUseYYYY(useYYYYBox.isSelected());
+			uiSettings.setUseGermanMonths(useGermanMonthNameBox.isSelected());
+			uiSettings.setWarnOnHoursMismatch(warnHoursMismatchBox.isSelected());
 
 			// Save globalSettings to file or database as needed
 			JSONHandler.saveGlobal(globalSettings);
@@ -151,7 +190,11 @@ public final class GlobalSettingsDialog {
 
 		cancelButton.addActionListener(e -> dialog.dispose());
 
-		dialog.add(panel);
+		JScrollPane scrollPanel = new JScrollPane(panel);
+		scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
+		dialog.add(scrollPanel);
 		dialog.setVisible(true);
 	}
 

@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024. */
 package ui.json;
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import lombok.Getter;
 import lombok.Setter;
 import ui.fileexplorer.FileChooserType;
@@ -10,10 +11,11 @@ import java.io.File;
 @Getter
 @Setter
 public class UISettings {
-	private boolean addSignature;
-	private boolean addVacationEntry;
-	private boolean useYYYY;
-	private boolean warnWhenNotPerfectTime;
+	private boolean addSignature = true;
+	private boolean addVacationEntry = false;
+	private boolean useYYYY = false;
+	private boolean useGermanMonths = false;
+	private boolean warnOnHoursMismatch = true;
 	private String monthPath;
 	private String texPath;
 	private String pdfPath;
@@ -26,7 +28,8 @@ public class UISettings {
 		this.addSignature = uiSettings.addSignature;
 		this.addVacationEntry = uiSettings.addVacationEntry;
 		this.useYYYY = uiSettings.useYYYY;
-		this.warnWhenNotPerfectTime = uiSettings.warnWhenNotPerfectTime;
+		this.useGermanMonths = uiSettings.useGermanMonths;
+		this.warnOnHoursMismatch = uiSettings.warnOnHoursMismatch;
 		this.monthPath = uiSettings.monthPath;
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;
