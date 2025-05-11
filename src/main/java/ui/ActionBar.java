@@ -3,6 +3,7 @@ package ui;
 
 import ui.export.FileExporter;
 import ui.json.JSONHandler;
+import ui.json.UISettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,22 +86,28 @@ public class ActionBar extends JPanel {
 	 * @return Overflowing hours.
 	 */
 	public Time updateHours(Time workedHours) {
+		UISettings uiSettings = JSONHandler.getUISettings();
 		String totalHoursStr = JSONHandler.getGlobalSettings().getWorkingTime();
 		Time totalHours = Time.parseTime(totalHoursStr);
 
 		workedHours.addTime(this.parentUi.getPredTime());
 
-		Time displayedWorkedHours;
+		String displayedWorkedHours;
 		Time successorHours;
 
 		if (workedHours.isLongerThan(totalHours)) {
-			displayedWorkedHours = totalHours;
+			displayedWorkedHours = totalHours + "+";
 			successorHours = new Time(workedHours);
 			successorHours.subtractTime(totalHours);
 			hoursWorkedLabel.setFont(fontBold);
+
+			if (uiSettings.isWarnOnHoursMismatch()) {
+				hoursWorkedLabel.setForeground(Color.RED);
+			}
 		} else {
-			displayedWorkedHours = workedHours;
+			displayedWorkedHours = workedHours.toString();
 			successorHours = new Time(0, 0);
+			hoursWorkedLabel.setForeground(Color.BLACK);
 
 			// Same Length
 			if (!totalHours.isLongerThan(workedHours))

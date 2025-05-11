@@ -21,7 +21,7 @@ public final class GlobalSettingsDialog {
 
 	private static final int SCROLL_SENSITIVITY = 16;
 
-	public static void showGlobalSettingsDialog() {
+	public static void showGlobalSettingsDialog(UserInterface parentUI) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
 		dialog.setSize(600, 485);
@@ -184,6 +184,8 @@ public final class GlobalSettingsDialog {
 			// Save globalSettings to file or database as needed
 			JSONHandler.saveGlobal(globalSettings);
 			JSONHandler.saveUISettings(uiSettings);
+
+			parentUI.updateTotalTimeWorkedUI();
 
 			dialog.dispose();
 		});

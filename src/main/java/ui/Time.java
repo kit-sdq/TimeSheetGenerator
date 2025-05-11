@@ -67,6 +67,10 @@ public class Time {
 		return this.minutes > other.minutes;
 	}
 
+	public boolean isNotZero() {
+		return hours > 0 || minutes > 0;
+	}
+
 	public static Time parseTime(String string) {
 		if (string == null)
 			return new Time(0, 0);

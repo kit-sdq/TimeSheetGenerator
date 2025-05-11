@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024-2025. */
 package ui;
 
+import ui.json.JSONHandler;
 import ui.json.Month;
 
 import javax.swing.*;
@@ -16,7 +17,7 @@ public class MonthlySettingsBar extends JPanel {
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
 
-	private int YEAR_OFFSET = 2000;
+	private static final int YEAR_OFFSET = 2000;
 
 	private final transient UserInterface parentUi;
 
@@ -25,7 +26,11 @@ public class MonthlySettingsBar extends JPanel {
 	private final JTextField semesterTextField;
 	private final JLabel semesterTextFieldLabel;
 	private final JTimeField predTimeField;
+	private final JLabel succTimeLabel;
 	private final JLabel succTimeValue;
+
+	private final Font FONT_NORMAL;
+	private final Font FONT_BOLD;
 
 	public MonthlySettingsBar(UserInterface parentUi) {
 		super(new BorderLayout());
@@ -70,14 +75,17 @@ public class MonthlySettingsBar extends JPanel {
 		timeCarryPanel.add(predTimeField);
 
 		// Pred. Time
-		JLabel succTimeLabel = new JLabel();
+		succTimeLabel = new JLabel();
 		succTimeLabel.setText("    Successor Time: ");
 		timeCarryPanel.add(succTimeLabel);
 
-		// Pred. Time
+		// Succ. Time
 		succTimeValue = new JLabel();
 		succTimeValue.setText("00:00");
 		timeCarryPanel.add(succTimeValue);
+
+		FONT_NORMAL = succTimeValue.getFont();
+		FONT_BOLD = FONT_NORMAL.deriveFont(Font.BOLD);
 
 		this.add(timeCarryPanel, BorderLayout.CENTER);
 
@@ -110,7 +118,7 @@ public class MonthlySettingsBar extends JPanel {
 			updateSemesterView();
 		});
 
-		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog());
+		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog(parentUi));
 	}
 
 	public String getSelectedMonthName() {
@@ -150,13 +158,26 @@ public class MonthlySettingsBar extends JPanel {
 		return predTimeField.isValid() ? Time.parseTime(predTimeField.getText()) : new Time(0, 0);
 	}
 
-	public void setSuccTime(String time) {
-		succTimeValue.setText(time);
+	public void setSuccTime(Time time) {
+		succTimeValue.setText(time.toString());
+		if (JSONHandler.getUISettings().isWarnOnHoursMismatch()) {
+			if (time.isNotZero()) {
+				succTimeValue.setForeground(Color.RED);
+				succTimeValue.setFont(FONT_BOLD);
+				succTimeLabel.setForeground(Color.RED);
+				succTimeLabel.setFont(FONT_BOLD);
+			} else {
+				succTimeValue.setForeground(Color.BLACK);
+				succTimeValue.setFont(FONT_NORMAL);
+				succTimeLabel.setForeground(Color.BLACK);
+				succTimeLabel.setFont(FONT_NORMAL);
+			}
+		}
 	}
 
 	public void reset() {
 		setTimeFromCurrentDate();
-		setSuccTime("00:00");
+		setSuccTime(new Time());
 		predTimeField.clear();
 	}
 

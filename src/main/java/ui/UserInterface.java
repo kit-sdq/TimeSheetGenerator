@@ -130,7 +130,7 @@ public class UserInterface {
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
-		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog());
+		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this));
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
@@ -385,7 +385,7 @@ public class UserInterface {
 	public void updateTotalTimeWorkedUI() {
 		Time worked = calculateTotalTimeWorked();
 		Time succTime = buttonActionBar.updateHours(worked);
-		monthSettingsBar.setSuccTime(succTime.toString());
+		monthSettingsBar.setSuccTime(succTime);
 	}
 
 	private Time calculateTotalTimeWorked() {
@@ -397,6 +397,7 @@ public class UserInterface {
 		return workedTime;
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean showOKCancelDialog(String title, String message) {
 		int result = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
 		return JOptionPane.OK_OPTION == result;
