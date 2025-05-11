@@ -84,8 +84,8 @@ public class ActionBar extends JPanel {
 	}
 
 	private boolean hourMismatchCheck() {
-		return (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch() && !parentUi.showOKCancelDialog("Hours mismatch",
-				"Warning: The worked hours do not match the target working hours. Do you want to continue?"));
+		return (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch()
+				&& !parentUi.showOKCancelDialog("Hours mismatch", "Warning: The worked hours do not match the target working hours. Do you want to continue?"));
 	}
 
 	/**
