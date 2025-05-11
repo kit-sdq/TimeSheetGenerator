@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import ui.json.Global;
@@ -9,7 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.util.Arrays;
 
 public final class GlobalSettingsDialog {
 
@@ -65,7 +64,8 @@ public final class GlobalSettingsDialog {
 
 		final int TEXTBOXES_COUNT = 5;
 
-		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:", "Explicitly add Vacation Entry:", "Use 4-digit year:", "Use German month names", "Warn when too few/ too many hours:" };
+		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:",
+				"Explicitly add Vacation Entry:", "Use 4-digit year:", "Use German month names", "Warn when too few/ too many hours:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage" };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()) };

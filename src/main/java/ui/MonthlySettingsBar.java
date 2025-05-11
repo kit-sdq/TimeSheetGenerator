@@ -190,7 +190,8 @@ public class MonthlySettingsBar extends JPanel {
 			semesterSelector.setSelectedIndex(0);
 		} else {
 			semesterSelector.setSelectedIndex(1);
-			if (month < 4) year--;
+			if (month < 4)
+				year--;
 		}
 		String yearStr = String.valueOf(year);
 		semesterTextField.setText(yearStr.substring(yearStr.length() - 2));

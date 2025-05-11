@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 @Getter
 public class Time {
 	@Setter
-    private int hours;
+	private int hours;
 	private int minutes;
 
 	public Time() {
@@ -26,11 +26,11 @@ public class Time {
 		setMinutes(time.getMinutes());
 	}
 
-    public void addHours(int hours) {
+	public void addHours(int hours) {
 		this.hours += hours;
 	}
 
-    public void setMinutes(int minutes) {
+	public void setMinutes(int minutes) {
 		this.hours += minutes / 60;
 		this.minutes = minutes % 60;
 	}

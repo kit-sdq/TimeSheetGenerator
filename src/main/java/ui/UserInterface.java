@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class UserInterface {
 	private static final String TITLE = "%s: %s";
 
 	@Getter
-    private File currentOpenFile;
+	private File currentOpenFile;
 	private boolean hasUnsavedChanges = false;
 
 	private JFrame frame;
@@ -182,7 +182,7 @@ public class UserInterface {
 		return monthSettingsBar.getYearStr();
 	}
 
-    public boolean hasUnsavedChanges() {
+	public boolean hasUnsavedChanges() {
 		return hasUnsavedChanges;
 	}
 

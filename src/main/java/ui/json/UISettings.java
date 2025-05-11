@@ -1,7 +1,6 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui.json;
 
-import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import lombok.Getter;
 import lombok.Setter;
 import ui.fileexplorer.FileChooserType;

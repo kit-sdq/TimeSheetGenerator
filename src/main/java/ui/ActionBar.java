@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import ui.export.FileExporter;
@@ -63,8 +63,8 @@ public class ActionBar extends JPanel {
 
 		compileButton.addActionListener(l -> FileExporter.printTex(this.parentUi));
 		printButton.addActionListener(l -> {
-			if (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch()
-				&& !parentUi.showOKCancelDialog("Hours mismatch", "Warning: The worked hours do not match the target working hours. Do you want to continue?")) {
+			if (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch() && !parentUi.showOKCancelDialog("Hours mismatch",
+					"Warning: The worked hours do not match the target working hours. Do you want to continue?")) {
 				return;
 			}
 			FileExporter.printPDF(this.parentUi);
