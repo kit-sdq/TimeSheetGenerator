@@ -65,7 +65,7 @@ public final class GlobalSettingsDialog {
 		final int TEXTBOXES_COUNT = 5;
 
 		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:",
-				"Explicitly add Vacation Entry:", "Use 4-digit year:", "Use German month names", "Warn when too few/ too many hours:" };
+				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German month names", "Warn when too few/ too many hours:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage" };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()) };
