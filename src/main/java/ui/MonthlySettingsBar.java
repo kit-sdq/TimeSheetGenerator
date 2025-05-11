@@ -29,8 +29,8 @@ public class MonthlySettingsBar extends JPanel {
 	private final JLabel succTimeLabel;
 	private final JLabel succTimeValue;
 
-	private final Font FONT_NORMAL;
-	private final Font FONT_BOLD;
+	private final Font fontNormal;
+	private final Font fontBold;
 
 	public MonthlySettingsBar(UserInterface parentUi) {
 		super(new BorderLayout());
@@ -84,8 +84,8 @@ public class MonthlySettingsBar extends JPanel {
 		succTimeValue.setText("00:00");
 		timeCarryPanel.add(succTimeValue);
 
-		FONT_NORMAL = succTimeValue.getFont();
-		FONT_BOLD = FONT_NORMAL.deriveFont(Font.BOLD);
+		fontNormal = succTimeValue.getFont();
+		fontBold = fontNormal.deriveFont(Font.BOLD);
 
 		this.add(timeCarryPanel, BorderLayout.CENTER);
 
@@ -163,14 +163,14 @@ public class MonthlySettingsBar extends JPanel {
 		if (JSONHandler.getUISettings().isWarnOnHoursMismatch()) {
 			if (time.isNotZero()) {
 				succTimeValue.setForeground(Color.RED);
-				succTimeValue.setFont(FONT_BOLD);
+				succTimeValue.setFont(fontBold);
 				succTimeLabel.setForeground(Color.RED);
-				succTimeLabel.setFont(FONT_BOLD);
+				succTimeLabel.setFont(fontBold);
 			} else {
 				succTimeValue.setForeground(Color.BLACK);
-				succTimeValue.setFont(FONT_NORMAL);
+				succTimeValue.setFont(fontNormal);
 				succTimeLabel.setForeground(Color.BLACK);
-				succTimeLabel.setFont(FONT_NORMAL);
+				succTimeLabel.setFont(fontNormal);
 			}
 		}
 	}

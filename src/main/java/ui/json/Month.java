@@ -9,23 +9,32 @@ import lombok.Setter;
 import java.util.List;
 
 @JsonSerialize(using = MonthSerializer.class)
-@Getter
-@Setter
 public class Month {
 
 	@JsonProperty("$schema")
+	@Getter
+	@Setter
 	private String schema;
 
+	@Getter
+	@Setter
 	private int year;
 
 	@JsonProperty("month")
-	private int month;
+	private int monthNr;
 
 	@JsonProperty("pred_transfer")
+	@Getter
+	@Setter
 	private String predTransfer;
 
 	@JsonProperty("succ_transfer")
+	@Getter
+	@Setter
 	private String succTransfer;
+
+	@Getter
+	@Setter
 	private List<Entry> entries;
 
 	// Constructors, Getters, and Setters
@@ -48,8 +57,16 @@ public class Month {
 
 	// Getters and Setters for Month class fields
 
+	public void setMonth(int month) {
+		this.monthNr = month;
+	}
+
+	public int getMonth() {
+		return monthNr;
+	}
+
 	public String getGermanName() {
-		return switch (month) {
+		return switch (monthNr) {
 		case 1 -> "Januar";
 		case 2 -> "Februar";
 		case 3 -> "März";

@@ -193,8 +193,8 @@ public final class GlobalSettingsDialog {
 		cancelButton.addActionListener(e -> dialog.dispose());
 
 		JScrollPane scrollPanel = new JScrollPane(panel);
-		scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
 		dialog.add(scrollPanel);
 		dialog.setVisible(true);
