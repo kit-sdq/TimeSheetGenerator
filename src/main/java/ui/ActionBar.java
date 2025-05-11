@@ -62,10 +62,14 @@ public class ActionBar extends JPanel {
 		removeButton.addActionListener(l -> this.parentUi.removeSelectedListEntry());
 		editButton.addActionListener(l -> this.parentUi.editSelectedListEntry());
 
-		compileButton.addActionListener(l -> FileExporter.printTex(this.parentUi));
+		compileButton.addActionListener(l -> {
+			if (hourMismatchCheck()) {
+				return;
+			}
+			FileExporter.printTex(this.parentUi);
+		});
 		printButton.addActionListener(l -> {
-			if (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch() && !parentUi.showOKCancelDialog("Hours mismatch",
-					"Warning: The worked hours do not match the target working hours. Do you want to continue?")) {
+			if (hourMismatchCheck()) {
 				return;
 			}
 			FileExporter.printPDF(this.parentUi);
@@ -77,6 +81,11 @@ public class ActionBar extends JPanel {
 		hoursWorkedLabel.setFont(fontNormal);
 		this.add(hoursWorkedLabel, BorderLayout.EAST);
 		updateHours(new Time());
+	}
+
+	private boolean hourMismatchCheck() {
+		return (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch() && !parentUi.showOKCancelDialog("Hours mismatch",
+				"Warning: The worked hours do not match the target working hours. Do you want to continue?"));
 	}
 
 	/**
