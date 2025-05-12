@@ -1,8 +1,10 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -10,18 +12,29 @@ import java.util.List;
 public class Month {
 
 	@JsonProperty("$schema")
+	@Getter
+	@Setter
 	private String schema;
 
+	@Getter
+	@Setter
 	private int year;
 
 	@JsonProperty("month")
 	private int monthNr;
 
 	@JsonProperty("pred_transfer")
+	@Getter
+	@Setter
 	private String predTransfer;
 
 	@JsonProperty("succ_transfer")
+	@Getter
+	@Setter
 	private String succTransfer;
+
+	@Getter
+	@Setter
 	private List<Entry> entries;
 
 	// Constructors, Getters, and Setters
@@ -30,6 +43,8 @@ public class Month {
 	}
 
 	// Nested class for individual entries
+	@Setter
+	@Getter
 	@JsonSerialize(using = EntrySerializer.class)
 	public static class Entry {
 		private String action;
@@ -38,105 +53,33 @@ public class Month {
 		private String end;
 		private String pause;
 		private boolean vacation;
-
-		// Getters, and Setters
-
-		public String getAction() {
-			return action;
-		}
-
-		public void setAction(String action) {
-			this.action = action;
-		}
-
-		public int getDay() {
-			return day;
-		}
-
-		public void setDay(int day) {
-			this.day = day;
-		}
-
-		public String getStart() {
-			return start;
-		}
-
-		public void setStart(String start) {
-			this.start = start;
-		}
-
-		public String getEnd() {
-			return end;
-		}
-
-		public void setEnd(String end) {
-			this.end = end;
-		}
-
-		public String getPause() {
-			return pause;
-		}
-
-		public void setPause(String pause) {
-			this.pause = pause;
-		}
-
-		public boolean isVacation() {
-			return vacation;
-		}
-
-		public void setVacation(boolean vacation) {
-			this.vacation = vacation;
-		}
 	}
 
 	// Getters and Setters for Month class fields
 
-	public String getSchema() {
-		return schema;
-	}
-
-	public void setSchema(String schema) {
-		this.schema = schema;
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
+	public void setMonth(int month) {
+		this.monthNr = month;
 	}
 
 	public int getMonth() {
 		return monthNr;
 	}
 
-	public void setMonth(int month) {
-		this.monthNr = month;
-	}
-
-	public String getPredTransfer() {
-		return predTransfer;
-	}
-
-	public void setPredTransfer(String predTransfer) {
-		this.predTransfer = predTransfer;
-	}
-
-	public String getSuccTransfer() {
-		return succTransfer;
-	}
-
-	public void setSuccTransfer(String succTransfer) {
-		this.succTransfer = succTransfer;
-	}
-
-	public List<Entry> getEntries() {
-		return entries;
-	}
-
-	public void setEntries(List<Entry> entries) {
-		this.entries = entries;
+	public String getGermanName() {
+		return switch (monthNr) {
+		case 1 -> "Januar";
+		case 2 -> "Februar";
+		case 3 -> "März";
+		case 4 -> "April";
+		case 5 -> "Mai";
+		case 6 -> "Juni";
+		case 7 -> "Juli";
+		case 8 -> "August";
+		case 9 -> "September";
+		case 10 -> "Oktober";
+		case 11 -> "November";
+		case 12 -> "Dezember";
+		default -> "null";
+		};
 	}
 }

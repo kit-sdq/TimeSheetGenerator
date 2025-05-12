@@ -1,8 +1,9 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import ui.export.FileExporter;
 import ui.json.JSONHandler;
+import ui.json.UISettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,23 +30,23 @@ public class ActionBar extends JPanel {
 		buttonPanel.add(addButton);
 
 		JButton duplicateButton = new JButton("Duplicate");
-		duplicateButton.setPreferredSize(new Dimension(90, 50));
+		duplicateButton.setPreferredSize(new Dimension(100, 50));
 		buttonPanel.add(duplicateButton);
 
 		JButton editButton = new JButton("Edit");
-		editButton.setPreferredSize(new Dimension(60, 50));
+		editButton.setPreferredSize(new Dimension(70, 50));
 		buttonPanel.add(editButton);
 
 		JButton removeButton = new JButton("Remove");
-		removeButton.setPreferredSize(new Dimension(90, 50));
+		removeButton.setPreferredSize(new Dimension(100, 50));
 		buttonPanel.add(removeButton);
 
 		JButton compileButton = new JButton("Compile to Tex");
-		compileButton.setPreferredSize(new Dimension(110, 50));
+		compileButton.setPreferredSize(new Dimension(125, 50));
 		buttonPanel.add(compileButton);
 
 		JButton printButton = new JButton("Print to PDF");
-		printButton.setPreferredSize(new Dimension(95, 50));
+		printButton.setPreferredSize(new Dimension(105, 50));
 		buttonPanel.add(printButton);
 
 		this.add(buttonPanel, BorderLayout.WEST);
@@ -61,8 +62,18 @@ public class ActionBar extends JPanel {
 		removeButton.addActionListener(l -> this.parentUi.removeSelectedListEntry());
 		editButton.addActionListener(l -> this.parentUi.editSelectedListEntry());
 
-		compileButton.addActionListener(l -> FileExporter.printTex(this.parentUi));
-		printButton.addActionListener(l -> FileExporter.printPDF(this.parentUi));
+		compileButton.addActionListener(l -> {
+			if (hourMismatchCheck()) {
+				return;
+			}
+			FileExporter.printTex(this.parentUi);
+		});
+		printButton.addActionListener(l -> {
+			if (hourMismatchCheck()) {
+				return;
+			}
+			FileExporter.printPDF(this.parentUi);
+		});
 
 		hoursWorkedLabel = new JLabel();
 		fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);
@@ -72,6 +83,11 @@ public class ActionBar extends JPanel {
 		updateHours(new Time());
 	}
 
+	private boolean hourMismatchCheck() {
+		return (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch()
+				&& !parentUi.showOKCancelDialog("Hours mismatch", "Warning: The worked hours do not match the target working hours. Do you want to continue?"));
+	}
+
 	/**
 	 * Returns overflowing hours to be entered in the succ hours label.
 	 * 
@@ -79,22 +95,28 @@ public class ActionBar extends JPanel {
 	 * @return Overflowing hours.
 	 */
 	public Time updateHours(Time workedHours) {
+		UISettings uiSettings = JSONHandler.getUISettings();
 		String totalHoursStr = JSONHandler.getGlobalSettings().getWorkingTime();
 		Time totalHours = Time.parseTime(totalHoursStr);
 
 		workedHours.addTime(this.parentUi.getPredTime());
 
-		Time displayedWorkedHours;
+		String displayedWorkedHours;
 		Time successorHours;
 
 		if (workedHours.isLongerThan(totalHours)) {
-			displayedWorkedHours = totalHours;
+			displayedWorkedHours = totalHours + "+";
 			successorHours = new Time(workedHours);
 			successorHours.subtractTime(totalHours);
 			hoursWorkedLabel.setFont(fontBold);
+
+			if (uiSettings.isWarnOnHoursMismatch()) {
+				hoursWorkedLabel.setForeground(Color.RED);
+			}
 		} else {
-			displayedWorkedHours = workedHours;
+			displayedWorkedHours = workedHours.toString();
 			successorHours = new Time(0, 0);
+			hoursWorkedLabel.setForeground(Color.BLACK);
 
 			// Same Length
 			if (!totalHours.isLongerThan(workedHours))
@@ -105,6 +127,10 @@ public class ActionBar extends JPanel {
 
 		hoursWorkedLabel.setText(HOURS_FORMAT.formatted(displayedWorkedHours, totalHours));
 		return successorHours;
+	}
+
+	public void reset() {
+		updateHours(new Time());
 	}
 
 }

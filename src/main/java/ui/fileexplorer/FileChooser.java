@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui.fileexplorer;
 
 import ui.UserInterface;
@@ -18,7 +18,7 @@ public final class FileChooser {
 	private static final String FORMAT = "%s_%s 20%s";
 
 	public static String getDefaultFileName(UserInterface parentUI) {
-		return FORMAT.formatted(JSONHandler.getGlobalSettings().getNameUnderscoreFormat(), getGermanMonth(parentUI.getCurrentMonthNumber()),
+		return FORMAT.formatted(JSONHandler.getGlobalSettings().getNameUnderscoreFormat(), "%02d".formatted(parentUI.getCurrentMonthNumber()),
 				parentUI.getYear());
 	}
 
@@ -96,30 +96,6 @@ public final class FileChooser {
 		} else {
 			return null;
 		}
-	}
-
-	/**
-	 * Gets the german name for a month from 1-12.
-	 * 
-	 * @param monthName The month number, from 1-12.
-	 * @return The name of the month.
-	 */
-	private static String getGermanMonth(int monthName) {
-		return switch (monthName) {
-		case 1 -> "Januar";
-		case 2 -> "Februar";
-		case 3 -> "März";
-		case 4 -> "April";
-		case 5 -> "Mai";
-		case 6 -> "Juni";
-		case 7 -> "Juli";
-		case 8 -> "August";
-		case 9 -> "September";
-		case 10 -> "Oktober";
-		case 11 -> "November";
-		case 12 -> "Dezember";
-		default -> "unbekannt";
-		};
 	}
 
 	private static JFileChooser getFileChooser(FileChooserType chooserType) {

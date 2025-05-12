@@ -17,3 +17,4 @@ buildNumber.properties
 *.iml
 .DS_Store
 .vscode
+MANIFEST.MF

@@ -1,9 +1,14 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.regex.Matcher;
 
+@Getter
 public class Time {
+	@Setter
 	private int hours;
 	private int minutes;
 
@@ -21,20 +26,8 @@ public class Time {
 		setMinutes(time.getMinutes());
 	}
 
-	public int getHours() {
-		return hours;
-	}
-
-	public void setHours(int hours) {
-		this.hours = hours;
-	}
-
 	public void addHours(int hours) {
 		this.hours += hours;
-	}
-
-	public int getMinutes() {
-		return minutes;
 	}
 
 	public void setMinutes(int minutes) {
@@ -62,12 +55,20 @@ public class Time {
 		addMinutes(-time.getMinutes());
 	}
 
+	public boolean sameLengthAs(Time other) {
+		return this.hours == other.hours && this.minutes == other.minutes;
+	}
+
 	public boolean isLongerThan(Time other) {
 		if (this.hours > other.hours)
 			return true;
 		if (this.hours < other.hours)
 			return false;
 		return this.minutes > other.minutes;
+	}
+
+	public boolean isNotZero() {
+		return hours > 0 || minutes > 0;
 	}
 
 	public static Time parseTime(String string) {

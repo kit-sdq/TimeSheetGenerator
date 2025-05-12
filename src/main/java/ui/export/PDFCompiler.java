@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui.export;
 
 import org.apache.pdfbox.Loader;
@@ -8,6 +8,7 @@ import ui.Time;
 import ui.json.Global;
 import ui.json.JSONHandler;
 import ui.json.Month;
+import ui.json.UISettings;
 
 import java.io.EOFException;
 import java.io.File;
@@ -19,33 +20,35 @@ import java.util.Optional;
 import java.util.logging.Logger;
 
 public class PDFCompiler {
+	private static final String DATE_FORMAT_2_DIGITS = "dd.MM.yy";
+	private static final String DATE_FORMAT_4_DIGITS = "dd.MM.yyyy";
 
 	private PDFCompiler() {
 		throw new IllegalAccessError();
 	}
 
-	public static Optional<String> compileToPDF(Global global, Month month, File targetFile) {
+	public static Optional<String> compileToPDF(Global global, Month month, File targetFile, UISettings uiSettings) {
 		try (InputStream templateStream = PDFCompiler.class.getResourceAsStream("/pdf/template.pdf")) {
 			if (templateStream == null) {
 				return Optional.of("Template PDF not found in resources.");
 			}
 
 			PDDocument document = Loader.loadPDF(templateStream.readAllBytes());
-			return writeToPDF(document, global, month, targetFile);
+			return writeToPDF(document, global, month, targetFile, uiSettings);
 
 		} catch (IOException e) {
 			return Optional.of(e.getMessage());
 		}
 	}
 
-	private static Optional<String> writeToPDF(PDDocument document, Global global, Month month, File targetFile) throws IOException {
+	private static Optional<String> writeToPDF(PDDocument document, Global global, Month month, File targetFile, UISettings uiSettings) throws IOException {
 		PDAcroForm form = document.getDocumentCatalog().getAcroForm();
 		if (form == null) {
 			return Optional.of("No form found in the document. Nothing we can do, sorry.");
 		}
 
 		form.getField("GF").setValue(global.getNameFormalFormat()); // Name
-		form.getField("abc").setValue(String.valueOf(month.getMonth())); // Month
+		form.getField("abc").setValue(getMonth(month, uiSettings)); // Month
 		form.getField("abdd").setValue(String.valueOf(month.getYear())); // Year
 		form.getField("Personalnummer").setValue(String.valueOf(global.getStaffId())); // Personalnummer
 		if (global.getWorkingArea().equals("gf")) {
@@ -68,13 +71,13 @@ public class PDFCompiler {
 
 		try {
 			form.getField("Ich bestätige die Richtigkeit der Angaben")
-					.setValue("%s, %s".formatted(DateTimeFormatter.ofPattern("dd.MM.yyyy").format(LocalDateTime.now()),
-							JSONHandler.getUISettings().getAddSignature() ? global.getName() : ""));
+					.setValue("%s, %s".formatted(DateTimeFormatter.ofPattern(DATE_FORMAT_4_DIGITS).format(LocalDateTime.now()),
+							JSONHandler.getUISettings().isAddSignature() ? global.getName() : ""));
 		} catch (EOFException ignored) {
 			Logger.getGlobal().warning("Could not load font for signature field when exporting to PDF. Proceeding with default.");
 		}
 
-		final DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern("dd.MM.yy");
+		final DateTimeFormatter dayFormatter = DateTimeFormatter.ofPattern(uiSettings.isUseYYYY() ? DATE_FORMAT_4_DIGITS : DATE_FORMAT_2_DIGITS);
 
 		int fieldIndex = 1;
 		for (int i = 0; i < month.getEntries().size(); i++) {
@@ -86,7 +89,8 @@ public class PDFCompiler {
 
 			if (entry.isVacation()) {
 				timeVacation.addTime(time);
-				continue;
+				if (!uiSettings.isAddVacationEntry())
+					continue;
 			}
 
 			form.getField("Tätigkeit Stichwort ProjektRow%d".formatted(fieldIndex)).setValue(entry.getAction());
@@ -97,6 +101,8 @@ public class PDFCompiler {
 			form.getField("hhmmRow%d_3".formatted(fieldIndex)).setValue(entry.getPause());
 
 			String timeFieldValue = time.toString();
+			if (entry.isVacation())
+				timeFieldValue += " U";
 			form.getField("hhmmRow%d_4".formatted(fieldIndex)).setValue(timeFieldValue);
 			fieldIndex++;
 		}
@@ -109,6 +115,10 @@ public class PDFCompiler {
 		document.close();
 
 		return Optional.empty();
+	}
+
+	private static String getMonth(Month month, UISettings uiSettings) {
+		return uiSettings.isUseGermanMonths() ? month.getGermanName() : "%02d".formatted(month.getMonth());
 	}
 
 }

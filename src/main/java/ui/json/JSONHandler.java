@@ -1,6 +1,7 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui.json;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
@@ -53,7 +54,7 @@ public final class JSONHandler {
 		createDefaultGlobalSettings();
 		createDefaultOtherGlobalSettings();
 		loadGlobal();
-		loadOtherSettings();
+		loadUiSettings();
 
 		cleanUp();
 	}
@@ -104,10 +105,10 @@ public final class JSONHandler {
 		}
 	}
 
-	private static void loadOtherSettings() {
-		ObjectMapper objectMapper = new ObjectMapper();
+	private static void loadUiSettings() {
+		ObjectMapper objectMapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		try {
-			uiSettings = objectMapper.readValue(getOtherSettingsFile(), UISettings.class);
+			uiSettings = objectMapper.readValue(getUiSettingsFile(), UISettings.class);
 		} catch (IOException e) {
 			ErrorHandler.showError("Error loading UI settings file", ERROR.formatted(e.getMessage()));
 		}
@@ -117,7 +118,7 @@ public final class JSONHandler {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		try {
-			objectMapper.writeValue(getOtherSettingsFile(), uiSettings);
+			objectMapper.writeValue(getUiSettingsFile(), uiSettings);
 			setUISettings(uiSettings);
 		} catch (IOException e) {
 			ErrorHandler.showError("Error saving UI settings file", ERROR.formatted(e.getMessage()));
@@ -220,25 +221,25 @@ public final class JSONHandler {
 		global.setName("Max Mustermann");
 		global.setStaffId(1234567);
 		global.setDepartment("Fakultät für Informatik");
-		global.setWorkingTime("40:00");
-		global.setWage(13.25);
+		global.setWorkingTime("39:00");
+		global.setWage(13.98);
 		global.setWorkingArea("ub");
 		saveGlobal(global);
 	}
 
-	public static File getOtherSettingsFile() {
+	public static File getUiSettingsFile() {
 		return new File(configDir, UI_SETTINGS_FILE_NAME);
 	}
 
 	private static boolean otherSettingsFileExists() {
-		return getOtherSettingsFile().exists();
+		return getUiSettingsFile().exists();
 	}
 
 	public static void createDefaultOtherGlobalSettings() {
 		if (otherSettingsFileExists())
 			return;
 		try {
-			File f = getOtherSettingsFile();
+			File f = getUiSettingsFile();
 			File folder = new File(configDir);
 			if (!folder.exists() && !folder.mkdirs()) {
 				// Show error in main and return using catch block
@@ -255,6 +256,10 @@ public final class JSONHandler {
 
 		UISettings settings = new UISettings();
 		settings.setAddSignature(false);
+		settings.setAddVacationEntry(false);
+		settings.setUseYYYY(false);
+		settings.setUseGermanMonths(false);
+		settings.setWarnOnHoursMismatch(true);
 		saveUISettings(settings);
 	}
 

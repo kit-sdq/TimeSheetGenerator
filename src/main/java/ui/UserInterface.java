@@ -1,6 +1,7 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
+import lombok.Getter;
 import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
@@ -23,6 +24,7 @@ public class UserInterface {
 	private static final String APP_NAME = "Timesheet Generator";
 	private static final String TITLE = "%s: %s";
 
+	@Getter
 	private File currentOpenFile;
 	private boolean hasUnsavedChanges = false;
 
@@ -128,7 +130,7 @@ public class UserInterface {
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
-		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog());
+		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this));
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
@@ -177,11 +179,7 @@ public class UserInterface {
 	}
 
 	public String getYear() {
-		return monthSettingsBar.getYear();
-	}
-
-	public File getCurrentOpenFile() {
-		return currentOpenFile;
+		return monthSettingsBar.getYearStr();
 	}
 
 	public boolean hasUnsavedChanges() {
@@ -194,6 +192,13 @@ public class UserInterface {
 
 	public Time getPredTime() {
 		return monthSettingsBar.getPredTime();
+	}
+
+	public boolean hasWorkedHoursMismatch() {
+		// Option 1: worked too little -> Time of action bar will not match
+		Time targetWorkingTime = Time.parseTime(JSONHandler.getGlobalSettings().getWorkingTime());
+		Time actualWorkingTime = calculateTotalTimeWorked();
+		return !targetWorkingTime.sameLengthAs(actualWorkingTime);
 	}
 
 	public int getWidth() {
@@ -214,6 +219,7 @@ public class UserInterface {
 		currentOpenFile = null;
 		listModel.clear();
 		monthSettingsBar.reset();
+		buttonActionBar.reset();
 		setHasUnsavedChanges(false);
 		return true;
 	}
@@ -373,12 +379,13 @@ public class UserInterface {
 		setHasUnsavedChanges(true);
 		listModel.removeElementAt(selectedItemIndex);
 		itemList.setSelectedIndex(-1);
+		updateTotalTimeWorkedUI();
 	}
 
 	public void updateTotalTimeWorkedUI() {
 		Time worked = calculateTotalTimeWorked();
 		Time succTime = buttonActionBar.updateHours(worked);
-		monthSettingsBar.setSuccTime(succTime.toString());
+		monthSettingsBar.setSuccTime(succTime);
 	}
 
 	private Time calculateTotalTimeWorked() {
@@ -390,7 +397,8 @@ public class UserInterface {
 		return workedTime;
 	}
 
-	private boolean showOKCancelDialog(String title, String message) {
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
+	public boolean showOKCancelDialog(String title, String message) {
 		int result = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
 		return JOptionPane.OK_OPTION == result;
 	}

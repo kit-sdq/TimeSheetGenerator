@@ -1,6 +1,7 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
+import lombok.Getter;
 import ui.json.Month;
 
 import java.time.Duration;
@@ -16,6 +17,7 @@ public class TimesheetEntry {
 
 	public static final TimesheetEntry EMPTY_ENTRY = new TimesheetEntry("", -1, Time.none(), Time.none(), Time.none(), false);
 
+	@Getter
 	private final String activity;
 	private final int day;
 	private final int fromHour;
@@ -24,6 +26,7 @@ public class TimesheetEntry {
 	private final int toMinute;
 	private final int breakHour;
 	private final int breakMinutes;
+	@Getter
 	private final boolean isVacation;
 
 	public static TimesheetEntry generateTimesheetEntry(String activity, int day, String startText, String endText, String breakText, boolean isVacation) {
@@ -123,10 +126,6 @@ public class TimesheetEntry {
 		return entry;
 	}
 
-	public String getActivity() {
-		return activity;
-	}
-
 	public String getDayString() {
 		if (day == -1)
 			return "";
@@ -171,10 +170,6 @@ public class TimesheetEntry {
 		Duration workDuration = Duration.between(LocalTime.of(fromHour, fromMinute), LocalTime.of(toHour, toMinute))
 				.minus(Duration.ofHours(breakHour).plusMinutes(breakMinutes));
 		return new Time((int) workDuration.toHours(), (int) workDuration.toMinutes() % 60);
-	}
-
-	public boolean isVacation() {
-		return isVacation;
 	}
 
 	public String isVacationStr() {

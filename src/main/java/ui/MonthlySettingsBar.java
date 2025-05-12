@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024-2025. */
 package ui;
 
+import ui.json.JSONHandler;
 import ui.json.Month;
 
 import javax.swing.*;
@@ -10,12 +11,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MonthlySettingsBar extends JPanel {
 
 	private static final String[] MONTHS = new String[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
 			"November", "December" };
+
+	private static final int YEAR_OFFSET = 2000;
 
 	private final transient UserInterface parentUi;
 
@@ -24,7 +26,11 @@ public class MonthlySettingsBar extends JPanel {
 	private final JTextField semesterTextField;
 	private final JLabel semesterTextFieldLabel;
 	private final JTimeField predTimeField;
+	private final JLabel succTimeLabel;
 	private final JLabel succTimeValue;
+
+	private final Font fontNormal;
+	private final Font fontBold;
 
 	public MonthlySettingsBar(UserInterface parentUi) {
 		super(new BorderLayout());
@@ -69,14 +75,17 @@ public class MonthlySettingsBar extends JPanel {
 		timeCarryPanel.add(predTimeField);
 
 		// Pred. Time
-		JLabel succTimeLabel = new JLabel();
+		succTimeLabel = new JLabel();
 		succTimeLabel.setText("    Successor Time: ");
 		timeCarryPanel.add(succTimeLabel);
 
-		// Pred. Time
+		// Succ. Time
 		succTimeValue = new JLabel();
 		succTimeValue.setText("00:00");
 		timeCarryPanel.add(succTimeValue);
+
+		fontNormal = succTimeValue.getFont();
+		fontBold = fontNormal.deriveFont(Font.BOLD);
 
 		this.add(timeCarryPanel, BorderLayout.CENTER);
 
@@ -109,7 +118,7 @@ public class MonthlySettingsBar extends JPanel {
 			updateSemesterView();
 		});
 
-		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog());
+		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog(parentUi));
 	}
 
 	public String getSelectedMonthName() {
@@ -123,32 +132,53 @@ public class MonthlySettingsBar extends JPanel {
 		return monthSelector.getSelectedIndex() + 1;
 	}
 
-	public String getYear() {
-		if (semesterTextField.getForeground() == Color.BLACK && !semesterTextField.getText().isBlank()) {
-			// Winter semester
-			int year;
-			try {
-				year = Integer.parseInt(semesterTextField.getText());
-			} catch (NumberFormatException e) {
-				return DateTimeFormatter.ofPattern("yy").format(LocalDateTime.now());
-			}
-			if (getSelectedMonthNumber() < 6)
-				year++; // New year
-			return String.valueOf(year);
+	private int getFullYear() {
+		return getYear() + YEAR_OFFSET;
+	}
+
+	private int getYear() {
+		int year;
+		try {
+			year = Integer.parseInt(semesterTextField.getText());
+		} catch (NumberFormatException e) {
+			year = LocalDateTime.now().getYear() % 2000;
 		}
-		return semesterTextField.getText();
+		if (getSelectedMonthNumber() < 4) {
+			// Winter semester, new year
+			year++;
+		}
+		return year;
+	}
+
+	public String getYearStr() {
+		return String.valueOf(getYear());
 	}
 
 	public Time getPredTime() {
 		return predTimeField.isValid() ? Time.parseTime(predTimeField.getText()) : new Time(0, 0);
 	}
 
-	public void setSuccTime(String time) {
-		succTimeValue.setText(time);
+	public void setSuccTime(Time time) {
+		succTimeValue.setText(time.toString());
+		if (JSONHandler.getUISettings().isWarnOnHoursMismatch()) {
+			if (time.isNotZero()) {
+				succTimeValue.setForeground(Color.RED);
+				succTimeValue.setFont(fontBold);
+				succTimeLabel.setForeground(Color.RED);
+				succTimeLabel.setFont(fontBold);
+			} else {
+				succTimeValue.setForeground(Color.BLACK);
+				succTimeValue.setFont(fontNormal);
+				succTimeLabel.setForeground(Color.BLACK);
+				succTimeLabel.setFont(fontNormal);
+			}
+		}
 	}
 
 	public void reset() {
 		setTimeFromCurrentDate();
+		setSuccTime(new Time());
+		predTimeField.clear();
 	}
 
 	public void importMonthSettings(Month month) {
@@ -166,7 +196,7 @@ public class MonthlySettingsBar extends JPanel {
 	}
 
 	public void fillMonth(Month month) {
-		month.setYear(2000 + Integer.parseInt(semesterTextField.getText()));
+		month.setYear(getFullYear());
 		month.setMonth(monthSelector.getSelectedIndex() + 1);
 		month.setPredTransfer(predTimeField.getText());
 		month.setSuccTransfer(succTimeValue.getText());
@@ -176,13 +206,16 @@ public class MonthlySettingsBar extends JPanel {
 		LocalDateTime time = LocalDateTime.now();
 		int month = time.getMonthValue();
 		monthSelector.setSelectedIndex(month - 1);
+		int year = time.getYear();
 		if (month >= 4 && month <= 9) {
 			semesterSelector.setSelectedIndex(0);
 		} else {
 			semesterSelector.setSelectedIndex(1);
+			if (month < 4)
+				year--;
 		}
-		String year = String.valueOf(time.getYear());
-		semesterTextField.setText(year.substring(year.length() - 2));
+		String yearStr = String.valueOf(year);
+		semesterTextField.setText(yearStr.substring(yearStr.length() - 2));
 		updateSemesterView();
 	}
 
