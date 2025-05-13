@@ -180,6 +180,10 @@ public class TimesheetEntry {
 		return fromHour == -1 && fromMinute == -1 && toHour == -1 && toMinute == -1;
 	}
 
+	public boolean isNone() {
+		return activity.isEmpty();
+	}
+
 	public boolean isLaterThan(TimesheetEntry other) {
 		if (this.day < other.day)
 			return false;
