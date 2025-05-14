@@ -28,6 +28,10 @@ public final class JSONHandler {
 	private static UISettings uiSettings;
 
 	private static String configDir;
+
+	public static final String DEFAULT_PDF_NAME_FORMAT_PROG = "%LAST%_%FIRST_U%_%MM% %YYYY%";
+	public static final String DEFAULT_PDF_NAME_FORMAT_ALGO = "%LAST%_%FIRST_U%_%MM%_%YYYY%";
+
 	private static final String CONFIG_FILE_NAME = "global.json";
 	private static final String UI_SETTINGS_FILE_NAME = "settings.json";
 
@@ -260,6 +264,7 @@ public final class JSONHandler {
 		settings.setUseYYYY(false);
 		settings.setUseGermanMonths(false);
 		settings.setWarnOnHoursMismatch(true);
+		settings.setExportPdfNameFormat(DEFAULT_PDF_NAME_FORMAT_ALGO);
 		saveUISettings(settings);
 	}
 

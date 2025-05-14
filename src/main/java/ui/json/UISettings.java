@@ -18,6 +18,7 @@ public class UISettings {
 	private String monthPath;
 	private String texPath;
 	private String pdfPath;
+	private String exportPdfNameFormat = JSONHandler.DEFAULT_PDF_NAME_FORMAT_ALGO;
 
 	public UISettings() {
 		// Default Constructor is required
@@ -32,6 +33,7 @@ public class UISettings {
 		this.monthPath = uiSettings.monthPath;
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;
+		this.exportPdfNameFormat = uiSettings.exportPdfNameFormat;
 	}
 
 	// Constructors, Getters, and Setters

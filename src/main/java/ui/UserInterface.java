@@ -182,6 +182,10 @@ public class UserInterface {
 		return monthSettingsBar.getYearStr();
 	}
 
+	public String getFullYear() {
+		return monthSettingsBar.getFullYearStr();
+	}
+
 	public boolean hasUnsavedChanges() {
 		return hasUnsavedChanges;
 	}

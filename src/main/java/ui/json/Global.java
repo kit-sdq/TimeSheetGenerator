@@ -51,16 +51,7 @@ public class Global {
 		if (!getName().contains(" ")) {
 			return getName();
 		}
-
-		StringBuilder formattedName = new StringBuilder();
-		String[] nameParts = getName().split(" ");
-
-		formattedName.append(nameParts[nameParts.length - 1]).append(",");
-		for (int i = 0; i < nameParts.length - 1; ++i) {
-			formattedName.append(" ").append(nameParts[i]);
-		}
-
-		return formattedName.toString();
+		return "%s, %s".formatted(getLastname(), getFirstname());
 	}
 
 	/**
@@ -82,15 +73,44 @@ public class Global {
 		if (!getName().contains(" ")) {
 			return getName();
 		}
+		return "%s_%s".formatted(getLastname(), getFirstnameUnderscoreFormat());
+	}
 
-		StringBuilder formattedName = new StringBuilder();
-		String[] nameParts = getName().split(" ");
-
-		formattedName.append(nameParts[nameParts.length - 1]);
-		for (int i = 0; i < nameParts.length - 1; ++i) {
-			formattedName.append("_").append(nameParts[i]);
+	/**
+	 * Gets the firstname and middle name(s) of the employee. Splits
+	 * the entire name at the spaces and returns everything but the last part.
+	 * @return the firstname, space separated.
+	 */
+	@JsonIgnore
+	public String getFirstname() {
+		if (!getName().contains(" ")) {
+			return getName();
 		}
 
-		return formattedName.toString();
+		String[] nameParts = getName().split(" ");
+		String[] onlyFirstnameParts = new String[nameParts.length - 1];
+		System.arraycopy(nameParts, 0, onlyFirstnameParts, 0, onlyFirstnameParts.length);
+
+		return String.join(" ", onlyFirstnameParts);
+	}
+
+	/**
+	 * Gets the firstname and middle name(s) of the employee. Splits
+	 * the entire name at the spaces and returns everything but the last part.
+	 * Also replaces all spaces with underscores.
+	 * @return the firstname, separated by underscores.
+	 */
+	@JsonIgnore
+	public String getFirstnameUnderscoreFormat() {
+		return getFirstname().replace(' ', '_');
+	}
+
+	@JsonIgnore
+	public String getLastname() {
+		if (!getName().contains(" ")) {
+			return getName();
+		}
+		String[] nameParts = getName().split(" ");
+		return nameParts[nameParts.length - 1];
 	}
 }
