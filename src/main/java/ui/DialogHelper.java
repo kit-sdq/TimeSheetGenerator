@@ -222,9 +222,7 @@ public final class DialogHelper {
 				dialog.dispose();
 		});
 
-		cancelButton.addActionListener(e -> {
-			discardChanges(entry, parentUi, dialog);
-		});
+		cancelButton.addActionListener(e -> discardChanges(entry, parentUi, dialog));
 
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
