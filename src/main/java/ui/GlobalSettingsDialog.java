@@ -21,6 +21,9 @@ public final class GlobalSettingsDialog {
 
 	private static final int SCROLL_SENSITIVITY = 16;
 
+	private static final int TEXTBOXES_COUNT = 6;
+	private static final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
+
 	public static void showGlobalSettingsDialog(UserInterface parentUI) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
@@ -39,9 +42,6 @@ public final class GlobalSettingsDialog {
 		gbc.insets = new Insets(5, 10, 5, 10); // Spacing between components
 
 		int row = 0;
-
-		final int TEXTBOXES_COUNT = 6;
-		final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
 
 		// Error labels array for validation messages
 		JLabel[] errorLabels = new JLabel[7];
@@ -70,7 +70,13 @@ public final class GlobalSettingsDialog {
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage", uiSettings.getExportPdfNameFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat() };
-		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
+		JCheckBox[] checkBoxes = {
+				addSignatureBox,
+				addVacationEntryBox,
+				useYYYYBox,
+				useGermanMonthNameBox,
+				warnHoursMismatchBox
+		};
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel label = new JLabel(labels[i]);
@@ -158,7 +164,38 @@ public final class GlobalSettingsDialog {
 		panel.add(buttonPanel, gbc);
 
 		// Action listeners for buttons
-		saveButton.addActionListener(e -> {
+		saveButton.addActionListener(e -> saveNewGlobalSettings(
+				dialog,
+				parentUI,
+				globalSettings,
+				uiSettings,
+				fields,
+				errorLabels,
+				workAreaSelector,
+				checkBoxes
+		));
+
+		cancelButton.addActionListener(e -> dialog.dispose());
+
+		JScrollPane scrollPanel = new JScrollPane(panel);
+		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
+		dialog.add(scrollPanel);
+		dialog.setVisible(true);
+	}
+
+	private static void saveNewGlobalSettings(
+			Dialog dialog,
+			UserInterface parentUI,
+			Global globalSettings,
+			UISettings uiSettings,
+			JTextField[] fields,
+			JLabel[] errorLabels,
+			JComboBox<String> workAreaSelector,
+			JCheckBox[] checkBoxes
+	) {
+		{
 			boolean hasError = false;
 			// Validate all fields
 			for (int i = 0; i < fields.length; i++) {
@@ -182,11 +219,11 @@ public final class GlobalSettingsDialog {
 			globalSettings.setWage(Double.parseDouble(fields[4].getText()));
 			globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
-			uiSettings.setAddSignature(addSignatureBox.isSelected());
-			uiSettings.setAddVacationEntry(addVacationEntryBox.isSelected());
-			uiSettings.setUseYYYY(useYYYYBox.isSelected());
-			uiSettings.setUseGermanMonths(useGermanMonthNameBox.isSelected());
-			uiSettings.setWarnOnHoursMismatch(warnHoursMismatchBox.isSelected());
+			uiSettings.setAddSignature(checkBoxes[0].isSelected());
+			uiSettings.setAddVacationEntry(checkBoxes[1].isSelected());
+			uiSettings.setUseYYYY(checkBoxes[2].isSelected());
+			uiSettings.setUseGermanMonths(checkBoxes[3].isSelected());
+			uiSettings.setWarnOnHoursMismatch(checkBoxes[4].isSelected());
 			uiSettings.setExportPdfNameFormat(fields[TEXTFIELD_INDEX_PDF_FORMAT].getText());
 
 			// Save globalSettings to file or database as needed
@@ -196,16 +233,7 @@ public final class GlobalSettingsDialog {
 			parentUI.updateTotalTimeWorkedUI();
 
 			dialog.dispose();
-		});
-
-		cancelButton.addActionListener(e -> dialog.dispose());
-
-		JScrollPane scrollPanel = new JScrollPane(panel);
-		scrollPanel.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
-		dialog.add(scrollPanel);
-		dialog.setVisible(true);
+		}
 	}
 
 	private static void showPdfFormatHelp() {
