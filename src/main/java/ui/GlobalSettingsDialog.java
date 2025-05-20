@@ -114,7 +114,7 @@ public final class GlobalSettingsDialog {
 					gbc.gridx = 3;
 					gbc.gridy = row;
 					gbc.weightx = 0;
-					helpButton.addActionListener(l -> showPdfFormatHelp());
+					helpButton.addActionListener(l -> showPdfFormatHelp(dialog));
 					panel.add(helpButton, gbc);
 				}
 			} else if (i == TEXTBOXES_COUNT) {
@@ -160,8 +160,15 @@ public final class GlobalSettingsDialog {
 		panel.add(buttonPanel, gbc);
 
 		// Action listeners for buttons
-		saveButton
-				.addActionListener(e -> saveNewGlobalSettings(dialog, parentUI, globalSettings, uiSettings, fields, errorLabels, workAreaSelector, checkBoxes));
+		saveButton.addActionListener(e -> {
+			boolean saved = trySaveNewGlobalSettings(parentUI, globalSettings, uiSettings, fields, errorLabels, workAreaSelector, checkBoxes);
+			if (saved) {
+				dialog.dispose();
+			} else {
+				// Show error message
+				JOptionPane.showMessageDialog(dialog, "Please fix the errors before saving.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 
 		cancelButton.addActionListener(e -> dialog.dispose());
 
@@ -173,50 +180,69 @@ public final class GlobalSettingsDialog {
 		dialog.setVisible(true);
 	}
 
-	private static void saveNewGlobalSettings(Dialog dialog, UserInterface parentUI, Global globalSettings, UISettings uiSettings, JTextField[] fields,
+	/**
+	 * Validates and saves the new settings. If validation fails, the method will
+	 * not override the existing settings and instead return false. If validation
+	 * succeeds, returns true.
+	 * 
+	 * @param parentUI         the parent user interface, used for updating the time
+	 *                         UI
+	 * @param globalSettings   the new global settings, containing the updated
+	 *                         settings
+	 * @param uiSettings       the new ui settings, containing the updated settings
+	 * @param fields           the text fields for text values like name or format.
+	 *                         Must have size exactly 5, otherwise will be ignored.
+	 * @param errorLabels      the error labels for displaying validation errors.
+	 *                         Must have size exactly 5, otherwise will be ignored.
+	 * @param workAreaSelector The combo box for selecting the working area (UB /
+	 *                         GF)
+	 * @param checkBoxes       the checkboxes for boolean values like addSignature
+	 *                         or addVacationEntry. Must have size exactly 5,
+	 *                         otherwise will be ignored.
+	 * @return true if settings are valid and saved successfully, false otherwise
+	 */
+	private static boolean trySaveNewGlobalSettings(UserInterface parentUI, Global globalSettings, UISettings uiSettings, JTextField[] fields,
 			JLabel[] errorLabels, JComboBox<String> workAreaSelector, JCheckBox[] checkBoxes) {
-		{
-			boolean hasError = false;
-			// Validate all fields
-			for (int i = 0; i < fields.length; i++) {
-				validateField(fields[i], errorLabels[i], i);
-				if (!errorLabels[i].getText().isBlank()) {
-					hasError = true;
-				}
+		boolean hasError = false;
+		// Validate all fields
+		for (int i = 0; i < Math.min(fields.length, errorLabels.length); i++) {
+			validateField(fields[i], errorLabels[i], i);
+			if (!errorLabels[i].getText().isBlank()) {
+				hasError = true;
 			}
+		}
+		if (hasError)
+			return false;
 
-			if (hasError) {
-				// Show error message
-				JOptionPane.showMessageDialog(dialog, "Please fix the errors before saving.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			// Update globalSettings object
+		// Update globalSettings object
+		if (fields.length == 5) {
 			globalSettings.setName(fields[0].getText());
 			globalSettings.setStaffId(Integer.parseInt(fields[1].getText()));
 			globalSettings.setDepartment(fields[2].getText());
 			globalSettings.setWorkingTime(fields[3].getText());
 			globalSettings.setWage(Double.parseDouble(fields[4].getText()));
-			globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
+		}
+		globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
+		if (checkBoxes.length == 5) {
 			uiSettings.setAddSignature(checkBoxes[0].isSelected());
 			uiSettings.setAddVacationEntry(checkBoxes[1].isSelected());
 			uiSettings.setUseYYYY(checkBoxes[2].isSelected());
 			uiSettings.setUseGermanMonths(checkBoxes[3].isSelected());
 			uiSettings.setWarnOnHoursMismatch(checkBoxes[4].isSelected());
+		}
+		if (fields.length > TEXTFIELD_INDEX_PDF_FORMAT)
 			uiSettings.setExportPdfNameFormat(fields[TEXTFIELD_INDEX_PDF_FORMAT].getText());
 
-			// Save globalSettings to file or database as needed
-			JSONHandler.saveGlobal(globalSettings);
-			JSONHandler.saveUISettings(uiSettings);
+		// Save globalSettings to file or database as needed
+		JSONHandler.saveGlobal(globalSettings);
+		JSONHandler.saveUISettings(uiSettings);
 
-			parentUI.updateTotalTimeWorkedUI();
-
-			dialog.dispose();
-		}
+		parentUI.updateTotalTimeWorkedUI();
+		return true;
 	}
 
-	private static void showPdfFormatHelp() {
+	private static void showPdfFormatHelp(JDialog parentDialog) {
 		String message = """
 				You can use the following placeholders in the PDF name format:
 
@@ -229,7 +255,7 @@ public final class GlobalSettingsDialog {
 				- %YY%: Year (2 digits)
 				- %YYYY%: Year (4 digits)
 				""";
-		JOptionPane.showMessageDialog(null, message, "PDF Name Format Help", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(parentDialog, message, "PDF Name Format Help", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private static int getIndexValue(String configValue) {

@@ -18,6 +18,14 @@ public class UISettings {
 	private String monthPath;
 	private String texPath;
 	private String pdfPath;
+	/**
+	 * Specifies the naming format for exported PDF files.
+	 * <p>
+	 * The format can include placeholders for dynamic values from other current
+	 * settings, such as the name, month and year. The default value is defined by
+	 * {@link JSONHandler#DEFAULT_PDF_NAME_FORMAT_ALGO}.
+	 * </p>
+	 */
 	private String exportPdfNameFormat = JSONHandler.DEFAULT_PDF_NAME_FORMAT_ALGO;
 
 	public UISettings() {

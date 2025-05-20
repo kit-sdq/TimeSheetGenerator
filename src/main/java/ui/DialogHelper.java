@@ -365,7 +365,7 @@ public final class DialogHelper {
 		component.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (component.getForeground().equals(Color.GRAY)) {
+				if (component.getForeground().equals(Color.GRAY) && component.getText().equals(placeholder)) {
 					component.setText("");
 					component.setForeground(Color.BLACK);
 				}
