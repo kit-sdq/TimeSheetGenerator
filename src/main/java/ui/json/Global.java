@@ -55,12 +55,13 @@ public class Global {
 	}
 
 	/**
-	 * Formats the name, e.g. "Firstname Middlename Lastname", to be
-	 * "Firstname middle" by splitting the name at the spaces and removing
-	 * the last String, as this is probably the lastname. Everything else is
-	 * interpreted as first- and middle names. <br/>
-	 * For separated by underscores instead of spaces, see {@link Global#getFirstnameUnderscoreFormat()}
-	 * This is used when determining the filename when exporting to a PDF. <br/>
+	 * Formats the name, e.g. "Firstname Middlename Lastname", to be "Firstname
+	 * middle" by splitting the name at the spaces and removing the last String, as
+	 * this is probably the lastname. Everything else is interpreted as first- and
+	 * middle names. <br/>
+	 * For separated by underscores instead of spaces, see
+	 * {@link Global#getFirstnameUnderscoreFormat()} This is used when determining
+	 * the filename when exporting to a PDF. <br/>
 	 *
 	 * If the name does not contain any spaces, returns the regular name.
 	 *
@@ -79,18 +80,18 @@ public class Global {
 		return String.join(" ", onlyFirstnameParts);
 	}
 
-
 	/**
-	 * Formats the name, e.g. "Firstname Middlename Lastname", to be
-	 * "Firstname middle" by splitting the name at the spaces and removing
-	 * the last String, as this is probably the lastname. Everything else is
-	 * interpreted as first- and middle names. <br/>
+	 * Formats the name, e.g. "Firstname Middlename Lastname", to be "Firstname
+	 * middle" by splitting the name at the spaces and removing the last String, as
+	 * this is probably the lastname. Everything else is interpreted as first- and
+	 * middle names. <br/>
 	 *
-	 * For separated by spaces instead of underscores, see {@link Global#getFirstname()}
-	 * This is used when determining the filename when exporting to a PDF. <br/>
+	 * For separated by spaces instead of underscores, see
+	 * {@link Global#getFirstname()} This is used when determining the filename when
+	 * exporting to a PDF. <br/>
 	 *
 	 * <p>
-	 *     This method literally does {@code Global#getFirstname().replace(' ', '_')}.
+	 * This method literally does {@code Global#getFirstname().replace(' ', '_')}.
 	 * </p>
 	 *
 	 * If the name does not contain any spaces, returns the regular name.
@@ -105,8 +106,8 @@ public class Global {
 	/**
 	 * Gets the lastname of the employee. <br/>
 	 * This method formats the name, e.g. "Firstname Middlename Lastname", to be
-	 * "Lastname" by splitting the name at the spaces and returning the last
-	 * String. Everything else is interpreted as first- and middle names. <br/>
+	 * "Lastname" by splitting the name at the spaces and returning the last String.
+	 * Everything else is interpreted as first- and middle names. <br/>
 	 *
 	 * If the name does not contain any spaces, returns the regular name.
 	 *

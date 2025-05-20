@@ -17,8 +17,7 @@ public final class FileChooser {
 	}
 
 	/**
-	 * Returns the default file name for the PDF export based on the users
-	 * settings.
+	 * Returns the default file name for the PDF export based on the users settings.
 	 *
 	 * @param parentUI The UserInterface instance to get the current month and year
 	 *                 from.
@@ -27,15 +26,10 @@ public final class FileChooser {
 	public static String getDefaultFileName(UserInterface parentUI) {
 		UISettings uiSettings = JSONHandler.getUISettings();
 		Global global = JSONHandler.getGlobalSettings();
-		return uiSettings.getExportPdfNameFormat()
-				.replace("%FIRST_U%", global.getFirstnameUnderscoreFormat())
-				.replace("%FIRST%", global.getFirstname())
-				.replace("%LAST%", global.getLastname())
-				.replace("%MM%", "%02d".formatted(parentUI.getCurrentMonthNumber()))
-				.replace("%MM_GER%", parentUI.getCurrentMonth().getGermanName())
-				.replace("%MM_ENG%", parentUI.getCurrentMonthName())
-				.replace("%YY%", parentUI.getYear())
-				.replace("%YYYY%", parentUI.getFullYear());
+		return uiSettings.getExportPdfNameFormat().replace("%FIRST_U%", global.getFirstnameUnderscoreFormat()).replace("%FIRST%", global.getFirstname())
+				.replace("%LAST%", global.getLastname()).replace("%MM%", "%02d".formatted(parentUI.getCurrentMonthNumber()))
+				.replace("%MM_GER%", parentUI.getCurrentMonth().getGermanName()).replace("%MM_ENG%", parentUI.getCurrentMonthName())
+				.replace("%YY%", parentUI.getYear()).replace("%YYYY%", parentUI.getFullYear());
 	}
 
 	public static File chooseFile(String title, FileChooserType chooserType) {

@@ -66,17 +66,13 @@ public final class GlobalSettingsDialog {
 		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
 
 		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Working Area:", "Add Signature at Bottom:",
-				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header", "Warn when too few/ too many hours:" };
-		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage", uiSettings.getExportPdfNameFormat() };
+				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
+				"Warn when too few/ too many hours:" };
+		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage",
+				uiSettings.getExportPdfNameFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat() };
-		JCheckBox[] checkBoxes = {
-				addSignatureBox,
-				addVacationEntryBox,
-				useYYYYBox,
-				useGermanMonthNameBox,
-				warnHoursMismatchBox
-		};
+		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel label = new JLabel(labels[i]);
@@ -164,16 +160,8 @@ public final class GlobalSettingsDialog {
 		panel.add(buttonPanel, gbc);
 
 		// Action listeners for buttons
-		saveButton.addActionListener(e -> saveNewGlobalSettings(
-				dialog,
-				parentUI,
-				globalSettings,
-				uiSettings,
-				fields,
-				errorLabels,
-				workAreaSelector,
-				checkBoxes
-		));
+		saveButton
+				.addActionListener(e -> saveNewGlobalSettings(dialog, parentUI, globalSettings, uiSettings, fields, errorLabels, workAreaSelector, checkBoxes));
 
 		cancelButton.addActionListener(e -> dialog.dispose());
 
@@ -185,16 +173,8 @@ public final class GlobalSettingsDialog {
 		dialog.setVisible(true);
 	}
 
-	private static void saveNewGlobalSettings(
-			Dialog dialog,
-			UserInterface parentUI,
-			Global globalSettings,
-			UISettings uiSettings,
-			JTextField[] fields,
-			JLabel[] errorLabels,
-			JComboBox<String> workAreaSelector,
-			JCheckBox[] checkBoxes
-	) {
+	private static void saveNewGlobalSettings(Dialog dialog, UserInterface parentUI, Global globalSettings, UISettings uiSettings, JTextField[] fields,
+			JLabel[] errorLabels, JComboBox<String> workAreaSelector, JCheckBox[] checkBoxes) {
 		{
 			boolean hasError = false;
 			// Validate all fields
@@ -239,7 +219,7 @@ public final class GlobalSettingsDialog {
 	private static void showPdfFormatHelp() {
 		String message = """
 				You can use the following placeholders in the PDF name format:
-				
+
 				- %FIRST%: First- and middle names, separated by space
 				- %FIRST_U%: First- and middle names, separated by underscores
 				- %LAST%: Lastname

@@ -338,7 +338,8 @@ public class UserInterface {
 	}
 
 	public void addEntry(TimesheetEntry entry) {
-		if (entry.isNone()) return;
+		if (entry.isNone())
+			return;
 		for (int i = 0; i < listModel.getSize(); i++) {
 			if (listModel.getElementAt(i).isLaterThan(entry)) {
 				listModel.insertElementAt(entry, i);
