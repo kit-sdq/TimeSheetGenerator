@@ -21,10 +21,13 @@ public final class GlobalSettingsDialog {
 
 	private static final int SCROLL_SENSITIVITY = 16;
 
+	private static final int TEXTBOXES_COUNT = 6;
+	private static final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
+
 	public static void showGlobalSettingsDialog(UserInterface parentUI) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
-		dialog.setSize(600, 485);
+		dialog.setSize(690, 525);
 		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
@@ -44,7 +47,7 @@ public final class GlobalSettingsDialog {
 		JLabel[] errorLabels = new JLabel[7];
 
 		// Fields array for text fields
-		JTextField[] fields = new JTextField[5];
+		JTextField[] fields = new JTextField[TEXTBOXES_COUNT];
 		JComboBox<String> workAreaSelector = new JComboBox<>();
 		workAreaSelector.addItem(WORK_AREA_UB);
 		workAreaSelector.addItem(WORK_AREA_GF);
@@ -52,23 +55,23 @@ public final class GlobalSettingsDialog {
 
 		// Checkboxes
 		JCheckBox addSignatureBox = new JCheckBox();
-		JCheckBox addVacationEntryBox = new JCheckBox();
 		JCheckBox useYYYYBox = new JCheckBox();
+		JCheckBox addVacationEntryBox = new JCheckBox();
 		JCheckBox useGermanMonthNameBox = new JCheckBox();
 		JCheckBox warnHoursMismatchBox = new JCheckBox();
 		addSignatureBox.setSelected(uiSettings.isAddSignature());
-		addVacationEntryBox.setSelected(uiSettings.isAddVacationEntry());
 		useYYYYBox.setSelected(uiSettings.isUseYYYY());
+		addVacationEntryBox.setSelected(uiSettings.isAddVacationEntry());
 		useGermanMonthNameBox.setSelected(uiSettings.isUseGermanMonths());
 		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
 
-		final int TEXTBOXES_COUNT = 5;
-
-		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "Working Area:", "Add Signature at Bottom:",
-				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German month names", "Warn when too few/ too many hours:" };
-		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage" };
+		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Working Area:", "Add Signature at Bottom:",
+				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
+				"Warn when too few/ too many hours:" };
+		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage",
+				uiSettings.getExportPdfNameFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
-				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()) };
+				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat() };
 		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
 
 		for (int i = 0; i < labels.length; i++) {
@@ -106,6 +109,14 @@ public final class GlobalSettingsDialog {
 						validateField(fields[index], errorLabels[index], index);
 					}
 				});
+				if (i == TEXTFIELD_INDEX_PDF_FORMAT) {
+					JButton helpButton = new JButton("Format Help");
+					gbc.gridx = 3;
+					gbc.gridy = row;
+					gbc.weightx = 0;
+					helpButton.addActionListener(l -> showPdfFormatHelp(dialog));
+					panel.add(helpButton, gbc);
+				}
 			} else if (i == TEXTBOXES_COUNT) {
 				panel.add(workAreaSelector, gbc);
 			} else {
@@ -122,19 +133,21 @@ public final class GlobalSettingsDialog {
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
 
-		// Buttons at the bottom
+		// Preset buttons at the bottom
 		JPanel presetButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JButton presetProggenButton = new JButton("Proggen I Preset");
 		JButton presetAlgoButton = new JButton("Algo I Preset");
 		presetProggenButton.addActionListener((e) -> {
 			addVacationEntryBox.setSelected(false);
-			useYYYYBox.setSelected(false);
-			useGermanMonthNameBox.setSelected(false);
+			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
+			pdfFormatField.setText(JSONHandler.DEFAULT_PDF_NAME_FORMAT_PROG);
+			pdfFormatField.setForeground(Color.BLACK);
 		});
 		presetAlgoButton.addActionListener((e) -> {
 			addVacationEntryBox.setSelected(true);
-			useYYYYBox.setSelected(true);
-			useGermanMonthNameBox.setSelected(true);
+			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
+			pdfFormatField.setText(JSONHandler.DEFAULT_PDF_NAME_FORMAT_ALGO);
+			pdfFormatField.setForeground(Color.BLACK);
 		});
 		presetButtonPanel.add(presetProggenButton);
 		presetButtonPanel.add(presetAlgoButton);
@@ -152,42 +165,13 @@ public final class GlobalSettingsDialog {
 
 		// Action listeners for buttons
 		saveButton.addActionListener(e -> {
-			boolean hasError = false;
-			// Validate all fields
-			for (int i = 0; i < fields.length; i++) {
-				validateField(fields[i], errorLabels[i], i);
-				if (!errorLabels[i].getText().isBlank()) {
-					hasError = true;
-				}
-			}
-
-			if (hasError) {
+			boolean saved = trySaveNewGlobalSettings(parentUI, globalSettings, uiSettings, fields, errorLabels, workAreaSelector, checkBoxes);
+			if (saved) {
+				dialog.dispose();
+			} else {
 				// Show error message
 				JOptionPane.showMessageDialog(dialog, "Please fix the errors before saving.", "Validation Error", JOptionPane.ERROR_MESSAGE);
-				return;
 			}
-
-			// Update globalSettings object
-			globalSettings.setName(fields[0].getText());
-			globalSettings.setStaffId(Integer.parseInt(fields[1].getText()));
-			globalSettings.setDepartment(fields[2].getText());
-			globalSettings.setWorkingTime(fields[3].getText());
-			globalSettings.setWage(Double.parseDouble(fields[4].getText()));
-			globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
-
-			uiSettings.setAddSignature(addSignatureBox.isSelected());
-			uiSettings.setAddVacationEntry(addVacationEntryBox.isSelected());
-			uiSettings.setUseYYYY(useYYYYBox.isSelected());
-			uiSettings.setUseGermanMonths(useGermanMonthNameBox.isSelected());
-			uiSettings.setWarnOnHoursMismatch(warnHoursMismatchBox.isSelected());
-
-			// Save globalSettings to file or database as needed
-			JSONHandler.saveGlobal(globalSettings);
-			JSONHandler.saveUISettings(uiSettings);
-
-			parentUI.updateTotalTimeWorkedUI();
-
-			dialog.dispose();
 		});
 
 		cancelButton.addActionListener(e -> dialog.dispose());
@@ -198,6 +182,84 @@ public final class GlobalSettingsDialog {
 		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
 		dialog.add(scrollPanel);
 		dialog.setVisible(true);
+	}
+
+	/**
+	 * Validates and saves the new settings. If validation fails, the method will
+	 * not override the existing settings and instead return false. If validation
+	 * succeeds, returns true.
+	 * 
+	 * @param parentUI         the parent user interface, used for updating the time
+	 *                         UI
+	 * @param globalSettings   the new global settings, containing the updated
+	 *                         settings
+	 * @param uiSettings       the new ui settings, containing the updated settings
+	 * @param fields           the text fields for text values like name or format.
+	 *                         Must have size exactly 5, otherwise will be ignored.
+	 * @param errorLabels      the error labels for displaying validation errors.
+	 *                         Must have size exactly 5, otherwise will be ignored.
+	 * @param workAreaSelector The combo box for selecting the working area (UB /
+	 *                         GF)
+	 * @param checkBoxes       the checkboxes for boolean values like addSignature
+	 *                         or addVacationEntry. Must have size exactly 5,
+	 *                         otherwise will be ignored.
+	 * @return true if settings are valid and saved successfully, false otherwise
+	 */
+	private static boolean trySaveNewGlobalSettings(UserInterface parentUI, Global globalSettings, UISettings uiSettings, JTextField[] fields,
+			JLabel[] errorLabels, JComboBox<String> workAreaSelector, JCheckBox[] checkBoxes) {
+		boolean hasError = false;
+		// Validate all fields
+		for (int i = 0; i < Math.min(fields.length, errorLabels.length); i++) {
+			validateField(fields[i], errorLabels[i], i);
+			if (!errorLabels[i].getText().isBlank()) {
+				hasError = true;
+			}
+		}
+		if (hasError)
+			return false;
+
+		// Update globalSettings object
+		if (fields.length == 5) {
+			globalSettings.setName(fields[0].getText());
+			globalSettings.setStaffId(Integer.parseInt(fields[1].getText()));
+			globalSettings.setDepartment(fields[2].getText());
+			globalSettings.setWorkingTime(fields[3].getText());
+			globalSettings.setWage(Double.parseDouble(fields[4].getText()));
+		}
+		globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
+
+		if (checkBoxes.length == 5) {
+			uiSettings.setAddSignature(checkBoxes[0].isSelected());
+			uiSettings.setAddVacationEntry(checkBoxes[1].isSelected());
+			uiSettings.setUseYYYY(checkBoxes[2].isSelected());
+			uiSettings.setUseGermanMonths(checkBoxes[3].isSelected());
+			uiSettings.setWarnOnHoursMismatch(checkBoxes[4].isSelected());
+		}
+		if (fields.length > TEXTFIELD_INDEX_PDF_FORMAT)
+			uiSettings.setExportPdfNameFormat(fields[TEXTFIELD_INDEX_PDF_FORMAT].getText());
+
+		// Save globalSettings to file or database as needed
+		JSONHandler.saveGlobal(globalSettings);
+		JSONHandler.saveUISettings(uiSettings);
+
+		parentUI.updateTotalTimeWorkedUI();
+		return true;
+	}
+
+	private static void showPdfFormatHelp(JDialog parentDialog) {
+		String message = """
+				You can use the following placeholders in the PDF name format:
+
+				- %FIRST%: First- and middle names, separated by space
+				- %FIRST_U%: First- and middle names, separated by underscores
+				- %LAST%: Lastname
+				- %MM%: Month number from 01-12
+				- %MM_GER%: German Month Name
+				- %MM_ENG%: English Month Name
+				- %YY%: Year (2 digits)
+				- %YYYY%: Year (4 digits)
+				""";
+		JOptionPane.showMessageDialog(parentDialog, message, "PDF Name Format Help", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private static int getIndexValue(String configValue) {

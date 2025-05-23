@@ -222,9 +222,7 @@ public final class DialogHelper {
 				dialog.dispose();
 		});
 
-		cancelButton.addActionListener(e -> {
-			discardChanges(entry, parentUi, dialog);
-		});
+		cancelButton.addActionListener(e -> discardChanges(entry, parentUi, dialog));
 
 		dialog.addWindowListener(new WindowAdapter() {
 			@Override
@@ -367,7 +365,8 @@ public final class DialogHelper {
 		component.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (component.getText().equals(placeholder)) {
+				// Gray Color <=> Text is placeholder and should be treated as such
+				if (component.getForeground().equals(Color.GRAY)) {
 					component.setText("");
 					component.setForeground(Color.BLACK);
 				}

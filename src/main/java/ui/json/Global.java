@@ -51,46 +51,74 @@ public class Global {
 		if (!getName().contains(" ")) {
 			return getName();
 		}
-
-		StringBuilder formattedName = new StringBuilder();
-		String[] nameParts = getName().split(" ");
-
-		formattedName.append(nameParts[nameParts.length - 1]).append(",");
-		for (int i = 0; i < nameParts.length - 1; ++i) {
-			formattedName.append(" ").append(nameParts[i]);
-		}
-
-		return formattedName.toString();
+		return "%s, %s".formatted(getLastname(), getFirstname());
 	}
 
 	/**
-	 * Formats the name, e.g. "Firstname-middle Lastname", to be
-	 * "Lastname_Firstname-middle" by splitting the name at the spaces and rotating
-	 * the last String to the front. Everything else is interpreted as first- and
+	 * Formats the name, e.g. "Firstname Middlename Lastname", to be "Firstname
+	 * middle" by splitting the name at the spaces and removing the last String, as
+	 * this is probably the lastname. Everything else is interpreted as first- and
 	 * middle names. <br/>
-	 * This method is similar to {@link Global#getNameFormalFormat()}, but it
-	 * separates the formatted name using underscores, and does not add a comma
-	 * after the lastname. <br/>
-	 * This is used when determining the filename when exporting to a PDF. <br/>
+	 * For separated by underscores instead of spaces, see
+	 * {@link Global#getFirstnameUnderscoreFormat()} This is used when determining
+	 * the filename when exporting to a PDF. <br/>
+	 *
 	 * If the name does not contain any spaces, returns the regular name.
 	 *
-	 * @return Like {@link Global#getNameFormalFormat()}, but with underscores and
-	 *         no comma.
+	 * @return the firstname of the employee, separated by spaces.
 	 */
 	@JsonIgnore
-	public String getNameUnderscoreFormat() {
+	public String getFirstname() {
 		if (!getName().contains(" ")) {
 			return getName();
 		}
 
-		StringBuilder formattedName = new StringBuilder();
 		String[] nameParts = getName().split(" ");
+		String[] onlyFirstnameParts = new String[nameParts.length - 1];
+		System.arraycopy(nameParts, 0, onlyFirstnameParts, 0, onlyFirstnameParts.length);
 
-		formattedName.append(nameParts[nameParts.length - 1]);
-		for (int i = 0; i < nameParts.length - 1; ++i) {
-			formattedName.append("_").append(nameParts[i]);
+		return String.join(" ", onlyFirstnameParts);
+	}
+
+	/**
+	 * Formats the name, e.g. "Firstname Middlename Lastname", to be "Firstname
+	 * middle" by splitting the name at the spaces and removing the last String, as
+	 * this is probably the lastname. Everything else is interpreted as first- and
+	 * middle names. <br/>
+	 *
+	 * For separated by spaces instead of underscores, see
+	 * {@link Global#getFirstname()} This is used when determining the filename when
+	 * exporting to a PDF. <br/>
+	 *
+	 * <p>
+	 * This method literally does {@code Global#getFirstname().replace(' ', '_')}.
+	 * </p>
+	 *
+	 * If the name does not contain any spaces, returns the regular name.
+	 *
+	 * @return the firstname of the employee, separated by underscores.
+	 */
+	@JsonIgnore
+	public String getFirstnameUnderscoreFormat() {
+		return getFirstname().replace(' ', '_');
+	}
+
+	/**
+	 * Gets the lastname of the employee. <br/>
+	 * This method formats the name, e.g. "Firstname Middlename Lastname", to be
+	 * "Lastname" by splitting the name at the spaces and returning the last String.
+	 * Everything else is interpreted as first- and middle names. <br/>
+	 *
+	 * If the name does not contain any spaces, returns the regular name.
+	 *
+	 * @return the lastname of the employee.
+	 */
+	@JsonIgnore
+	public String getLastname() {
+		if (!getName().contains(" ")) {
+			return getName();
 		}
-
-		return formattedName.toString();
+		String[] nameParts = getName().split(" ");
+		return nameParts[nameParts.length - 1];
 	}
 }

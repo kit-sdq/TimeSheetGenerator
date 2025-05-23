@@ -28,6 +28,39 @@ public final class JSONHandler {
 	private static UISettings uiSettings;
 
 	private static String configDir;
+
+	/**
+	 * Default file name format for, as requested by KASTEL @ KIT. This is the same
+	 * as {@link #DEFAULT_PDF_NAME_FORMAT_ALGO} but it connects month and year with
+	 * a space instead of an underscore.
+	 * <p>
+	 * Format Explained: - %LAST%: Last name of the user. - %FIRST_U%: First name of
+	 * the user with underscores instead of spaces. - %MM%: Two-digit month (e.g.,
+	 * 01 for January). - %YYYY%: Four-digit year (e.g., 2025).
+	 * </p>
+	 * <p>
+	 * An example would be:<br/>
+	 * Mustermann_Max_Tobias_04 2025.pdf<br/>
+	 * </p>
+	 */
+	public static final String DEFAULT_PDF_NAME_FORMAT_PROG = "%LAST%_%FIRST_U%_%MM% %YYYY%";
+
+	/**
+	 * Default file name format for, as requested by ITI @ KIT. This is the same as
+	 * {@link #DEFAULT_PDF_NAME_FORMAT_PROG} but it connects month and year with an
+	 * underscore as well.
+	 * <p>
+	 * Format Explained: - %LAST%: Last name of the user. - %FIRST_U%: First name of
+	 * the user with underscores instead of spaces. - %MM%: Two-digit month (e.g.,
+	 * 01 for January). - %YYYY%: Four-digit year (e.g., 2025).
+	 * </p>
+	 * <p>
+	 * An example would be:<br/>
+	 * Mustermann_Max_Tobias_04_2025.pdf<br/>
+	 * </p>
+	 */
+	public static final String DEFAULT_PDF_NAME_FORMAT_ALGO = "%LAST%_%FIRST_U%_%MM%_%YYYY%";
+
 	private static final String CONFIG_FILE_NAME = "global.json";
 	private static final String UI_SETTINGS_FILE_NAME = "settings.json";
 
@@ -260,6 +293,7 @@ public final class JSONHandler {
 		settings.setUseYYYY(false);
 		settings.setUseGermanMonths(false);
 		settings.setWarnOnHoursMismatch(true);
+		settings.setExportPdfNameFormat(DEFAULT_PDF_NAME_FORMAT_ALGO);
 		saveUISettings(settings);
 	}
 

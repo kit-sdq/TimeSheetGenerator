@@ -154,6 +154,10 @@ public class MonthlySettingsBar extends JPanel {
 		return String.valueOf(getYear());
 	}
 
+	public String getFullYearStr() {
+		return String.valueOf(getFullYear());
+	}
+
 	public Time getPredTime() {
 		return predTimeField.isValid() ? Time.parseTime(predTimeField.getText()) : new Time(0, 0);
 	}
