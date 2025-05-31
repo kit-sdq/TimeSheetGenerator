@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package io;
 
 import data.Entry;
@@ -6,6 +6,8 @@ import data.TimeSheet;
 import data.WorkingArea;
 import etc.ContextStringReplacer;
 import i18n.ResourceHandler;
+import lombok.Getter;
+import main.Main;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.format.DateTimeFormatter;
@@ -40,17 +42,34 @@ public class LatexGenerator implements IGenerator {
 
 	private final TimeSheet timeSheet;
 	private final String template;
+	private final boolean excludeHolidayEntries;
 
 	/**
-	 * Constructs a new {@link TimeSheet} instance.
+	 * Constructs a new {@link TimeSheet} instance. Will set the exclude holiday
+	 * entries option to the default value
+	 * {@link Main#DEFAULT_EXCLUDE_HOLIDAY_ENTRIES}.
 	 * 
 	 * @param timeSheet - as source of data to fill into the template.
 	 * @param template  - the template the generated LaTeX {@link String} should be
 	 *                  based on.
 	 */
 	public LatexGenerator(TimeSheet timeSheet, String template) {
+		this(timeSheet, template, Main.DEFAULT_EXCLUDE_HOLIDAY_ENTRIES);
+	}
+
+	/**
+	 * Constructs a new {@link TimeSheet} instance.
+	 *
+	 * @param timeSheet             - as source of data to fill into the template.
+	 * @param template              - the template the generated LaTeX
+	 *                              {@link String} should be based on.
+	 * @param excludeHolidayEntries - if holiday entries should not be visible in
+	 *                              the entry table.
+	 */
+	public LatexGenerator(TimeSheet timeSheet, String template, boolean excludeHolidayEntries) {
 		this.timeSheet = timeSheet;
 		this.template = template;
+		this.excludeHolidayEntries = excludeHolidayEntries;
 	}
 
 	@Override
@@ -73,6 +92,9 @@ public class LatexGenerator implements IGenerator {
 		for (EntryElement elem : EntryElement.values()) {
 			String placeholder = elem.getPlaceholder();
 			for (Entry entry : timeSheet.getEntries()) {
+				// Exclude holiday entries in table
+				if (excludeHolidayEntries && entry.isVacation())
+					continue;
 				// quoteReplacement is required because the replacement string (including \, $,
 				// ^, ...) is interpreted as a regex expression otherwise
 				filledTex = filledTex.replaceFirst(placeholder, Matcher.quoteReplacement(getSubstitute(entry, elem)));
@@ -226,6 +248,7 @@ public class LatexGenerator implements IGenerator {
 	 * The different elements representing the {@link TimeSheet}, especially the
 	 * Employee and Profession, on the document.
 	 */
+	@Getter
 	private enum TimeSheetElement {
 		YEAR("!year"), MONTH("!month"), EMPLOYEE_NAME("!employeeName"), EMPLOYEE_ID("!employeeID"), GFUB("!workingArea"), DEPARTMENT("!department"),
 		MAX_HOURS("!workingTime"), WAGE("!wage"), VACATION("!vacation"), HOURS_SUM("!sum"), TRANSFER_PRED("!carryPred"), TRANSFER_SUCC("!carrySucc");
@@ -235,16 +258,13 @@ public class LatexGenerator implements IGenerator {
 		TimeSheetElement(String placeholder) {
 			this.placeholder = placeholder;
 		}
-
-		public String getPlaceholder() {
-			return this.placeholder;
-		}
 	}
 
 	/**
 	 * The different elements representing the {@link Entry entries} on the
 	 * document.
 	 */
+	@Getter
 	private enum EntryElement {
 		TABLE_ACTION("!action"), TABLE_DATE("!date"), TABLE_START("!begin"), TABLE_END("!end"), TABLE_PAUSE("!break"), TABLE_TIME("!dayTotal");
 
@@ -252,10 +272,6 @@ public class LatexGenerator implements IGenerator {
 
 		EntryElement(String placeholder) {
 			this.placeholder = placeholder;
-		}
-
-		public String getPlaceholder() {
-			return this.placeholder;
 		}
 	}
 }

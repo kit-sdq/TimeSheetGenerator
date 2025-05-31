@@ -1,7 +1,8 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package main;
 
 import i18n.ResourceHandler;
+import lombok.Getter;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FilenameUtils;
 
@@ -42,17 +43,17 @@ public class UserInput {
 		commandLine = dp.parse(UserInputOption.getOptions(), args, false);
 
 		if (commandLine.hasOption(UserInputOption.HELP.getOption().getOpt())) {
-			return Request.HELP;
+			return new HelpRequest();
 		}
 		if (commandLine.hasOption(UserInputOption.VERSION.getOption().getOpt())) {
-			return Request.VERSION;
+			return new VersionRequest();
 		}
 
 		// "gui" and "file" options are mutually exclusive
 		if (commandLine.hasOption(UserInputOption.GUI.getOption().getOpt()) && commandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
 			throw new ParseException(ResourceHandler.getMessage("error.userinput.mutuallyExclusiveOptionsGuiFile"));
 		} else {
-			return Request.GENERATE;
+			return new GenerateRequest(commandLine.hasOption(UserInputOption.NO_HOLIDAY.getOption().getOpt()));
 		}
 	}
 
@@ -216,10 +217,64 @@ public class UserInput {
 	}
 
 	/**
-	 * Action a user requested through the command line arguments
+	 * The general type of action a user requested through the command line
+	 * arguments
 	 */
-	public enum Request {
+	public enum RequestType {
 		HELP, VERSION, GENERATE
+	}
+
+	/**
+	 * Base class for an action a user requested through the command line arguments.
+	 * Contains only a request type, and cannot be instantiated outside of this
+	 * class.
+	 */
+	@Getter
+	public static class Request {
+		private final RequestType type;
+
+		private Request(RequestType type) {
+			this.type = type;
+		}
+	}
+
+	/**
+	 * A help request. The Request to be returned if the user has requested
+	 * help.<br/>
+	 * {@link HelpRequest#getType()} will return {@link RequestType#HELP}.
+	 */
+	public static class HelpRequest extends Request {
+		public HelpRequest() {
+			super(RequestType.HELP);
+		}
+	}
+
+	/**
+	 * A version request. The Request to be returned if the user has requested the
+	 * version.<br/>
+	 * {@link VersionRequest#getType()} will return {@link RequestType#VERSION}.
+	 */
+	@Getter
+	public static class VersionRequest extends Request {
+		public VersionRequest() {
+			super(RequestType.VERSION);
+		}
+	}
+
+	/**
+	 * A generation request. The Request to be returned if the user has requested to
+	 * generate a time sheet. In this case, the user can specify if they want to
+	 * explicitly generate holiday entries or not.<br/>
+	 * {@link GenerateRequest#getType()} will return {@link RequestType#GENERATE}.
+	 */
+	@Getter
+	public static class GenerateRequest extends Request {
+		private final boolean excludeHolidayEntries;
+
+		public GenerateRequest(boolean excludeHolidayEntries) {
+			super(RequestType.GENERATE);
+			this.excludeHolidayEntries = excludeHolidayEntries;
+		}
 	}
 
 }
