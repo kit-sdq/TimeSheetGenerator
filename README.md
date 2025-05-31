@@ -40,12 +40,13 @@ Run TimeSheetGenerator (requires Java 21 or higher):
 
 ### Command Line Options
 
-| Option | Long Option | Arguments                               | Description                                                    |
-| ------ | ----------- | --------------------------------------- | -------------------------------------------------------------- |
-|  `-h`  |  `--help`   | _none_                                  | Print a help dialog.                                           |
-|  `-v`  | `--version` | _none_                                  | Print the version of the application.                          |
-|  `-g`  |   `--gui`   | _none_                                  | Generate an output file based on files chosen in a file dialog.|
-|  `-f`  |  `--file`   |`<global.json> <month.json> <output.tex>`| Generate an output file based on the given files.              |
+|  Option  |   Long Option   | Arguments                               | Description                                                    |
+| -------- | --------------- | --------------------------------------- | -------------------------------------------------------------- |
+|   `-h`   |    `--help`     | _none_                                  | Print a help dialog.                                           |
+|   `-v`   |   `--version`   | _none_                                  | Print the version of the application.                          |
+|   `-g`   |     `--gui`     | _none_                                  | Generate an output file based on files chosen in a file dialog.|
+|   `-f`   |    `--file`     |`<global.json> <month.json> <output.tex>`| Generate an output file based on the given files.              |
+| `-no-h`  | `--no-holiday`  | _none_                                  | Exclude vacation entries in the time sheet table.              |
 
 ### Third-Party Libraries
 
