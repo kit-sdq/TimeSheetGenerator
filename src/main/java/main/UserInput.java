@@ -241,7 +241,7 @@ public class UserInput {
 	/**
 	 * A help request. The Request to be returned if the user has requested
 	 * help.<br/>
-	 * {@link HelpRequest#getType()} will return {@link RequestType#HELP}.
+	 * The {@code getType()} method will return {@link RequestType#HELP}.
 	 */
 	public static class HelpRequest extends Request {
 		public HelpRequest() {
@@ -252,7 +252,7 @@ public class UserInput {
 	/**
 	 * A version request. The Request to be returned if the user has requested the
 	 * version.<br/>
-	 * {@link VersionRequest#getType()} will return {@link RequestType#VERSION}.
+	 * The {@code getType()} method will return {@link RequestType#VERSION}.
 	 */
 	@Getter
 	public static class VersionRequest extends Request {
@@ -265,7 +265,7 @@ public class UserInput {
 	 * A generation request. The Request to be returned if the user has requested to
 	 * generate a time sheet. In this case, the user can specify if they want to
 	 * explicitly generate holiday entries or not.<br/>
-	 * {@link GenerateRequest#getType()} will return {@link RequestType#GENERATE}.
+	 * The {@code getType()} method will return {@link RequestType#GENERATE}.
 	 */
 	@Getter
 	public static class GenerateRequest extends Request {
