@@ -42,34 +42,34 @@ public class LatexGenerator implements IGenerator {
 
 	private final TimeSheet timeSheet;
 	private final String template;
-	private final boolean excludeHolidayEntries;
+	private final boolean excludeVacationEntries;
 
 	/**
 	 * Constructs a new {@link TimeSheet} instance. Will set the exclude holiday
 	 * entries option to the default value
-	 * {@link Main#DEFAULT_EXCLUDE_HOLIDAY_ENTRIES}.
+	 * {@link Main#DEFAULT_EXCLUDE_VACATION_ENTRIES}.
 	 * 
 	 * @param timeSheet - as source of data to fill into the template.
 	 * @param template  - the template the generated LaTeX {@link String} should be
 	 *                  based on.
 	 */
 	public LatexGenerator(TimeSheet timeSheet, String template) {
-		this(timeSheet, template, Main.DEFAULT_EXCLUDE_HOLIDAY_ENTRIES);
+		this(timeSheet, template, Main.DEFAULT_EXCLUDE_VACATION_ENTRIES);
 	}
 
 	/**
 	 * Constructs a new {@link TimeSheet} instance.
 	 *
-	 * @param timeSheet             - as source of data to fill into the template.
-	 * @param template              - the template the generated LaTeX
-	 *                              {@link String} should be based on.
-	 * @param excludeHolidayEntries - if holiday entries should not be visible in
-	 *                              the entry table.
+	 * @param timeSheet              - as source of data to fill into the template.
+	 * @param template               - the template the generated LaTeX
+	 *                               {@link String} should be based on.
+	 * @param excludeVacationEntries - if holiday entries should not be visible in
+	 *                               the entry table.
 	 */
-	public LatexGenerator(TimeSheet timeSheet, String template, boolean excludeHolidayEntries) {
+	public LatexGenerator(TimeSheet timeSheet, String template, boolean excludeVacationEntries) {
 		this.timeSheet = timeSheet;
 		this.template = template;
-		this.excludeHolidayEntries = excludeHolidayEntries;
+		this.excludeVacationEntries = excludeVacationEntries;
 	}
 
 	@Override
@@ -92,8 +92,8 @@ public class LatexGenerator implements IGenerator {
 		for (EntryElement elem : EntryElement.values()) {
 			String placeholder = elem.getPlaceholder();
 			for (Entry entry : timeSheet.getEntries()) {
-				// Exclude holiday entries in table
-				if (excludeHolidayEntries && entry.isVacation())
+				// Exclude vacation entries in table
+				if (excludeVacationEntries && entry.isVacation())
 					continue;
 				// quoteReplacement is required because the replacement string (including \, $,
 				// ^, ...) is interpreted as a regex expression otherwise

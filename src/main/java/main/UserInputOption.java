@@ -25,7 +25,8 @@ public enum UserInputOption {
 	/**
 	 * Show the GUI for choosing the files
 	 */
-	NO_HOLIDAY(Option.builder("no-h").longOpt("no-holiday").desc(ResourceHandler.getMessage("command.input.no-holiday.description")).hasArg(false).build()),
+	NO_VACATION_ENTRIES(
+			Option.builder("n").longOpt("no-vacation").desc(ResourceHandler.getMessage("command.input.no-vacation.description")).hasArg(false).build()),
 	/**
 	 * Specify the files in the arguments of this command
 	 */

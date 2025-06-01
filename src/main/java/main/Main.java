@@ -7,9 +7,9 @@ import i18n.ResourceHandler;
 import io.FileController;
 import io.IGenerator;
 import io.LatexGenerator;
-import main.UserInput.RequestType;
-import main.UserInput.Request;
-import main.UserInput.GenerateRequest;
+import main.request.RequestType;
+import main.request.Request;
+import main.request.GenerateRequest;
 import parser.ParseException;
 import parser.Parser;
 import ui.UserInterface;
@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 public class Main {
 
-	public static final boolean DEFAULT_EXCLUDE_HOLIDAY_ENTRIES = false;
+	public static final boolean DEFAULT_EXCLUDE_VACATION_ENTRIES = false;
 
 	/**
 	 * Main entry point for the application
@@ -63,10 +63,10 @@ public class Main {
 			return;
 		}
 
-		// Check if the user wants to not generate holiday entries.
-		boolean excludeHolidayEntries = DEFAULT_EXCLUDE_HOLIDAY_ENTRIES;
+		// Check if the user wants to not generate vacation entries.
+		boolean excludeVacationEntries = DEFAULT_EXCLUDE_VACATION_ENTRIES;
 		if (requestType == RequestType.GENERATE && request instanceof GenerateRequest generateRequest) {
-			excludeHolidayEntries = generateRequest.isExcludeHolidayEntries();
+			excludeVacationEntries = generateRequest.isExcludeVacationEntries();
 		}
 
 		// Get content of input files
@@ -112,7 +112,7 @@ public class Main {
 		ClassLoader classLoader = Main.class.getClassLoader();
 		try {
 			String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Template.tex"));
-			IGenerator generator = new LatexGenerator(timeSheet, latexTemplate, excludeHolidayEntries);
+			IGenerator generator = new LatexGenerator(timeSheet, latexTemplate, excludeVacationEntries);
 			FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
