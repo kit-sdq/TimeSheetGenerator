@@ -1,7 +1,11 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package main;
 
 import i18n.ResourceHandler;
+import main.request.GenerateRequest;
+import main.request.HelpRequest;
+import main.request.Request;
+import main.request.VersionRequest;
 import org.apache.commons.cli.*;
 import org.apache.commons.io.FilenameUtils;
 
@@ -32,7 +36,9 @@ public class UserInput {
 	}
 
 	/**
-	 * Parse the command line arguments
+	 * Parse the command line arguments and returns the request read from the
+	 * command line arguments. This request will also contain additional parameters
+	 * or information, like excluding vacation entries on a generate request.
 	 * 
 	 * @return The user request read from the command line arguments
 	 * @throws ParseException Thrown in case the command line arguments are invalid
@@ -42,17 +48,17 @@ public class UserInput {
 		commandLine = dp.parse(UserInputOption.getOptions(), args, false);
 
 		if (commandLine.hasOption(UserInputOption.HELP.getOption().getOpt())) {
-			return Request.HELP;
+			return new HelpRequest();
 		}
 		if (commandLine.hasOption(UserInputOption.VERSION.getOption().getOpt())) {
-			return Request.VERSION;
+			return new VersionRequest();
 		}
 
 		// "gui" and "file" options are mutually exclusive
 		if (commandLine.hasOption(UserInputOption.GUI.getOption().getOpt()) && commandLine.hasOption(UserInputOption.FILE.getOption().getOpt())) {
 			throw new ParseException(ResourceHandler.getMessage("error.userinput.mutuallyExclusiveOptionsGuiFile"));
 		} else {
-			return Request.GENERATE;
+			return new GenerateRequest(commandLine.hasOption(UserInputOption.NO_VACATION_ENTRIES.getOption().getOpt()));
 		}
 	}
 
@@ -214,12 +220,4 @@ public class UserInput {
 
 		return file;
 	}
-
-	/**
-	 * Action a user requested through the command line arguments
-	 */
-	public enum Request {
-		HELP, VERSION, GENERATE
-	}
-
 }

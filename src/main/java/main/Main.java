@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package main;
 
 import checker.*;
@@ -7,7 +7,9 @@ import i18n.ResourceHandler;
 import io.FileController;
 import io.IGenerator;
 import io.LatexGenerator;
-import main.UserInput.Request;
+import main.request.RequestType;
+import main.request.Request;
+import main.request.GenerateRequest;
 import parser.ParseException;
 import parser.Parser;
 import ui.UserInterface;
@@ -46,16 +48,25 @@ public class Main {
 			System.exit(1);
 			return;
 		}
+		RequestType requestType = request.getType();
 
 		// If requested: Print help and return
-		if (request == Request.HELP) {
+		if (requestType == RequestType.HELP) {
 			userInput.printHelp();
 			return;
 		}
 		// If requested: Print version and return
-		if (request == Request.VERSION) {
+		if (requestType == RequestType.VERSION) {
 			userInput.printVersion();
 			return;
+		}
+
+		// Check if the user wants to not generate vacation entries.
+		// Only relevant if request is generate request, and in that case it will be
+		// set.
+		boolean excludeVacationEntries = false;
+		if (requestType == RequestType.GENERATE && request instanceof GenerateRequest generateRequest) {
+			excludeVacationEntries = generateRequest.isExcludeVacationEntries();
 		}
 
 		// Get content of input files
@@ -101,7 +112,7 @@ public class Main {
 		ClassLoader classLoader = Main.class.getClassLoader();
 		try {
 			String latexTemplate = FileController.readInputStreamToString(classLoader.getResourceAsStream("MiLoG_Template.tex"));
-			IGenerator generator = new LatexGenerator(timeSheet, latexTemplate);
+			IGenerator generator = new LatexGenerator(timeSheet, latexTemplate, excludeVacationEntries);
 			FileController.saveStringToFile(generator.generate(), userInput.getFile(UserInputFile.OUTPUT));
 		} catch (IOException e) {
 			System.out.println(e.getMessage());

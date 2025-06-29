@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package main;
 
 import i18n.ResourceHandler;
@@ -22,6 +22,11 @@ public enum UserInputOption {
 	 * Show the GUI for choosing the files
 	 */
 	GUI(Option.builder("g").longOpt("gui").desc(ResourceHandler.getMessage("command.input.gui.description")).hasArg(false).build()),
+	/**
+	 * Show the GUI for choosing the files
+	 */
+	NO_VACATION_ENTRIES(
+			Option.builder("n").longOpt("no-vacation").desc(ResourceHandler.getMessage("command.input.no-vacation.description")).hasArg(false).build()),
 	/**
 	 * Specify the files in the arguments of this command
 	 */
