@@ -25,8 +25,6 @@ import java.util.Optional;
  */
 public class Main {
 
-	public static final boolean DEFAULT_EXCLUDE_VACATION_ENTRIES = false;
-
 	/**
 	 * Main entry point for the application
 	 * 
@@ -64,7 +62,9 @@ public class Main {
 		}
 
 		// Check if the user wants to not generate vacation entries.
-		boolean excludeVacationEntries = DEFAULT_EXCLUDE_VACATION_ENTRIES;
+		// Only relevant if request is generate request, and in that case it will be
+		// set.
+		boolean excludeVacationEntries = false;
 		if (requestType == RequestType.GENERATE && request instanceof GenerateRequest generateRequest) {
 			excludeVacationEntries = generateRequest.isExcludeVacationEntries();
 		}

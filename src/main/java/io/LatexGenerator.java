@@ -7,7 +7,6 @@ import data.WorkingArea;
 import etc.ContextStringReplacer;
 import i18n.ResourceHandler;
 import lombok.Getter;
-import main.Main;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.time.format.DateTimeFormatter;
@@ -45,16 +44,17 @@ public class LatexGenerator implements IGenerator {
 	private final boolean excludeVacationEntries;
 
 	/**
-	 * Constructs a new {@link TimeSheet} instance. Will set the exclude holiday
-	 * entries option to the default value
-	 * {@link Main#DEFAULT_EXCLUDE_VACATION_ENTRIES}.
+	 * Constructs a new {@link TimeSheet} instance.<br/>
+	 * Since this is only used in testing, the option to exclude holiday entries
+	 * will be set to its legacy value {@code false}, so holiday entries will be
+	 * included.
 	 * 
 	 * @param timeSheet - as source of data to fill into the template.
 	 * @param template  - the template the generated LaTeX {@link String} should be
 	 *                  based on.
 	 */
 	public LatexGenerator(TimeSheet timeSheet, String template) {
-		this(timeSheet, template, Main.DEFAULT_EXCLUDE_VACATION_ENTRIES);
+		this(timeSheet, template, false);
 	}
 
 	/**
