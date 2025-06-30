@@ -148,19 +148,22 @@ public class UserInterface {
 				}
 			}
 		});
+		itemList.requestFocusInWindow();
 	}
 
 	/**
 	 * Adds all hotkeys to the current {@link UserInterface#frame}. Most Hotkeys
-	 * just perform actions from buttons in the {@link ActionBar}.
-	 * Current Hotkeys are:
+	 * just perform actions from buttons in the {@link ActionBar}. Current Hotkeys
+	 * are:
 	 * <li>Ctrl S - Saves the file to JSON</li>
 	 * <li>Ctrl A - Add a new entry</li>
 	 * <li>Ctrl D - Duplicate the selected entry</li>
 	 * <li>Ctrl E - Exports to PDF</li>
 	 * <li>Ctrl P - Same as Ctrl E, synonym</li>
 	 * <li>Ctrl S - Compiles to LaTeX</li>
-	 * @param itemList The main item list, this will override the Ctrl + A keybind to add entry as well.
+	 * 
+	 * @param itemList The main item list, this will override the Ctrl + A keybind
+	 *                 to add entry as well.
 	 */
 	private void addHotkeys(final JList<?> itemList) {
 		// Ctrl + S to save
@@ -176,27 +179,30 @@ public class UserInterface {
 		// Ctrl + A to add a new entry
 		KeyStroke addEntryKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
 		// Replace the default “selectAll” for the list itself
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(addEntryKeyStroke, "addEntryAction");
-
-		for (var key : itemList.getInputMap().allKeys()) {
-			System.out.println("Key: " + key + " --- " + itemList.getInputMap().get(key));
-		}
-
 		AbstractAction addEntryAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("DEBUG");
 				buttonActionBar.addEntryButtonClicked();
 			}
 		};
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(addEntryKeyStroke, "addEntryAction");
 		frame.getRootPane().getActionMap().put("addEntryAction", addEntryAction);
 		// Override selectAll action
 		itemList.getActionMap().put("selectAll", addEntryAction);
 
+		// Remove selected entry with backspace key
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntry");
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntry");
+		itemList.getActionMap().put("removeListEntry", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeSelectedListEntry();
+			}
+		});
+
 		// Ctrl + D to duplicate the selected entry
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-				"duplicateEntryAction");
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "duplicateEntryAction");
 		frame.getRootPane().getActionMap().put("duplicateEntryAction", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -205,24 +211,20 @@ public class UserInterface {
 		});
 
 		// Ctrl + E and Ctrl + P should both print (export) to PDF
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-				"exportAction");
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-				"exportAction");
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "exportAction");
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_P, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "exportAction");
 		frame.getRootPane().getActionMap().put("exportAction", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("DEBUG PDF");
 				buttonActionBar.exportPdfButtonClicked();
 			}
 		});
 
 		// Ctrl + T to compile to LaTeX
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-				"compileAction");
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), "compileAction");
 		frame.getRootPane().getActionMap().put("compileAction", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

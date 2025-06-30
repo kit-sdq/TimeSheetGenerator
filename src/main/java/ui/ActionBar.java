@@ -73,10 +73,9 @@ public class ActionBar extends JPanel {
 	}
 
 	/**
-	 * This is the method that is called when the tex button is clicked.
-	 * First, it checks for a mismatch in worked time, then it prompts the
-	 * user to save the file as LaTeX.
-	 * <br/>
+	 * This is the method that is called when the tex button is clicked. First, it
+	 * checks for a mismatch in worked time, then it prompts the user to save the
+	 * file as LaTeX. <br/>
 	 * Exposed functionality because of hotkeys.
 	 */
 	public void compileTexButtonClicked() {
@@ -87,10 +86,9 @@ public class ActionBar extends JPanel {
 	}
 
 	/**
-	 * This is the method that is called when the print button is clicked.
-	 * First, it checks for a mismatch in worked time, then it prompts the
-	 * user to save the file as a pdf.
-	 * <br/>
+	 * This is the method that is called when the print button is clicked. First, it
+	 * checks for a mismatch in worked time, then it prompts the user to save the
+	 * file as a pdf. <br/>
 	 * Exposed functionality because of hotkeys.
 	 */
 	public void exportPdfButtonClicked() {
@@ -102,10 +100,9 @@ public class ActionBar extends JPanel {
 
 	/**
 	 * This is the method that is called when the add entry button is clicked.
-	 * Simply calls upon the current {@link UserInterface} to add a new entry,
-	 * after performing a check to see if there is space and showing an
-	 * appropriate dialog if not.
-	 * <br/>
+	 * Simply calls upon the current {@link UserInterface} to add a new entry, after
+	 * performing a check to see if there is space and showing an appropriate dialog
+	 * if not. <br/>
 	 * Exposed functionality because of hotkeys.
 	 */
 	public void addEntryButtonClicked() {

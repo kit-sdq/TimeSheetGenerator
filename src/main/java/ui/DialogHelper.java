@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -220,6 +219,10 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
+			makeEntryButton.requestFocusInWindow();
+			for (int index : new int[] { INDEX_START_TIME, INDEX_END_TIME, INDEX_BREAK_TIME }) {
+				updateTimeFieldView(index, labels.length - 1, timeFields, errorLabels, durationSummaryValue, durationWarningLabel, vacationCheckBox);
+			}
 			if (makeEntryAction(parentUi, durationWarningLabel, actionTextField, timeFields, vacationCheckBox))
 				dialog.dispose();
 		});
@@ -291,7 +294,7 @@ public final class DialogHelper {
 	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
-			if ( actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
+			if (actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
 				durationWarningLabel.setText(ACTIVITY_MESSAGE);
 			}
 			// warning label is updated automatically when fields are edited
@@ -590,13 +593,12 @@ public final class DialogHelper {
 	}
 
 	public static void addEnterEscapeHotkeys(JDialog dialog, JButton okButton, JButton cancelButton) {
-		/* ----------  ENTER  ---------- */
+		/* ---------- ENTER ---------- */
 		dialog.getRootPane().setDefaultButton(okButton);
 
-		/* ----------  ESCAPE  ---------- */
+		/* ---------- ESCAPE ---------- */
 		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
-		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(escape, "cancel-dialog");
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, "cancel-dialog");
 		dialog.getRootPane().getActionMap().put("cancel-dialog", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
