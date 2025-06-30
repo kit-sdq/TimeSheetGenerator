@@ -295,19 +295,7 @@ public final class DialogHelper {
 	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
-			if (actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
-				durationWarningLabel.setText(ACTIVITY_MESSAGE);
-			}
-			// warning label is updated automatically when fields are edited
-			if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
-				durationWarningLabel.setText("You need to enter a day!");
-			}
-			if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
-				durationWarningLabel.setText("You need to enter a start time!");
-			}
-			if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
-				durationWarningLabel.setText("You need to enter an end time!");
-			}
+			validateDurationFields(durationWarningLabel, actionTextField, timeFields);
 		}
 
 		if (!durationWarningLabel.getText().isBlank()) {
@@ -349,6 +337,33 @@ public final class DialogHelper {
 			checkStartEndTime(timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME]);
 			updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME],
 					durationWarningLabel, vacationCheckBox);
+		}
+	}
+
+	/**
+	 * Validates the activity and time fields' content when attempting to create an
+	 * entry. Writes the error message to the warning label specified as
+	 * durationWarningLabel.
+	 * 
+	 * @param durationWarningLabel the warning label for the entry dialog.
+	 * @param actionTextField      The text field for the activity.
+	 * @param timeFields           The fields where day and times are stored.
+	 *                             Locations in the array must match the global
+	 *                             constants for INDEX_...
+	 */
+	private static void validateDurationFields(JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields) {
+		if (actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
+			durationWarningLabel.setText(ACTIVITY_MESSAGE);
+		}
+		// warning label is updated automatically when fields are edited
+		if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
+			durationWarningLabel.setText("You need to enter a day!");
+		}
+		if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
+			durationWarningLabel.setText("You need to enter a start time!");
+		}
+		if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
+			durationWarningLabel.setText("You need to enter an end time!");
 		}
 	}
 
