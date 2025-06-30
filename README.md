@@ -37,17 +37,17 @@ Editing the global settings:<br/>
 
 ### There are Hotkeys now. They are as follows:
 
-| Hotkey                                   | Feature                                             |
-|------------------------------------------|-----------------------------------------------------|
-| Ctrl S                                   | Saves the file to JSON                              |
-| Ctrl Shift S                             | Saves the file to JSON with a prompt for a new file |
-| Ctrl A                                   | Add a new entry                                     |
-| Ctrl D                                   | Duplicate the selected entry                        |
-| Ctrl E                                   | Exports to PDF                                      |
-| Ctrl P                                   | Same as Ctrl E, synonym                             |
-| Ctrl S                                   | Compiles to LaTeX                                   |
-| Ctrl N                                   | Opens a new file                                    |
-| Ctrl O                                   | Opens an existing file                              |
+| Hotkey       | Feature                                             |
+|--------------|-----------------------------------------------------|
+| Ctrl S       | Saves the file to JSON                              |
+| Ctrl Shift S | Saves the file to JSON with a prompt for a new file |
+| Ctrl A       | Add a new entry                                     |
+| Ctrl D       | Duplicate the selected entry                        |
+| Ctrl E       | Exports to PDF                                      |
+| Ctrl P       | Same as Ctrl E, synonym ("print")                   |
+| Ctrl T       | Compiles to LaTeX                                   |
+| Ctrl N       | Opens a new file                                    |
+| Ctrl O       | Opens an existing file                              |
 
 ### The Hotkey for Ctrl A may change in the future, when operations on multiple list entries are supported, and may then be used for select all.
 

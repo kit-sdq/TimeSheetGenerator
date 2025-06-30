@@ -162,7 +162,7 @@ public class UserInterface {
 	 * <li>Ctrl D - Duplicate the selected entry</li>
 	 * <li>Ctrl E - Exports to PDF</li>
 	 * <li>Ctrl P - Same as Ctrl E, synonym</li>
-	 * <li>Ctrl S - Compiles to LaTeX</li>
+	 * <li>Ctrl T - Compiles to LaTeX</li>
 	 * <li>Ctrl N - Opens a new file</li>
 	 * <li>Ctrl O - Opens an existing file</li>
 	 *
