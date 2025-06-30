@@ -32,6 +32,7 @@ public final class DialogHelper {
 	static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
 	static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
 	static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
+	private static final String TIME_FORMAT = "%02d:%02d";
 
 	private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
 	private static final int MIN_BREAK_SIX_HOURS = 30;
@@ -409,7 +410,6 @@ public final class DialogHelper {
 			timeField.setText(text);
 		} else if (TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
 			text += "0";
-			timeField.setText(text);
 		}
 
 		Matcher matcher = TIME_PATTERN.matcher(text);
@@ -421,6 +421,7 @@ public final class DialogHelper {
 			} else {
 				errorLabel.setText("Invalid time");
 			}
+			timeField.setText(TIME_FORMAT.formatted(hours, minutes));
 		} else {
 			errorLabel.setText("Invalid time");
 		}
@@ -534,7 +535,8 @@ public final class DialogHelper {
 		if (timeStr == null)
 			return LocalTime.of(0, 0);
 		try {
-			return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
+			String time = timeStr.replace('.', ':');
+			return LocalTime.parse(time, DateTimeFormatter.ofPattern("H:mm"));
 		} catch (DateTimeParseException e) {
 			return LocalTime.of(0, 0);
 		}
