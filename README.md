@@ -14,6 +14,7 @@ Yes, you can drag and drop your month.json files into the generator.
 The files can be compiled to tex or directly compiled to a pdf.
 
 #### To open a file with the UI from the command line, you can type `$ java -jar TimeSheetGenerator.jar /path/to/month.json` to open the specified file with the TimesheetGenerator UI.
+#### The TimesheetGenerator also supports "Open with..." with Windows (and probably other OS), but be cautions if you want to open every JSON file with the TimesheetGenerator.
 
 ### User Interface: Images
 
@@ -31,6 +32,24 @@ Adding a new entry to the timesheet:<br/>
 
 Editing the global settings:<br/>
 <img src="/examples/ui/ui_global_settings.png" alt="Image of the Edit Global Settings Dialog" width="80%">
+
+## Hotkeys
+
+### There are Hotkeys now. They are as follows:
+
+| Hotkey                                   | Feature                                             |
+|------------------------------------------|-----------------------------------------------------|
+| Ctrl S                                   | Saves the file to JSON                              |
+| Ctrl Shift S                             | Saves the file to JSON with a prompt for a new file |
+| Ctrl A                                   | Add a new entry                                     |
+| Ctrl D                                   | Duplicate the selected entry                        |
+| Ctrl E                                   | Exports to PDF                                      |
+| Ctrl P                                   | Same as Ctrl E, synonym                             |
+| Ctrl S                                   | Compiles to LaTeX                                   |
+| Ctrl N                                   | Opens a new file                                    |
+| Ctrl O                                   | Opens an existing file                              |
+
+### The Hotkey for Ctrl A may change in the future, when operations on multiple list entries are supported, and may then be used for select all.
 
 ## Command Line Execution
 
