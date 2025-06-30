@@ -134,7 +134,7 @@ public class UserInterface {
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
-		addHotkeys();
+		addHotkeys(itemList);
 
 		// Show Frame
 		frame.setVisible(true);
@@ -160,8 +160,9 @@ public class UserInterface {
 	 * <li>Ctrl E - Exports to PDF</li>
 	 * <li>Ctrl P - Same as Ctrl E, synonym</li>
 	 * <li>Ctrl S - Compiles to LaTeX</li>
+	 * @param itemList The main item list, this will override the Ctrl + A keybind to add entry as well.
 	 */
-	private void addHotkeys() {
+	private void addHotkeys(final JList<?> itemList) {
 		// Ctrl + S to save
 		KeyStroke saveKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
 		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(saveKeyStroke, "saveAction");
@@ -173,15 +174,24 @@ public class UserInterface {
 		});
 
 		// Ctrl + A to add a new entry
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()),
-				"addEntryAction");
-		frame.getRootPane().getActionMap().put("addEntryAction", new AbstractAction() {
+		KeyStroke addEntryKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
+		// Replace the default “selectAll” for the list itself
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(addEntryKeyStroke, "addEntryAction");
+
+		for (var key : itemList.getInputMap().allKeys()) {
+			System.out.println("Key: " + key + " --- " + itemList.getInputMap().get(key));
+		}
+
+		AbstractAction addEntryAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("DEBUG");
 				buttonActionBar.addEntryButtonClicked();
 			}
-		});
+		};
+		frame.getRootPane().getActionMap().put("addEntryAction", addEntryAction);
+		// Override selectAll action
+		itemList.getActionMap().put("selectAll", addEntryAction);
 
 		// Ctrl + D to duplicate the selected entry
 		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
@@ -204,6 +214,7 @@ public class UserInterface {
 		frame.getRootPane().getActionMap().put("exportAction", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("DEBUG PDF");
 				buttonActionBar.exportPdfButtonClicked();
 			}
 		});

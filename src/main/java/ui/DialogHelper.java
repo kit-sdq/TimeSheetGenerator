@@ -6,8 +6,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.Duration;
@@ -50,7 +53,6 @@ public final class DialogHelper {
 		JDialog dialog = new JDialog();
 		dialog.setTitle(title);
 		dialog.setSize(600, 400);
-		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
 		// Labels for later
@@ -192,7 +194,7 @@ public final class DialogHelper {
 
 		row++;
 
-		// 7. Warning label for break time
+		// Warning label for break time
 		durationWarningLabel.setForeground(Color.RED);
 		gbc.gridx = 1;
 		gbc.gridy = row;
@@ -262,6 +264,9 @@ public final class DialogHelper {
 
 		dialog.add(panel);
 		dialog.setVisible(true);
+		addEnterEscapeHotkeys(dialog, makeEntryButton, cancelButton);
+		dialog.pack();
+		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
 
 	private static void discardChanges(TimesheetEntry entry, UserInterface parentUi, JDialog dialog) {
@@ -286,7 +291,7 @@ public final class DialogHelper {
 	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
-			if (actionTextField.getText().isBlank()) {
+			if ( actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
 				durationWarningLabel.setText(ACTIVITY_MESSAGE);
 			}
 			// warning label is updated automatically when fields are edited
@@ -582,6 +587,22 @@ public final class DialogHelper {
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
+	}
+
+	public static void addEnterEscapeHotkeys(JDialog dialog, JButton okButton, JButton cancelButton) {
+		/* ----------  ENTER  ---------- */
+		dialog.getRootPane().setDefaultButton(okButton);
+
+		/* ----------  ESCAPE  ---------- */
+		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(escape, "cancel-dialog");
+		dialog.getRootPane().getActionMap().put("cancel-dialog", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cancelButton.doClick();
+			}
+		});
 	}
 
 }
