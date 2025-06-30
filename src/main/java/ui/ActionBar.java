@@ -51,29 +51,13 @@ public class ActionBar extends JPanel {
 
 		this.add(buttonPanel, BorderLayout.WEST);
 
-		addButton.addActionListener(e -> {
-			if (this.parentUi.isSpaceForNewEntry()) {
-				DialogHelper.showEntryDialog(this.parentUi, "Add Entry");
-			} else {
-				ErrorHandler.showError("Entry limit reached", "You have reached the maximum of %d entries".formatted(UserInterface.MAX_ENTRIES));
-			}
-		});
+		addButton.addActionListener(e -> addEntryButtonClicked());
 		duplicateButton.addActionListener(l -> this.parentUi.duplicateSelectedListEntry());
 		removeButton.addActionListener(l -> this.parentUi.removeSelectedListEntry());
 		editButton.addActionListener(l -> this.parentUi.editSelectedListEntry());
 
-		compileButton.addActionListener(l -> {
-			if (hourMismatchCheck()) {
-				return;
-			}
-			FileExporter.printTex(this.parentUi);
-		});
-		printButton.addActionListener(l -> {
-			if (hourMismatchCheck()) {
-				return;
-			}
-			FileExporter.printPDF(this.parentUi);
-		});
+		compileButton.addActionListener(l -> compileTexButtonClicked());
+		printButton.addActionListener(l -> exportPdfButtonClicked());
 
 		hoursWorkedLabel = new JLabel();
 		fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);
@@ -86,6 +70,50 @@ public class ActionBar extends JPanel {
 	private boolean hourMismatchCheck() {
 		return (JSONHandler.getUISettings().isWarnOnHoursMismatch() && parentUi.hasWorkedHoursMismatch()
 				&& !parentUi.showOKCancelDialog("Hours mismatch", "Warning: The worked hours do not match the target working hours. Do you want to continue?"));
+	}
+
+	/**
+	 * This is the method that is called when the tex button is clicked.
+	 * First, it checks for a mismatch in worked time, then it prompts the
+	 * user to save the file as LaTeX.
+	 * <br/>
+	 * Exposed functionality because of hotkeys.
+	 */
+	public void compileTexButtonClicked() {
+		if (hourMismatchCheck()) {
+			return;
+		}
+		FileExporter.printTex(this.parentUi);
+	}
+
+	/**
+	 * This is the method that is called when the print button is clicked.
+	 * First, it checks for a mismatch in worked time, then it prompts the
+	 * user to save the file as a pdf.
+	 * <br/>
+	 * Exposed functionality because of hotkeys.
+	 */
+	public void exportPdfButtonClicked() {
+		if (hourMismatchCheck()) {
+			return;
+		}
+		FileExporter.printPDF(this.parentUi);
+	}
+
+	/**
+	 * This is the method that is called when the add entry button is clicked.
+	 * Simply calls upon the current {@link UserInterface} to add a new entry,
+	 * after performing a check to see if there is space and showing an
+	 * appropriate dialog if not.
+	 * <br/>
+	 * Exposed functionality because of hotkeys.
+	 */
+	public void addEntryButtonClicked() {
+		if (this.parentUi.isSpaceForNewEntry()) {
+			DialogHelper.showEntryDialog(this.parentUi, "Add Entry");
+		} else {
+			ErrorHandler.showError("Entry limit reached", "You have reached the maximum of %d entries".formatted(UserInterface.MAX_ENTRIES));
+		}
 	}
 
 	/**
