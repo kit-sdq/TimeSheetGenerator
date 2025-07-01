@@ -6,8 +6,10 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.Duration;
@@ -30,6 +32,7 @@ public final class DialogHelper {
 	static final Pattern TIME_PATTERN = Pattern.compile("^(\\d{1,2}):(\\d{2})$");
 	static final Pattern TIME_PATTERN_SMALL = Pattern.compile("^(\\d{1,2})$");
 	static final Pattern TIME_PATTERN_SEMI_SMALL = Pattern.compile("^(\\d{1,2}):(\\d)$");
+	private static final String TIME_FORMAT = "%02d:%02d";
 
 	private static final int MAX_TEXT_LENGTH_ACTIVITY = 30;
 	private static final int MIN_BREAK_SIX_HOURS = 30;
@@ -50,7 +53,6 @@ public final class DialogHelper {
 		JDialog dialog = new JDialog();
 		dialog.setTitle(title);
 		dialog.setSize(600, 400);
-		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
 		// Labels for later
@@ -192,7 +194,7 @@ public final class DialogHelper {
 
 		row++;
 
-		// 7. Warning label for break time
+		// Warning label for break time
 		durationWarningLabel.setForeground(Color.RED);
 		gbc.gridx = 1;
 		gbc.gridy = row;
@@ -218,6 +220,10 @@ public final class DialogHelper {
 
 		// Action listeners for buttons
 		makeEntryButton.addActionListener(e -> {
+			makeEntryButton.requestFocusInWindow();
+			for (int index : new int[] { INDEX_START_TIME, INDEX_END_TIME, INDEX_BREAK_TIME }) {
+				updateTimeFieldView(index, labels.length - 1, timeFields, errorLabels, durationSummaryValue, durationWarningLabel, vacationCheckBox);
+			}
 			if (makeEntryAction(parentUi, durationWarningLabel, actionTextField, timeFields, vacationCheckBox))
 				dialog.dispose();
 		});
@@ -262,6 +268,9 @@ public final class DialogHelper {
 
 		dialog.add(panel);
 		dialog.setVisible(true);
+		addEnterEscapeHotkeys(dialog, makeEntryButton, cancelButton);
+		dialog.pack();
+		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
 
 	private static void discardChanges(TimesheetEntry entry, UserInterface parentUi, JDialog dialog) {
@@ -286,19 +295,7 @@ public final class DialogHelper {
 	private static boolean makeEntryAction(UserInterface parentUI, JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields,
 			JCheckBox vacationCheckBox) {
 		if (durationWarningLabel.getText().isBlank()) {
-			if (actionTextField.getText().isBlank()) {
-				durationWarningLabel.setText(ACTIVITY_MESSAGE);
-			}
-			// warning label is updated automatically when fields are edited
-			if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
-				durationWarningLabel.setText("You need to enter a day!");
-			}
-			if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
-				durationWarningLabel.setText("You need to enter a start time!");
-			}
-			if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
-				durationWarningLabel.setText("You need to enter an end time!");
-			}
+			validateDurationFields(durationWarningLabel, actionTextField, timeFields);
 		}
 
 		if (!durationWarningLabel.getText().isBlank()) {
@@ -340,6 +337,33 @@ public final class DialogHelper {
 			checkStartEndTime(timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME]);
 			updateDurationSummary(durationSummaryValue, timeFields[INDEX_START_TIME], timeFields[INDEX_END_TIME], timeFields[INDEX_BREAK_TIME],
 					durationWarningLabel, vacationCheckBox);
+		}
+	}
+
+	/**
+	 * Validates the activity and time fields' content when attempting to create an
+	 * entry. Writes the error message to the warning label specified as
+	 * durationWarningLabel.
+	 * 
+	 * @param durationWarningLabel the warning label for the entry dialog.
+	 * @param actionTextField      The text field for the activity.
+	 * @param timeFields           The fields where day and times are stored.
+	 *                             Locations in the array must match the global
+	 *                             constants for INDEX_...
+	 */
+	private static void validateDurationFields(JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields) {
+		if (actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
+			durationWarningLabel.setText(ACTIVITY_MESSAGE);
+		}
+		// warning label is updated automatically when fields are edited
+		if (timeFields[INDEX_DAY].getText().isBlank() || timeFields[INDEX_DAY].getText().equals(DAY_PLACEHOLDER)) {
+			durationWarningLabel.setText("You need to enter a day!");
+		}
+		if (timeFields[INDEX_START_TIME].getText().isBlank() || timeFields[INDEX_START_TIME].getText().equals(TIME_PLACEHOLDER)) {
+			durationWarningLabel.setText("You need to enter a start time!");
+		}
+		if (timeFields[INDEX_END_TIME].getText().isBlank() || timeFields[INDEX_END_TIME].getText().equals(TIME_PLACEHOLDER)) {
+			durationWarningLabel.setText("You need to enter an end time!");
 		}
 	}
 
@@ -401,7 +425,6 @@ public final class DialogHelper {
 			timeField.setText(text);
 		} else if (TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
 			text += "0";
-			timeField.setText(text);
 		}
 
 		Matcher matcher = TIME_PATTERN.matcher(text);
@@ -413,6 +436,7 @@ public final class DialogHelper {
 			} else {
 				errorLabel.setText("Invalid time");
 			}
+			timeField.setText(TIME_FORMAT.formatted(hours, minutes));
 		} else {
 			errorLabel.setText("Invalid time");
 		}
@@ -526,7 +550,8 @@ public final class DialogHelper {
 		if (timeStr == null)
 			return LocalTime.of(0, 0);
 		try {
-			return LocalTime.parse(timeStr, DateTimeFormatter.ofPattern("H:mm"));
+			String time = timeStr.replace('.', ':');
+			return LocalTime.parse(time, DateTimeFormatter.ofPattern("H:mm"));
 		} catch (DateTimeParseException e) {
 			return LocalTime.of(0, 0);
 		}
@@ -582,6 +607,21 @@ public final class DialogHelper {
 				Toolkit.getDefaultToolkit().beep();
 			}
 		}
+	}
+
+	public static void addEnterEscapeHotkeys(JDialog dialog, JButton okButton, JButton cancelButton) {
+		/* ---------- ENTER ---------- */
+		dialog.getRootPane().setDefaultButton(okButton);
+
+		/* ---------- ESCAPE ---------- */
+		KeyStroke escape = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		dialog.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(escape, "cancel-dialog");
+		dialog.getRootPane().getActionMap().put("cancel-dialog", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cancelButton.doClick();
+			}
+		});
 	}
 
 }
