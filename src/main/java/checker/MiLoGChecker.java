@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package checker;
 
 import checker.holiday.GermanState;
@@ -170,11 +170,10 @@ public class MiLoGChecker implements IChecker {
 		for (Map.Entry<LocalDate, TimeSpan[]> mapEntry : workingDays.entrySet()) {
 			for (TimeSpan[] pauseRule : PAUSE_RULES) {
 
-				// Checks whether time of entry is greater than or equal pause rule "activation"
+				// Checks whether time of entry is greater than pause rule "activation"
 				// time
 				// and pause time is less than the needed time.
-				if (mapEntry.getValue()[0].compareTo(pauseRule[0]) >= 0 && mapEntry.getValue()[1].compareTo(pauseRule[1]) < 0) {
-
+				if (mapEntry.getValue()[0].compareTo(pauseRule[0]) > 0 && mapEntry.getValue()[1].compareTo(pauseRule[1]) < 0) {
 					errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.TIME_PAUSE, mapEntry.getKey()));
 					result = CheckerReturn.INVALID;
 					break;

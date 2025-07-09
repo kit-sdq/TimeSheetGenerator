@@ -134,16 +134,7 @@ public class UserInterface {
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
-		// Add Ctrl + S to save
-
-		KeyStroke saveKeyStroke = KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx());
-		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(saveKeyStroke, "saveAction");
-		frame.getRootPane().getActionMap().put("saveAction", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveFile(currentOpenFile);
-			}
-		});
+		addHotkeys(itemList);
 
 		// Show Frame
 		frame.setVisible(true);
@@ -155,6 +146,98 @@ public class UserInterface {
 					frame.dispose();
 					System.exit(0);
 				}
+			}
+		});
+		itemList.requestFocusInWindow();
+	}
+
+	/**
+	 * Adds all hotkeys to the current {@link UserInterface#frame}. Most Hotkeys
+	 * just perform actions from buttons in the {@link ActionBar}. Current Hotkeys
+	 * are:
+	 * <li>Ctrl S - Saves the file to JSON</li>
+	 * <li>Ctrl + Shift + S - Saves the file to JSON with a prompt for a new
+	 * file</li>
+	 * <li>Ctrl A - Add a new entry</li>
+	 * <li>Ctrl D - Duplicate the selected entry</li>
+	 * <li>Ctrl E - Exports to PDF</li>
+	 * <li>Ctrl P - Same as Ctrl E, synonym</li>
+	 * <li>Ctrl T - Compiles to LaTeX</li>
+	 * <li>Ctrl N - Opens a new file</li>
+	 * <li>Ctrl O - Opens an existing file</li>
+	 *
+	 * @param itemList The main item list, this will override the Ctrl + A keybind
+	 *                 to add entry as well.
+	 */
+	private void addHotkeys(final JList<?> itemList) {
+		// Ctrl + S to save
+		addHotkey(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "saveAction", () -> saveFile(currentOpenFile));
+
+		// Ctrl + Shift + S to save As ...
+		addHotkey(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, "saveAsAction", this::saveFileAs);
+
+		// Ctrl + A to add a new entry
+		addHotkey(KeyEvent.VK_A, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "addEntryAction", buttonActionBar::addEntryButtonClicked);
+		// Replace the default “selectAll” for the list itself by overriding selectAll
+		// action
+		itemList.getActionMap().put("selectAll", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				buttonActionBar.addEntryButtonClicked();
+			}
+		});
+
+		// Remove selected entry with backspace key
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
+		itemList.getActionMap().put("removeListEntry", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeSelectedListEntry();
+			}
+		});
+
+		// Ctrl + D to duplicate the selected entry
+		addHotkey(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "duplicateEntryAction", this::duplicateSelectedListEntry);
+
+		// Ctrl + E and Ctrl + P should both print (export) to PDF
+		addHotkey(KeyEvent.VK_E, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "exportActionE", buttonActionBar::exportPdfButtonClicked);
+		addHotkey(KeyEvent.VK_P, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "exportActionP", buttonActionBar::exportPdfButtonClicked);
+
+		// Ctrl + T to compile to LaTeX
+		addHotkey(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "compileAction", buttonActionBar::compileTexButtonClicked);
+
+		// Ctrl + O to open an existing file
+		addHotkey(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "openExistingFile", this::openFile);
+
+		// Ctrl + N to open a new file
+		addHotkey(KeyEvent.VK_N, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "openNewFile", this::clearWorkspace);
+	}
+
+	/**
+	 * Adds a hotkey to the main JFrame. The key should come from {@link KeyEvent},
+	 * and the keyModifiers should be from {@link InputEvent}. The action is the
+	 * method performed when the key combination is pressed.
+	 * <p>
+	 * For proper Ctrl,
+	 * {@code Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()} is okay too.
+	 * </p>
+	 * 
+	 * @param key          The key / letter itself. Should be from
+	 *                     {@link KeyEvent}.VK_<?>
+	 * @param keyModifiers The key modifiers, like Shift or Ctrl. Should be from
+	 *                     {@link InputEvent}
+	 * @param actionName   The name for the action. Should be unique, as this is the
+	 *                     map key.
+	 * @param action       The action to run when the combination is pressed.
+	 */
+	@SuppressWarnings("all") // for usage of keyModifiers
+	private void addHotkey(int key, int keyModifiers, String actionName, Runnable action) {
+		frame.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(key, keyModifiers), actionName);
+		frame.getRootPane().getActionMap().put(actionName, new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				action.run();
 			}
 		});
 	}
