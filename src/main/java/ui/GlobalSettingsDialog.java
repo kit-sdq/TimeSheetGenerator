@@ -28,7 +28,6 @@ public final class GlobalSettingsDialog {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
 		dialog.setSize(690, 525);
-		dialog.setModal(true);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
 		Global globalSettings = JSONHandler.getGlobalSettings();
@@ -182,6 +181,9 @@ public final class GlobalSettingsDialog {
 		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
 		dialog.add(scrollPanel);
 		dialog.setVisible(true);
+		DialogHelper.addEnterEscapeHotkeys(dialog, saveButton, cancelButton);
+		dialog.pack();
+		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
 
 	/**

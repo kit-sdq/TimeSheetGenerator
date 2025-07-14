@@ -92,6 +92,14 @@ public final class FileChooser {
 
 		if (userSelection == JFileChooser.APPROVE_OPTION) {
 			File fileToSave = fileChooser.getSelectedFile();
+			if (!fileToSave.getName().endsWith(".%s".formatted(extension))) {
+				String path = fileToSave.getAbsolutePath();
+				if (!fileToSave.getName().endsWith(".")) {
+					// Add dot
+					path = path + ".";
+				}
+				fileToSave = new File(path + extension);
+			}
 			if (fileToSave.exists()) {
 				int result = JOptionPane.showConfirmDialog(null, "The file already exists. Do you want to override it?", "Existing file",
 						JOptionPane.YES_NO_OPTION);
