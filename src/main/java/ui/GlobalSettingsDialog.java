@@ -221,7 +221,7 @@ public final class GlobalSettingsDialog {
 			return false;
 
 		// Update globalSettings object
-		if (fields.length == 5) {
+		if (fields.length >= 5) {
 			globalSettings.setName(fields[0].getText());
 			globalSettings.setStaffId(Integer.parseInt(fields[1].getText()));
 			globalSettings.setDepartment(fields[2].getText());
