@@ -2,7 +2,6 @@
 package ui;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.regex.Pattern;
@@ -19,6 +18,7 @@ public class JTimeField extends JTextField {
 	public JTimeField(UserInterface parentUi, String text) {
 		super(4);
 		this.setHorizontalAlignment(CENTER);
+		this.setForeground(TextColors.DEFAULT.color());
 
 		DialogHelper.addPlaceholderText(this, PLACEHOLDER, text);
 
@@ -47,9 +47,9 @@ public class JTimeField extends JTextField {
 		super.setText(text);
 
 		if (!text.isBlank() && !DialogHelper.TIME_PATTERN.matcher(text).matches()) {
-			setForeground(Color.RED);
+			setForeground(TextColors.ERROR.color());
 		} else {
-			setForeground(getText().equals(PLACEHOLDER) ? Color.GRAY : Color.BLACK);
+			setForeground(getText().equals(PLACEHOLDER) ? TextColors.PLACEHOLDER.color() : TextColors.DEFAULT.color());
 		}
 	}
 
@@ -57,13 +57,13 @@ public class JTimeField extends JTextField {
 		// Prevent auto-focus on clear
 		super.setFocusable(false);
 		super.setText(PLACEHOLDER);
-		setForeground(Color.GRAY);
+		setForeground(TextColors.PLACEHOLDER.color());
 		super.setFocusable(true);
 	}
 
 	@Override
 	public boolean isValid() {
-		return getForeground() != Color.RED;
+		return getForeground() != TextColors.ERROR.color();
 	}
 
 	@Override
