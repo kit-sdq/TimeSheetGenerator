@@ -125,7 +125,7 @@ public final class DialogHelper {
 
 			// 5. Error label for invalid time
 			JLabel errorLabel = new JLabel(" ");
-			errorLabel.setForeground(Color.RED);
+			errorLabel.setForeground(TextColors.ERROR.color());
 			errorLabels[i] = errorLabel;
 			gbc.gridx = 2;
 			gbc.gridy = row;
@@ -262,7 +262,7 @@ public final class DialogHelper {
 			}
 
 			private void update() {
-				if (actionTextField.getForeground() != Color.BLACK)
+				if (actionTextField.getForeground() != TextColors.DEFAULT.color())
 					return; // Not if placeholder text
 				taskSummaryValue.setText(actionTextField.getText());
 				if (!actionTextField.getText().isBlank() && durationWarningLabel.getText().equals(ACTIVITY_MESSAGE)) {
@@ -359,7 +359,7 @@ public final class DialogHelper {
 	 *                             constants for INDEX_...
 	 */
 	private static void validateDurationFields(JLabel durationWarningLabel, JTextField actionTextField, JTextField[] timeFields) {
-		if (actionTextField.getText().isBlank() || actionTextField.getForeground() != Color.BLACK) {
+		if (actionTextField.getText().isBlank() || actionTextField.getForeground() != TextColors.DEFAULT.color()) {
 			durationWarningLabel.setText(ACTIVITY_MESSAGE);
 		}
 		// warning label is updated automatically when fields are edited
@@ -386,10 +386,10 @@ public final class DialogHelper {
 	 */
 	public static void addPlaceholderText(JTextComponent component, String placeholder, String otherText) {
 		if (otherText == null || otherText.isEmpty()) {
-			component.setForeground(Color.GRAY);
+			component.setForeground(TextColors.PLACEHOLDER.color());
 			component.setText(placeholder);
 		} else {
-			component.setForeground(Color.BLACK);
+			component.setForeground(TextColors.DEFAULT.color());
 			component.setText(otherText);
 		}
 
@@ -397,9 +397,9 @@ public final class DialogHelper {
 			@Override
 			public void focusGained(FocusEvent e) {
 				// Gray Color <=> Text is placeholder and should be treated as such
-				if (component.getForeground().equals(Color.GRAY)) {
+				if (component.getForeground().equals(TextColors.PLACEHOLDER.color())) {
 					component.setText("");
-					component.setForeground(Color.BLACK);
+					component.setForeground(TextColors.DEFAULT.color());
 				}
 			}
 
@@ -458,14 +458,14 @@ public final class DialogHelper {
 		if (DAY_PATTERN.matcher(dayText).matches()) {
 			int day = Integer.parseInt(dayText);
 			if (day >= 1 && day <= 31) {
-				dayField.setForeground(Color.BLACK);
+				dayField.setForeground(TextColors.DEFAULT.color());
 				errorLabel.setText(" ");
 			} else {
-				dayField.setForeground(Color.RED);
+				dayField.setForeground(TextColors.ERROR.color());
 				errorLabel.setText("Day out of range");
 			}
 		} else {
-			dayField.setForeground(Color.RED);
+			dayField.setForeground(TextColors.ERROR.color());
 			errorLabel.setText("Day must be a number");
 		}
 	}
