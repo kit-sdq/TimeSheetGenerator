@@ -13,7 +13,6 @@ import java.util.List;
 
 public class DragDropJFrame extends JFrame {
 
-	private static final Color HOVER_COLOR = new Color(160, 160, 160);
 	private static final Color DEFAULT_COLOR = UIManager.getColor("Panel.background");
 
 	private final transient UserInterface parentUi;
@@ -26,7 +25,7 @@ public class DragDropJFrame extends JFrame {
 			@Override
 			public void dragEnter(DropTargetDragEvent dtde) {
 				if (isDragAcceptable(dtde)) {
-					setColor(HOVER_COLOR);
+					setColor(TextColors.HOVER.color());
 					dtde.acceptDrag(DnDConstants.ACTION_COPY);
 				} else {
 					dtde.rejectDrag();
