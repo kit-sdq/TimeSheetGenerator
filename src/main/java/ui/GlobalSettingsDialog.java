@@ -105,6 +105,11 @@ public final class GlobalSettingsDialog {
 				// Add focus listener for validation when focus is lost
 				textField.addFocusListener(new FocusAdapter() {
 					@Override
+					public void focusGained(FocusEvent e) {
+						textField.selectAll();
+					}
+
+					@Override
 					public void focusLost(FocusEvent e) {
 						validateField(fields[index], errorLabels[index], index);
 					}
