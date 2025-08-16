@@ -136,6 +136,11 @@ public final class DialogHelper {
 
 			timeField.addFocusListener(new FocusAdapter() {
 				@Override
+				public void focusGained(FocusEvent e) {
+					timeField.selectAll();
+				}
+
+				@Override
 				public void focusLost(FocusEvent e) {
 					updateTimeFieldView(index, labels.length - 1, timeFields, errorLabels, durationSummaryValue, durationWarningLabel, vacationCheckBox);
 				}
