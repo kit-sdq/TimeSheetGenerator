@@ -480,11 +480,11 @@ public final class DialogHelper {
 		LocalTime endTime = parseTime(endText);
 		if (startTime != null && endTime != null) {
 			if (startTime.isAfter(endTime)) {
-				startField.setForeground(Color.RED);
-				endField.setForeground(Color.RED);
+				startField.setForeground(TextColors.ERROR.color());
+				endField.setForeground(TextColors.ERROR.color());
 			} else {
-				startField.setForeground(Color.BLACK);
-				endField.setForeground(Color.BLACK);
+				startField.setForeground(TextColors.DEFAULT.color());
+				endField.setForeground(TextColors.DEFAULT.color());
 			}
 		}
 	}
