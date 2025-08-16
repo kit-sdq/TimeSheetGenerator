@@ -406,7 +406,7 @@ public final class DialogHelper {
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (component.getText().isEmpty()) {
-					component.setForeground(Color.GRAY);
+					component.setForeground(TextColors.PLACEHOLDER.color());
 					component.setText(placeholder);
 				}
 			}
