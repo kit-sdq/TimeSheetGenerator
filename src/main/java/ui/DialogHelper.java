@@ -79,6 +79,7 @@ public final class DialogHelper {
 		panel.add(actionLabel, gbc);
 
 		JTextField actionTextField = new JTextField("", MAX_TEXT_LENGTH_ACTIVITY);
+		actionTextField.setCaretColor(TextColors.DEFAULT.color());
 
 		addPlaceholderText(actionTextField, "Describe the activity", entry.getActivity());
 		if (!entry.getActivity().isEmpty()) {
@@ -113,6 +114,7 @@ public final class DialogHelper {
 			panel.add(timeLabel, gbc);
 
 			JTextField timeField = new JTextField(5); // 4. Reduced width
+			timeField.setCaretColor(TextColors.DEFAULT.color());
 			addPlaceholderText(timeField, placeholders[i], otherTexts[i]);
 			timeFields[i] = timeField;
 
