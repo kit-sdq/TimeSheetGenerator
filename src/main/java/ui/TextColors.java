@@ -10,15 +10,13 @@ public enum TextColors {
     PLACEHOLDER(Color.GRAY),
     ERROR(Color.RED);
 
-    private final Color darkColor;
-    private final Color lightColor;
+    private final Color color;
 
-    TextColors(Color darkColor) {
-        this.darkColor = darkColor;
-        this.lightColor = new Color(255 - darkColor.getRed(), 255 - darkColor.getGreen(), 255 - darkColor.getBlue());
+    TextColors(Color color) {
+        this.color = color;
     }
 
     public Color color() {
-        return darkColor;
+        return color;
     }
 }
