@@ -64,6 +64,7 @@ public class MonthlySettingsBar extends JPanel {
 		timeCarryPanel.add(predTimeLabel);
 
 		predTimeField = new JTimeField(this.parentUi);
+		predTimeField.setCaretColor(TextColors.DEFAULT.color());
 		predTimeField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
@@ -166,14 +167,14 @@ public class MonthlySettingsBar extends JPanel {
 		succTimeValue.setText(time.toString());
 		if (JSONHandler.getUISettings().isWarnOnHoursMismatch()) {
 			if (time.isNotZero()) {
-				succTimeValue.setForeground(Color.RED);
+				succTimeValue.setForeground(TextColors.ERROR.color());
 				succTimeValue.setFont(fontBold);
-				succTimeLabel.setForeground(Color.RED);
+				succTimeLabel.setForeground(TextColors.ERROR.color());
 				succTimeLabel.setFont(fontBold);
 			} else {
-				succTimeValue.setForeground(Color.BLACK);
+				succTimeValue.setForeground(TextColors.DEFAULT.color());
 				succTimeValue.setFont(fontNormal);
-				succTimeLabel.setForeground(Color.BLACK);
+				succTimeLabel.setForeground(TextColors.DEFAULT.color());
 				succTimeLabel.setFont(fontNormal);
 			}
 		}

@@ -89,13 +89,14 @@ public final class GlobalSettingsDialog {
 			// Error label for validation messages
 			if (i < errorLabels.length) {
 				JLabel errorLabel = new JLabel(" ");
-				errorLabel.setForeground(Color.RED);
+				errorLabel.setForeground(TextColors.ERROR.color());
 				errorLabels[i] = errorLabel;
 				panel.add(errorLabel, gbc);
 			}
 
 			if (i < TEXTBOXES_COUNT) {
 				JTextField textField = new JTextField(20);
+				textField.setCaretColor(TextColors.DEFAULT.color());
 				DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
 				fields[i] = textField;
 				panel.add(textField, gbc);
@@ -103,6 +104,11 @@ public final class GlobalSettingsDialog {
 
 				// Add focus listener for validation when focus is lost
 				textField.addFocusListener(new FocusAdapter() {
+					@Override
+					public void focusGained(FocusEvent e) {
+						textField.selectAll();
+					}
+
 					@Override
 					public void focusLost(FocusEvent e) {
 						validateField(fields[index], errorLabels[index], index);
@@ -140,13 +146,13 @@ public final class GlobalSettingsDialog {
 			addVacationEntryBox.setSelected(false);
 			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
 			pdfFormatField.setText(JSONHandler.DEFAULT_PDF_NAME_FORMAT_PROG);
-			pdfFormatField.setForeground(Color.BLACK);
+			pdfFormatField.setForeground(TextColors.DEFAULT.color());
 		});
 		presetAlgoButton.addActionListener((e) -> {
 			addVacationEntryBox.setSelected(true);
 			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
 			pdfFormatField.setText(JSONHandler.DEFAULT_PDF_NAME_FORMAT_ALGO);
-			pdfFormatField.setForeground(Color.BLACK);
+			pdfFormatField.setForeground(TextColors.DEFAULT.color());
 		});
 		presetButtonPanel.add(presetProggenButton);
 		presetButtonPanel.add(presetAlgoButton);
@@ -282,7 +288,7 @@ public final class GlobalSettingsDialog {
 	private static void validateField(JTextField textField, JLabel errorLabel, int index) {
 		String text = textField.getText().trim();
 		// Ignore placeholder text during validation
-		if (textField.getForeground().equals(Color.GRAY)) {
+		if (textField.getForeground().equals(TextColors.DEFAULT.color())) {
 			errorLabel.setText(" ");
 			return;
 		}
