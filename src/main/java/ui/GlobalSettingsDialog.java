@@ -145,13 +145,13 @@ public final class GlobalSettingsDialog {
 		presetProggenButton.addActionListener((e) -> {
 			addVacationEntryBox.setSelected(false);
 			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
-			pdfFormatField.setText(JSONHandler.DEFAULT_PDF_NAME_FORMAT_PROG);
+			pdfFormatField.setText(JSONHandler.getFieldDefaults().getDefaultFilenameProg());
 			pdfFormatField.setForeground(TextColors.DEFAULT.color());
 		});
 		presetAlgoButton.addActionListener((e) -> {
 			addVacationEntryBox.setSelected(true);
 			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
-			pdfFormatField.setText(JSONHandler.DEFAULT_PDF_NAME_FORMAT_ALGO);
+			pdfFormatField.setText(JSONHandler.getFieldDefaults().getDefaultFilenameAlgo());
 			pdfFormatField.setForeground(TextColors.DEFAULT.color());
 		});
 		presetButtonPanel.add(presetProggenButton);

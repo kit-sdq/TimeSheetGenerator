@@ -144,6 +144,8 @@
                     <archive>
                         <manifest>
                             <mainClass>main.Main</mainClass>
+                            <!-- Puts Implementation-Version=${project.version} etc. -->
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                     </archive>
                     <finalName>timesheetgenerator</finalName>
