@@ -136,12 +136,12 @@ public class ActionBar extends JPanel {
 			hoursWorkedLabel.setFont(fontBold);
 
 			if (uiSettings.isWarnOnHoursMismatch()) {
-				hoursWorkedLabel.setForeground(Color.RED);
+				hoursWorkedLabel.setForeground(TextColors.ERROR.color());
 			}
 		} else {
 			displayedWorkedHours = workedHours.toString();
 			successorHours = new Time(0, 0);
-			hoursWorkedLabel.setForeground(Color.BLACK);
+			hoursWorkedLabel.setForeground(TextColors.DEFAULT.color());
 
 			// Same Length
 			if (!totalHours.isLongerThan(workedHours))
