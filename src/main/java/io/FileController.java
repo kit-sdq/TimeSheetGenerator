@@ -1,10 +1,9 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package io;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -52,49 +51,49 @@ public class FileController {
 		return readInputStreamToString(new FileInputStream(file));
 	}
 
-    /**
-     * This method returns a {@link String} read from an {@link URL}.
-     *
-     * @param url - The url the {@link String} is read from.
-     * @return a {@link String} read from the {@link URL}
-     * @throws IOException if an I/O error occurs.
-     */
-    public static String readURLToString(URL url) throws IOException {
-        return readInputStreamToString(url.openStream());
-    }
+	/**
+	 * This method returns a {@link String} read from an {@link URL}.
+	 *
+	 * @param url - The url the {@link String} is read from.
+	 * @return a {@link String} read from the {@link URL}
+	 * @throws IOException if an I/O error occurs.
+	 */
+	public static String readURLToString(URL url) throws IOException {
+		return readInputStreamToString(url.openStream());
+	}
 
-    /**
-     * This method returns a {@link String} read from an {@link URL}.
-     * Allows to set timeouts in milliseconds for connection building and reading data.
-     *
-     * @param url - The url the {@link String} is read from.
-     * @param connectionTimeout - The maximum duration that connecting may take.
-     * @param readTimeout - The maximum duration that reading the data may take.
-     * @return a {@link String} read from the {@link URL}
-     * @throws IOException if an I/O error occurs or the connection times out.
-     */
-    public static String readURLToString(URL url, int connectionTimeout, int readTimeout) throws IOException {
-        long start = System.currentTimeMillis();
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        urlConnection.setConnectTimeout(connectionTimeout);
-        urlConnection.setReadTimeout(readTimeout);
+	/**
+	 * This method returns a {@link String} read from an {@link URL}. Allows to set
+	 * timeouts in milliseconds for connection building and reading data.
+	 *
+	 * @param url               - The url the {@link String} is read from.
+	 * @param connectionTimeout - The maximum duration that connecting may take.
+	 * @param readTimeout       - The maximum duration that reading the data may
+	 *                          take.
+	 * @return a {@link String} read from the {@link URL}
+	 * @throws IOException if an I/O error occurs or the connection times out.
+	 */
+	public static String readURLToString(URL url, int connectionTimeout, int readTimeout) throws IOException {
+		HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+		urlConnection.setConnectTimeout(connectionTimeout);
+		urlConnection.setReadTimeout(readTimeout);
 
-        // Sometimes, the timeouts simply don't work. The solution is (obviously) to manually terminate the connection:
-        Thread interruptThread = new Thread(() -> {
-            try {
-                Thread.sleep(connectionTimeout + readTimeout);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            urlConnection.disconnect();
-        });
-        interruptThread.start();
+		// Sometimes, the timeouts simply don't work. The solution is (obviously) to
+		// manually terminate the connection:
+		Thread interruptThread = new Thread(() -> {
+			try {
+				Thread.sleep(connectionTimeout + readTimeout);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+			urlConnection.disconnect();
+		});
+		interruptThread.start();
 
-        String data = readInputStreamToString(urlConnection.getInputStream());
-        interruptThread.interrupt();
-        System.out.println("Took " + (System.currentTimeMillis() - start) + "ms. Data: " + data);
-        return data;
-    }
+		String data = readInputStreamToString(urlConnection.getInputStream());
+		interruptThread.interrupt();
+		return data;
+	}
 
 	/**
 	 * This method saves a {@link String} to a {@link File}.

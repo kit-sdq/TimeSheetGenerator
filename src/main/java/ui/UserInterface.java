@@ -4,7 +4,6 @@ package ui;
 import lombok.Getter;
 import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
-import ui.json.DefaultsFetcher;
 import ui.json.JSONHandler;
 import ui.json.Month;
 

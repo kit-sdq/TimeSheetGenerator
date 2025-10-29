@@ -28,8 +28,9 @@ public final class JSONHandler {
 
 	private static Global globalSettings;
 	private static UISettings uiSettings;
-    // Should have default value for constructor in UISettings, although the loading order prevents any exception
-    private static FieldDefaults fieldDefaults = FieldDefaults.DEFAULT_VALUES;
+	// Should have default value for constructor in UISettings, although the loading
+	// order prevents any exception
+	private static FieldDefaults fieldDefaults = FieldDefaults.DEFAULT_VALUES;
 
 	private static String configDir;
 
@@ -57,7 +58,7 @@ public final class JSONHandler {
 		// Create a subdirectory for your application
 		configDir += "/TimeSheetGenerator";
 
-        loadDefaultValues();
+		loadDefaultValues();
 		createDefaultGlobalSettings();
 		createDefaultOtherGlobalSettings();
 		loadGlobal();
@@ -75,25 +76,25 @@ public final class JSONHandler {
 		return new Global(globalSettings);
 	}
 
-    /**
-     * Gets a copy of the current additional ui settings.
-     *
-     * @return Copy of ui settings
-     */
-    public static UISettings getUISettings() {
-        return new UISettings(uiSettings);
-    }
+	/**
+	 * Gets a copy of the current additional ui settings.
+	 *
+	 * @return Copy of ui settings
+	 */
+	public static UISettings getUISettings() {
+		return new UISettings(uiSettings);
+	}
 
-    /**
-     * Gets a copy of the current default values for given fields.
-     *
-     * @return Copy of field defaults.
-     */
-    public static FieldDefaults getFieldDefaults() {
-        return new FieldDefaults(fieldDefaults);
-    }
+	/**
+	 * Gets a copy of the current default values for given fields.
+	 *
+	 * @return Copy of field defaults.
+	 */
+	public static FieldDefaults getFieldDefaults() {
+		return new FieldDefaults(fieldDefaults);
+	}
 
-    private static void setGlobalSettings(Global globalSettings) {
+	private static void setGlobalSettings(Global globalSettings) {
 		JSONHandler.globalSettings = globalSettings;
 	}
 
@@ -101,7 +102,7 @@ public final class JSONHandler {
 		JSONHandler.uiSettings = otherSettings;
 	}
 
-    //region Global Settings JSON Object methods
+	// region Global Settings JSON Object methods
 
 	public static void loadGlobal() {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -143,9 +144,9 @@ public final class JSONHandler {
 		}
 	}
 
-    //endregion
+	// endregion
 
-    //region Month JSON Object methods
+	// region Month JSON Object methods
 
 	public static void loadMonth(UserInterface parentUi, File monthFile) {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -194,9 +195,9 @@ public final class JSONHandler {
 		}
 	}
 
-    //endregion
+	// endregion
 
-    //region Default JSON File Creation + Temp File Helper Methods
+	// region Default JSON File Creation + Temp File Helper Methods
 
 	public static File generateTemporaryJSONFile(MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
 		File f;
@@ -253,9 +254,9 @@ public final class JSONHandler {
 		saveGlobal(global);
 	}
 
-    //endregion
+	// endregion
 
-    //region UI Settings JSON Object methods
+	// region UI Settings JSON Object methods
 
 	public static File getUiSettingsFile() {
 		return new File(configDir, UI_SETTINGS_FILE_NAME);
@@ -294,51 +295,52 @@ public final class JSONHandler {
 		saveUISettings(settings);
 	}
 
-    //endregion
+	// endregion
 
-    //region Default Value JSON Object methods
+	// region Default Value JSON Object methods
 
-    private static File getValueDefaultsFile() {
-        return new File(configDir, DEFAULT_VALUES_FILE_NAME);
-    }
+	private static File getValueDefaultsFile() {
+		return new File(configDir, DEFAULT_VALUES_FILE_NAME);
+	}
 
-    public static void loadDefaultValues() {
-        FieldDefaults fieldDefaults;
-        try {
-            fieldDefaults = attemptLoadDefaultValues();
-        } catch (IOException | IllegalStateException e) {
-            // No need to write default values. If the endpoint is not reachable,
-            // we always want up-to-date values. In any case, the hardcoded values
-            // will be more up-to-date than (different) previously hardcoded values,
-            // so there is no need to save the hardcoded values to a file.
-            fieldDefaults = FieldDefaults.DEFAULT_VALUES;
-        }
-        JSONHandler.fieldDefaults = fieldDefaults;
-    }
+	public static void loadDefaultValues() {
+		FieldDefaults fieldDefaults;
+		try {
+			fieldDefaults = attemptLoadDefaultValues();
+		} catch (IOException | IllegalStateException e) {
+			// No need to write default values. If the endpoint is not reachable,
+			// we always want up-to-date values. In any case, the hardcoded values
+			// will be more up-to-date than (different) previously hardcoded values,
+			// so there is no need to save the hardcoded values to a file.
+			fieldDefaults = FieldDefaults.DEFAULT_VALUES;
+		}
+		JSONHandler.fieldDefaults = fieldDefaults;
+	}
 
-    private static FieldDefaults attemptLoadDefaultValues() throws IOException, IllegalStateException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        Optional<String> loadedJson = DefaultsFetcher.fetchJSONFromEndpoint();
-        File defaultsFile = getValueDefaultsFile();
+	private static FieldDefaults attemptLoadDefaultValues() throws IOException, IllegalStateException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		Optional<String> loadedJson = DefaultsFetcher.fetchJSONFromEndpoint();
+		File defaultsFile = getValueDefaultsFile();
 
-        if (loadedJson.isPresent()) {
-            String json = loadedJson.get();
-            try {
-                Files.writeString(defaultsFile.toPath(), json);
-            } catch (IOException ignored) { }   // ignore, we just save if we can
-            return objectMapper.readValue(json, FieldDefaults.class);
-        } else {
-            // Attempt to load from file or return default
-            if (defaultsFile.exists()) {
-                return objectMapper.readValue(defaultsFile, FieldDefaults.class);
-            } else {
-                throw new IllegalStateException();
-            }
-        }
-    }
+		if (loadedJson.isPresent()) {
+			String json = loadedJson.get();
+			try {
+				Files.writeString(defaultsFile.toPath(), json);
+			} catch (IOException ignored) {
+			} // ignore, we just save if we can
+			return objectMapper.readValue(json, FieldDefaults.class);
+		} else {
+			// Attempt to load from file or return default
+			if (defaultsFile.exists()) {
+				return objectMapper.readValue(defaultsFile, FieldDefaults.class);
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+	}
 
-    //endregion
+	// endregion
 
 	private static void cleanUp() {
 		File[] files = new File(configDir).listFiles();

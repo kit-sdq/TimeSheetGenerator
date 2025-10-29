@@ -22,7 +22,8 @@ public class UISettings {
 	 * Specifies the naming format for exported PDF files.
 	 * <p>
 	 * The format can include placeholders for dynamic values from other current
-	 * settings, such as the name, month and year. The default value is defined by the default filename for Prog in the Default Values object retrieved by
+	 * settings, such as the name, month and year. The default value is defined by
+	 * the default filename for Prog in the Default Values object retrieved by
 	 * {@link JSONHandler#getFieldDefaults()}.
 	 * </p>
 	 */
