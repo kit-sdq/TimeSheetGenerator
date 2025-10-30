@@ -30,24 +30,28 @@ public class ActionBar extends JPanel {
 		buttonPanel.add(addButton);
 
 		JButton duplicateButton = new JButton("Duplicate");
-		duplicateButton.setPreferredSize(new Dimension(100, 50));
+		duplicateButton.setPreferredSize(new Dimension(115, 50));
 		buttonPanel.add(duplicateButton);
 
 		JButton editButton = new JButton("Edit");
-		editButton.setPreferredSize(new Dimension(70, 50));
+		editButton.setPreferredSize(new Dimension(75, 50));
 		buttonPanel.add(editButton);
 
 		JButton removeButton = new JButton("Remove");
-		removeButton.setPreferredSize(new Dimension(100, 50));
+		removeButton.setPreferredSize(new Dimension(110, 50));
 		buttonPanel.add(removeButton);
 
 		JButton compileButton = new JButton("Compile to Tex");
-		compileButton.setPreferredSize(new Dimension(125, 50));
+		compileButton.setPreferredSize(new Dimension(140, 50));
 		buttonPanel.add(compileButton);
 
 		JButton printButton = new JButton("Print to PDF");
-		printButton.setPreferredSize(new Dimension(105, 50));
+		printButton.setPreferredSize(new Dimension(115, 50));
 		buttonPanel.add(printButton);
+
+		JButton createEmailButton = new JButton("Make Email");
+		createEmailButton.setPreferredSize(new Dimension(115, 50));
+		buttonPanel.add(createEmailButton);
 
 		this.add(buttonPanel, BorderLayout.WEST);
 
@@ -58,6 +62,7 @@ public class ActionBar extends JPanel {
 
 		compileButton.addActionListener(l -> compileTexButtonClicked());
 		printButton.addActionListener(l -> exportPdfButtonClicked());
+		createEmailButton.addActionListener(l -> this.parentUi.createEmailClicked());
 
 		hoursWorkedLabel = new JLabel();
 		fontNormal = hoursWorkedLabel.getFont().deriveFont(18f);

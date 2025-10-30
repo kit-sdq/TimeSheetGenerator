@@ -37,8 +37,8 @@ public class FieldDefaults {
 	private String defaultMailSubjectProg;
 	@JsonProperty("emailTitleAlgo")
 	private String defaultMailSubjectAlgo;
-	@JsonProperty("emailReceiverProg")
-	private String defaultMailReceiverProg;
+	@JsonProperty("emailRecipientProg")
+	private String defaultMailRecipientProg;
 
 	/**
 	 * Creates a new object for all data that is fetched from the endpoint in
@@ -65,13 +65,13 @@ public class FieldDefaults {
 	 *                             Algo with the timesheet.
 	 */
 	public FieldDefaults(String newestVersion, String defaultFilenameProg, String defaultFilenameAlgo, String defaultMailSubjectProg,
-			String defaultMailSubjectAlgo, String defaultMailReceiverProg) {
+			String defaultMailSubjectAlgo, String defaultMailRecipientProg) {
 		this.newestVersion = newestVersion;
 		this.defaultFilenameProg = defaultFilenameProg;
 		this.defaultFilenameAlgo = defaultFilenameAlgo;
 		this.defaultMailSubjectProg = defaultMailSubjectProg;
 		this.defaultMailSubjectAlgo = defaultMailSubjectAlgo;
-		this.defaultMailReceiverProg = defaultMailReceiverProg;
+		this.defaultMailRecipientProg = defaultMailRecipientProg;
 	}
 
 	/**
@@ -86,6 +86,7 @@ public class FieldDefaults {
 		this.defaultFilenameAlgo = other.defaultFilenameAlgo;
 		this.defaultMailSubjectProg = other.defaultMailSubjectProg;
 		this.defaultMailSubjectAlgo = other.defaultMailSubjectAlgo;
+		this.defaultMailRecipientProg = other.defaultMailRecipientProg;
 	}
 
 	public static final FieldDefaults DEFAULT_VALUES = new FieldDefaults(System.getProperty("version"), DEFAULT_PDF_NAME_FORMAT, DEFAULT_PDF_NAME_FORMAT,

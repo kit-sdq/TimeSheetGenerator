@@ -28,7 +28,7 @@ public class UISettings {
 	 * </p>
 	 */
 	private String exportPdfNameFormat = JSONHandler.getFieldDefaults().getDefaultFilenameProg();
-	private String mailReceiver = JSONHandler.getFieldDefaults().getDefaultMailReceiverProg();
+	private String mailRecipient = JSONHandler.getFieldDefaults().getDefaultMailRecipientProg();
 	private String mailSubjectFormat = JSONHandler.getFieldDefaults().getDefaultMailSubjectProg();
 
 	public UISettings() {
@@ -45,8 +45,12 @@ public class UISettings {
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;
 		this.exportPdfNameFormat = uiSettings.exportPdfNameFormat;
-		this.mailReceiver = uiSettings.mailReceiver;
+		this.mailRecipient = uiSettings.mailRecipient;
 		this.mailSubjectFormat = uiSettings.mailSubjectFormat;
+		// Recipient may not be null
+		if (mailRecipient == null || mailRecipient.isBlank()) {
+			mailRecipient = JSONHandler.getFieldDefaults().getDefaultMailRecipientProg();
+		}
 	}
 
 	// Constructors, Getters, and Setters
@@ -66,8 +70,8 @@ public class UISettings {
 		save();
 	}
 
-	public void setMailReceiver(String mailReceiver) {
-		this.mailReceiver = mailReceiver;
+	public void setMailRecipient(String mailRecipient) {
+		this.mailRecipient = mailRecipient;
 		save();
 	}
 

@@ -2,16 +2,23 @@
 package ui;
 
 import lombok.Getter;
+import mail.MailtoLinkBuilder;
 import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
 import ui.json.Month;
+import ui.json.UISettings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Optional;
 
 public class UserInterface {
 
@@ -486,10 +493,47 @@ public class UserInterface {
 		return workedTime;
 	}
 
+	public void createEmailClicked() {
+		Optional<String> emailAddressOpt = showEmailTextfieldPopup();
+		if (emailAddressOpt.isEmpty()) return;
+		emailAddressOpt.ifPresent(email -> {
+			JSONHandler.getUISettings().setMailRecipient(email);
+			MailtoLinkBuilder builder = new MailtoLinkBuilder(this);
+			String url = builder.constructLink();
+			try {
+				Desktop.getDesktop().mail(new URI(builder.constructLink()));
+			} catch (URISyntaxException e) {
+				ErrorHandler.showError("Error while creating mail", "An error occurred while creating and opening the mail link. If the url is malformed, please%ncreate an issue on the Github page: %s".formatted(url));
+			} catch (IOException e) {
+				ErrorHandler.showError("Error while opening mailto link", "Failed to load mailto link in your default email client. Do you have one?");
+			}
+		});
+	}
+
 	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public boolean showOKCancelDialog(String title, String message) {
 		int result = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.OK_CANCEL_OPTION);
 		return JOptionPane.OK_OPTION == result;
+	}
+
+	private Optional<String> showEmailTextfieldPopup() {
+		UISettings uiSettings = JSONHandler.getUISettings();
+		JTextField emailField = new JTextField(30);
+		DialogHelper.addPlaceholderText(emailField, uiSettings.getMailRecipient(), uiSettings.getMailRecipient());
+		emailField.setCaretPosition(0);
+
+		JPanel panel = new JPanel(new BorderLayout(5, 5));
+		panel.add(new JLabel("Email Recipient:"), BorderLayout.WEST);
+		panel.add(emailField, BorderLayout.CENTER);
+		panel.add(new JLabel("Attention: You still need to attach the timesheet!"), BorderLayout.SOUTH);
+
+		return JOptionPane.showConfirmDialog(
+				null,
+				panel,
+				"Submit timesheet per email",
+				JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE
+		) == JOptionPane.OK_OPTION ? Optional.of(emailField.getText().trim()) : Optional.empty();
 	}
 
 	public static void main(String[] args) {
