@@ -11,7 +11,6 @@ public class TemplateFormatter {
 	 * settings or the given {@link UserInterface}. The formatting rules can be read
 	 * in the README or below:
 	 *
-	 * <p>
 	 * <ul>
 	 * <li><code>%FIRST%</code>: First- and middle names, separated by space</li>
 	 * <li><code>%FIRST_U%</code>: First- and middle names, separated by
@@ -23,7 +22,6 @@ public class TemplateFormatter {
 	 * <li><code>%YY%</code>: Year (2 digits)</li>
 	 * <li><code>%YYYY%</code>: Year (4 digits)</li>
 	 * </ul>
-	 * </p>
 	 * 
 	 * @param template      The string template.
 	 * @param userInterface The ui instance that provides data like the current
