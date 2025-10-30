@@ -21,13 +21,14 @@ public final class GlobalSettingsDialog {
 
 	private static final int SCROLL_SENSITIVITY = 16;
 
-	private static final int TEXTBOXES_COUNT = 6;
+	private static final int TEXTBOXES_COUNT = 7;
 	private static final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
+	private static final int TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT = 6;
 
 	public static void showGlobalSettingsDialog(UserInterface parentUI) {
 		JDialog dialog = new JDialog();
 		dialog.setTitle("Global Settings");
-		dialog.setSize(690, 525);
+		dialog.setSize(690, 555);
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
 		Global globalSettings = JSONHandler.getGlobalSettings();
@@ -64,13 +65,13 @@ public final class GlobalSettingsDialog {
 		useGermanMonthNameBox.setSelected(uiSettings.isUseGermanMonths());
 		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
 
-		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Working Area:", "Add Signature at Bottom:",
+		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Email Subject Format:", "Working Area:", "Add Signature at Bottom:",
 				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
 				"Warn when too few/ too many hours:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage",
-				uiSettings.getExportPdfNameFormat() };
+				uiSettings.getExportPdfNameFormat(), uiSettings.getMailSubjectFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
-				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat() };
+				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat(), uiSettings.getMailSubjectFormat() };
 		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
 
 		for (int i = 0; i < labels.length; i++) {
@@ -98,6 +99,7 @@ public final class GlobalSettingsDialog {
 				JTextField textField = new JTextField(20);
 				textField.setCaretColor(TextColors.DEFAULT.color());
 				DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
+				textField.setCaretPosition(0);
 				fields[i] = textField;
 				panel.add(textField, gbc);
 				final int index = i;
@@ -147,12 +149,18 @@ public final class GlobalSettingsDialog {
 			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
 			pdfFormatField.setText(JSONHandler.getFieldDefaults().getDefaultFilenameProg());
 			pdfFormatField.setForeground(TextColors.DEFAULT.color());
+			JTextField mailSubjectFormatField = fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT];
+			mailSubjectFormatField.setText(JSONHandler.getFieldDefaults().getDefaultMailSubjectProg());
+			mailSubjectFormatField.setForeground(TextColors.DEFAULT.color());
 		});
 		presetAlgoButton.addActionListener((e) -> {
 			addVacationEntryBox.setSelected(true);
 			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
 			pdfFormatField.setText(JSONHandler.getFieldDefaults().getDefaultFilenameAlgo());
 			pdfFormatField.setForeground(TextColors.DEFAULT.color());
+			JTextField mailSubjectFormatField = fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT];
+			mailSubjectFormatField.setText(JSONHandler.getFieldDefaults().getDefaultMailSubjectAlgo());
+			mailSubjectFormatField.setForeground(TextColors.DEFAULT.color());
 		});
 		presetButtonPanel.add(presetProggenButton);
 		presetButtonPanel.add(presetAlgoButton);
@@ -245,6 +253,8 @@ public final class GlobalSettingsDialog {
 		}
 		if (fields.length > TEXTFIELD_INDEX_PDF_FORMAT)
 			uiSettings.setExportPdfNameFormat(fields[TEXTFIELD_INDEX_PDF_FORMAT].getText());
+		if (fields.length > TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT)
+			uiSettings.setMailSubjectFormat(fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT].getText());
 
 		// Save globalSettings to file or database as needed
 		JSONHandler.saveGlobal(globalSettings);
@@ -256,7 +266,7 @@ public final class GlobalSettingsDialog {
 
 	private static void showPdfFormatHelp(JDialog parentDialog) {
 		String message = """
-				You can use the following placeholders in the PDF name format:
+				You can use the following placeholders in TimesheetGenerator formats:
 
 				- %FIRST%: First- and middle names, separated by space
 				- %FIRST_U%: First- and middle names, separated by underscores
