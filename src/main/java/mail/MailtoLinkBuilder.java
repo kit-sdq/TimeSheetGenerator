@@ -5,15 +5,12 @@ import ui.UserInterface;
 import ui.json.JSONHandler;
 import ui.json.UISettings;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.security.URIParameter;
 
 public class MailtoLinkBuilder {
 
-    private static final String LINK_TEMPLATE = "mailto:%s";
-    private static final String LINK_CONTENT_TEMPLATE = "%s?subject=%s";
+    private static final String LINK_TEMPLATE = "mailto:%s?subject=%s";
 
     private final UserInterface parentUi;
 
@@ -27,13 +24,9 @@ public class MailtoLinkBuilder {
     }
 
     public String constructLink() {
-        return LINK_TEMPLATE.formatted(encodeURIComponent(constructPlaintextLink()));
-    }
-
-    private String constructPlaintextLink() {
         UISettings settings = JSONHandler.getUISettings();
         String formattedSubject = TemplateFormatter.formatTemplate(settings.getMailSubjectFormat(), parentUi);
-        return LINK_CONTENT_TEMPLATE.formatted(settings.getMailRecipient(), formattedSubject);
+        return LINK_TEMPLATE.formatted(settings.getMailRecipient(), encodeURIComponent(formattedSubject));
     }
 
     private static String encodeURIComponent(String plaintextLink) {

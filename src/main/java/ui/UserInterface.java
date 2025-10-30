@@ -501,7 +501,7 @@ public class UserInterface {
 			MailtoLinkBuilder builder = new MailtoLinkBuilder(this);
 			String url = builder.constructLink();
 			try {
-				Desktop.getDesktop().mail(new URI(builder.constructLink()));
+				Desktop.getDesktop().mail(new URI(url));
 			} catch (URISyntaxException e) {
 				ErrorHandler.showError("Error while creating mail", "An error occurred while creating and opening the mail link. If the url is malformed, please%ncreate an issue on the Github page: %s".formatted(url));
 			} catch (IOException e) {
