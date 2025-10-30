@@ -34,9 +34,11 @@ public class FieldDefaults {
 	@JsonProperty("fileFormatAlgo")
 	private String defaultFilenameAlgo;
 	@JsonProperty("emailTitleProg")
-	private String defaultMailTitleProg;
+	private String defaultMailSubjectProg;
 	@JsonProperty("emailTitleAlgo")
-	private String defaultMailTitleAlgo;
+	private String defaultMailSubjectAlgo;
+	@JsonProperty("emailReceiverProg")
+	private String defaultMailReceiverProg;
 
 	/**
 	 * Creates a new object for all data that is fetched from the endpoint in
@@ -57,18 +59,19 @@ public class FieldDefaults {
 	 *                             Programming. May be different from Algo.
 	 * @param defaultFilenameAlgo  The default timesheet filename format for Algo.
 	 *                             May be different from Programming.
-	 * @param defaultMailTitleProg The default title format for the email sent to
+	 * @param defaultMailSubjectProg The default title format for the email sent to
 	 *                             KASTEL with the timesheet.
-	 * @param defaultMailTitleAlgo The default title format for the email sent to
+	 * @param defaultMailSubjectAlgo The default title format for the email sent to
 	 *                             Algo with the timesheet.
 	 */
-	public FieldDefaults(String newestVersion, String defaultFilenameProg, String defaultFilenameAlgo, String defaultMailTitleProg,
-			String defaultMailTitleAlgo) {
+	public FieldDefaults(String newestVersion, String defaultFilenameProg, String defaultFilenameAlgo, String defaultMailSubjectProg,
+			String defaultMailSubjectAlgo, String defaultMailReceiverProg) {
 		this.newestVersion = newestVersion;
 		this.defaultFilenameProg = defaultFilenameProg;
 		this.defaultFilenameAlgo = defaultFilenameAlgo;
-		this.defaultMailTitleProg = defaultMailTitleProg;
-		this.defaultMailTitleAlgo = defaultMailTitleAlgo;
+		this.defaultMailSubjectProg = defaultMailSubjectProg;
+		this.defaultMailSubjectAlgo = defaultMailSubjectAlgo;
+		this.defaultMailReceiverProg = defaultMailReceiverProg;
 	}
 
 	/**
@@ -81,11 +84,11 @@ public class FieldDefaults {
 		this.newestVersion = other.newestVersion;
 		this.defaultFilenameProg = other.defaultFilenameProg;
 		this.defaultFilenameAlgo = other.defaultFilenameAlgo;
-		this.defaultMailTitleProg = other.defaultMailTitleProg;
-		this.defaultMailTitleAlgo = other.defaultMailTitleAlgo;
+		this.defaultMailSubjectProg = other.defaultMailSubjectProg;
+		this.defaultMailSubjectAlgo = other.defaultMailSubjectAlgo;
 	}
 
 	public static final FieldDefaults DEFAULT_VALUES = new FieldDefaults(System.getProperty("version"), DEFAULT_PDF_NAME_FORMAT, DEFAULT_PDF_NAME_FORMAT,
-			"Stundenzettel %FIRST% %LAST% %YYYY%-%MM%", "Stundenzettel / Timesheet %MM_GER% / %MM_ENG% %YYYY% %FIRST% %LAST%");
+			"Stundenzettel %FIRST% %LAST% %YYYY%-%MM%", "Stundenzettel / Timesheet %MM_GER% / %MM_ENG% %YYYY% %FIRST% %LAST%", "programmieren-vorlesung@cs.kit.edu");
 
 }

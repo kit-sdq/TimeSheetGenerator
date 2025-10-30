@@ -28,6 +28,8 @@ public class UISettings {
 	 * </p>
 	 */
 	private String exportPdfNameFormat = JSONHandler.getFieldDefaults().getDefaultFilenameProg();
+	private String mailReceiver = JSONHandler.getFieldDefaults().getDefaultMailReceiverProg();
+	private String mailSubjectFormat = JSONHandler.getFieldDefaults().getDefaultMailSubjectProg();
 
 	public UISettings() {
 		// Default Constructor is required
@@ -43,22 +45,29 @@ public class UISettings {
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;
 		this.exportPdfNameFormat = uiSettings.exportPdfNameFormat;
+		this.mailReceiver = uiSettings.mailReceiver;
+		this.mailSubjectFormat = uiSettings.mailSubjectFormat;
 	}
 
 	// Constructors, Getters, and Setters
 
-	public void setMonthPath(String openMonthPath) {
+	private void setMonthPath(String openMonthPath) {
 		this.monthPath = openMonthPath;
 		save();
 	}
 
-	public void setTexPath(String texPath) {
+	private void setTexPath(String texPath) {
 		this.texPath = texPath;
 		save();
 	}
 
-	public void setPdfPath(String pdfPath) {
+	private void setPdfPath(String pdfPath) {
 		this.pdfPath = pdfPath;
+		save();
+	}
+
+	public void setMailReceiver(String mailReceiver) {
+		this.mailReceiver = mailReceiver;
 		save();
 	}
 
