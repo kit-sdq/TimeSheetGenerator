@@ -81,7 +81,7 @@ public class FileController {
 		// Sometimes, the timeouts simply don't work. The solution is (obviously) to
 		// manually terminate the connection:
 		Thread interruptThread = Thread.startVirtualThread(() -> {
-			long timeout = connectionTimeout + readTimeout;
+			long timeout = (long) connectionTimeout + readTimeout;
 			try {
 				Thread.sleep(timeout);
 			} catch (InterruptedException e) {
