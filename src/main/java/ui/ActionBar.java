@@ -46,11 +46,11 @@ public class ActionBar extends JPanel {
 		buttonPanel.add(compileButton);
 
 		JButton printButton = new JButton("Print to PDF");
-		printButton.setPreferredSize(new Dimension(115, 50));
+		printButton.setPreferredSize(new Dimension(135, 50));
 		buttonPanel.add(printButton);
 
-		JButton createEmailButton = new JButton("Make Email");
-		createEmailButton.setPreferredSize(new Dimension(115, 50));
+		JButton createEmailButton = new JButton("Draft E-Mail");
+		createEmailButton.setPreferredSize(new Dimension(125, 50));
 		buttonPanel.add(createEmailButton);
 
 		this.add(buttonPanel, BorderLayout.WEST);
