@@ -65,13 +65,14 @@ public final class GlobalSettingsDialog {
 		useGermanMonthNameBox.setSelected(uiSettings.isUseGermanMonths());
 		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
 
-		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Email Subject Format:", "Working Area:", "Add Signature at Bottom:",
-				"Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
+		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Email Subject Format:", "Working Area:",
+				"Add Signature at Bottom:", "Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
 				"Warn when too few/ too many hours:" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage",
 				uiSettings.getExportPdfNameFormat(), uiSettings.getMailSubjectFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
-				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat(), uiSettings.getMailSubjectFormat() };
+				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat(),
+				uiSettings.getMailSubjectFormat() };
 		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
 
 		for (int i = 0; i < labels.length; i++) {

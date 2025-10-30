@@ -3,7 +3,6 @@ package ui.fileexplorer;
 
 import ui.TemplateFormatter;
 import ui.UserInterface;
-import ui.json.Global;
 import ui.json.JSONHandler;
 import ui.json.UISettings;
 

@@ -15,7 +15,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
@@ -495,7 +494,8 @@ public class UserInterface {
 
 	public void createEmailClicked() {
 		Optional<String> emailAddressOpt = showEmailTextfieldPopup();
-		if (emailAddressOpt.isEmpty()) return;
+		if (emailAddressOpt.isEmpty())
+			return;
 		emailAddressOpt.ifPresent(email -> {
 			JSONHandler.getUISettings().setMailRecipient(email);
 			MailtoLinkBuilder builder = new MailtoLinkBuilder(this);
@@ -503,7 +503,9 @@ public class UserInterface {
 			try {
 				Desktop.getDesktop().mail(new URI(url));
 			} catch (URISyntaxException e) {
-				ErrorHandler.showError("Error while creating mail", "An error occurred while creating and opening the mail link. If the url is malformed, please%ncreate an issue on the Github page: %s".formatted(url));
+				ErrorHandler.showError("Error while creating mail",
+						"An error occurred while creating and opening the mail link. If the url is malformed, please%ncreate an issue on the Github page: %s"
+								.formatted(url));
 			} catch (IOException e) {
 				ErrorHandler.showError("Error while opening mailto link", "Failed to load mailto link in your default email client. Do you have one?");
 			}
@@ -527,13 +529,8 @@ public class UserInterface {
 		panel.add(emailField, BorderLayout.CENTER);
 		panel.add(new JLabel("Attention: You still need to attach the timesheet!"), BorderLayout.SOUTH);
 
-		return JOptionPane.showConfirmDialog(
-				null,
-				panel,
-				"Submit timesheet per email",
-				JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE
-		) == JOptionPane.OK_OPTION ? Optional.of(emailField.getText().trim()) : Optional.empty();
+		return JOptionPane.showConfirmDialog(null, panel, "Submit timesheet per email", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION ? Optional.of(emailField.getText().trim()) : Optional.empty();
 	}
 
 	public static void main(String[] args) {

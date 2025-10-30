@@ -53,16 +53,16 @@ public class FieldDefaults {
 	 * Creates a new object for all data that is fetched from the endpoint in
 	 * {@link DefaultsFetcher}.
 	 *
-	 * @param newestVersion        The version of the newest available release of
-	 *                             the TimesheetGenerator.
-	 * @param defaultFilenameProg  The default timesheet filename format for
-	 *                             Programming. May be different from Algo.
-	 * @param defaultFilenameAlgo  The default timesheet filename format for Algo.
-	 *                             May be different from Programming.
+	 * @param newestVersion          The version of the newest available release of
+	 *                               the TimesheetGenerator.
+	 * @param defaultFilenameProg    The default timesheet filename format for
+	 *                               Programming. May be different from Algo.
+	 * @param defaultFilenameAlgo    The default timesheet filename format for Algo.
+	 *                               May be different from Programming.
 	 * @param defaultMailSubjectProg The default title format for the email sent to
-	 *                             KASTEL with the timesheet.
+	 *                               KASTEL with the timesheet.
 	 * @param defaultMailSubjectAlgo The default title format for the email sent to
-	 *                             Algo with the timesheet.
+	 *                               Algo with the timesheet.
 	 */
 	public FieldDefaults(String newestVersion, String defaultFilenameProg, String defaultFilenameAlgo, String defaultMailSubjectProg,
 			String defaultMailSubjectAlgo, String defaultMailRecipientProg) {
@@ -90,6 +90,7 @@ public class FieldDefaults {
 	}
 
 	public static final FieldDefaults DEFAULT_VALUES = new FieldDefaults(System.getProperty("version"), DEFAULT_PDF_NAME_FORMAT, DEFAULT_PDF_NAME_FORMAT,
-			"Stundenzettel %FIRST% %LAST% %YYYY%-%MM%", "Stundenzettel / Timesheet %MM_GER% / %MM_ENG% %YYYY% %FIRST% %LAST%", "programmieren-vorlesung@cs.kit.edu");
+			"Stundenzettel %FIRST% %LAST% %YYYY%-%MM%", "Stundenzettel / Timesheet %MM_GER% / %MM_ENG% %YYYY% %FIRST% %LAST%",
+			"programmieren-vorlesung@cs.kit.edu");
 
 }
