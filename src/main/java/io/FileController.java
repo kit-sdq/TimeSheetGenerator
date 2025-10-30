@@ -80,15 +80,15 @@ public class FileController {
 
 		// Sometimes, the timeouts simply don't work. The solution is (obviously) to
 		// manually terminate the connection:
-		Thread interruptThread = new Thread(() -> {
+		Thread interruptThread = Thread.startVirtualThread(() -> {
+			long timeout = connectionTimeout + readTimeout;
 			try {
-				Thread.sleep(connectionTimeout + readTimeout);
+				Thread.sleep(timeout);
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
 			}
 			urlConnection.disconnect();
 		});
-		interruptThread.start();
 
 		String data = readInputStreamToString(urlConnection.getInputStream());
 		interruptThread.interrupt();

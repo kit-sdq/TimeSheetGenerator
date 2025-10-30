@@ -13,7 +13,7 @@ import java.util.Optional;
  * name format for programming or the program newestVersion from an endpoint on
  * Internet.
  */
-public class DefaultsFetcher {
+public final class DefaultsFetcher {
 
 	private static final String ENDPOINT_DEFAULT_VALUES = "https://kit.api.justonedev.net/api/prog/timesheetgen/defaults";
 
@@ -23,6 +23,9 @@ public class DefaultsFetcher {
 	// On my pc with good connection, in the IDE, it takes about 1 second.
 	private static final int MAX_CONNECTION_TIME = 1250;
 	private static final int MAX_READ_TIME = 1100;
+
+	private DefaultsFetcher() {
+	}
 
 	public static Optional<String> fetchJSONFromEndpoint() {
 		try {

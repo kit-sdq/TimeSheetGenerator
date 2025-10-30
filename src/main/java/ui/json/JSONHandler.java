@@ -328,7 +328,8 @@ public final class JSONHandler {
 			try {
 				Files.writeString(defaultsFile.toPath(), json);
 			} catch (IOException ignored) {
-			} // ignore, we just save if we can
+				// ignore, we just save if we can
+			}
 			return objectMapper.readValue(json, FieldDefaults.class);
 		} else {
 			// Attempt to load from file or return default

@@ -4,7 +4,10 @@ package ui;
 import ui.json.Global;
 import ui.json.JSONHandler;
 
-public class TemplateFormatter {
+public final class TemplateFormatter {
+
+	private TemplateFormatter() {
+	}
 
 	/**
 	 * Formats a custom template String by inserting all data from the global
