@@ -1,4 +1,4 @@
-/* Licensed under MIT 2023-2024. */
+/* Licensed under MIT 2023-2025. */
 package checker;
 
 import data.*;
@@ -16,7 +16,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
 
 	// TODO Out source entry generator
 	private static final int RANDOM_ENTRY_BOUND = 50;
-	private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntries();
+	private static final int CHECKER_ENTRY_MAX = MiLoGChecker.getMaxEntriesLatex();
 
 	//// Placeholder for time sheet construction
 	private static final Employee EMPLOYEE = new Employee("Max Mustermann", 1234567);
@@ -127,7 +127,7 @@ public class MiLoGCheckerRowNumExceedanceTest {
 
 		//// Assertions
 		assertEquals(numberOfEntries, timeSheet.getEntries().size());
-		if (timeSheet.getEntries().size() > MiLoGChecker.getMaxEntries()) {
+		if (timeSheet.getEntries().size() > MiLoGChecker.getMaxEntriesLatex()) {
 			assertEquals(CheckerReturn.INVALID, checker.getResult());
 			assertTrue(checker.getErrors().stream().anyMatch(item -> item.getErrorMessage().equals(
 					MiLoGChecker.MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE.getErrorMessage(CHECKER_ENTRY_MAX, numberOfEntries - CHECKER_ENTRY_MAX))));

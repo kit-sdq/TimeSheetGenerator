@@ -1,6 +1,7 @@
 /* Licensed under MIT 2024-2025. */
 package ui.export;
 
+import checker.ExportType;
 import ui.ErrorHandler;
 import ui.UserInterface;
 import ui.fileexplorer.FileChooser;
@@ -22,7 +23,7 @@ public final class FileExporter {
 				return;
 			}
 
-			Optional<String> error = TexCompiler.validateContents(tempFiles);
+			Optional<String> error = TexCompiler.validateContents(tempFiles, ExportType.EXPORT_LATEX);
 			if (error.isPresent()) {
 				error("Validation error", error.get());
 				return;
@@ -45,7 +46,7 @@ public final class FileExporter {
 			if (tempFiles == null)
 				return;
 
-			Optional<String> error = TexCompiler.validateContents(tempFiles);
+			Optional<String> error = TexCompiler.validateContents(tempFiles, ExportType.EXPORT_PDF);
 			if (error.isPresent()) {
 				error("Validation error", error.get());
 				return;

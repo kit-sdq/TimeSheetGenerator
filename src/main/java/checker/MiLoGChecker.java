@@ -27,24 +27,37 @@ public class MiLoGChecker implements IChecker {
 
 	// TODO Replace with enum
 	private static final TimeSpan[][] PAUSE_RULES = { { new TimeSpan(6, 0), new TimeSpan(0, 30) }, { new TimeSpan(9, 0), new TimeSpan(0, 45) } };
-	private static final int MAX_ROW_NUM = 20;
 	private static final GermanState STATE = GermanState.BW;
 
 	private final TimeSheet timeSheet;
+	private final int maxRowNum;
 
 	private CheckerReturn result;
 	private final Collection<CheckerError> errors;
 
 	/**
-	 * Constructs a new {@link MiLoGChecker} instance.
+	 * Constructs a new {@link MiLoGChecker} instance. The default value for the
+	 * {@link ExportType} is {@link ExportType#EXPORT_LATEX}.
 	 *
 	 * @param timeSheet - to be checked.
 	 */
 	public MiLoGChecker(TimeSheet timeSheet) {
+		this(timeSheet, ExportType.EXPORT_LATEX);
+	}
+
+	/**
+	 * Constructs a new {@link MiLoGChecker} instance.
+	 *
+	 * @param timeSheet  - to be checked.
+	 * @param exportType The export type, so if this is being exported to PDF or
+	 *                   Latex.
+	 */
+	public MiLoGChecker(TimeSheet timeSheet, ExportType exportType) {
 		this.timeSheet = timeSheet;
 
 		this.result = CheckerReturn.VALID;
 		this.errors = Collections.synchronizedCollection(new ArrayList<>());
+		this.maxRowNum = exportType.getMaxEntries();
 	}
 
 	/**
@@ -247,8 +260,8 @@ public class MiLoGChecker implements IChecker {
 	 */
 	protected void checkRowNumExceedance() {
 		int rowCount = timeSheet.getEntries().size();
-		if (rowCount > MAX_ROW_NUM) {
-			errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE, MAX_ROW_NUM, rowCount - MAX_ROW_NUM));
+		if (rowCount > maxRowNum) {
+			errors.add(new CheckerError(MiLoGCheckerErrorMessageProvider.ROWNUM_EXCEEDENCE, maxRowNum, rowCount - maxRowNum));
 			result = CheckerReturn.INVALID;
 		}
 	}
@@ -275,12 +288,26 @@ public class MiLoGChecker implements IChecker {
 
 	/**
 	 * This method gets the maximally allowed number of entries inside a
-	 * {@link TimeSheet}.
+	 * {@link TimeSheet}. This method is used for the latex template, as the
+	 * template is different from the PDF template.
 	 *
-	 * @return The maximum number of {@link Entry entries}.
+	 * @return The maximum number of {@link Entry entries} when using the latex
+	 *         template.
 	 */
-	protected static int getMaxEntries() {
-		return MAX_ROW_NUM;
+	protected static int getMaxEntriesLatex() {
+		return ExportType.EXPORT_LATEX.getMaxEntries();
+	}
+
+	/**
+	 * This method gets the maximally allowed number of entries inside a
+	 * {@link TimeSheet}. This method is used for the exported PDF, as the template
+	 * is different from the Latex template.
+	 *
+	 * @return The maximum number of {@link Entry entries} when using the pdf
+	 *         template.
+	 */
+	protected static int getMaxEntriesPDF() {
+		return ExportType.EXPORT_PDF.getMaxEntries();
 	}
 
 	/**

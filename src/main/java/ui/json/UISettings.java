@@ -23,10 +23,13 @@ public class UISettings {
 	 * <p>
 	 * The format can include placeholders for dynamic values from other current
 	 * settings, such as the name, month and year. The default value is defined by
-	 * {@link JSONHandler#DEFAULT_PDF_NAME_FORMAT_ALGO}.
+	 * the default filename for Prog in the Default Values object retrieved by
+	 * {@link JSONHandler#getFieldDefaults()}.
 	 * </p>
 	 */
-	private String exportPdfNameFormat = JSONHandler.DEFAULT_PDF_NAME_FORMAT_ALGO;
+	private String exportPdfNameFormat = JSONHandler.getFieldDefaults().getDefaultFilenameProg();
+	private String mailRecipient = JSONHandler.getFieldDefaults().getDefaultMailRecipientProg();
+	private String mailSubjectFormat = JSONHandler.getFieldDefaults().getDefaultMailSubjectProg();
 
 	public UISettings() {
 		// Default Constructor is required
@@ -42,22 +45,33 @@ public class UISettings {
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;
 		this.exportPdfNameFormat = uiSettings.exportPdfNameFormat;
+		this.mailRecipient = uiSettings.mailRecipient;
+		this.mailSubjectFormat = uiSettings.mailSubjectFormat;
+		// Recipient may not be null
+		if (mailRecipient == null || mailRecipient.isBlank()) {
+			mailRecipient = JSONHandler.getFieldDefaults().getDefaultMailRecipientProg();
+		}
 	}
 
 	// Constructors, Getters, and Setters
 
-	public void setMonthPath(String openMonthPath) {
+	private void setMonthPath(String openMonthPath) {
 		this.monthPath = openMonthPath;
 		save();
 	}
 
-	public void setTexPath(String texPath) {
+	private void setTexPath(String texPath) {
 		this.texPath = texPath;
 		save();
 	}
 
-	public void setPdfPath(String pdfPath) {
+	private void setPdfPath(String pdfPath) {
 		this.pdfPath = pdfPath;
+		save();
+	}
+
+	public void setMailRecipient(String mailRecipient) {
+		this.mailRecipient = mailRecipient;
 		save();
 	}
 
