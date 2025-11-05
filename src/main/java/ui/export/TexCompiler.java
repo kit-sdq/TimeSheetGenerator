@@ -1,6 +1,7 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui.export;
 
+import checker.ExportType;
 import ui.json.JSONHandler;
 
 import java.io.File;
@@ -20,11 +21,13 @@ public final class TexCompiler {
 	/**
 	 * Wrapper method for the timesheet generator module timesheet compiler.
 	 * 
-	 * @param tempFiles The temporary files.
+	 * @param tempFiles  The temporary files.
+	 * @param exportType The type of file that is being exported to, as they have
+	 *                   slight differences.
 	 * @return An optional of the error message, empty if success.
 	 */
-	static Optional<String> validateContents(TempFiles tempFiles) {
-		return main.Main.validateTimesheet(tempFiles.getGlobalFile(), tempFiles.getMonthFile());
+	static Optional<String> validateContents(TempFiles tempFiles, ExportType exportType) {
+		return main.Main.validateTimesheet(tempFiles.getGlobalFile(), tempFiles.getMonthFile(), exportType);
 	}
 
 }

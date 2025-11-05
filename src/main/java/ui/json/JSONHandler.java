@@ -13,9 +13,11 @@ import ui.TimesheetEntry;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 public final class JSONHandler {
@@ -26,43 +28,15 @@ public final class JSONHandler {
 
 	private static Global globalSettings;
 	private static UISettings uiSettings;
+	// Should have default value for constructor in UISettings, although the loading
+	// order prevents any exception
+	private static FieldDefaults fieldDefaults = FieldDefaults.DEFAULT_VALUES;
 
 	private static String configDir;
 
-	/**
-	 * Default file name format for, as requested by KASTEL @ KIT. This is the same
-	 * as {@link #DEFAULT_PDF_NAME_FORMAT_ALGO} but it connects month and year with
-	 * a space instead of an underscore.
-	 * <p>
-	 * Format Explained: - %LAST%: Last name of the user. - %FIRST_U%: First name of
-	 * the user with underscores instead of spaces. - %MM%: Two-digit month (e.g.,
-	 * 01 for January). - %YYYY%: Four-digit year (e.g., 2025).
-	 * </p>
-	 * <p>
-	 * An example would be:<br/>
-	 * Mustermann_Max_Tobias_04 2025.pdf<br/>
-	 * </p>
-	 */
-	public static final String DEFAULT_PDF_NAME_FORMAT_PROG = "%LAST%_%FIRST_U%_%MM% %YYYY%";
-
-	/**
-	 * Default file name format for, as requested by ITI @ KIT. This is the same as
-	 * {@link #DEFAULT_PDF_NAME_FORMAT_PROG} but it connects month and year with an
-	 * underscore as well.
-	 * <p>
-	 * Format Explained: - %LAST%: Last name of the user. - %FIRST_U%: First name of
-	 * the user with underscores instead of spaces. - %MM%: Two-digit month (e.g.,
-	 * 01 for January). - %YYYY%: Four-digit year (e.g., 2025).
-	 * </p>
-	 * <p>
-	 * An example would be:<br/>
-	 * Mustermann_Max_Tobias_04_2025.pdf<br/>
-	 * </p>
-	 */
-	public static final String DEFAULT_PDF_NAME_FORMAT_ALGO = "%LAST%_%FIRST_U%_%MM%_%YYYY%";
-
 	private static final String CONFIG_FILE_NAME = "global.json";
 	private static final String UI_SETTINGS_FILE_NAME = "settings.json";
+	private static final String DEFAULT_VALUES_FILE_NAME = "defaults.json";
 
 	private static final String ERROR = "An unexpected error occurred:%s%s".formatted(System.lineSeparator(), "%s");
 
@@ -84,6 +58,7 @@ public final class JSONHandler {
 		// Create a subdirectory for your application
 		configDir += "/TimeSheetGenerator";
 
+		loadDefaultValues();
 		createDefaultGlobalSettings();
 		createDefaultOtherGlobalSettings();
 		loadGlobal();
@@ -103,11 +78,20 @@ public final class JSONHandler {
 
 	/**
 	 * Gets a copy of the current additional ui settings.
-	 * 
+	 *
 	 * @return Copy of ui settings
 	 */
 	public static UISettings getUISettings() {
 		return new UISettings(uiSettings);
+	}
+
+	/**
+	 * Gets a copy of the current default values for given fields.
+	 *
+	 * @return Copy of field defaults.
+	 */
+	public static FieldDefaults getFieldDefaults() {
+		return new FieldDefaults(fieldDefaults);
 	}
 
 	private static void setGlobalSettings(Global globalSettings) {
@@ -117,6 +101,8 @@ public final class JSONHandler {
 	private static void setUISettings(UISettings otherSettings) {
 		JSONHandler.uiSettings = otherSettings;
 	}
+
+	// region Global Settings JSON Object methods
 
 	public static void loadGlobal() {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -157,6 +143,10 @@ public final class JSONHandler {
 			ErrorHandler.showError("Error saving UI settings file", ERROR.formatted(e.getMessage()));
 		}
 	}
+
+	// endregion
+
+	// region Month JSON Object methods
 
 	public static void loadMonth(UserInterface parentUi, File monthFile) {
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -204,6 +194,10 @@ public final class JSONHandler {
 			ErrorHandler.showError("Error saving month file", ERROR.formatted(e.getMessage()));
 		}
 	}
+
+	// endregion
+
+	// region Default JSON File Creation + Temp File Helper Methods
 
 	public static File generateTemporaryJSONFile(MonthlySettingsBar settingsBar, DefaultListModel<TimesheetEntry> entries) {
 		File f;
@@ -253,23 +247,27 @@ public final class JSONHandler {
 		Global global = new Global();
 		global.setName("Max Mustermann");
 		global.setStaffId(1234567);
-		global.setDepartment("Fakultät für Informatik");
+		global.setDepartment("KASTEL");
 		global.setWorkingTime("39:00");
 		global.setWage(13.98);
 		global.setWorkingArea("ub");
 		saveGlobal(global);
 	}
 
+	// endregion
+
+	// region UI Settings JSON Object methods
+
 	public static File getUiSettingsFile() {
 		return new File(configDir, UI_SETTINGS_FILE_NAME);
 	}
 
-	private static boolean otherSettingsFileExists() {
+	private static boolean uiSettingsFileExists() {
 		return getUiSettingsFile().exists();
 	}
 
 	public static void createDefaultOtherGlobalSettings() {
-		if (otherSettingsFileExists())
+		if (uiSettingsFileExists())
 			return;
 		try {
 			File f = getUiSettingsFile();
@@ -293,9 +291,57 @@ public final class JSONHandler {
 		settings.setUseYYYY(false);
 		settings.setUseGermanMonths(false);
 		settings.setWarnOnHoursMismatch(true);
-		settings.setExportPdfNameFormat(DEFAULT_PDF_NAME_FORMAT_ALGO);
+		settings.setExportPdfNameFormat(fieldDefaults.getDefaultFilenameProg());
 		saveUISettings(settings);
 	}
+
+	// endregion
+
+	// region Default Value JSON Object methods
+
+	private static File getValueDefaultsFile() {
+		return new File(configDir, DEFAULT_VALUES_FILE_NAME);
+	}
+
+	public static void loadDefaultValues() {
+		FieldDefaults fieldDefaults;
+		try {
+			fieldDefaults = attemptLoadDefaultValues();
+		} catch (IOException | IllegalStateException e) {
+			// No need to write default values. If the endpoint is not reachable,
+			// we always want up-to-date values. In any case, the hardcoded values
+			// will be more up-to-date than (different) previously hardcoded values,
+			// so there is no need to save the hardcoded values to a file.
+			fieldDefaults = FieldDefaults.DEFAULT_VALUES;
+		}
+		JSONHandler.fieldDefaults = fieldDefaults;
+	}
+
+	private static FieldDefaults attemptLoadDefaultValues() throws IOException, IllegalStateException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		Optional<String> loadedJson = DefaultsFetcher.fetchJSONFromEndpoint();
+		File defaultsFile = getValueDefaultsFile();
+
+		if (loadedJson.isPresent()) {
+			String json = loadedJson.get();
+			try {
+				Files.writeString(defaultsFile.toPath(), json);
+			} catch (IOException ignored) {
+				// ignore, we just save if we can
+			}
+			return objectMapper.readValue(json, FieldDefaults.class);
+		} else {
+			// Attempt to load from file or return default
+			if (defaultsFile.exists()) {
+				return objectMapper.readValue(defaultsFile, FieldDefaults.class);
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+	}
+
+	// endregion
 
 	private static void cleanUp() {
 		File[] files = new File(configDir).listFiles();

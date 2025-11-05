@@ -92,7 +92,7 @@ public class Main {
 		}
 
 		// Check time sheet
-		IChecker checker = new MiLoGChecker(timeSheet);
+		IChecker checker = new MiLoGChecker(timeSheet, ExportType.EXPORT_LATEX);
 		CheckerReturn checkerReturn;
 		try {
 			checkerReturn = checker.check();
@@ -143,9 +143,11 @@ public class Main {
 	 * 
 	 * @param globalFile The global.json file.
 	 * @param monthFile  The month.json file.
+	 * @param exportType The type of file that is being exported to, as they have
+	 *                   slight differences.
 	 * @return An optional of the error message.
 	 */
-	public static Optional<String> validateTimesheet(File globalFile, File monthFile) {
+	public static Optional<String> validateTimesheet(File globalFile, File monthFile, ExportType exportType) {
 		if (globalFile == null || monthFile == null)
 			return Optional.of("The global or month file were null. Try saving.");
 		String globalStr;
@@ -168,7 +170,7 @@ public class Main {
 		}
 
 		// Check time sheet
-		IChecker checker = new MiLoGChecker(timeSheet);
+		IChecker checker = new MiLoGChecker(timeSheet, exportType);
 		CheckerReturn checkerReturn;
 		try {
 			checkerReturn = checker.check();

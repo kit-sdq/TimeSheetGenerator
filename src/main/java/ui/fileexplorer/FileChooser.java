@@ -1,8 +1,8 @@
 /* Licensed under MIT 2024-2025. */
 package ui.fileexplorer;
 
+import ui.TemplateFormatter;
 import ui.UserInterface;
-import ui.json.Global;
 import ui.json.JSONHandler;
 import ui.json.UISettings;
 
@@ -25,11 +25,7 @@ public final class FileChooser {
 	 */
 	public static String getDefaultFileName(UserInterface parentUI) {
 		UISettings uiSettings = JSONHandler.getUISettings();
-		Global global = JSONHandler.getGlobalSettings();
-		return uiSettings.getExportPdfNameFormat().replace("%FIRST_U%", global.getFirstnameUnderscoreFormat()).replace("%FIRST%", global.getFirstname())
-				.replace("%LAST%", global.getLastname()).replace("%MM%", "%02d".formatted(parentUI.getCurrentMonthNumber()))
-				.replace("%MM_GER%", parentUI.getCurrentMonth().getGermanName()).replace("%MM_ENG%", parentUI.getCurrentMonthName())
-				.replace("%YY%", parentUI.getYear()).replace("%YYYY%", parentUI.getFullYear());
+		return TemplateFormatter.formatTemplate(uiSettings.getExportPdfNameFormat(), parentUI);
 	}
 
 	public static File chooseFile(String title, FileChooserType chooserType) {
