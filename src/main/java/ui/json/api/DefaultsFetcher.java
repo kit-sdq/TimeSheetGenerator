@@ -1,5 +1,5 @@
 /* Licensed under MIT 2025. */
-package ui.json;
+package ui.json.api;
 
 import io.FileController;
 

@@ -9,6 +9,10 @@ import ui.ErrorHandler;
 import ui.UserInterface;
 import ui.MonthlySettingsBar;
 import ui.TimesheetEntry;
+import ui.json.api.DefaultsFetcher;
+import ui.json.api.FieldDefaults;
+import ui.json.api.PresetCollection;
+import ui.json.api.PresetFetcher;
 
 import javax.swing.*;
 import java.io.File;
@@ -37,6 +41,7 @@ public final class JSONHandler {
 	private static final String CONFIG_FILE_NAME = "global.json";
 	private static final String UI_SETTINGS_FILE_NAME = "settings.json";
 	private static final String DEFAULT_VALUES_FILE_NAME = "defaults.json";
+	private static final String KNOWN_PRESETS_FILE_NAME = "presets.json";
 
 	private static final String ERROR = "An unexpected error occurred:%s%s".formatted(System.lineSeparator(), "%s");
 
@@ -303,6 +308,10 @@ public final class JSONHandler {
 		return new File(configDir, DEFAULT_VALUES_FILE_NAME);
 	}
 
+	private static File getKnownPresetsFile() {
+		return new File(configDir, KNOWN_PRESETS_FILE_NAME);
+	}
+
 	public static void loadDefaultValues() {
 		FieldDefaults fieldDefaults;
 		try {
@@ -322,6 +331,30 @@ public final class JSONHandler {
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		Optional<String> loadedJson = DefaultsFetcher.fetchJSONFromEndpoint();
 		File defaultsFile = getValueDefaultsFile();
+
+		if (loadedJson.isPresent()) {
+			String json = loadedJson.get();
+			try {
+				Files.writeString(defaultsFile.toPath(), json);
+			} catch (IOException ignored) {
+				// ignore, we just save if we can
+			}
+			return objectMapper.readValue(json, FieldDefaults.class);
+		} else {
+			// Attempt to load from file or return default
+			if (defaultsFile.exists()) {
+				return objectMapper.readValue(defaultsFile, FieldDefaults.class);
+			} else {
+				throw new IllegalStateException();
+			}
+		}
+	}
+
+	private static PresetCollection attemptLoadPresetCollection() throws IOException, IllegalStateException {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+		Optional<String> loadedJson = PresetFetcher.fetchJSONFromEndpoint();
+		File presetFile = getValueDefaultsFile();
 
 		if (loadedJson.isPresent()) {
 			String json = loadedJson.get();
