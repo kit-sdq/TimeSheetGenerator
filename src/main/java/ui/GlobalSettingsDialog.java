@@ -148,10 +148,11 @@ public final class GlobalSettingsDialog {
 
 		// Preset Switch at the bottom
 		JComboBox<Preset> presetSelector = makePresetSelector();
-		addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT_FORMAT], fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT]);
+		addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT_FORMAT],
+				fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT]);
 
 		JPanel presetSelectorPaddingPanel = new JPanel(new BorderLayout(15, 5));
-		JLabel choosePresetLabel = new JLabel("\t\tOr choose Preset:");	// sorry
+		JLabel choosePresetLabel = new JLabel("\t\tOr choose Preset:"); // sorry
 		choosePresetLabel.setFont(choosePresetLabel.getFont().deriveFont(Font.BOLD));
 		presetSelectorPaddingPanel.add(choosePresetLabel, BorderLayout.CENTER);
 		presetSelectorPaddingPanel.add(presetSelector, BorderLayout.EAST);
@@ -258,19 +259,15 @@ public final class GlobalSettingsDialog {
 		JComboBox<Preset> presetSelector = new JComboBox<>();
 		presetSelector.addItem(Preset.NO_PRESET);
 		JSONHandler.getPresets().getPresets().forEach(preset -> {
-			if (preset.isVisible()) presetSelector.addItem(preset);
+			if (preset.isVisible())
+				presetSelector.addItem(preset);
 		});
 		// Now, figure out which preset it selected by field values
 		return presetSelector;
 	}
 
-	private static void addPresetSelectionLogic(
-			JComboBox<Preset> presetSelector,
-			UISettings uiSettings,
-			JTextField fileNameTextField,
-			JTextField departmentField,
-			JTextField emailSubjectFormatField
-	) {
+	private static void addPresetSelectionLogic(JComboBox<Preset> presetSelector, UISettings uiSettings, JTextField fileNameTextField,
+			JTextField departmentField, JTextField emailSubjectFormatField) {
 		DocumentListener presetEditedListener = new DocumentListener() {
 			@Override
 			public void insertUpdate(DocumentEvent e) {
@@ -297,7 +294,8 @@ public final class GlobalSettingsDialog {
 		presetSelector.addActionListener(e -> {
 			final int selectedIndex = presetSelector.getSelectedIndex();
 			Preset selected = presetSelector.getItemAt(selectedIndex);
-			if (selected.equals(Preset.NO_PRESET)) return;
+			if (selected.equals(Preset.NO_PRESET))
+				return;
 			// Update values according to the preset:
 			fileNameTextField.setText(selected.getFileFormat());
 			departmentField.setText(selected.getDepartment());
@@ -314,11 +312,16 @@ public final class GlobalSettingsDialog {
 		for (int i = 1; i < presetSelector.getItemCount(); i++) {
 			Preset preset = presetSelector.getItemAt(i);
 			// Compare and see if we currently have this preset:
-			if (!fileNameTextField.getText().equals(preset.getFileFormat())) continue;
-			if (!departmentField.getText().equals(preset.getDepartment())) continue;
-			if (!emailSubjectFormatField.getText().equals(preset.getMailSubject())) continue;
-			if (!uiSettings.getMailRecipient().equals(preset.getMailRecipient())) continue;
-			if (!uiSettings.getMailRecipientsCC().equals(preset.getMailRecipientsCC())) continue;
+			if (!fileNameTextField.getText().equals(preset.getFileFormat()))
+				continue;
+			if (!departmentField.getText().equals(preset.getDepartment()))
+				continue;
+			if (!emailSubjectFormatField.getText().equals(preset.getMailSubject()))
+				continue;
+			if (!uiSettings.getMailRecipient().equals(preset.getMailRecipient()))
+				continue;
+			if (!uiSettings.getMailRecipientsCC().equals(preset.getMailRecipientsCC()))
+				continue;
 			presetSelector.setSelectedIndex(i);
 			break;
 		}

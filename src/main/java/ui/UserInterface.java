@@ -17,7 +17,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -542,7 +541,8 @@ public class UserInterface {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		JPanel recipientPanel = buildMailRecipientPanel(recipientField, "Email Recipient:", uiSettings.getMailRecipient(), uiSettings.getMailRecipient());
-		JPanel ccPanel = buildMailRecipientPanel(ccField, "CC Recipients:", "john.doe@gmail.com; praesidium@kit.edu", String.join("; ", uiSettings.getMailRecipientsCC()));
+		JPanel ccPanel = buildMailRecipientPanel(ccField, "CC Recipients:", "john.doe@gmail.com; praesidium@kit.edu",
+				String.join("; ", uiSettings.getMailRecipientsCC()));
 
 		panel.add(recipientPanel);
 		panel.add(ccPanel);
@@ -552,7 +552,8 @@ public class UserInterface {
 				JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION;
 
 		String recipient = recipientField.getText().trim();
-		List<String> ccRecipients = DialogHelper.isPlaceholder(ccField) ? List.of() : Arrays.stream(ccField.getText().replace(',', ';').split(";")).map(String::trim).toList();
+		List<String> ccRecipients = DialogHelper.isPlaceholder(ccField) ? List.of()
+				: Arrays.stream(ccField.getText().replace(',', ';').split(";")).map(String::trim).toList();
 
 		return proceed ? Optional.of(new MailInformation(recipient, ccRecipients)) : Optional.empty();
 	}

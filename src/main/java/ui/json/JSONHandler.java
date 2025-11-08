@@ -1,8 +1,6 @@
 /* Licensed under MIT 2024-2025. */
 package ui.json;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,7 +12,6 @@ import ui.MonthlySettingsBar;
 import ui.TimesheetEntry;
 import ui.json.api.DefaultsFetcher;
 import ui.json.api.FieldDefaults;
-import ui.json.api.Preset;
 import ui.json.api.PresetCollection;
 import ui.json.api.PresetFetcher;
 
@@ -39,12 +36,11 @@ public final class JSONHandler {
 	// Should have default value for constructor in UISettings, although the loading
 	// order prevents any exception
 	private static FieldDefaults fieldDefaults = FieldDefaults.DEFAULT_VALUES;
-    /**
-     * -- GETTER --
-     *  Gets a copy of the loaded preset collection.
-     */
-    @Getter
-    private static PresetCollection presets;
+	/**
+	 * -- GETTER -- Gets a copy of the loaded preset collection.
+	 */
+	@Getter
+	private static PresetCollection presets;
 
 	private static String configDir;
 
@@ -110,7 +106,7 @@ public final class JSONHandler {
 		return new FieldDefaults(fieldDefaults);
 	}
 
-    private static void setGlobalSettings(Global globalSettings) {
+	private static void setGlobalSettings(Global globalSettings) {
 		JSONHandler.globalSettings = globalSettings;
 	}
 
@@ -361,9 +357,9 @@ public final class JSONHandler {
 		}
 	}
 
-	//endregion
+	// endregion
 
-	//region Load Presets from File and API
+	// region Load Presets from File and API
 
 	private static void loadPresets() {
 		JSONHandler.presets = loadPresetCollection();
@@ -396,15 +392,18 @@ public final class JSONHandler {
 	}
 
 	/**
-	 * Parses a {@link PresetCollection} from a given file using
-	 * the given {@link ObjectMapper} and returns it as an Optional. Returns an empty optional if
-	 * either the file doesn't exist or does not contain a parseable {@link PresetCollection}.<br/>
-	 * Used to provide more readable code by moving try-catch blocks away from the main {@link JSONHandler#loadPresetCollection()} method.
+	 * Parses a {@link PresetCollection} from a given file using the given
+	 * {@link ObjectMapper} and returns it as an Optional. Returns an empty optional
+	 * if either the file doesn't exist or does not contain a parseable
+	 * {@link PresetCollection}.<br/>
+	 * Used to provide more readable code by moving try-catch blocks away from the
+	 * main {@link JSONHandler#loadPresetCollection()} method.
 	 * <p>
-	 *     Similar to {@link JSONHandler#parsePresetCollection(ObjectMapper, Optional)}.
+	 * Similar to {@link JSONHandler#parsePresetCollection(ObjectMapper, Optional)}.
 	 * </p>
+	 * 
 	 * @param objectMapper the ObjectMapper used to parse JSON.
-	 * @param file The file to parse from.
+	 * @param file         The file to parse from.
 	 * @return An optional of the parsed preset collection or empty.
 	 */
 	private static Optional<PresetCollection> parsePresetCollection(ObjectMapper objectMapper, File file) {
@@ -419,15 +418,18 @@ public final class JSONHandler {
 	}
 
 	/**
-	 * Parses a {@link PresetCollection} from a given string using
-	 * the given {@link ObjectMapper} and returns it as an Optional. Returns an empty optional if
-	 * either the string is null/empty or does not contain a parseable {@link PresetCollection}.<br/>
-	 * Used to provide more readable code by moving try-catch blocks away from the main {@link JSONHandler#loadPresetCollection()} method.
+	 * Parses a {@link PresetCollection} from a given string using the given
+	 * {@link ObjectMapper} and returns it as an Optional. Returns an empty optional
+	 * if either the string is null/empty or does not contain a parseable
+	 * {@link PresetCollection}.<br/>
+	 * Used to provide more readable code by moving try-catch blocks away from the
+	 * main {@link JSONHandler#loadPresetCollection()} method.
 	 * <p>
-	 *     Similar to {@link JSONHandler#parsePresetCollection(ObjectMapper, File)}.
+	 * Similar to {@link JSONHandler#parsePresetCollection(ObjectMapper, File)}.
 	 * </p>
+	 * 
 	 * @param objectMapper the ObjectMapper used to parse JSON.
-	 * @param json The json of the PresetCollection.
+	 * @param json         The json of the PresetCollection.
 	 * @return An optional of the parsed preset collection or empty.
 	 */
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Optional.empty() default value otherwise needed in multiple places

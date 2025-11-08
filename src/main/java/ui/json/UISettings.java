@@ -78,10 +78,12 @@ public class UISettings {
 	public void setMailInformation(MailInformation mailInformation) {
 		setMailInformation(mailInformation, true);
 	}
+
 	public void setMailInformation(MailInformation mailInformation, boolean save) {
 		this.mailRecipient = mailInformation.recipient();
 		this.mailRecipientsCC = mailInformation.additionalRecipients();
-		if (save) save();
+		if (save)
+			save();
 	}
 
 	public void setPath(FileChooserType type, File selectedFile) {
