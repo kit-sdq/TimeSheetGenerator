@@ -6,6 +6,8 @@ import lombok.Setter;
 import ui.fileexplorer.FileChooserType;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +31,7 @@ public class UISettings {
 	 */
 	private String exportPdfNameFormat = JSONHandler.getFieldDefaults().getDefaultFilenameProg();
 	private String mailRecipient = JSONHandler.getFieldDefaults().getDefaultMailRecipientProg();
+	private List<String> mailRecipientsCC = new ArrayList<>();
 	private String mailSubjectFormat = JSONHandler.getFieldDefaults().getDefaultMailSubjectProg();
 
 	public UISettings() {
@@ -46,6 +49,7 @@ public class UISettings {
 		this.pdfPath = uiSettings.pdfPath;
 		this.exportPdfNameFormat = uiSettings.exportPdfNameFormat;
 		this.mailRecipient = uiSettings.mailRecipient;
+		this.mailRecipientsCC = new ArrayList<>(uiSettings.mailRecipientsCC);
 		this.mailSubjectFormat = uiSettings.mailSubjectFormat;
 		// Recipient may not be null
 		if (mailRecipient == null || mailRecipient.isBlank()) {
