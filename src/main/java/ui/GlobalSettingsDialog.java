@@ -285,6 +285,7 @@ public final class GlobalSettingsDialog {
 
 			@Override
 			public void changedUpdate(DocumentEvent e) {
+				// This is for when properties change, so not needed
 			}
 		};
 		fileNameTextField.getDocument().addDocumentListener(presetEditedListener);
@@ -312,15 +313,9 @@ public final class GlobalSettingsDialog {
 		for (int i = 1; i < presetSelector.getItemCount(); i++) {
 			Preset preset = presetSelector.getItemAt(i);
 			// Compare and see if we currently have this preset:
-			if (!fileNameTextField.getText().equals(preset.getFileFormat()))
-				continue;
-			if (!departmentField.getText().equals(preset.getDepartment()))
-				continue;
-			if (!emailSubjectFormatField.getText().equals(preset.getMailSubject()))
-				continue;
-			if (!uiSettings.getMailRecipient().equals(preset.getMailRecipient()))
-				continue;
-			if (!uiSettings.getMailRecipientsCC().equals(preset.getMailRecipientsCC()))
+			if (!fileNameTextField.getText().equals(preset.getFileFormat()) || !departmentField.getText().equals(preset.getDepartment())
+					|| !emailSubjectFormatField.getText().equals(preset.getMailSubject()) || !uiSettings.getMailRecipient().equals(preset.getMailRecipient())
+					|| !uiSettings.getMailRecipientsCC().equals(preset.getMailRecipientsCC()))
 				continue;
 			presetSelector.setSelectedIndex(i);
 			break;

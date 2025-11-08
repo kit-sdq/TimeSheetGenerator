@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 public class Preset {
-	public static final Preset NO_PRESET = new Preset("nopreset", "Choose preset...", true, "", "", "", "", "", List.of());
+	public static final Preset NO_PRESET = new Preset("nopreset", "Choose preset...", true, "", "", "", "");
 
 	@JsonProperty("id")
 	private String presetId;
@@ -38,16 +38,15 @@ public class Preset {
 		// Required default constructor
 	}
 
-	private Preset(String presetId, String displayName, boolean isVisible, String description, String fileFormat, String department, String mailSubject,
-			String mailRecipient, List<String> mailRecipientsCC) {
+	private Preset(String presetId, String displayName, boolean isVisible, String fileFormat, String department, String mailSubject, String mailRecipient) {
 		this.presetId = presetId;
 		this.displayName = displayName;
 		this.isVisible = isVisible;
-		this.description = description;
+		this.description = "";
 		this.fileFormat = fileFormat;
 		this.department = department;
 		this.mailSubject = mailSubject;
 		this.mailRecipient = mailRecipient;
-		this.mailRecipientsCC = mailRecipientsCC;
+		this.mailRecipientsCC = List.of();
 	}
 }

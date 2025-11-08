@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public final class JSONHandler {
 
@@ -386,7 +387,7 @@ public final class JSONHandler {
 		try {
 			objectMapper.writeValue(presetsFile, mergedCollection);
 		} catch (IOException e) {
-			System.err.printf("Failed to write presets to file: %s%n", presetsFile.getAbsolutePath());
+			Logger.getGlobal().warning("Failed to write presets to file: %s%n".formatted(presetsFile.getAbsolutePath()));
 		}
 		return mergedCollection;
 	}
