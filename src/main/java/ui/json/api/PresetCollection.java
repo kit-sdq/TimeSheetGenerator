@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class PresetCollection {
     @Getter
@@ -53,6 +54,33 @@ public class PresetCollection {
      * more recent.
      * <p>
      *     The {@link PresetCollection#newestVersion} will be set to the version of the second (API) collection.
+     * </p>
+     * <p>
+     *     If either fromFile or fromAPI is null, the other collection is immediately returned. Returns null if
+     *     both arguments are null.
+     * </p>
+     * @param fromFile the first preset collection, in the intended use case should be the one loaded locally.
+     * @param fromAPI the second preset collection, in the intended use case should be the one loaded from the internet.
+     * @return The merged preset collection, with colliding Ids having their data from the fromAPI (second) collection.
+     */
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType") // We receive optionals from where we call this
+    public static PresetCollection merge(Optional<PresetCollection> fromFile, Optional<PresetCollection> fromAPI) {
+        if (fromAPI.isEmpty()) return fromFile.orElse(null);
+        return fromFile.map(presetCollection -> merge(presetCollection, fromAPI.get())).orElseGet(fromAPI::get);
+    }
+
+    /**
+     * Merges two {@link PresetCollection}, intended for merging the local collection with the online collection.
+     * Presets are uniquely identified by their {@link Preset#getPresetId()}; so if two presets collide, the
+     * preset from the API (second parameter) will be preferred in the merge.<br/>
+     * This way, we cleanly merge the preset collections while recognizing that the second collection will be
+     * more recent.
+     * <p>
+     *     The {@link PresetCollection#newestVersion} will be set to the version of the second (API) collection.
+     * </p>
+     * <p>
+     *     If either fromFile or fromAPI is null, the other collection is immediately returned. Returns null if
+     *     both arguments are null.
      * </p>
      * @param fromFile the first preset collection, in the intended use case should be the one loaded locally.
      * @param fromAPI the second preset collection, in the intended use case should be the one loaded from the internet.

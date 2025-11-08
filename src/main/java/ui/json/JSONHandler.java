@@ -1,6 +1,8 @@
 /* Licensed under MIT 2024-2025. */
 package ui.json;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -11,6 +13,7 @@ import ui.MonthlySettingsBar;
 import ui.TimesheetEntry;
 import ui.json.api.DefaultsFetcher;
 import ui.json.api.FieldDefaults;
+import ui.json.api.Preset;
 import ui.json.api.PresetCollection;
 import ui.json.api.PresetFetcher;
 
@@ -35,6 +38,7 @@ public final class JSONHandler {
 	// Should have default value for constructor in UISettings, although the loading
 	// order prevents any exception
 	private static FieldDefaults fieldDefaults = FieldDefaults.DEFAULT_VALUES;
+	private static PresetCollection presets;
 
 	private static String configDir;
 
@@ -64,6 +68,7 @@ public final class JSONHandler {
 		configDir += "/TimeSheetGenerator";
 
 		loadDefaultValues();
+		loadPresets();
 		createDefaultGlobalSettings();
 		createDefaultOtherGlobalSettings();
 		loadGlobal();
@@ -97,6 +102,14 @@ public final class JSONHandler {
 	 */
 	public static FieldDefaults getFieldDefaults() {
 		return new FieldDefaults(fieldDefaults);
+	}
+
+	/**
+	 * Gets a copy of the loaded preset collection.
+	 * @return a copy of the preset collection.
+	 */
+	private static PresetCollection getPresets() {
+		return presets;
 	}
 
 	private static void setGlobalSettings(Global globalSettings) {
@@ -350,28 +363,85 @@ public final class JSONHandler {
 		}
 	}
 
-	private static PresetCollection attemptLoadPresetCollection() throws IOException, IllegalStateException {
+	//endregion
+
+	//region Load Presets from File and API
+
+	private static void loadPresets() {
+		JSONHandler.presets = loadPresetCollection();
+	}
+
+	private static PresetCollection loadPresetCollection() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-		Optional<String> loadedJson = PresetFetcher.fetchJSONFromEndpoint();
-		File presetFile = getValueDefaultsFile();
 
-		if (loadedJson.isPresent()) {
-			String json = loadedJson.get();
-			try {
-				Files.writeString(defaultsFile.toPath(), json);
-			} catch (IOException ignored) {
-				// ignore, we just save if we can
-			}
-			return objectMapper.readValue(json, FieldDefaults.class);
+		File presetsFile = getKnownPresetsFile();
+		Optional<String> presetsJSON = PresetFetcher.fetchJSONFromEndpoint();
+
+		Optional<PresetCollection> fromFile = parsePresetCollection(objectMapper, presetsFile);
+		Optional<PresetCollection> fromAPI = parsePresetCollection(objectMapper, presetsJSON);
+
+		PresetCollection mergedCollection;
+		if (fromFile.isPresent() || fromAPI.isPresent()) {
+			mergedCollection = PresetCollection.merge(fromFile, fromAPI);
 		} else {
-			// Attempt to load from file or return default
-			if (defaultsFile.exists()) {
-				return objectMapper.readValue(defaultsFile, FieldDefaults.class);
-			} else {
-				throw new IllegalStateException();
+			return new PresetCollection();
+		}
+
+		// write merged collection to file
+		try {
+			objectMapper.writeValue(presetsFile, mergedCollection);
+		} catch (IOException e) {
+			System.err.printf("Failed to write presets to file: %s%n", presetsFile.getAbsolutePath());
+		}
+		return mergedCollection;
+	}
+
+	/**
+	 * Parses a {@link PresetCollection} from a given file using
+	 * the given {@link ObjectMapper} and returns it as an Optional. Returns an empty optional if
+	 * either the file doesn't exist or does not contain a parseable {@link PresetCollection}.<br/>
+	 * Used to provide more readable code by moving try-catch blocks away from the main {@link JSONHandler#loadPresetCollection()} method.
+	 * <p>
+	 *     Similar to {@link JSONHandler#parsePresetCollection(ObjectMapper, Optional)}.
+	 * </p>
+	 * @param objectMapper the ObjectMapper used to parse JSON.
+	 * @param file The file to parse from.
+	 * @return An optional of the parsed preset collection or empty.
+	 */
+	private static Optional<PresetCollection> parsePresetCollection(ObjectMapper objectMapper, File file) {
+		if (file.exists()) {
+			try {
+				return Optional.of(objectMapper.readValue(file, PresetCollection.class));
+			} catch (IOException ignored) {
+				// return empty
 			}
 		}
+		return Optional.empty();
+	}
+
+	/**
+	 * Parses a {@link PresetCollection} from a given string using
+	 * the given {@link ObjectMapper} and returns it as an Optional. Returns an empty optional if
+	 * either the string is null/empty or does not contain a parseable {@link PresetCollection}.<br/>
+	 * Used to provide more readable code by moving try-catch blocks away from the main {@link JSONHandler#loadPresetCollection()} method.
+	 * <p>
+	 *     Similar to {@link JSONHandler#parsePresetCollection(ObjectMapper, File)}.
+	 * </p>
+	 * @param objectMapper the ObjectMapper used to parse JSON.
+	 * @param json The json of the PresetCollection.
+	 * @return An optional of the parsed preset collection or empty.
+	 */
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType") // Optional.empty() default value otherwise needed in multiple places
+	private static Optional<PresetCollection> parsePresetCollection(ObjectMapper objectMapper, Optional<String> json) {
+		if (json.isPresent() && !json.get().isBlank()) {
+			try {
+				return Optional.of(objectMapper.readValue(json.get(), PresetCollection.class));
+			} catch (IOException ignored) {
+				// return empty
+			}
+		}
+		return Optional.empty();
 	}
 
 	// endregion
