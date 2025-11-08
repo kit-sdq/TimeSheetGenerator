@@ -3,6 +3,7 @@ package ui.json;
 
 import lombok.Getter;
 import lombok.Setter;
+import mail.MailInformation;
 import ui.fileexplorer.FileChooserType;
 
 import java.io.File;
@@ -74,8 +75,9 @@ public class UISettings {
 		save();
 	}
 
-	public void setMailRecipient(String mailRecipient) {
-		this.mailRecipient = mailRecipient;
+	public void setMailInformation(MailInformation mailInformation) {
+		this.mailRecipient = mailInformation.recipient();
+		this.mailRecipientsCC = mailInformation.additionalRecipients();
 		save();
 	}
 
