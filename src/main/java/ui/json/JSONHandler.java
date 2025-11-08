@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
+import lombok.Getter;
 import ui.ErrorHandler;
 import ui.UserInterface;
 import ui.MonthlySettingsBar;
@@ -38,7 +39,12 @@ public final class JSONHandler {
 	// Should have default value for constructor in UISettings, although the loading
 	// order prevents any exception
 	private static FieldDefaults fieldDefaults = FieldDefaults.DEFAULT_VALUES;
-	private static PresetCollection presets;
+    /**
+     * -- GETTER --
+     *  Gets a copy of the loaded preset collection.
+     */
+    @Getter
+    private static PresetCollection presets;
 
 	private static String configDir;
 
@@ -104,15 +110,7 @@ public final class JSONHandler {
 		return new FieldDefaults(fieldDefaults);
 	}
 
-	/**
-	 * Gets a copy of the loaded preset collection.
-	 * @return a copy of the preset collection.
-	 */
-	private static PresetCollection getPresets() {
-		return presets;
-	}
-
-	private static void setGlobalSettings(Global globalSettings) {
+    private static void setGlobalSettings(Global globalSettings) {
 		JSONHandler.globalSettings = globalSettings;
 	}
 
