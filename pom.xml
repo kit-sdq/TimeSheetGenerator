@@ -4,7 +4,7 @@
 
     <groupId>edu.kit.kastel.sdq</groupId>
     <artifactId>timesheetgenerator</artifactId>
-    <version>0.20.13-SNAPSHOT</version>
+    <version>0.20.14-SNAPSHOT</version>
 
     <name>TimeSheetGenerator</name>
     <scm>
@@ -32,7 +32,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.20.0</version>
+            <version>2.21.0</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
