@@ -24,6 +24,7 @@ public final class TemplateFormatter {
 	 * <li><code>%MM_ENG%</code>: English month name</li>
 	 * <li><code>%YY%</code>: Year (2 digits)</li>
 	 * <li><code>%YYYY%</code>: Year (4 digits)</li>
+	 * <li><code>%PERS_NR%</code>: Your staff id </li>
 	 * </ul>
 	 * 
 	 * @param template      The string template.
@@ -34,9 +35,15 @@ public final class TemplateFormatter {
 	 */
 	public static String formatTemplate(String template, UserInterface userInterface) {
 		Global global = JSONHandler.getGlobalSettings();
-		return template.replace("%FIRST_U%", global.getFirstnameUnderscoreFormat()).replace("%FIRST%", global.getFirstname())
-				.replace("%LAST%", global.getLastname()).replace("%MM%", "%02d".formatted(userInterface.getCurrentMonthNumber()))
-				.replace("%MM_GER%", userInterface.getCurrentMonth().getGermanName()).replace("%MM_ENG%", userInterface.getCurrentMonthName())
-				.replace("%YY%", userInterface.getYear()).replace("%YYYY%", userInterface.getFullYear());
+		return template
+				.replace("%FIRST_U%", global.getFirstnameUnderscoreFormat())
+				.replace("%FIRST%", global.getFirstname())
+				.replace("%LAST%", global.getLastname())
+				.replace("%MM%", "%02d".formatted(userInterface.getCurrentMonthNumber()))
+				.replace("%MM_GER%", userInterface.getCurrentMonth().getGermanName())
+				.replace("%MM_ENG%", userInterface.getCurrentMonthName())
+				.replace("%YY%", userInterface.getYear())
+				.replace("%YYYY%", userInterface.getFullYear())
+				.replace("%PERS_NR%", String.valueOf(global.getStaffId()));
 	}
 }
