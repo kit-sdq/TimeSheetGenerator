@@ -545,7 +545,9 @@ public class UserInterface {
 				String.join("; ", uiSettings.getMailRecipientsCC()));
 
 		panel.add(recipientPanel);
+		panel.add(Box.createVerticalStrut(7));
 		panel.add(ccPanel);
+		panel.add(Box.createVerticalStrut(8));
 		panel.add(new JLabel("Attention: You still need to attach the timesheet!"), BorderLayout.SOUTH);
 
 		boolean proceed = JOptionPane.showConfirmDialog(null, panel, "Draft timesheet email", JOptionPane.OK_CANCEL_OPTION,
