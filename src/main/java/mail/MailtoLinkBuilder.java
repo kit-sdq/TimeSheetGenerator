@@ -8,10 +8,13 @@ import ui.json.UISettings;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class MailtoLinkBuilder {
 
-	private static final String LINK_TEMPLATE = "mailto:%s?subject=%s";
+	private static final String LINK_TEMPLATE = "mailto:%s?%ssubject=%s";
+	private static final String CC_RECIPIENT_TEMPLATE = "cc=%s&";
+	private static final String CC_ENCODED_DELIMITER = "%2C%20";
 
 	private final UserInterface parentUi;
 
@@ -28,7 +31,12 @@ public class MailtoLinkBuilder {
 	public String constructLink() {
 		UISettings settings = JSONHandler.getUISettings();
 		String formattedSubject = TemplateFormatter.formatTemplate(settings.getMailSubjectFormat(), parentUi);
-		return LINK_TEMPLATE.formatted(settings.getMailRecipient(), encodeURIComponent(formattedSubject));
+		String additionalTags = buildAdditionalTags(settings.getMailRecipientsCC());
+		return LINK_TEMPLATE.formatted(settings.getMailRecipient(), additionalTags, encodeURIComponent(formattedSubject));
+	}
+
+	private String buildAdditionalTags(List<String> mailRecipientsCC) {
+		return CC_RECIPIENT_TEMPLATE.formatted(String.join(CC_ENCODED_DELIMITER, mailRecipientsCC));
 	}
 
 	private static String encodeURIComponent(String plaintextLink) {

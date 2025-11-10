@@ -1,11 +1,15 @@
 /* Licensed under MIT 2024-2025. */
 package ui;
 
+import mail.MailInformation;
 import ui.json.Global;
 import ui.json.JSONHandler;
 import ui.json.UISettings;
+import ui.json.api.Preset;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -22,6 +26,7 @@ public final class GlobalSettingsDialog {
 	private static final int SCROLL_SENSITIVITY = 16;
 
 	private static final int TEXTBOXES_COUNT = 7;
+	private static final int TEXTFIELD_INDEX_DEPARTMENT_FORMAT = 2;
 	private static final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
 	private static final int TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT = 6;
 
@@ -141,38 +146,23 @@ public final class GlobalSettingsDialog {
 		buttonPanel.add(saveButton);
 		buttonPanel.add(cancelButton);
 
-		// Preset buttons at the bottom
-		JPanel presetButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JButton presetProggenButton = new JButton("Proggen I Preset");
-		JButton presetAlgoButton = new JButton("Algo I Preset");
-		presetProggenButton.addActionListener((e) -> {
-			addVacationEntryBox.setSelected(false);
-			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
-			pdfFormatField.setText(JSONHandler.getFieldDefaults().getDefaultFilenameProg());
-			pdfFormatField.setForeground(TextColors.DEFAULT.color());
-			JTextField mailSubjectFormatField = fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT];
-			mailSubjectFormatField.setText(JSONHandler.getFieldDefaults().getDefaultMailSubjectProg());
-			mailSubjectFormatField.setForeground(TextColors.DEFAULT.color());
-		});
-		presetAlgoButton.addActionListener((e) -> {
-			addVacationEntryBox.setSelected(true);
-			JTextField pdfFormatField = fields[TEXTFIELD_INDEX_PDF_FORMAT];
-			pdfFormatField.setText(JSONHandler.getFieldDefaults().getDefaultFilenameAlgo());
-			pdfFormatField.setForeground(TextColors.DEFAULT.color());
-			JTextField mailSubjectFormatField = fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT];
-			mailSubjectFormatField.setText(JSONHandler.getFieldDefaults().getDefaultMailSubjectAlgo());
-			mailSubjectFormatField.setForeground(TextColors.DEFAULT.color());
-		});
-		presetButtonPanel.add(presetProggenButton);
-		presetButtonPanel.add(presetAlgoButton);
+		// Preset Switch at the bottom
+		JComboBox<Preset> presetSelector = makePresetSelector();
+		addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT_FORMAT],
+				fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT]);
+
+		JPanel presetSelectorPaddingPanel = new JPanel(new BorderLayout(15, 5));
+		JLabel choosePresetLabel = new JLabel("\t\tOr choose Preset:"); // sorry
+		choosePresetLabel.setFont(choosePresetLabel.getFont().deriveFont(Font.BOLD));
+		presetSelectorPaddingPanel.add(choosePresetLabel, BorderLayout.CENTER);
+		presetSelectorPaddingPanel.add(presetSelector, BorderLayout.EAST);
 
 		gbc.gridx = 0;
 		gbc.gridy = row;
-		gbc.gridwidth = 3;
-		gbc.weighty = 1;
+		gbc.gridwidth = 5;
 		gbc.anchor = GridBagConstraints.SOUTHWEST;
 		gbc.fill = GridBagConstraints.NONE;
-		panel.add(presetButtonPanel, gbc);
+		panel.add(presetSelectorPaddingPanel, gbc);
 
 		gbc.anchor = GridBagConstraints.SOUTHEAST;
 		panel.add(buttonPanel, gbc);
@@ -263,6 +253,73 @@ public final class GlobalSettingsDialog {
 
 		parentUI.updateTotalTimeWorkedUI();
 		return true;
+	}
+
+	private static JComboBox<Preset> makePresetSelector() {
+		JComboBox<Preset> presetSelector = new JComboBox<>();
+		presetSelector.addItem(Preset.NO_PRESET);
+		JSONHandler.getPresets().getPresets().forEach(preset -> {
+			if (preset.isVisible())
+				presetSelector.addItem(preset);
+		});
+		// Now, figure out which preset it selected by field values
+		return presetSelector;
+	}
+
+	private static void addPresetSelectionLogic(JComboBox<Preset> presetSelector, UISettings uiSettings, JTextField fileNameTextField,
+			JTextField departmentField, JTextField emailSubjectFormatField) {
+		DocumentListener presetEditedListener = new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				textfieldEdited();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				textfieldEdited();
+			}
+
+			private void textfieldEdited() {
+				presetSelector.setSelectedIndex(0);
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// This is for when properties change, so not needed
+			}
+		};
+		fileNameTextField.getDocument().addDocumentListener(presetEditedListener);
+		departmentField.getDocument().addDocumentListener(presetEditedListener);
+		emailSubjectFormatField.getDocument().addDocumentListener(presetEditedListener);
+
+		presetSelector.addActionListener(e -> {
+			final int selectedIndex = presetSelector.getSelectedIndex();
+			Preset selected = presetSelector.getItemAt(selectedIndex);
+			if (selected.equals(Preset.NO_PRESET))
+				return;
+			// Update values according to the preset:
+			fileNameTextField.setText(selected.getFileFormat());
+			departmentField.setText(selected.getDepartment());
+			emailSubjectFormatField.setText(selected.getMailSubject());
+			uiSettings.setMailInformation(new MailInformation(selected.getMailRecipient(), selected.getMailRecipientsCC()), false);
+			// Update colors just in case:
+			fileNameTextField.setForeground(TextColors.DEFAULT.color());
+			departmentField.setForeground(TextColors.DEFAULT.color());
+			emailSubjectFormatField.setForeground(TextColors.DEFAULT.color());
+			// Set selected index as it was overwritten by the document listener:
+			presetSelector.setSelectedIndex(selectedIndex);
+		});
+
+		for (int i = 1; i < presetSelector.getItemCount(); i++) {
+			Preset preset = presetSelector.getItemAt(i);
+			// Compare and see if we currently have this preset:
+			if (!fileNameTextField.getText().equals(preset.getFileFormat()) || !departmentField.getText().equals(preset.getDepartment())
+					|| !emailSubjectFormatField.getText().equals(preset.getMailSubject()) || !uiSettings.getMailRecipient().equals(preset.getMailRecipient())
+					|| !uiSettings.getMailRecipientsCC().equals(preset.getMailRecipientsCC()))
+				continue;
+			presetSelector.setSelectedIndex(i);
+			break;
+		}
 	}
 
 	private static void showPdfFormatHelp(JDialog parentDialog) {

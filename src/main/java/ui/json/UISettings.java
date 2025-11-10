@@ -3,9 +3,12 @@ package ui.json;
 
 import lombok.Getter;
 import lombok.Setter;
+import mail.MailInformation;
 import ui.fileexplorer.FileChooserType;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,6 +32,7 @@ public class UISettings {
 	 */
 	private String exportPdfNameFormat = JSONHandler.getFieldDefaults().getDefaultFilenameProg();
 	private String mailRecipient = JSONHandler.getFieldDefaults().getDefaultMailRecipientProg();
+	private List<String> mailRecipientsCC = new ArrayList<>();
 	private String mailSubjectFormat = JSONHandler.getFieldDefaults().getDefaultMailSubjectProg();
 
 	public UISettings() {
@@ -46,6 +50,7 @@ public class UISettings {
 		this.pdfPath = uiSettings.pdfPath;
 		this.exportPdfNameFormat = uiSettings.exportPdfNameFormat;
 		this.mailRecipient = uiSettings.mailRecipient;
+		this.mailRecipientsCC = new ArrayList<>(uiSettings.mailRecipientsCC);
 		this.mailSubjectFormat = uiSettings.mailSubjectFormat;
 		// Recipient may not be null
 		if (mailRecipient == null || mailRecipient.isBlank()) {
@@ -70,9 +75,15 @@ public class UISettings {
 		save();
 	}
 
-	public void setMailRecipient(String mailRecipient) {
-		this.mailRecipient = mailRecipient;
-		save();
+	public void setMailInformation(MailInformation mailInformation) {
+		setMailInformation(mailInformation, true);
+	}
+
+	public void setMailInformation(MailInformation mailInformation, boolean save) {
+		this.mailRecipient = mailInformation.recipient();
+		this.mailRecipientsCC = mailInformation.additionalRecipients();
+		if (save)
+			save();
 	}
 
 	public void setPath(FileChooserType type, File selectedFile) {

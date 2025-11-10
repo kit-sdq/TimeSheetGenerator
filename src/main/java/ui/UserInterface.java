@@ -2,6 +2,7 @@
 package ui;
 
 import lombok.Getter;
+import mail.MailInformation;
 import mail.MailtoLinkBuilder;
 import ui.fileexplorer.FileChooser;
 import ui.fileexplorer.FileChooserType;
@@ -11,12 +12,25 @@ import ui.json.UISettings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 public class UserInterface {
@@ -493,11 +507,11 @@ public class UserInterface {
 	}
 
 	public void createEmailClicked() {
-		Optional<String> emailAddressOpt = showEmailTextfieldPopup();
+		Optional<MailInformation> emailAddressOpt = showEmailTextfieldPopup();
 		if (emailAddressOpt.isEmpty())
 			return;
-		emailAddressOpt.ifPresent(email -> {
-			JSONHandler.getUISettings().setMailRecipient(email);
+		emailAddressOpt.ifPresent(mailInfo -> {
+			JSONHandler.getUISettings().setMailInformation(mailInfo);
 			MailtoLinkBuilder builder = new MailtoLinkBuilder(this);
 			String url = builder.constructLink();
 			try {
@@ -518,19 +532,42 @@ public class UserInterface {
 		return JOptionPane.OK_OPTION == result;
 	}
 
-	private Optional<String> showEmailTextfieldPopup() {
+	private Optional<MailInformation> showEmailTextfieldPopup() {
 		UISettings uiSettings = JSONHandler.getUISettings();
-		JTextField emailField = new JTextField(30);
-		DialogHelper.addPlaceholderText(emailField, uiSettings.getMailRecipient(), uiSettings.getMailRecipient());
-		emailField.setCaretPosition(0);
+		JTextField recipientField = new JTextField(30);
+		JTextField ccField = new JTextField(30);
 
-		JPanel panel = new JPanel(new BorderLayout(5, 5));
-		panel.add(new JLabel("Email Recipient:"), BorderLayout.WEST);
-		panel.add(emailField, BorderLayout.CENTER);
+		JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
+		JPanel recipientPanel = buildMailRecipientPanel(recipientField, "Email Recipient:", uiSettings.getMailRecipient(), uiSettings.getMailRecipient());
+		JPanel ccPanel = buildMailRecipientPanel(ccField, "CC Recipients:", "john.doe@gmail.com; praesidium@kit.edu",
+				String.join("; ", uiSettings.getMailRecipientsCC()));
+
+		panel.add(recipientPanel);
+		panel.add(Box.createVerticalStrut(7));
+		panel.add(ccPanel);
+		panel.add(Box.createVerticalStrut(8));
 		panel.add(new JLabel("Attention: You still need to attach the timesheet!"), BorderLayout.SOUTH);
 
-		return JOptionPane.showConfirmDialog(null, panel, "Submit timesheet per email", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION ? Optional.of(emailField.getText().trim()) : Optional.empty();
+		boolean proceed = JOptionPane.showConfirmDialog(null, panel, "Draft timesheet email", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE) == JOptionPane.OK_OPTION;
+
+		String recipient = recipientField.getText().trim();
+		List<String> ccRecipients = DialogHelper.isPlaceholder(ccField) ? List.of()
+				: Arrays.stream(ccField.getText().replace(',', ';').split(";")).map(String::trim).toList();
+
+		return proceed ? Optional.of(new MailInformation(recipient, ccRecipients)) : Optional.empty();
+	}
+
+	private static JPanel buildMailRecipientPanel(JTextField textFieldRef, String labelText, String placeholder, String fieldText) {
+		DialogHelper.addPlaceholderText(textFieldRef, placeholder, fieldText);
+		textFieldRef.setCaretPosition(0);
+
+		JPanel panel = new JPanel(new BorderLayout(5, 5));
+		panel.add(new JLabel(labelText), BorderLayout.WEST);
+		panel.add(textFieldRef, BorderLayout.CENTER);
+		return panel;
 	}
 
 	public static void main(String[] args) {

@@ -18,3 +18,4 @@ buildNumber.properties
 .DS_Store
 .vscode
 MANIFEST.MF
+feature-todo.md

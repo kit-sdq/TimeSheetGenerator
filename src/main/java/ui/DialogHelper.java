@@ -413,6 +413,10 @@ public final class DialogHelper {
 		});
 	}
 
+	public static boolean isPlaceholder(JTextField textField) {
+		return textField.getForeground().equals(TextColors.PLACEHOLDER.color());
+	}
+
 	private static void validateTimeField(JTextField timeField, JLabel errorLabel, boolean isBreak) {
 		String text = timeField.getText().trim().replace('.', ':');
 		if (text.equals(TIME_PLACEHOLDER) || text.equals(TIME_BREAK_PLACEHOLDER)) {
