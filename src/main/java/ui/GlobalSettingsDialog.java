@@ -100,23 +100,7 @@ public final class GlobalSettingsDialog {
 			gbc.weightx = 0;
 
 			// Error label for validation messages
-			if (i < errorLabels.length) {
-				JLabel errorLabel = new JLabel(" ");
-				errorLabel.setForeground(TextColors.ERROR.color());
-				errorLabels[i] = errorLabel;
-				if (i == TEXTFIELD_INDEX_PDF_FORMAT) {
-					// The help button otherwise blocks this / overlaps
-					gbc.gridy++;
-					gbc.gridx++;
-					panel.add(errorLabel, gbc);
-					gbc.gridx--;
-					gbc.gridy--;
-				} else {
-					gbc.gridx++;
-					panel.add(errorLabel, gbc);
-					gbc.gridx--;
-				}
-			}
+			tryAddErrorLabel(i, panel, errorLabels, gbc);
 
 			if (i < TEXTBOXES_COUNT) {
 				JTextField textField = new JTextField(TEXTBOXES_COLUMNS);
@@ -207,6 +191,45 @@ public final class GlobalSettingsDialog {
 		dialog.pack();
 		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		dialog.setVisible(true);
+	}
+
+	/**
+	 * If the index is low enough, creates and adds an empty error label next to
+	 * where the gbc happens to be. The gbc should be on the coordinates of the text
+	 * field the error label should be for. If the index is out of bounds of the
+	 * error labels, nothing happens.
+	 * <p>
+	 * Special case: If the index is equal to the index of the PDF field, the error
+	 * label will be put one row below the field, since the row of the text field
+	 * contains the help button already.
+	 * </p>
+	 * 
+	 * @param index       The index of the text field / error label. If out of
+	 *                    bounds, nothing happens.
+	 * @param panel       The parent panel to add the label to.
+	 * @param errorLabels The array of error labels to fill the new error label in.
+	 * @param gbc         The current grid constraints, set to the row and column of
+	 *                    the text field the label is for.
+	 */
+	private static void tryAddErrorLabel(int index, JPanel panel, JLabel[] errorLabels, GridBagConstraints gbc) {
+		if (index >= errorLabels.length) {
+			return;
+		}
+		JLabel errorLabel = new JLabel(" ");
+		errorLabel.setForeground(TextColors.ERROR.color());
+		errorLabels[index] = errorLabel;
+		if (index == TEXTFIELD_INDEX_PDF_FORMAT) {
+			// The help button otherwise blocks this / overlaps
+			gbc.gridy++;
+			gbc.gridx++;
+			panel.add(errorLabel, gbc);
+			gbc.gridx--;
+			gbc.gridy--;
+		} else {
+			gbc.gridx++;
+			panel.add(errorLabel, gbc);
+			gbc.gridx--;
+		}
 	}
 
 	/**

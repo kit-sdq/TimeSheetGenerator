@@ -8,25 +8,25 @@ import java.util.regex.Pattern;
 
 public class JTimeField extends JTextField {
 
-	private static final String PLACEHOLDER = "00:00";
+	private static final String DEFAULT_PLACEHOLDER = "00:00";
 	static final Pattern TIME_PATTERN_SEMI_SMALL_2 = Pattern.compile("^(\\d):(\\d{2})$");
 	static final Pattern TIME_PATTERN_SEMI_SMALLER = Pattern.compile("^(\\d){1,2}:$");
 
-	private final String placeholder;
+	private final String fieldPlaceholderText;
 
 	public JTimeField(UserInterface parentUi) {
 		this(parentUi, null);
 	}
 
 	public JTimeField(UserInterface parentUi, String text) {
-		this(parentUi, text, PLACEHOLDER, 4, CENTER);
+		this(parentUi, text, DEFAULT_PLACEHOLDER, 4, CENTER);
 	}
 
 	public JTimeField(UserInterface parentUi, String text, String placeholderText, int columns, int horizontalAlignment) {
 		super(columns);
 		this.setHorizontalAlignment(horizontalAlignment);
 		this.setForeground(TextColors.DEFAULT.color());
-		this.placeholder = placeholderText;
+		this.fieldPlaceholderText = placeholderText;
 
 		DialogHelper.addPlaceholderText(this, placeholderText, text);
 
@@ -48,14 +48,14 @@ public class JTimeField extends JTextField {
 		if (!text.isBlank() && !DialogHelper.TIME_PATTERN.matcher(text).matches()) {
 			setForeground(TextColors.ERROR.color());
 		} else {
-			setForeground(getText().equals(placeholder) ? TextColors.PLACEHOLDER.color() : TextColors.DEFAULT.color());
+			setForeground(getText().equals(fieldPlaceholderText) ? TextColors.PLACEHOLDER.color() : TextColors.DEFAULT.color());
 		}
 	}
 
 	public void clear() {
 		// Prevent auto-focus on clear
 		super.setFocusable(false);
-		super.setText(placeholder);
+		super.setText(fieldPlaceholderText);
 		setForeground(TextColors.PLACEHOLDER.color());
 		super.setFocusable(true);
 	}
