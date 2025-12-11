@@ -26,7 +26,8 @@ public final class GlobalSettingsDialog {
     private static final int SCROLL_SENSITIVITY = 16;
 
     private static final int TEXTBOXES_COUNT = 7;
-    private static final int TEXTFIELD_INDEX_DEPARTMENT_FORMAT = 2;
+    private static final int TEXTBOXES_COLUMNS = 20;
+    private static final int TEXTFIELD_INDEX_DEPARTMENT = 2;
     private static final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
     private static final int TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT = 6;
 
@@ -44,6 +45,7 @@ public final class GlobalSettingsDialog {
         UISettings uiSettings = JSONHandler.getUISettings();
 
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setSize(dialog.getSize());
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding of 10
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -103,6 +105,7 @@ public final class GlobalSettingsDialog {
                 errorLabel.setForeground(TextColors.ERROR.color());
                 errorLabels[i] = errorLabel;
                 if (i == TEXTFIELD_INDEX_PDF_FORMAT) {
+                    // The help button otherwise blocks this / overlaps
                     gbc.gridy++;
                     gbc.gridx++;
                     panel.add(errorLabel, gbc);
@@ -116,7 +119,7 @@ public final class GlobalSettingsDialog {
             }
 
             if (i < TEXTBOXES_COUNT) {
-                JTextField textField = new JTextField(20);
+                JTextField textField = new JTextField(TEXTBOXES_COLUMNS);
                 textField.setCaretColor(TextColors.DEFAULT.color());
                 DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
                 textField.setCaretPosition(0);
@@ -162,7 +165,7 @@ public final class GlobalSettingsDialog {
 
         // Preset Switch at the bottom
         JComboBox<Preset> presetSelector = makePresetSelector();
-        addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT_FORMAT],
+        addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT],
                 fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT]);
 
         JPanel presetSelectorPaddingPanel = new JPanel(new BorderLayout(15, 5));
@@ -388,9 +391,9 @@ public final class GlobalSettingsDialog {
                 validateNotEmpty(textField, text, errorLabel, "Department");
                 break;
             case 3:
-                String time = JTimeField.formatTimeString(text);
-                textField.setText(time);
-                if (!DialogHelper.isValidTimeFormat(time)) {
+                textField.setText(JTimeField.formatTimeString(textField.getText()));
+                text = textField.getText();
+                if (!DialogHelper.isValidTimeFormat(text)) {
                     errorLabel.setText("Invalid time format (HH:MM)");
                 } else {
                     errorLabel.setText(" ");

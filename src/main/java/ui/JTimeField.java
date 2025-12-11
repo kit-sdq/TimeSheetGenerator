@@ -12,16 +12,23 @@ public class JTimeField extends JTextField {
     static final Pattern TIME_PATTERN_SEMI_SMALL_2 = Pattern.compile("^(\\d):(\\d{2})$");
     static final Pattern TIME_PATTERN_SEMI_SMALLER = Pattern.compile("^(\\d){1,2}:$");
 
+    private final String placeholder;
+
     public JTimeField(UserInterface parentUi) {
         this(parentUi, null);
     }
 
     public JTimeField(UserInterface parentUi, String text) {
-        super(4);
-        this.setHorizontalAlignment(CENTER);
-        this.setForeground(TextColors.DEFAULT.color());
+        this(parentUi, text, PLACEHOLDER, 4, CENTER);
+    }
 
-        DialogHelper.addPlaceholderText(this, PLACEHOLDER, text);
+    public JTimeField(UserInterface parentUi, String text, String placeholderText, int columns, int horizontalAlignment) {
+        super(columns);
+        this.setHorizontalAlignment(horizontalAlignment);
+        this.setForeground(TextColors.DEFAULT.color());
+        this.placeholder = placeholderText;
+
+        DialogHelper.addPlaceholderText(this, placeholderText, text);
 
         this.addFocusListener(new FocusAdapter() {
             @Override
@@ -32,6 +39,36 @@ public class JTimeField extends JTextField {
                 parentUi.updateTotalTimeWorkedUI();
             }
         });
+    }
+
+    private void validateField() {
+        String text = formatTimeString(this.getText());
+        super.setText(text);
+
+        if (!text.isBlank() && !DialogHelper.TIME_PATTERN.matcher(text).matches()) {
+            setForeground(TextColors.ERROR.color());
+        } else {
+            setForeground(getText().equals(placeholder) ? TextColors.PLACEHOLDER.color() : TextColors.DEFAULT.color());
+        }
+    }
+
+    public void clear() {
+        // Prevent auto-focus on clear
+        super.setFocusable(false);
+        super.setText(placeholder);
+        setForeground(TextColors.PLACEHOLDER.color());
+        super.setFocusable(true);
+    }
+
+    @Override
+    public boolean isValid() {
+        return getForeground() != TextColors.ERROR.color();
+    }
+
+    @Override
+    public void setText(String text) {
+        super.setText(text);
+        validateField();
     }
 
     /**
@@ -60,36 +97,6 @@ public class JTimeField extends JTextField {
             time = "0" + time;
         }
         return time;
-    }
-
-    private void validateField() {
-        String text = formatTimeString(this.getText());
-        super.setText(text);
-
-        if (!text.isBlank() && !DialogHelper.TIME_PATTERN.matcher(text).matches()) {
-            setForeground(TextColors.ERROR.color());
-        } else {
-            setForeground(getText().equals(PLACEHOLDER) ? TextColors.PLACEHOLDER.color() : TextColors.DEFAULT.color());
-        }
-    }
-
-    public void clear() {
-        // Prevent auto-focus on clear
-        super.setFocusable(false);
-        super.setText(PLACEHOLDER);
-        setForeground(TextColors.PLACEHOLDER.color());
-        super.setFocusable(true);
-    }
-
-    @Override
-    public boolean isValid() {
-        return getForeground() != TextColors.ERROR.color();
-    }
-
-    @Override
-    public void setText(String text) {
-        super.setText(text);
-        validateField();
     }
 
 }
