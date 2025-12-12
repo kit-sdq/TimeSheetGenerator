@@ -13,20 +13,22 @@ public class ActionBar extends JPanel {
 	private static final String HOURS_FORMAT = "Total Time: %s/%s          ";
 
 	private final transient UserInterface parentUi;
+	private final transient JFrame parentFrame;
 
 	private final JLabel hoursWorkedLabel;
 	private final Font fontNormal;
 	private final Font fontBold;
 
-	public ActionBar(UserInterface parentUi) {
+	public ActionBar(UserInterface parentUi, JFrame parentFrame) {
 		this.parentUi = parentUi;
+		this.parentFrame = parentFrame;
 		this.setPreferredSize(new Dimension(this.parentUi.getWidth(), 70));
 		this.setLayout(new BorderLayout());
 
 		JPanel buttonPanel = new JPanel();
 
-		JButton addButton = new JButton("+");
-		addButton.setPreferredSize(new Dimension(50, 50));
+		JButton addButton = new JButton("Add");
+		addButton.setPreferredSize(new Dimension(80, 50));
 		buttonPanel.add(addButton);
 
 		JButton duplicateButton = new JButton("Duplicate");
@@ -34,7 +36,7 @@ public class ActionBar extends JPanel {
 		buttonPanel.add(duplicateButton);
 
 		JButton editButton = new JButton("Edit");
-		editButton.setPreferredSize(new Dimension(75, 50));
+		editButton.setPreferredSize(new Dimension(80, 50));
 		buttonPanel.add(editButton);
 
 		JButton removeButton = new JButton("Remove");
@@ -112,7 +114,7 @@ public class ActionBar extends JPanel {
 	 */
 	public void addEntryButtonClicked() {
 		if (this.parentUi.isSpaceForNewEntry()) {
-			DialogHelper.showEntryDialog(this.parentUi, "Add Entry");
+			DialogHelper.showEntryDialog(this.parentUi, this.parentFrame, "Add Entry");
 		} else {
 			ErrorHandler.showError("Entry limit reached", "You have reached the maximum of %d entries".formatted(UserInterface.MAX_ENTRIES));
 		}
@@ -120,7 +122,7 @@ public class ActionBar extends JPanel {
 
 	/**
 	 * Returns overflowing hours to be entered in the succ hours label.
-	 * 
+	 *
 	 * @param workedHours The hours worked, in sum.
 	 * @return Overflowing hours.
 	 */

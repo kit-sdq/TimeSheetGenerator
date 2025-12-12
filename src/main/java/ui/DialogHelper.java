@@ -45,12 +45,12 @@ public final class DialogHelper {
 	private static final int INDEX_END_TIME = 2;
 	private static final int INDEX_BREAK_TIME = 3;
 
-	public static void showEntryDialog(UserInterface parentUi, String title) {
-		showEntryDialog(parentUi, title, TimesheetEntry.EMPTY_ENTRY);
+	public static void showEntryDialog(UserInterface parentUi, JFrame parentFrame, String title) {
+		showEntryDialog(parentUi, parentFrame, title, TimesheetEntry.EMPTY_ENTRY);
 	}
 
-	public static void showEntryDialog(UserInterface parentUi, String title, TimesheetEntry entry) {
-		JDialog dialog = new JDialog();
+	public static void showEntryDialog(UserInterface parentUi, JFrame parentFrame, String title, TimesheetEntry entry) {
+		JDialog dialog = new JDialog(parentFrame);
 		dialog.setTitle(title);
 		dialog.setSize(600, 400);
 		dialog.setLocationRelativeTo(null); // Center the dialog
@@ -100,9 +100,9 @@ public final class DialogHelper {
 		String[] labels = { "Day:", "Start Time:", "End Time:", "Break Time:" };
 		JTextField[] timeFields = new JTextField[4];
 		JLabel[] errorLabels = new JLabel[4]; // For validation error messages
-		String[] placeholders = { DAY_PLACEHOLDER, TIME_PLACEHOLDER, TIME_PLACEHOLDER, TIME_BREAK_PLACEHOLDER }; // 2. Changed placeholder
-		String[] otherTexts = { entry.getDayString(), entry.getStartTimeString(), entry.getEndTimeString(), entry.getBreakTimeString() }; // 2. Changed
-																																			// placeholder
+		String[] placeholders = { DAY_PLACEHOLDER, TIME_PLACEHOLDER, TIME_PLACEHOLDER, TIME_BREAK_PLACEHOLDER };
+		String[] otherTexts = { entry.getDayString(), entry.getStartTimeString(), entry.getEndTimeString(), entry.getBreakTimeString() };
+		// placeholder
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel timeLabel = new JLabel(labels[i]);
@@ -274,10 +274,10 @@ public final class DialogHelper {
 		});
 
 		dialog.add(panel);
-		dialog.setVisible(true);
 		addEnterEscapeHotkeys(dialog, makeEntryButton, cancelButton);
 		dialog.pack();
 		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		dialog.setVisible(true);
 	}
 
 	private static void discardChanges(TimesheetEntry entry, UserInterface parentUi, JDialog dialog) {
@@ -351,7 +351,7 @@ public final class DialogHelper {
 	 * Validates the activity and time fields' content when attempting to create an
 	 * entry. Writes the error message to the warning label specified as
 	 * durationWarningLabel.
-	 * 
+	 *
 	 * @param durationWarningLabel the warning label for the entry dialog.
 	 * @param actionTextField      The text field for the activity.
 	 * @param timeFields           The fields where day and times are stored.
@@ -379,7 +379,7 @@ public final class DialogHelper {
 	/**
 	 * Adds a placeholder text and listeners. If otherText is not null or empty, no
 	 * placeholder text will be applied, but the given text will instead be applied.
-	 * 
+	 *
 	 * @param component   The component to add a placeholder to.
 	 * @param placeholder The placeholder text
 	 * @param otherText   The optional Text instead of a placeholder.
@@ -433,10 +433,10 @@ public final class DialogHelper {
 				text = "00:" + text;
 			else
 				text += ":00";
-			timeField.setText(text);
 		} else if (TIME_PATTERN_SEMI_SMALL.matcher(text).matches()) {
 			text += "0";
 		}
+		timeField.setText(text);
 
 		Matcher matcher = TIME_PATTERN.matcher(text);
 		if (matcher.matches()) {

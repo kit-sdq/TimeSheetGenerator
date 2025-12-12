@@ -93,12 +93,12 @@ public class UserInterface {
 
 		frame.setJMenuBar(menuBar);
 
-		monthSettingsBar = new MonthlySettingsBar(this);
+		monthSettingsBar = new MonthlySettingsBar(this, this.frame);
 		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
 		frame.add(monthSettingsBar, BorderLayout.NORTH);
 
 		// Row of Buttons with '+'
-		buttonActionBar = new ActionBar(this);
+		buttonActionBar = new ActionBar(this, this.frame);
 		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
 		frame.add(buttonActionBar, BorderLayout.WEST);
 
@@ -150,7 +150,7 @@ public class UserInterface {
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
-		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this));
+		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this, this.frame));
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
@@ -210,12 +210,14 @@ public class UserInterface {
 		// Remove selected entry with backspace key
 		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
 		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
-		itemList.getActionMap().put("removeListEntry", new AbstractAction() {
+		var deleteAction = new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removeSelectedListEntry();
 			}
-		});
+		};
+		itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
+		itemList.getActionMap().put("removeListEntryDelete", deleteAction);
 
 		// Ctrl + D to duplicate the selected entry
 		addHotkey(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "duplicateEntryAction", this::duplicateSelectedListEntry);
@@ -242,7 +244,7 @@ public class UserInterface {
 	 * For proper Ctrl,
 	 * {@code Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()} is okay too.
 	 * </p>
-	 * 
+	 *
 	 * @param key          The key / letter itself. Should be from
 	 *                     {@link KeyEvent}.VK_<?>
 	 * @param keyModifiers The key modifiers, like Shift or Ctrl. Should be from
@@ -316,7 +318,7 @@ public class UserInterface {
 	 * Clears the workspace. Will prompt to save changes if there are any. Returns
 	 * if to proceed (true) or not (false). If false is returned, there are unsaved
 	 * changes and the cancel button was pressed.
-	 * 
+	 *
 	 * @return If proceed or not.
 	 */
 	public boolean clearWorkspace() {
@@ -335,7 +337,7 @@ public class UserInterface {
 	 * Closes the currently open file. Will prompt to save changes if there are any.
 	 * Returns if to proceed (true) or not (false). If false is returned, there are
 	 * unsaved changes and the cancel button was pressed.
-	 * 
+	 *
 	 * @return If proceed or not.
 	 */
 	private boolean closeCurrentOpenFile() {
@@ -471,7 +473,7 @@ public class UserInterface {
 		if (selectedItemIndex < 0)
 			return;
 		TimesheetEntry entry = listModel.getElementAt(selectedItemIndex);
-		DialogHelper.showEntryDialog(this, "Edit Entry", entry);
+		DialogHelper.showEntryDialog(this, this.frame, "Edit Entry", entry);
 		listModel.removeElement(entry);
 		itemList.setSelectedIndex(-1);
 		updateTotalTimeWorkedUI();

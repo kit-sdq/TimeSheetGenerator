@@ -32,7 +32,7 @@ public class MonthlySettingsBar extends JPanel {
 	private final Font fontNormal;
 	private final Font fontBold;
 
-	public MonthlySettingsBar(UserInterface parentUi) {
+	public MonthlySettingsBar(UserInterface parentUi, JFrame parentFrame) {
 		super(new BorderLayout());
 		this.parentUi = parentUi;
 		// Top Panel with Selectors and Button
@@ -119,7 +119,7 @@ public class MonthlySettingsBar extends JPanel {
 			updateSemesterView();
 		});
 
-		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog(parentUi));
+		settingsButton.addActionListener(l -> GlobalSettingsDialog.showGlobalSettingsDialog(parentUi, parentFrame));
 	}
 
 	public String getSelectedMonthName() {

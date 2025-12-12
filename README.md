@@ -11,7 +11,7 @@ can be used as well.
 
 Yes, you can drag and drop your month.json files into the generator.
 
-The files can be compiled to tex or directly compiled to a pdf.
+The files can be compiled to tex or directly compiled to a pdf. This pdf can be flattened (default for this setting is yes). In this case, the pdf is no longer editable post-export.
 
 #### To open a file with the UI from the command line, you can type `$ java -jar TimeSheetGenerator.jar /path/to/month.json` to open the specified file with the TimesheetGenerator UI.
 #### The TimesheetGenerator also supports "Open with..." with Windows (and probably other OS), but be cautious if you want to open every JSON file with the TimesheetGenerator.

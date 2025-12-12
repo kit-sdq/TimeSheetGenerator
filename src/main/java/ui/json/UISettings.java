@@ -18,6 +18,7 @@ public class UISettings {
 	private boolean useYYYY = false;
 	private boolean useGermanMonths = false;
 	private boolean warnOnHoursMismatch = true;
+	private boolean flattenPDF = true;
 	private String monthPath;
 	private String texPath;
 	private String pdfPath;
@@ -45,6 +46,7 @@ public class UISettings {
 		this.useYYYY = uiSettings.useYYYY;
 		this.useGermanMonths = uiSettings.useGermanMonths;
 		this.warnOnHoursMismatch = uiSettings.warnOnHoursMismatch;
+		this.flattenPDF = uiSettings.flattenPDF;
 		this.monthPath = uiSettings.monthPath;
 		this.texPath = uiSettings.texPath;
 		this.pdfPath = uiSettings.pdfPath;

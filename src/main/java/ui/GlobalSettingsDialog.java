@@ -26,20 +26,26 @@ public final class GlobalSettingsDialog {
 	private static final int SCROLL_SENSITIVITY = 16;
 
 	private static final int TEXTBOXES_COUNT = 7;
-	private static final int TEXTFIELD_INDEX_DEPARTMENT_FORMAT = 2;
+	private static final int TEXTBOXES_COLUMNS = 20;
+	private static final int TEXTFIELD_INDEX_DEPARTMENT = 2;
 	private static final int TEXTFIELD_INDEX_PDF_FORMAT = 5;
 	private static final int TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT = 6;
 
-	public static void showGlobalSettingsDialog(UserInterface parentUI) {
-		JDialog dialog = new JDialog();
+	private static final int DIALOG_WIDTH = 800;
+	private static final int DIALOG_HEIGHT = 630;
+
+	public static void showGlobalSettingsDialog(UserInterface parentUI, JFrame parentFrame) {
+		JDialog dialog = new JDialog(parentFrame);
 		dialog.setTitle("Global Settings");
-		dialog.setSize(690, 555);
+		dialog.setSize(DIALOG_WIDTH, DIALOG_HEIGHT);
+		dialog.setPreferredSize(dialog.getSize());
 		dialog.setLocationRelativeTo(null); // Center the dialog
 
 		Global globalSettings = JSONHandler.getGlobalSettings();
 		UISettings uiSettings = JSONHandler.getUISettings();
 
 		JPanel panel = new JPanel(new GridBagLayout());
+		panel.setSize(dialog.getSize());
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding of 10
 
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -64,21 +70,23 @@ public final class GlobalSettingsDialog {
 		JCheckBox addVacationEntryBox = new JCheckBox();
 		JCheckBox useGermanMonthNameBox = new JCheckBox();
 		JCheckBox warnHoursMismatchBox = new JCheckBox();
+		JCheckBox flattenPDFBox = new JCheckBox();
 		addSignatureBox.setSelected(uiSettings.isAddSignature());
 		useYYYYBox.setSelected(uiSettings.isUseYYYY());
 		addVacationEntryBox.setSelected(uiSettings.isAddVacationEntry());
 		useGermanMonthNameBox.setSelected(uiSettings.isUseGermanMonths());
 		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
+		flattenPDFBox.setSelected(uiSettings.isFlattenPDF());
 
 		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Email Subject Format:", "Working Area:",
 				"Add Signature at Bottom:", "Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
-				"Warn when too few/ too many hours:" };
+				"Warn when too few/ too many hours:", "Flatten PDF (recommended):" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage",
 				uiSettings.getExportPdfNameFormat(), uiSettings.getMailSubjectFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat(),
 				uiSettings.getMailSubjectFormat() };
-		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
+		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox, flattenPDFBox };
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel label = new JLabel(labels[i]);
@@ -94,15 +102,10 @@ public final class GlobalSettingsDialog {
 			gbc.weightx = 0;
 
 			// Error label for validation messages
-			if (i < errorLabels.length) {
-				JLabel errorLabel = new JLabel(" ");
-				errorLabel.setForeground(TextColors.ERROR.color());
-				errorLabels[i] = errorLabel;
-				panel.add(errorLabel, gbc);
-			}
+			tryAddErrorLabel(i, panel, errorLabels, gbc);
 
 			if (i < TEXTBOXES_COUNT) {
-				JTextField textField = new JTextField(20);
+				JTextField textField = new JTextField(TEXTBOXES_COLUMNS);
 				textField.setCaretColor(TextColors.DEFAULT.color());
 				DialogHelper.addPlaceholderText(textField, placeholders[i], initialValues[i]);
 				textField.setCaretPosition(0);
@@ -148,7 +151,7 @@ public final class GlobalSettingsDialog {
 
 		// Preset Switch at the bottom
 		JComboBox<Preset> presetSelector = makePresetSelector();
-		addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT_FORMAT],
+		addPresetSelectionLogic(presetSelector, uiSettings, fields[TEXTFIELD_INDEX_PDF_FORMAT], fields[TEXTFIELD_INDEX_DEPARTMENT],
 				fields[TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT]);
 
 		JPanel presetSelectorPaddingPanel = new JPanel(new BorderLayout(15, 5));
@@ -164,6 +167,7 @@ public final class GlobalSettingsDialog {
 		gbc.fill = GridBagConstraints.NONE;
 		panel.add(presetSelectorPaddingPanel, gbc);
 
+		gbc.gridy++;
 		gbc.anchor = GridBagConstraints.SOUTHEAST;
 		panel.add(buttonPanel, gbc);
 
@@ -185,17 +189,56 @@ public final class GlobalSettingsDialog {
 		scrollPanel.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPanel.getVerticalScrollBar().setUnitIncrement(SCROLL_SENSITIVITY);
 		dialog.add(scrollPanel);
-		dialog.setVisible(true);
 		DialogHelper.addEnterEscapeHotkeys(dialog, saveButton, cancelButton);
 		dialog.pack();
 		dialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		dialog.setVisible(true);
+	}
+
+	/**
+	 * If the index is low enough, creates and adds an empty error label next to
+	 * where the gbc happens to be. The gbc should be on the coordinates of the text
+	 * field the error label should be for. If the index is out of bounds of the
+	 * error labels, nothing happens.
+	 * <p>
+	 * Special case: If the index is equal to the index of the PDF field, the error
+	 * label will be put one row below the field, since the row of the text field
+	 * contains the help button already.
+	 * </p>
+	 * 
+	 * @param index       The index of the text field / error label. If out of
+	 *                    bounds, nothing happens.
+	 * @param panel       The parent panel to add the label to.
+	 * @param errorLabels The array of error labels to fill the new error label in.
+	 * @param gbc         The current grid constraints, set to the row and column of
+	 *                    the text field the label is for.
+	 */
+	private static void tryAddErrorLabel(int index, JPanel panel, JLabel[] errorLabels, GridBagConstraints gbc) {
+		if (index >= errorLabels.length) {
+			return;
+		}
+		JLabel errorLabel = new JLabel(" ");
+		errorLabel.setForeground(TextColors.ERROR.color());
+		errorLabels[index] = errorLabel;
+		if (index == TEXTFIELD_INDEX_PDF_FORMAT) {
+			// The help button otherwise blocks this / overlaps
+			gbc.gridy++;
+			gbc.gridx++;
+			panel.add(errorLabel, gbc);
+			gbc.gridx--;
+			gbc.gridy--;
+		} else {
+			gbc.gridx++;
+			panel.add(errorLabel, gbc);
+			gbc.gridx--;
+		}
 	}
 
 	/**
 	 * Validates and saves the new settings. If validation fails, the method will
 	 * not override the existing settings and instead return false. If validation
 	 * succeeds, returns true.
-	 * 
+	 *
 	 * @param parentUI         the parent user interface, used for updating the time
 	 *                         UI
 	 * @param globalSettings   the new global settings, containing the updated
@@ -208,8 +251,8 @@ public final class GlobalSettingsDialog {
 	 * @param workAreaSelector The combo box for selecting the working area (UB /
 	 *                         GF)
 	 * @param checkBoxes       the checkboxes for boolean values like addSignature
-	 *                         or addVacationEntry. Must have size exactly 5,
-	 *                         otherwise will be ignored.
+	 *                         or addVacationEntry. Must have size greater or equal
+	 *                         6, checkboxes past index 5 will be ignored though.
 	 * @return true if settings are valid and saved successfully, false otherwise
 	 */
 	private static boolean trySaveNewGlobalSettings(UserInterface parentUI, Global globalSettings, UISettings uiSettings, JTextField[] fields,
@@ -235,12 +278,13 @@ public final class GlobalSettingsDialog {
 		}
 		globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
-		if (checkBoxes.length == 5) {
+		if (checkBoxes.length >= 6) {
 			uiSettings.setAddSignature(checkBoxes[0].isSelected());
 			uiSettings.setAddVacationEntry(checkBoxes[1].isSelected());
 			uiSettings.setUseYYYY(checkBoxes[2].isSelected());
 			uiSettings.setUseGermanMonths(checkBoxes[3].isSelected());
 			uiSettings.setWarnOnHoursMismatch(checkBoxes[4].isSelected());
+			uiSettings.setFlattenPDF(checkBoxes[5].isSelected());
 		}
 		if (fields.length > TEXTFIELD_INDEX_PDF_FORMAT)
 			uiSettings.setExportPdfNameFormat(fields[TEXTFIELD_INDEX_PDF_FORMAT].getText());
@@ -334,6 +378,7 @@ public final class GlobalSettingsDialog {
 				- %MM_ENG%: English Month Name
 				- %YY%: Year (2 digits)
 				- %YYYY%: Year (4 digits)
+				- %PERS_NR%: Staff Id
 				""";
 		JOptionPane.showMessageDialog(parentDialog, message, "PDF Name Format Help", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -355,15 +400,10 @@ public final class GlobalSettingsDialog {
 	// Helper method to add placeholder text
 	private static void validateField(JTextField textField, JLabel errorLabel, int index) {
 		String text = textField.getText().trim();
-		// Ignore placeholder text during validation
-		if (textField.getForeground().equals(TextColors.DEFAULT.color())) {
-			errorLabel.setText(" ");
-			return;
-		}
 
 		switch (index) {
 		case 0:
-			validateNotEmpty(text, errorLabel, "Name");
+			validateNotEmpty(textField, text, errorLabel, "Name");
 			break;
 		case 1:
 			try {
@@ -374,9 +414,11 @@ public final class GlobalSettingsDialog {
 			}
 			break;
 		case 2:
-			validateNotEmpty(text, errorLabel, "Department");
+			validateNotEmpty(textField, text, errorLabel, "Department");
 			break;
 		case 3:
+			textField.setText(JTimeField.formatTimeString(textField.getText()));
+			text = textField.getText();
 			if (!DialogHelper.isValidTimeFormat(text)) {
 				errorLabel.setText("Invalid time format (HH:MM)");
 			} else {
@@ -392,7 +434,7 @@ public final class GlobalSettingsDialog {
 			}
 			break;
 		case 5:
-			validateNotEmpty(text, errorLabel, "Working area");
+			validateNotEmpty(textField, text, errorLabel, "Working area");
 			break;
 		default:
 			// Unknown field, nothing to validate
@@ -400,8 +442,8 @@ public final class GlobalSettingsDialog {
 		}
 	}
 
-	private static void validateNotEmpty(String text, JLabel errorLabel, String setting) {
-		if (text.isEmpty()) {
+	private static void validateNotEmpty(JTextField textField, String text, JLabel errorLabel, String setting) {
+		if (text.isEmpty() || textField.getForeground().equals(TextColors.PLACEHOLDER.color())) {
 			errorLabel.setText("%s cannot be empty".formatted(setting));
 		} else {
 			errorLabel.setText(" ");
