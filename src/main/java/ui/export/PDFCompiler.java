@@ -111,7 +111,8 @@ public class PDFCompiler {
 		form.getField("Urlaub anteilig").setValue(timeVacation.toString()); // Total time of Vacation
 
 		// Lock document
-		form.flatten();
+		if (uiSettings.isFlattenPDF())
+			form.flatten();
 
 		// Save the filled document
 		document.save(targetFile);

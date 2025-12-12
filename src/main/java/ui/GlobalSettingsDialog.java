@@ -32,7 +32,7 @@ public final class GlobalSettingsDialog {
 	private static final int TEXTFIELD_INDEX_MAIL_SUBJ_FORMAT = 6;
 
 	private static final int DIALOG_WIDTH = 800;
-	private static final int DIALOG_HEIGHT = 600;
+	private static final int DIALOG_HEIGHT = 630;
 
 	public static void showGlobalSettingsDialog(UserInterface parentUI, JFrame parentFrame) {
 		JDialog dialog = new JDialog(parentFrame);
@@ -70,21 +70,23 @@ public final class GlobalSettingsDialog {
 		JCheckBox addVacationEntryBox = new JCheckBox();
 		JCheckBox useGermanMonthNameBox = new JCheckBox();
 		JCheckBox warnHoursMismatchBox = new JCheckBox();
+		JCheckBox flattenPDFBox = new JCheckBox();
 		addSignatureBox.setSelected(uiSettings.isAddSignature());
 		useYYYYBox.setSelected(uiSettings.isUseYYYY());
 		addVacationEntryBox.setSelected(uiSettings.isAddVacationEntry());
 		useGermanMonthNameBox.setSelected(uiSettings.isUseGermanMonths());
 		warnHoursMismatchBox.setSelected(uiSettings.isWarnOnHoursMismatch());
+		flattenPDFBox.setSelected(uiSettings.isFlattenPDF());
 
 		String[] labels = { "Name:", "Staff ID:", "Department:", "Working Time:", "Wage:", "PDF Name Format:", "Email Subject Format:", "Working Area:",
 				"Add Signature at Bottom:", "Explicitly add Vacation Entry:", "Use 4-digit year in the day column:", "Use German months in Sheet header",
-				"Warn when too few/ too many hours:" };
+				"Warn when too few/ too many hours:", "Flatten PDF (recommended):" };
 		String[] placeholders = { "Enter your name", "Enter your staff ID", "Enter your department", "Enter working time (HH:MM)", "Enter your wage",
 				uiSettings.getExportPdfNameFormat(), uiSettings.getMailSubjectFormat() };
 		String[] initialValues = { globalSettings.getName(), String.valueOf(globalSettings.getStaffId()), globalSettings.getDepartment(),
 				globalSettings.getWorkingTime(), String.valueOf(globalSettings.getWage()), uiSettings.getExportPdfNameFormat(),
 				uiSettings.getMailSubjectFormat() };
-		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox };
+		JCheckBox[] checkBoxes = { addSignatureBox, addVacationEntryBox, useYYYYBox, useGermanMonthNameBox, warnHoursMismatchBox, flattenPDFBox };
 
 		for (int i = 0; i < labels.length; i++) {
 			JLabel label = new JLabel(labels[i]);
@@ -249,8 +251,8 @@ public final class GlobalSettingsDialog {
 	 * @param workAreaSelector The combo box for selecting the working area (UB /
 	 *                         GF)
 	 * @param checkBoxes       the checkboxes for boolean values like addSignature
-	 *                         or addVacationEntry. Must have size exactly 5,
-	 *                         otherwise will be ignored.
+	 *                         or addVacationEntry. Must have size greater or equal
+	 *                         6, checkboxes past index 5 will be ignored though.
 	 * @return true if settings are valid and saved successfully, false otherwise
 	 */
 	private static boolean trySaveNewGlobalSettings(UserInterface parentUI, Global globalSettings, UISettings uiSettings, JTextField[] fields,
@@ -276,12 +278,13 @@ public final class GlobalSettingsDialog {
 		}
 		globalSettings.setWorkingArea(getConfigValue(workAreaSelector.getSelectedItem()));
 
-		if (checkBoxes.length == 5) {
+		if (checkBoxes.length >= 6) {
 			uiSettings.setAddSignature(checkBoxes[0].isSelected());
 			uiSettings.setAddVacationEntry(checkBoxes[1].isSelected());
 			uiSettings.setUseYYYY(checkBoxes[2].isSelected());
 			uiSettings.setUseGermanMonths(checkBoxes[3].isSelected());
 			uiSettings.setWarnOnHoursMismatch(checkBoxes[4].isSelected());
+			uiSettings.setFlattenPDF(checkBoxes[5].isSelected());
 		}
 		if (fields.length > TEXTFIELD_INDEX_PDF_FORMAT)
 			uiSettings.setExportPdfNameFormat(fields[TEXTFIELD_INDEX_PDF_FORMAT].getText());
