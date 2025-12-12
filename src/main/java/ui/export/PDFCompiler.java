@@ -110,6 +110,9 @@ public class PDFCompiler {
 		form.getField("Summe").setValue(timeSum.toString()); // Total time worked
 		form.getField("Urlaub anteilig").setValue(timeVacation.toString()); // Total time of Vacation
 
+		// Lock document
+		form.flatten();
+
 		// Save the filled document
 		document.save(targetFile);
 		document.close();
