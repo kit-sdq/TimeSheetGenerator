@@ -9,6 +9,7 @@ import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
 import ui.json.Month;
 import ui.json.UISettings;
+import updater.Updater;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -56,8 +57,11 @@ public class UserInterface {
 	private MonthlySettingsBar monthSettingsBar;
 	private ActionBar buttonActionBar;
 
+    private final Updater updater;
+
 	public UserInterface() {
 		initialize();
+        updater = new Updater(frame);
 	}
 
 	private void initialize() {
@@ -81,11 +85,13 @@ public class UserInterface {
 		JMenu fileMenu = new JMenu("File");
 		JMenuItem fileOptionNew = new JMenuItem("New...");
 		JMenuItem fileOptionOpen = new JMenuItem("Open");
+		JMenuItem fileOptionSearchForUpdate = new JMenuItem("Search for Updates");
 		JMenuItem fileOptionGlobalSettings = new JMenuItem("Edit Global Settings");
 		JMenuItem fileOptionSave = new JMenuItem("Save");
 		JMenuItem fileOptionSaveAs = new JMenuItem("Save as...");
 		fileMenu.add(fileOptionNew);
 		fileMenu.add(fileOptionOpen);
+		fileMenu.add(fileOptionSearchForUpdate);
 		fileMenu.add(fileOptionGlobalSettings);
 		fileMenu.add(fileOptionSave);
 		fileMenu.add(fileOptionSaveAs);
@@ -150,6 +156,7 @@ public class UserInterface {
 
 		fileOptionNew.addActionListener(e -> clearWorkspace());
 		fileOptionOpen.addActionListener(e -> openFile());
+		fileOptionSearchForUpdate.addActionListener(e -> updater.checkForUpdates());
 		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this, this.frame));
 		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
 		fileOptionSaveAs.addActionListener(e -> saveFileAs());
