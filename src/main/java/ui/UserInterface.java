@@ -44,7 +44,7 @@ public class UserInterface {
 
 	private static final String APP_NAME = "Timesheet Generator";
 
-    private static final String TITLE = "%s: %s";
+	private static final String TITLE = "%s: %s";
 
 	@Getter
 	private File currentOpenFile;
@@ -58,12 +58,12 @@ public class UserInterface {
 	private MonthlySettingsBar monthSettingsBar;
 	private ActionBar buttonActionBar;
 
-    private final Updater updater;
+	private final Updater updater;
 
 	public UserInterface() {
 		initialize();
-        updater = new Updater(frame);
-        updater.checkForUpdates();
+		updater = new Updater(frame);
+		updater.checkForUpdates();
 	}
 
 	private void initialize() {

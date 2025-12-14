@@ -84,8 +84,8 @@
                 <directory>src/main/resources</directory>
             </resource>
             <resource>
-                <directory>src/main/resources/maven</directory>
                 <filtering>true</filtering>
+                <directory>src/main/resources/maven</directory>
             </resource>
         </resources>
         <plugins>

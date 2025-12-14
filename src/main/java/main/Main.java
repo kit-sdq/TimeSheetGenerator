@@ -39,12 +39,13 @@ public class Main {
 			return;
 		}
 
-        // Updater. This should simply move some files and restart
-        // This is not documented on purpose because it's not supposed to be used by humans
-        if (args.length == 2 && args[0].equals(Updater.UPDATE_COMMAND_LINE_PARAMETER)) {
-            new Updater().cloneCurrentFileToOriginal(args[1]);
-            System.exit(0);
-        }
+		// Updater. This should simply move some files and restart
+		// This is not documented on purpose because it's not supposed to be used by
+		// humans
+		if (args.length == 2 && args[0].equals(Updater.UPDATE_COMMAND_LINE_PARAMETER)) {
+			new Updater().cloneCurrentFileToOriginal(args[1]);
+			System.exit(0);
+		}
 
 		// Initialize and parse user input
 		UserInput userInput = new UserInput(args);
