@@ -17,8 +17,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
-public record Updater(JFrame parentFrame) {
+public class Updater {
+    public static final String UPDATE_COMMAND_LINE_PARAMETER = "updater";
 
     private static final int JOPTIONPANE_RESULT_YES = 0;
     private static final String FORMAT_TEMPORARY_JAR_FILE = "temp-%s.jar";
@@ -26,14 +28,26 @@ public record Updater(JFrame parentFrame) {
     private static final String JAR_DOWNLOAD_URL_TEMPLATE = "https://github.com/kit-sdq/TimeSheetGenerator/releases/download/v%s/timesheetgenerator.jar";
     private static final String JAR_DOWNLOAD_URL_TEMPLATE_2 = "https://github.com/kit-sdq/TimeSheetGenerator/releases/download/%s/timesheetgenerator.jar";
 
+    private static final int TIMEOUT_FILE_DELETE_MS = 10000;
+
+    private final JFrame parentFrame;
+
     /**
      * Creates a new updater instance and automatically searches for updates.
-     * Requires the Userinterface and JFrame as parent for the popup.
+     * Requires the JFrame as parent for popups.
      */
     public Updater(JFrame parentFrame) {
         this.parentFrame = parentFrame;
         clearOldJarFiles();
-        checkForUpdates();
+    }
+
+    /**
+     * Creates a new updater instance and automatically searches for updates.
+     * Does not have a parent JFrame. Also does not clean up temporary jar files.
+     * Should only be used for temporary processes during updates.
+     */
+    public Updater() {
+        this.parentFrame = null;
     }
 
     /**
@@ -68,14 +82,27 @@ public record Updater(JFrame parentFrame) {
     private void runTemporaryUpdateGenerator(File file) {
         try {
             File newLocalFile = replaceLocalFile(file);
-            Runtime.getRuntime().exec(new String[]{"java", "-jar", newLocalFile.getAbsolutePath()});
+            runJarFile(newLocalFile);
             System.exit(0);
         } catch (IOException | URISyntaxException e) {
             ErrorHandler.showError("Something went wrong", "Something went wrong while trying to perform the update. Please try again later.%n%s".formatted(e.getMessage()));
         }
     }
 
-    private String getLocalFile() throws URISyntaxException {
+    private void runJarFile(File file) throws IOException {
+        runJarFileWithArgs(file);
+    }
+
+    private void runJarFileWithArgs(File file, String... arguments) throws IOException {
+        String[] parameters = new String[3 + arguments.length];
+        parameters[0] = "java";
+        parameters[1] = "-jar";
+        parameters[2] = file.getAbsolutePath();
+        System.arraycopy(arguments, 0, parameters, 3, arguments.length);
+        Runtime.getRuntime().exec(parameters);
+    }
+
+    public static String getLocalFile() throws URISyntaxException {
         return new File(Updater.class.getProtectionDomain().getCodeSource().getLocation()
                 .toURI()).getPath();
     }
@@ -93,8 +120,12 @@ public record Updater(JFrame parentFrame) {
         File localFile = new File(getLocalFile());
         if (!localFile.isFile()) throw new IOException("Current executable is not a jar file.");
         boolean deleted = localFile.delete();
-        // todo if windows does not allow this, we need to implement the workaround anyway
-        if (!deleted) throw new IOException("Failed to delete the old timesheet generator.");
+        if (!deleted || true) {
+            // operating systems like windows do not allow this, so we need to take a workaround
+            newGeneratorFile = new File(localFile.getParent(), "newGenerator.jar");
+            runJarFileWithArgs(newGeneratorFile, UPDATE_COMMAND_LINE_PARAMETER, localFile.getAbsolutePath());
+            System.exit(0);
+        }
         Path newFilepath = Files.move(newGeneratorFile.toPath(), localFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         return newFilepath.toFile();
     }
@@ -123,5 +154,33 @@ public record Updater(JFrame parentFrame) {
             ErrorHandler.showError("Error downloading release", "Failed to download newest release. Update cancelled, please try again later.");
         }
         return file;
+    }
+
+    // ------------ Operations for the second way of replacing the old file ------------
+
+    public void cloneCurrentFileToOriginal(String originalFilepath) {
+        File originalFile = new File(originalFilepath);
+        try {
+            var localFile = getLocalFile();
+            long startTime = System.currentTimeMillis();
+            while (originalFile.exists() && !originalFile.delete()) {
+                if (startTime + TIMEOUT_FILE_DELETE_MS < System.currentTimeMillis())
+                    throw new TimeoutException("Timed out while attempting to delete the original file.");
+            }
+            // Temp file will be deleted anyway
+            Files.copy(new File(localFile).toPath(), originalFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        } catch (URISyntaxException e) {
+            ErrorHandler.showError("Something went wrong", "Failed to acquire the current executable jar.");
+        } catch (TimeoutException e) {
+            ErrorHandler.showError("Something went wrong", e.getMessage());
+        } catch (IOException e) {
+            ErrorHandler.showError("Something went wrong", "Failed to copy the TimesheetGenerator executable.");
+        } finally {
+            if (originalFile.exists()) {
+                try {
+                    runJarFile(originalFile);
+                } catch (IOException ignored) { }
+            }
+        }
     }
 }

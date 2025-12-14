@@ -42,8 +42,18 @@ public class UserInterface {
 	 */
 	public static final int MAX_ENTRIES = 22;
 
-	private static final String APP_NAME = "Timesheet Generator";
-	private static final String TITLE = "%s: %s";
+	private static final String APP_NAME;
+
+    // Todo: Rollback
+    static {
+        try {
+            APP_NAME = "Timesheet Generator aaa" + Updater.getLocalFile();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static final String TITLE = "%s: %s";
 
 	@Getter
 	private File currentOpenFile;
@@ -62,6 +72,7 @@ public class UserInterface {
 	public UserInterface() {
 		initialize();
         updater = new Updater(frame);
+        updater.checkForUpdates();
 	}
 
 	private void initialize() {
