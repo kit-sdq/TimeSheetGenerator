@@ -5,6 +5,7 @@ import ui.json.JSONHandler;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URI;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
+// The warning is false, this cannot be a record class with this constructor layout
 public class Updater {
     public static final String UPDATE_COMMAND_LINE_PARAMETER = "updater";
 
@@ -26,7 +28,7 @@ public class Updater {
     private static final String FORMAT_TEMPORARY_JAR_FILE = "temp-%s.jar";
     private static final String REGEX_TEMPORARY_JAR_FILE = "temp-.*\\.jar";
     private static final String JAR_DOWNLOAD_URL_TEMPLATE = "https://github.com/kit-sdq/TimeSheetGenerator/releases/download/v%s/timesheetgenerator.jar";
-    private static final String JAR_DOWNLOAD_URL_TEMPLATE_2 = "https://github.com/kit-sdq/TimeSheetGenerator/releases/download/%s/timesheetgenerator.jar";
+    private static final String JAR_DOWNLOAD_URL_TEMPLATE_ALT = "https://github.com/kit-sdq/TimeSheetGenerator/releases/download/%s/timesheetgenerator.jar";
 
     private static final int TIMEOUT_FILE_DELETE_MS = 10000;
 
@@ -56,7 +58,7 @@ public class Updater {
     public void checkForUpdates() {
         String localVersion = LocalVersionFetcher.getProgramVersion();
         String newestReleaseVersion = JSONHandler.getFieldDefaults().getNewestVersion();
-        //if (!VersionComparer.isNewerThan(newestReleaseVersion, localVersion)) return;
+        if (!VersionComparer.isNewerThan(newestReleaseVersion, localVersion)) return;
         openPopup(localVersion, newestReleaseVersion);
     }
 
@@ -120,9 +122,8 @@ public class Updater {
         File localFile = new File(getLocalFile());
         if (!localFile.isFile()) throw new IOException("Current executable is not a jar file.");
         boolean deleted = localFile.delete();
-        if (!deleted || true) {
+        if (!deleted) {
             // operating systems like windows do not allow this, so we need to take a workaround
-            newGeneratorFile = new File(localFile.getParent(), "newGenerator.jar");
             runJarFileWithArgs(newGeneratorFile, UPDATE_COMMAND_LINE_PARAMETER, localFile.getAbsolutePath());
             System.exit(0);
         }
@@ -142,18 +143,30 @@ public class Updater {
      * @param version The version of the TimesheetGenerator to download.
      * @return the downloaded file.
      */
-    private static File downloadVersion(String version) throws IOException, URISyntaxException {
+    private File downloadVersion(String version) throws IOException, URISyntaxException {
         File file = new File(JSONHandler.getApplicationDataPath(), FORMAT_TEMPORARY_JAR_FILE.formatted(UUID.randomUUID()));
         try {
-            URL url = new URI(JAR_DOWNLOAD_URL_TEMPLATE.formatted(version)).toURL();
-            try (ReadableByteChannel byteChannel = Channels.newChannel(url.openStream());
-                 FileOutputStream outputStream = new FileOutputStream(file)) {
-                outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
+            URL link = new URI(JAR_DOWNLOAD_URL_TEMPLATE.formatted(version)).toURL();
+            boolean success = tryReadFromSite(file, link);
+            if (!success) {
+                URL alternativeLink = new URI(JAR_DOWNLOAD_URL_TEMPLATE_ALT.formatted(version)).toURL();
+                success = tryReadFromSite(file, alternativeLink);
+                if (!success) throw new FileNotFoundException("Could not find the latest release of the TimesheetGenerator.");
             }
         } catch (IOException | URISyntaxException e) {
             ErrorHandler.showError("Error downloading release", "Failed to download newest release. Update cancelled, please try again later.");
         }
         return file;
+    }
+
+    private boolean tryReadFromSite(File file, URL link) throws IOException, URISyntaxException {
+        try (ReadableByteChannel byteChannel = Channels.newChannel(link.openStream());
+             FileOutputStream outputStream = new FileOutputStream(file)) {
+            outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
+        } catch (FileNotFoundException e) {
+            return false;
+        }
+        return true;
     }
 
     // ------------ Operations for the second way of replacing the old file ------------
