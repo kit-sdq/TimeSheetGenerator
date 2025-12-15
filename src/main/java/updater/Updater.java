@@ -95,8 +95,7 @@ public class Updater {
 			runJarFile(newLocalFile);
 			System.exit(0);
 		} catch (IOException | URISyntaxException e) {
-			ErrorHandler.showError("Something went wrong",
-					"Something went wrong while trying to perform the update. Please try again later.%n%s".formatted(e.getMessage()));
+			ErrorHandler.showError("Something went wrong while trying to perform the update. Please try again later.%n%s".formatted(e.getMessage()));
 		}
 	}
 
@@ -171,7 +170,7 @@ public class Updater {
 		return file;
 	}
 
-	private boolean tryReadFromSite(File file, URL link) throws IOException, URISyntaxException {
+	private boolean tryReadFromSite(File file, URL link) throws IOException {
 		try (ReadableByteChannel byteChannel = Channels.newChannel(link.openStream()); FileOutputStream outputStream = new FileOutputStream(file)) {
 			outputStream.getChannel().transferFrom(byteChannel, 0, Long.MAX_VALUE);
 		} catch (FileNotFoundException e) {
@@ -180,8 +179,7 @@ public class Updater {
 		return true;
 	}
 
-	// ------------ Operations for the second way of replacing the old file
-	// ------------
+	// --- Operations for the second way of replacing the old file ---
 
 	public void cloneCurrentFileToOriginal(String originalFilepath) {
 		File originalFile = new File(originalFilepath);
@@ -195,16 +193,18 @@ public class Updater {
 			// Temp file will be deleted anyway
 			Files.copy(new File(localFile).toPath(), originalFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (URISyntaxException e) {
-			ErrorHandler.showError("Something went wrong", "Failed to acquire the current executable jar.");
+			ErrorHandler.showError("Failed to acquire the current executable jar.");
 		} catch (TimeoutException e) {
-			ErrorHandler.showError("Something went wrong", e.getMessage());
+			ErrorHandler.showError(e.getMessage());
 		} catch (IOException e) {
-			ErrorHandler.showError("Something went wrong", "Failed to copy the TimesheetGenerator executable.");
+			ErrorHandler.showError("Failed to copy the TimesheetGenerator executable.");
 		} finally {
 			if (originalFile.exists()) {
 				try {
 					runJarFile(originalFile);
 				} catch (IOException ignored) {
+					// If we can't run the original jar file,
+					// there is nothing we can do here
 				}
 			}
 		}

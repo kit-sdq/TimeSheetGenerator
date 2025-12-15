@@ -6,6 +6,10 @@ import java.util.List;
 
 public final class VersionComparer {
 
+	private VersionComparer() {
+		// Don't allow instances of this class
+	}
+
 	/**
 	 * Takes in two version strings of the format \d+(\.\d+)*, so for example
 	 * 0.20.6, and returns if the first version parameter is newer than the second

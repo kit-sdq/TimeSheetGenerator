@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024. */
+/* Licensed under MIT 2024-2025. */
 package ui;
 
 import javax.swing.*;
@@ -22,6 +22,10 @@ public final class ErrorHandler {
 			return;
 		}
 		JOptionPane.showMessageDialog(parentComponent, error, title, JOptionPane.ERROR_MESSAGE);
+	}
+
+	public static void showError(String error) {
+		showError("Something went wrong", error);
 	}
 
 }

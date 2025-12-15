@@ -16,6 +16,10 @@ public final class LocalVersionFetcher {
 	private static final String VERSION_ATTRIBUTE_NAME = "generatorVersion";
 	private static final Pattern MAVEN_VERSION_FILTER_REGEX = Pattern.compile("^(\\d++\\.\\d++\\.\\d++).*$");
 
+	private LocalVersionFetcher() {
+		// Don't allow instances of this class
+	}
+
 	public static String getProgramVersion() {
 		try (InputStream templateStream = PDFCompiler.class.getResourceAsStream("/project.properties")) {
 			var lines = readInputStreamToLines(templateStream);
@@ -29,6 +33,9 @@ public final class LocalVersionFetcher {
 				}
 			}
 		} catch (IOException ignored) {
+			// In any case where we don't find the version attribute, we return the default
+			// value
+			// No explicit error handling required
 		}
 		return NULL_VERSION;
 	}
