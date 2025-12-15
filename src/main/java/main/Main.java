@@ -13,6 +13,7 @@ import main.request.GenerateRequest;
 import parser.ParseException;
 import parser.Parser;
 import ui.UserInterface;
+import updater.Updater;
 
 import javax.swing.*;
 import java.io.File;
@@ -36,6 +37,14 @@ public class Main {
 		if (args.length == 0 || (args.length == 1 && new File(args[0]).exists())) {
 			UserInterface.main(args);
 			return;
+		}
+
+		// Updater. This should simply move some files and restart
+		// This is not documented on purpose because it's not supposed to be used by
+		// humans
+		if (args.length == 2 && args[0].equals(Updater.UPDATE_COMMAND_LINE_PARAMETER)) {
+			new Updater().cloneCurrentFileToOriginal(args[1]);
+			System.exit(0);
 		}
 
 		// Initialize and parse user input

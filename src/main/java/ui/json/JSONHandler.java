@@ -81,6 +81,15 @@ public final class JSONHandler {
 	}
 
 	/**
+	 * Gets the folder path for the application data and config.
+	 * 
+	 * @return the config path.
+	 */
+	public static String getApplicationDataPath() {
+		return configDir;
+	}
+
+	/**
 	 * Gets a copy of the current global settings.
 	 * 
 	 * @return Copy of global settings
