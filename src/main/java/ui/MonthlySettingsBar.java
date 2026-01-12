@@ -188,7 +188,8 @@ public class MonthlySettingsBar extends JPanel {
 
 	public void importMonthSettings(Month month) {
 		String yearString = String.valueOf(month.getYear());
-		semesterTextField.setText(yearString.substring(yearString.length() - 2));
+        int yearShort = Integer.parseInt(yearString.substring(yearString.length() - 2));
+		semesterTextField.setText("" + (month.getMonth() <= 3 ? yearShort - 1 : yearShort));
 		monthSelector.setSelectedIndex(month.getMonth() - 1);
 		if (month.getMonth() >= 4 && month.getMonth() <= 9) {
 			semesterSelector.setSelectedIndex(0);
