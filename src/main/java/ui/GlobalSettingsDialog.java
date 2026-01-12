@@ -303,7 +303,7 @@ public final class GlobalSettingsDialog {
 		JComboBox<Preset> presetSelector = new JComboBox<>();
 		presetSelector.addItem(Preset.NO_PRESET);
 		JSONHandler.getPresets().getPresets().forEach(preset -> {
-			if (preset.isVisible())
+			if (preset.shouldBeVisible())
 				presetSelector.addItem(preset);
 		});
 		// Now, figure out which preset it selected by field values

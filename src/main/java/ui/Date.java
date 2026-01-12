@@ -2,6 +2,7 @@ package ui;
 
 import lombok.NonNull;
 
+import java.time.LocalDateTime;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
  * @param day The day of the month (1-31).
  */
 public record Date(int year, int month, int day) {
-    private static final Pattern DATE_PATTERN = Pattern.compile("^\\d{1,7}-\\d{1,2}-\\d{1,2}$");
+    private static final Pattern DATE_PATTERN = Pattern.compile("^(\\d{1,7})-(\\d{1,2})-(\\d{1,2})$");
 
     public static final Date ZERO_DATE = new Date(0, 0, 0);
 
@@ -42,13 +43,27 @@ public record Date(int year, int month, int day) {
      * </p>
      * @return True if the other Date is earlier, false if not.
      */
-    public boolean earlierThan(Date other) {
+    public boolean isEarlierThan(Date other) {
         if (other == null) return false;
         if (other.year() > this.year()) return true;
         if (other.year() < this.year()) return false;
         if (other.month() > this.month()) return true;
         if (other.month() < this.month()) return false;
         return other.day() > this.day();
+    }
+
+    /**
+     * Returns if this Date is earlier than or equal to another given Date.
+     * If the two Dates are equal, returns true.
+     * <p>
+     *  If the given Date is null, returns false.
+     * </p>
+     * @return True if the other Date is earlier or equal, false if not.
+     */
+    public boolean isEarlierThanOrEqual(Date other) {
+        if (other == null) return false;
+        if (this.equals(other)) return true;
+        return isEarlierThan(other);
     }
 
     /**
@@ -59,9 +74,23 @@ public record Date(int year, int month, int day) {
      * </p>
      * @return True if the other Date is later, false if not.
      */
-    public boolean laterThan(Date other) {
+    public boolean isLaterThan(Date other) {
         if (other == null || this.equals(other)) return false;
-        return !earlierThan(other);
+        return !isEarlierThan(other);
+    }
+
+    /**
+     * Returns if this Date is later than or equal to another given Date.
+     * If the two Dates are equal, returns true.
+     * <p>
+     *  If the given Date is null, returns false.
+     * </p>
+     * @return True if the other Date is later or equal, false if not.
+     */
+    public boolean isLaterThanOrEqual(Date other) {
+        if (other == null) return false;
+        if (this.equals(other)) return true;
+        return !isEarlierThan(other);
     }
 
     /**
@@ -91,5 +120,14 @@ public record Date(int year, int month, int day) {
         int month = Integer.parseInt(matcher.group(2));
         int day = Integer.parseInt(matcher.group(3));
         return new Date(year, month, day);
+    }
+
+    /**
+     * Gets the current local Date set on this computer.
+     * @return The current local date.
+     */
+    public static Date currentLocalDate() {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        return new Date(localDateTime.getYear(), localDateTime.getMonthValue(), localDateTime.getDayOfMonth());
     }
 }

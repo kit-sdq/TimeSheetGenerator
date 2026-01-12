@@ -62,6 +62,25 @@ public class Preset {
 	}
 
     /**
+     * Returns if the Preset should be visible. This is a combination of if the isVisible
+     * field is true, and if the current Date is within visibleFrom and visibleUntil, or
+     * if the non-matching Date values are Zero (non-existent).
+     *
+     * @return True if the Preset should be visible, taking isVisible and from/until into
+     * consideration.
+     */
+    public boolean shouldBeVisible() {
+        if (!isVisible()) return false;
+        Date currentDate = Date.currentLocalDate();
+        if (!visibleFromDate.isZero()
+            && currentDate.isEarlierThan(visibleFromDate)) {
+            return false;
+        }
+        return visibleUntilDate.isZero()
+                || !currentDate.isLaterThan(visibleUntilDate);
+    }
+
+    /**
      * Parses the stored Dates in the presets. Executed manually after fields have been filled.
      */
     public void parseDates() {
