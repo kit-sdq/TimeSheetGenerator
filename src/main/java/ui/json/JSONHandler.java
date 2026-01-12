@@ -388,6 +388,7 @@ public final class JSONHandler {
 		PresetCollection mergedCollection;
 		if (fromFile.isPresent() || fromAPI.isPresent()) {
 			mergedCollection = PresetCollection.merge(fromFile, fromAPI);
+            mergedCollection.parseAllDates();
 		} else {
 			return new PresetCollection();
 		}

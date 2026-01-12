@@ -1,8 +1,10 @@
 /* Licensed under MIT 2025. */
 package ui.json.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import ui.Date;
 
 import java.util.List;
 
@@ -16,6 +18,10 @@ public class Preset {
 	private String displayName;
 	@JsonProperty("visible")
 	private boolean isVisible = true;
+    @JsonProperty("visibleFrom")
+    private String visibleFrom = "";
+    @JsonProperty("visibleUntil")
+    private String visibleUntil = "";
 	@JsonProperty("description")
 	private String description = "";
 	@JsonProperty("fileFormat")
@@ -28,6 +34,11 @@ public class Preset {
 	private String mailRecipient = "";
 	@JsonProperty("mailRecipientCC")
 	private List<String> mailRecipientsCC = List.of();
+
+    @JsonIgnore
+    private Date visibleFromDate;
+    @JsonIgnore
+    private Date visibleUntilDate;
 
 	@Override
 	public String toString() {
@@ -49,4 +60,12 @@ public class Preset {
 		this.mailRecipient = mailRecipient;
 		this.mailRecipientsCC = List.of();
 	}
+
+    /**
+     * Parses the stored Dates in the presets. Executed manually after fields have been filled.
+     */
+    public void parseDates() {
+        visibleFromDate = Date.parseDate(visibleFrom);
+        visibleUntilDate = Date.parseDate(visibleUntil);
+    }
 }

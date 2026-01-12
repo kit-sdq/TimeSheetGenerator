@@ -51,6 +51,13 @@ public class PresetCollection {
 		return new ArrayList<>(presets);
 	}
 
+    /**
+     * Parses all loaded Dates in all presets of this collection.
+     */
+    public void parseAllDates() {
+        presets.forEach(Preset::parseDates);
+    }
+
 	/**
 	 * Merges two {@link PresetCollection}, intended for merging the local
 	 * collection with the online collection. Presets are uniquely identified by
