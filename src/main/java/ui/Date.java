@@ -112,16 +112,13 @@ public record Date(int year, int month, int day) {
 
 	/**
 	 * Parses a Date from the format YYYY-MM-DD. This format is required but allows
-	 * some variance in the length of numbers.
-	 *
-	 * <p>
+	 * some variance in the length of numbers. <br/>
 	 * Restrictions for year, month and day:
 	 * <ul>
 	 * <li>Year: A number consisting of 1-7 digits.</li>
 	 * <li>Month: A number consisting of 1-2 digits.</li>
 	 * <li>Day: A number consisting of 1-2 digits.</li>
 	 * </ul>
-	 * </p>
 	 *
 	 * <p>
 	 * If not Date can be parsed, returns the ZERO_DATE, so the default Date where
