@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024-2025. */
+/* Licensed under MIT 2024-2026. */
 package ui.json;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -388,7 +388,7 @@ public final class JSONHandler {
 		PresetCollection mergedCollection;
 		if (fromFile.isPresent() || fromAPI.isPresent()) {
 			mergedCollection = PresetCollection.merge(fromFile, fromAPI);
-            mergedCollection.parseAllDates();
+			mergedCollection.parseAllDates();
 		} else {
 			return new PresetCollection();
 		}

@@ -1,4 +1,4 @@
-/* Licensed under MIT 2025. */
+/* Licensed under MIT 2025-2026. */
 package ui.json.api;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,10 +18,10 @@ public class Preset {
 	private String displayName;
 	@JsonProperty("visible")
 	private boolean isVisible = true;
-    @JsonProperty("visibleFrom")
-    private String visibleFrom = "";
-    @JsonProperty("visibleUntil")
-    private String visibleUntil = "";
+	@JsonProperty("visibleFrom")
+	private String visibleFrom = "";
+	@JsonProperty("visibleUntil")
+	private String visibleUntil = "";
 	@JsonProperty("description")
 	private String description = "";
 	@JsonProperty("fileFormat")
@@ -35,10 +35,10 @@ public class Preset {
 	@JsonProperty("mailRecipientCC")
 	private List<String> mailRecipientsCC = List.of();
 
-    @JsonIgnore
-    private Date visibleFromDate;
-    @JsonIgnore
-    private Date visibleUntilDate;
+	@JsonIgnore
+	private Date visibleFromDate;
+	@JsonIgnore
+	private Date visibleUntilDate;
 
 	@Override
 	public String toString() {
@@ -61,30 +61,30 @@ public class Preset {
 		this.mailRecipientsCC = List.of();
 	}
 
-    /**
-     * Returns if the Preset should be visible. This is a combination of if the isVisible
-     * field is true, and if the current Date is within visibleFrom and visibleUntil, or
-     * if the non-matching Date values are Zero (non-existent).
-     *
-     * @return True if the Preset should be visible, taking isVisible and from/until into
-     * consideration.
-     */
-    public boolean shouldBeVisible() {
-        if (!isVisible()) return false;
-        Date currentDate = Date.currentLocalDate();
-        if (!visibleFromDate.isZero()
-            && currentDate.isEarlierThan(visibleFromDate)) {
-            return false;
-        }
-        return visibleUntilDate.isZero()
-                || !currentDate.isLaterThan(visibleUntilDate);
-    }
+	/**
+	 * Returns if the Preset should be visible. This is a combination of if the
+	 * isVisible field is true, and if the current Date is within visibleFrom and
+	 * visibleUntil, or if the non-matching Date values are Zero (non-existent).
+	 *
+	 * @return True if the Preset should be visible, taking isVisible and from/until
+	 *         into consideration.
+	 */
+	public boolean shouldBeVisible() {
+		if (!isVisible())
+			return false;
+		Date currentDate = Date.currentLocalDate();
+		if (!visibleFromDate.isZero() && currentDate.isEarlierThan(visibleFromDate)) {
+			return false;
+		}
+		return visibleUntilDate.isZero() || !currentDate.isLaterThan(visibleUntilDate);
+	}
 
-    /**
-     * Parses the stored Dates in the presets. Executed manually after fields have been filled.
-     */
-    public void parseDates() {
-        visibleFromDate = Date.parseDate(visibleFrom);
-        visibleUntilDate = Date.parseDate(visibleUntil);
-    }
+	/**
+	 * Parses the stored Dates in the presets. Executed manually after fields have
+	 * been filled.
+	 */
+	public void parseDates() {
+		visibleFromDate = Date.parseDate(visibleFrom);
+		visibleUntilDate = Date.parseDate(visibleUntil);
+	}
 }

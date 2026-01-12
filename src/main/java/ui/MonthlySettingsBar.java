@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024-2025. */
+/* Licensed under MIT 2024-2026. */
 package ui;
 
 import ui.json.JSONHandler;
@@ -188,7 +188,7 @@ public class MonthlySettingsBar extends JPanel {
 
 	public void importMonthSettings(Month month) {
 		String yearString = String.valueOf(month.getYear());
-        int yearShort = Integer.parseInt(yearString.substring(yearString.length() - 2));
+		int yearShort = Integer.parseInt(yearString.substring(yearString.length() - 2));
 		semesterTextField.setText("" + (month.getMonth() <= 3 ? yearShort - 1 : yearShort));
 		monthSelector.setSelectedIndex(month.getMonth() - 1);
 		if (month.getMonth() >= 4 && month.getMonth() <= 9) {
