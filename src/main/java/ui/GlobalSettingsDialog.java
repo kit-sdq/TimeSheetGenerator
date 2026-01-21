@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024-2025. */
+/* Licensed under MIT 2024-2026. */
 package ui;
 
 import mail.MailInformation;
@@ -303,7 +303,7 @@ public final class GlobalSettingsDialog {
 		JComboBox<Preset> presetSelector = new JComboBox<>();
 		presetSelector.addItem(Preset.NO_PRESET);
 		JSONHandler.getPresets().getPresets().forEach(preset -> {
-			if (preset.isVisible())
+			if (preset.shouldBeVisible())
 				presetSelector.addItem(preset);
 		});
 		// Now, figure out which preset it selected by field values

@@ -1,4 +1,4 @@
-/* Licensed under MIT 2025. */
+/* Licensed under MIT 2025-2026. */
 package ui.json.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -49,6 +49,13 @@ public class PresetCollection {
 	 */
 	public List<Preset> getPresets() {
 		return new ArrayList<>(presets);
+	}
+
+	/**
+	 * Parses all loaded Dates in all presets of this collection.
+	 */
+	public void parseAllDates() {
+		presets.forEach(Preset::parseDates);
 	}
 
 	/**
