@@ -217,16 +217,25 @@ public class UserInterface {
 		});
 
 		// Remove selected entry with backspace key
-		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
-		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
-		var deleteAction = new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				removeSelectedListEntry();
-			}
-		};
-		itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
-		itemList.getActionMap().put("removeListEntryDelete", deleteAction);
+        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
+        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
+        var deleteAction = new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                removeSelectedListEntry();
+            }
+        };
+        itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
+        itemList.getActionMap().put("removeListEntryDelete", deleteAction);
+
+        // Edit selected entry with enter key
+        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "editEntryOnEnter");
+        itemList.getActionMap().put("editEntryOnEnter", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editSelectedListEntry();
+            }
+        });
 
 		// Ctrl + D to duplicate the selected entry
 		addHotkey(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "duplicateEntryAction", this::duplicateSelectedListEntry);
