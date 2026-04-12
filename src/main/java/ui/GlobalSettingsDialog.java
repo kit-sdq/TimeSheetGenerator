@@ -342,10 +342,12 @@ public final class GlobalSettingsDialog {
 			if (selected.equals(Preset.NO_PRESET))
 				return;
 			// Update values according to the preset:
-			fileNameTextField.setText(selected.getFileFormat());
-			departmentField.setText(selected.getDepartment());
-			emailSubjectFormatField.setText(selected.getMailSubject());
-			uiSettings.setMailInformation(new MailInformation(selected.getMailRecipient(), selected.getMailRecipientsCC()), false);
+			setIfNotEmpty(fileNameTextField::setText, selected.getFileFormat());
+			setIfNotEmpty(departmentField::setText, selected.getDepartment());
+			setIfNotEmpty(emailSubjectFormatField::setText, selected.getMailSubject());
+            if (selected.hasMailRecipient()) {
+                uiSettings.setMailInformation(new MailInformation(selected.getMailRecipient(), selected.getMailRecipientsCC()), false);
+            }
 			// Update colors just in case:
 			fileNameTextField.setForeground(TextColors.DEFAULT.color());
 			departmentField.setForeground(TextColors.DEFAULT.color());
@@ -365,6 +367,12 @@ public final class GlobalSettingsDialog {
 			break;
 		}
 	}
+
+    private static void setIfNotEmpty(Setter<String> setter, String text) {
+        if (!text.isEmpty()) {
+            setter.set(text);
+        }
+    }
 
 	private static void showPdfFormatHelp(JDialog parentDialog) {
 		String message = """
@@ -449,5 +457,18 @@ public final class GlobalSettingsDialog {
 			errorLabel.setText(" ");
 		}
 	}
+
+    /**
+     * A generic Setter method. May update to include
+     * setter types other than string in above methods.
+     * <p>
+     *     Used for passing setter methods into a set-if-condition method.
+     * </p>
+     *
+     * @param <T> The type of the variable the setter is setting.
+     */
+    private interface Setter<T> {
+        void set(T object);
+    }
 
 }
