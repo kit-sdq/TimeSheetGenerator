@@ -60,7 +60,7 @@ public class PDFCompiler {
 		}
 		form.getField("OE").setValue(global.getDepartment()); // Probably department
 		form.getField("Std").setValue(global.getWorkingTime()); // Total hours
-		form.getField("Stundensatz").setValue(String.valueOf(global.getWage()));// Wage
+		form.getField("Stundensatz").setValue("%2.2f".formatted(global.getWage()));// Wage
 
 		form.getField("Übertrag vom Vormonat").setValue(month.getPredTransfer()); // Pred Übertrag
 		form.getField("Übertrag in den Folgemonat").setValue(month.getSuccTransfer()); // Succ Übertrag
