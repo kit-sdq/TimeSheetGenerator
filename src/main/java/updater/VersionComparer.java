@@ -18,11 +18,16 @@ public final class VersionComparer {
 	 * Important: Both versions must have the same number of levels. Comparing 0.12
 	 * and 2.1.2 will yield false no matter the contents.
 	 * </p>
+     * <p>
+     * If version is null, returns false. If version is not null but other is null, returns true.
+     * </p>
 	 * 
 	 * @param version The version
 	 * @param other   The version to compare it to.
 	 */
 	public static boolean isNewerThan(String version, String other) {
+        if (version == null) return false;
+        if (other == null) return true;
 		List<Integer> splitVersion = Arrays.stream(version.split("\\.")).map(Integer::parseInt).toList();
 		List<Integer> splitOther = Arrays.stream(other.split("\\.")).map(Integer::parseInt).toList();
 		if (splitVersion.size() != splitOther.size())
