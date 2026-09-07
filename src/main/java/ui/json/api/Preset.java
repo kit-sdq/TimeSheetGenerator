@@ -87,4 +87,12 @@ public class Preset {
 		visibleFromDate = Date.parseDate(visibleFrom);
 		visibleUntilDate = Date.parseDate(visibleUntil);
 	}
+
+    /**
+     * If the Preset has a primary mail recipient.
+     * @return true if the main recipient is not an empty string.
+     */
+    public boolean hasMailRecipient() {
+        return !mailRecipient.isEmpty();
+    }
 }

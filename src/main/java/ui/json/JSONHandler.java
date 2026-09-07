@@ -380,6 +380,8 @@ public final class JSONHandler {
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		File presetsFile = getKnownPresetsFile();
+        if (!presetsFile.exists()) return new PresetCollection();
+
 		Optional<String> presetsJSON = PresetFetcher.fetchJSONFromEndpoint();
 
 		Optional<PresetCollection> fromFile = parsePresetCollection(objectMapper, presetsFile);
