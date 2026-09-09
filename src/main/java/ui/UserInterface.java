@@ -9,6 +9,7 @@ import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
 import ui.json.Month;
 import ui.json.UISettings;
+import updater.LocalVersionFetcher;
 import updater.Updater;
 
 import javax.swing.*;
@@ -43,8 +44,9 @@ public class UserInterface {
 	public static final int MAX_ENTRIES = 22;
 
 	private static final String APP_NAME = "Timesheet Generator";
+    private static final String VERSION_FORMAT = " v%s";
 
-	private static final String TITLE = "%s: %s";
+	private static final String TITLE = "%s%s: %s";
 
 	@Getter
 	private File currentOpenFile;
@@ -434,11 +436,16 @@ public class UserInterface {
 	}
 
 	private void setTitle(String title) {
+        String version = LocalVersionFetcher.getProgramVersion();
+        String formattedVersion = version.equals(LocalVersionFetcher.NULL_VERSION)
+                ? ""
+                : VERSION_FORMAT.formatted(version);
+
 		if (title == null || title.isBlank()) {
-			frame.setTitle(APP_NAME);
+			frame.setTitle(APP_NAME + formattedVersion);
 			return;
 		}
-		frame.setTitle(TITLE.formatted(APP_NAME, title));
+		frame.setTitle(TITLE.formatted(APP_NAME, formattedVersion, title));
 	}
 
 	private void updateTitle() {

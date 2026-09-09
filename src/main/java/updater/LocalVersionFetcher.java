@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public final class LocalVersionFetcher {
 
-	private static final String NULL_VERSION = "0.0.0";
+	public static final String NULL_VERSION = "0.0.0";
 	private static final String VERSION_ATTRIBUTE_NAME = "generatorVersion";
 	private static final Pattern MAVEN_VERSION_FILTER_REGEX = Pattern.compile("^(\\d++\\.\\d++\\.\\d++).*$");
 
