@@ -52,17 +52,17 @@ public final class JSONHandler {
 
 	private static final String ERROR = "An unexpected error occurred:%s%s".formatted(System.lineSeparator(), "%s");
 
-    /**
-     * Initializes all properties, including properties fetched from the internet.
-     * Takes in a progress bar and sets "appropriate" (arbitrary reflective) values
-     * of the progress from 0 to 100.
-     *
-     * @param progressBar the progress bar to set progress.
-     */
+	/**
+	 * Initializes all properties, including properties fetched from the internet.
+	 * Takes in a progress bar and sets "appropriate" (arbitrary reflective) values
+	 * of the progress from 0 to 100.
+	 *
+	 * @param progressBar the progress bar to set progress.
+	 */
 	public static void initialize(JProgressBar progressBar) {
 		final String homePropertyName = "user.home";
 		String os = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
-        progressBar.setValue(7);
+		progressBar.setValue(7);
 
 		if (os.contains("win")) {
 			configDir = System.getenv("APPDATA");
@@ -74,26 +74,26 @@ public final class JSONHandler {
 			// Default to user home directory
 			configDir = System.getProperty(homePropertyName);
 		}
-        progressBar.setValue(18);
+		progressBar.setValue(18);
 
 		// Create a subdirectory for your application
 		configDir += "/TimeSheetGenerator";
 
 		loadDefaultValues();
-        progressBar.setValue(33);
+		progressBar.setValue(33);
 		loadPresets();
-        progressBar.setValue(47);
+		progressBar.setValue(47);
 		createDefaultGlobalSettings();
-        progressBar.setValue(67);
+		progressBar.setValue(67);
 		createDefaultOtherGlobalSettings();
-        progressBar.setValue(78);
+		progressBar.setValue(78);
 		loadGlobal();
-        progressBar.setValue(89);
+		progressBar.setValue(89);
 		loadUiSettings();
-        progressBar.setValue(96);
+		progressBar.setValue(96);
 
 		cleanUp();
-        progressBar.setValue(100);
+		progressBar.setValue(100);
 	}
 
 	/**
@@ -396,7 +396,8 @@ public final class JSONHandler {
 		objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		File presetsFile = getKnownPresetsFile();
-        if (!presetsFile.exists()) return new PresetCollection();
+		if (!presetsFile.exists())
+			return new PresetCollection();
 
 		Optional<String> presetsJSON = PresetFetcher.fetchJSONFromEndpoint();
 

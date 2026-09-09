@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024-2025. */
+/* Licensed under MIT 2024-2026. */
 package ui;
 
 import lombok.Getter;
@@ -44,7 +44,7 @@ public class UserInterface {
 	public static final int MAX_ENTRIES = 22;
 
 	private static final String APP_NAME = "Timesheet Generator";
-    private static final String VERSION_FORMAT = " v%s";
+	private static final String VERSION_FORMAT = " v%s";
 
 	private static final String TITLE = "%s%s: %s";
 
@@ -74,150 +74,150 @@ public class UserInterface {
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
-        // JSONHandler needs the frame to exist to display error messages
+		// JSONHandler needs the frame to exist to display error messages
 		ErrorHandler.setParentComponent(frame);
 
-        JProgressBar loadingBar = new JProgressBar();
-        loadingBar.setBorder(BorderFactory.createEmptyBorder(0, 20, 30, 20));
+		JProgressBar loadingBar = new JProgressBar();
+		loadingBar.setBorder(BorderFactory.createEmptyBorder(0, 20, 30, 20));
 
-        JLabel loadingText = new JLabel("Loading...", SwingConstants.CENTER);
-        loadingText.setFont(loadingText.getFont().deriveFont(20f));
+		JLabel loadingText = new JLabel("Loading...", SwingConstants.CENTER);
+		loadingText.setFont(loadingText.getFont().deriveFont(20f));
 
-        frame.add(loadingText, BorderLayout.CENTER);
-        frame.add(loadingBar, BorderLayout.SOUTH);
-        frame.setVisible(true);
+		frame.add(loadingText, BorderLayout.CENTER);
+		frame.add(loadingBar, BorderLayout.SOUTH);
+		frame.setVisible(true);
 
-        SwingWorker<Void, Void> asyncInitializer = new SwingWorker<>() {
-            @Override
-            protected Void doInBackground() {
-                // Heavy startup work here
-                JSONHandler.initialize(loadingBar);
-                return null;
-            }
+		SwingWorker<Void, Void> asyncInitializer = new SwingWorker<>() {
+			@Override
+			protected Void doInBackground() {
+				// Heavy startup work here
+				JSONHandler.initialize(loadingBar);
+				return null;
+			}
 
-            @Override
-            protected void done() {
-                initializeAfterDataLoad();
-                onCompleted.run();
-            }
-        };
-        asyncInitializer.execute();
+			@Override
+			protected void done() {
+				initializeAfterDataLoad();
+				onCompleted.run();
+			}
+		};
+		asyncInitializer.execute();
 	}
 
-    private void initializeAfterDataLoad() {
-        // Dispose of the loading screen and make the correct loading screen.
-        frame.setVisible(false);
-        frame.dispose();
-        frame = new DragDropJFrame(this);
-        setTitle(null);
-        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
-        frame.setSize(1200, 800);
-        frame.setLocationRelativeTo(null);
-        frame.setLayout(new BorderLayout());
-        frame.setResizable(false);
-        ErrorHandler.setParentComponent(frame);
-        // Menu Bar
-        JMenuBar menuBar = new JMenuBar();
+	private void initializeAfterDataLoad() {
+		// Dispose of the loading screen and make the correct loading screen.
+		frame.setVisible(false);
+		frame.dispose();
+		frame = new DragDropJFrame(this);
+		setTitle(null);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
+		frame.setSize(1200, 800);
+		frame.setLocationRelativeTo(null);
+		frame.setLayout(new BorderLayout());
+		frame.setResizable(false);
+		ErrorHandler.setParentComponent(frame);
+		// Menu Bar
+		JMenuBar menuBar = new JMenuBar();
 
-        // File Menu
-        JMenu fileMenu = new JMenu("File");
-        JMenuItem fileOptionNew = new JMenuItem("New...");
-        JMenuItem fileOptionOpen = new JMenuItem("Open");
-        JMenuItem fileOptionSearchForUpdate = new JMenuItem("Search for Updates");
-        JMenuItem fileOptionGlobalSettings = new JMenuItem("Edit Global Settings");
-        JMenuItem fileOptionSave = new JMenuItem("Save");
-        JMenuItem fileOptionSaveAs = new JMenuItem("Save as...");
-        fileMenu.add(fileOptionNew);
-        fileMenu.add(fileOptionOpen);
-        fileMenu.add(fileOptionSearchForUpdate);
-        fileMenu.add(fileOptionGlobalSettings);
-        fileMenu.add(fileOptionSave);
-        fileMenu.add(fileOptionSaveAs);
-        menuBar.add(fileMenu);
+		// File Menu
+		JMenu fileMenu = new JMenu("File");
+		JMenuItem fileOptionNew = new JMenuItem("New...");
+		JMenuItem fileOptionOpen = new JMenuItem("Open");
+		JMenuItem fileOptionSearchForUpdate = new JMenuItem("Search for Updates");
+		JMenuItem fileOptionGlobalSettings = new JMenuItem("Edit Global Settings");
+		JMenuItem fileOptionSave = new JMenuItem("Save");
+		JMenuItem fileOptionSaveAs = new JMenuItem("Save as...");
+		fileMenu.add(fileOptionNew);
+		fileMenu.add(fileOptionOpen);
+		fileMenu.add(fileOptionSearchForUpdate);
+		fileMenu.add(fileOptionGlobalSettings);
+		fileMenu.add(fileOptionSave);
+		fileMenu.add(fileOptionSaveAs);
+		menuBar.add(fileMenu);
 
-        frame.setJMenuBar(menuBar);
+		frame.setJMenuBar(menuBar);
 
-        monthSettingsBar = new MonthlySettingsBar(this, this.frame);
-        monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
-        frame.add(monthSettingsBar, BorderLayout.NORTH);
+		monthSettingsBar = new MonthlySettingsBar(this, this.frame);
+		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
+		frame.add(monthSettingsBar, BorderLayout.NORTH);
 
-        // Row of Buttons with '+'
-        buttonActionBar = new ActionBar(this, this.frame);
-        monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
-        frame.add(buttonActionBar, BorderLayout.WEST);
+		// Row of Buttons with '+'
+		buttonActionBar = new ActionBar(this, this.frame);
+		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
+		frame.add(buttonActionBar, BorderLayout.WEST);
 
-        // Main Content Area with Vertical List
-        listModel = new DefaultListModel<>();
-        itemList = new JList<>(listModel);
-        itemList.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		// Main Content Area with Vertical List
+		listModel = new DefaultListModel<>();
+		itemList = new JList<>(listModel);
+		itemList.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-                String text = ((TimesheetEntry) value).toHtmlString();
-                return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
-            }
-        });
-        itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
-        itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        itemList.setFont(itemList.getFont().deriveFont(16f));
+				String text = ((TimesheetEntry) value).toHtmlString();
+				return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+			}
+		});
+		itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
+		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		itemList.setFont(itemList.getFont().deriveFont(16f));
 
-        // Table header setup
-        JLabel tableHeader = new JLabel();
-        tableHeader.setText(String.format(TimesheetEntry.TIMESHEET_FORMAT_HEADER, "Activity", "Day", "Start Time", "End Time", "Break Time", "Vacation",
-                "Total Time Worked"));
-        tableHeader.setFont(tableHeader.getFont().deriveFont(16f));
-        tableHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
+		// Table header setup
+		JLabel tableHeader = new JLabel();
+		tableHeader.setText(String.format(TimesheetEntry.TIMESHEET_FORMAT_HEADER, "Activity", "Day", "Start Time", "End Time", "Break Time", "Vacation",
+				"Total Time Worked"));
+		tableHeader.setFont(tableHeader.getFont().deriveFont(16f));
+		tableHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
 
-        // Double-click to Edit Entry
-        itemList.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int index = itemList.locationToIndex(e.getPoint());
-                if (e.getClickCount() == 2 && index >= 0) {
-                    editSelectedListEntry();
-                }
-            }
-        });
+		// Double-click to Edit Entry
+		itemList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int index = itemList.locationToIndex(e.getPoint());
+				if (e.getClickCount() == 2 && index >= 0) {
+					editSelectedListEntry();
+				}
+			}
+		});
 
-        JScrollPane itemListPane = new JScrollPane(itemList);
-        itemListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        itemListPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
+		JScrollPane itemListPane = new JScrollPane(itemList);
+		itemListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		itemListPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
 
-        // Panel to hold the header and list together
-        listPanel = new JPanel(new BorderLayout());
-        listPanel.add(tableHeader, BorderLayout.NORTH);
-        listPanel.add(itemListPane, BorderLayout.CENTER);
+		// Panel to hold the header and list together
+		listPanel = new JPanel(new BorderLayout());
+		listPanel.add(tableHeader, BorderLayout.NORTH);
+		listPanel.add(itemListPane, BorderLayout.CENTER);
 
-        frame.add(listPanel, BorderLayout.SOUTH);
+		frame.add(listPanel, BorderLayout.SOUTH);
 
-        // Action Listeners
+		// Action Listeners
 
-        fileOptionNew.addActionListener(e -> clearWorkspace());
-        fileOptionOpen.addActionListener(e -> openFile());
-        fileOptionSearchForUpdate.addActionListener(e -> updater.checkForUpdates());
-        fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this, this.frame));
-        fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
-        fileOptionSaveAs.addActionListener(e -> saveFileAs());
+		fileOptionNew.addActionListener(e -> clearWorkspace());
+		fileOptionOpen.addActionListener(e -> openFile());
+		fileOptionSearchForUpdate.addActionListener(e -> updater.checkForUpdates());
+		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this, this.frame));
+		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
+		fileOptionSaveAs.addActionListener(e -> saveFileAs());
 
-        addHotkeys(itemList);
+		addHotkeys(itemList);
 
-        // Show Frame
-        frame.setVisible(true);
+		// Show Frame
+		frame.setVisible(true);
 
-        frame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                if (closeCurrentOpenFile()) {
-                    frame.dispose();
-                    System.exit(0);
-                }
-            }
-        });
-        itemList.requestFocusInWindow();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				if (closeCurrentOpenFile()) {
+					frame.dispose();
+					System.exit(0);
+				}
+			}
+		});
+		itemList.requestFocusInWindow();
 
-        updater = new Updater(frame);
-        updater.checkForUpdates();
-    }
+		updater = new Updater(frame);
+		updater.checkForUpdates();
+	}
 
 	/**
 	 * Adds all hotkeys to the current {@link UserInterface#frame}. Most Hotkeys
@@ -256,25 +256,25 @@ public class UserInterface {
 		});
 
 		// Remove selected entry with backspace key
-        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
-        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
-        var deleteAction = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeSelectedListEntry();
-            }
-        };
-        itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
-        itemList.getActionMap().put("removeListEntryDelete", deleteAction);
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
+		var deleteAction = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeSelectedListEntry();
+			}
+		};
+		itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
+		itemList.getActionMap().put("removeListEntryDelete", deleteAction);
 
-        // Edit selected entry with enter key
-        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "editEntryOnEnter");
-        itemList.getActionMap().put("editEntryOnEnter", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editSelectedListEntry();
-            }
-        });
+		// Edit selected entry with enter key
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "editEntryOnEnter");
+		itemList.getActionMap().put("editEntryOnEnter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editSelectedListEntry();
+			}
+		});
 
 		// Ctrl + D to duplicate the selected entry
 		addHotkey(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "duplicateEntryAction", this::duplicateSelectedListEntry);
@@ -473,10 +473,8 @@ public class UserInterface {
 	}
 
 	private void setTitle(String title) {
-        String version = LocalVersionFetcher.getProgramVersion();
-        String formattedVersion = version.equals(LocalVersionFetcher.NULL_VERSION)
-                ? ""
-                : VERSION_FORMAT.formatted(version);
+		String version = LocalVersionFetcher.getProgramVersion();
+		String formattedVersion = version.equals(LocalVersionFetcher.NULL_VERSION) ? "" : VERSION_FORMAT.formatted(version);
 
 		if (title == null || title.isBlank()) {
 			frame.setTitle(APP_NAME + formattedVersion);
@@ -643,13 +641,13 @@ public class UserInterface {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				UserInterface ui = new UserInterface();
-                ui.initializeAsync(() -> {
-                    ui.setHasUnsavedChanges(false);
-                    if (file != null && file.exists())
-                        ui.openFile(file);
-                });
+				ui.initializeAsync(() -> {
+					ui.setHasUnsavedChanges(false);
+					if (file != null && file.exists())
+						ui.openFile(file);
+				});
 			} catch (Exception e) {
-                e.printStackTrace();
+				e.printStackTrace();
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, e.getMessage(), "An error occurred", JOptionPane.ERROR_MESSAGE);
 				// Exit, because if the setup fails, the process shouldn't continue (but it
