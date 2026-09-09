@@ -62,9 +62,6 @@ public class UserInterface {
 
 	private Updater updater;
 
-	public UserInterface() {
-	}
-
 	private void initializeAsync(Runnable onCompleted) {
 		// Main Frame
 		frame = new JFrame();
@@ -647,7 +644,6 @@ public class UserInterface {
 						ui.openFile(file);
 				});
 			} catch (Exception e) {
-				e.printStackTrace();
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, e.getMessage(), "An error occurred", JOptionPane.ERROR_MESSAGE);
 				// Exit, because if the setup fails, the process shouldn't continue (but it
