@@ -60,127 +60,164 @@ public class UserInterface {
 	private MonthlySettingsBar monthSettingsBar;
 	private ActionBar buttonActionBar;
 
-	private final Updater updater;
+	private Updater updater;
 
 	public UserInterface() {
-		initialize();
-		updater = new Updater(frame);
-		updater.checkForUpdates();
 	}
 
-	private void initialize() {
+	private void initializeAsync(Runnable onCompleted) {
 		// Main Frame
-		frame = new DragDropJFrame(this);
+		frame = new JFrame();
 		setTitle(null);
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
-		frame.setSize(1200, 800);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setSize(500, 250);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
+        // JSONHandler needs the frame to exist to display error messages
 		ErrorHandler.setParentComponent(frame);
 
-		// Initialize JSONHandler. It needs the frame to exist to display error messages
-		JSONHandler.initialize();
+        JProgressBar loadingBar = new JProgressBar();
+        loadingBar.setBorder(BorderFactory.createEmptyBorder(0, 20, 30, 20));
 
-		// Menu Bar
-		JMenuBar menuBar = new JMenuBar();
+        JLabel loadingText = new JLabel("Loading...", SwingConstants.CENTER);
+        loadingText.setFont(loadingText.getFont().deriveFont(20f));
 
-		// File Menu
-		JMenu fileMenu = new JMenu("File");
-		JMenuItem fileOptionNew = new JMenuItem("New...");
-		JMenuItem fileOptionOpen = new JMenuItem("Open");
-		JMenuItem fileOptionSearchForUpdate = new JMenuItem("Search for Updates");
-		JMenuItem fileOptionGlobalSettings = new JMenuItem("Edit Global Settings");
-		JMenuItem fileOptionSave = new JMenuItem("Save");
-		JMenuItem fileOptionSaveAs = new JMenuItem("Save as...");
-		fileMenu.add(fileOptionNew);
-		fileMenu.add(fileOptionOpen);
-		fileMenu.add(fileOptionSearchForUpdate);
-		fileMenu.add(fileOptionGlobalSettings);
-		fileMenu.add(fileOptionSave);
-		fileMenu.add(fileOptionSaveAs);
-		menuBar.add(fileMenu);
+        frame.add(loadingText, BorderLayout.CENTER);
+        frame.add(loadingBar, BorderLayout.SOUTH);
+        frame.setVisible(true);
 
-		frame.setJMenuBar(menuBar);
+        SwingWorker<Void, Void> asyncInitializer = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() {
+                // Heavy startup work here
+                JSONHandler.initialize(loadingBar);
+                return null;
+            }
 
-		monthSettingsBar = new MonthlySettingsBar(this, this.frame);
-		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
-		frame.add(monthSettingsBar, BorderLayout.NORTH);
-
-		// Row of Buttons with '+'
-		buttonActionBar = new ActionBar(this, this.frame);
-		monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
-		frame.add(buttonActionBar, BorderLayout.WEST);
-
-		// Main Content Area with Vertical List
-		listModel = new DefaultListModel<>();
-		itemList = new JList<>(listModel);
-		itemList.setCellRenderer(new DefaultListCellRenderer() {
-			@Override
-			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
-				String text = ((TimesheetEntry) value).toHtmlString();
-				return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
-			}
-		});
-		itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
-		itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		itemList.setFont(itemList.getFont().deriveFont(16f));
-
-		// Table header setup
-		JLabel tableHeader = new JLabel();
-		tableHeader.setText(String.format(TimesheetEntry.TIMESHEET_FORMAT_HEADER, "Activity", "Day", "Start Time", "End Time", "Break Time", "Vacation",
-				"Total Time Worked"));
-		tableHeader.setFont(tableHeader.getFont().deriveFont(16f));
-		tableHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
-
-		// Double-click to Edit Entry
-		itemList.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int index = itemList.locationToIndex(e.getPoint());
-				if (e.getClickCount() == 2 && index >= 0) {
-					editSelectedListEntry();
-				}
-			}
-		});
-
-		JScrollPane itemListPane = new JScrollPane(itemList);
-		itemListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		itemListPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
-
-		// Panel to hold the header and list together
-		listPanel = new JPanel(new BorderLayout());
-		listPanel.add(tableHeader, BorderLayout.NORTH);
-		listPanel.add(itemListPane, BorderLayout.CENTER);
-
-		frame.add(listPanel, BorderLayout.SOUTH);
-
-		// Action Listeners
-
-		fileOptionNew.addActionListener(e -> clearWorkspace());
-		fileOptionOpen.addActionListener(e -> openFile());
-		fileOptionSearchForUpdate.addActionListener(e -> updater.checkForUpdates());
-		fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this, this.frame));
-		fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
-		fileOptionSaveAs.addActionListener(e -> saveFileAs());
-
-		addHotkeys(itemList);
-
-		// Show Frame
-		frame.setVisible(true);
-
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				if (closeCurrentOpenFile()) {
-					frame.dispose();
-					System.exit(0);
-				}
-			}
-		});
-		itemList.requestFocusInWindow();
+            @Override
+            protected void done() {
+                initializeAfterDataLoad();
+                onCompleted.run();
+            }
+        };
+        asyncInitializer.execute();
 	}
+
+    private void initializeAfterDataLoad() {
+        // Dispose of the loading screen and make the correct loading screen.
+        frame.setVisible(false);
+        frame.dispose();
+        frame = new DragDropJFrame(this);
+        setTitle(null);
+        frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
+        frame.setSize(1200, 800);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new BorderLayout());
+        frame.setResizable(false);
+        ErrorHandler.setParentComponent(frame);
+        // Menu Bar
+        JMenuBar menuBar = new JMenuBar();
+
+        // File Menu
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem fileOptionNew = new JMenuItem("New...");
+        JMenuItem fileOptionOpen = new JMenuItem("Open");
+        JMenuItem fileOptionSearchForUpdate = new JMenuItem("Search for Updates");
+        JMenuItem fileOptionGlobalSettings = new JMenuItem("Edit Global Settings");
+        JMenuItem fileOptionSave = new JMenuItem("Save");
+        JMenuItem fileOptionSaveAs = new JMenuItem("Save as...");
+        fileMenu.add(fileOptionNew);
+        fileMenu.add(fileOptionOpen);
+        fileMenu.add(fileOptionSearchForUpdate);
+        fileMenu.add(fileOptionGlobalSettings);
+        fileMenu.add(fileOptionSave);
+        fileMenu.add(fileOptionSaveAs);
+        menuBar.add(fileMenu);
+
+        frame.setJMenuBar(menuBar);
+
+        monthSettingsBar = new MonthlySettingsBar(this, this.frame);
+        monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
+        frame.add(monthSettingsBar, BorderLayout.NORTH);
+
+        // Row of Buttons with '+'
+        buttonActionBar = new ActionBar(this, this.frame);
+        monthSettingsBar.setFont(monthSettingsBar.getFont().deriveFont(14f));
+        frame.add(buttonActionBar, BorderLayout.WEST);
+
+        // Main Content Area with Vertical List
+        listModel = new DefaultListModel<>();
+        itemList = new JList<>(listModel);
+        itemList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+                String text = ((TimesheetEntry) value).toHtmlString();
+                return super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
+            }
+        });
+        itemList.setBorder(new EmptyBorder(10, 10, 10, 10));
+        itemList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        itemList.setFont(itemList.getFont().deriveFont(16f));
+
+        // Table header setup
+        JLabel tableHeader = new JLabel();
+        tableHeader.setText(String.format(TimesheetEntry.TIMESHEET_FORMAT_HEADER, "Activity", "Day", "Start Time", "End Time", "Break Time", "Vacation",
+                "Total Time Worked"));
+        tableHeader.setFont(tableHeader.getFont().deriveFont(16f));
+        tableHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
+
+        // Double-click to Edit Entry
+        itemList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int index = itemList.locationToIndex(e.getPoint());
+                if (e.getClickCount() == 2 && index >= 0) {
+                    editSelectedListEntry();
+                }
+            }
+        });
+
+        JScrollPane itemListPane = new JScrollPane(itemList);
+        itemListPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        itemListPane.setPreferredSize(new Dimension(frame.getWidth(), frame.getHeight() - 190));
+
+        // Panel to hold the header and list together
+        listPanel = new JPanel(new BorderLayout());
+        listPanel.add(tableHeader, BorderLayout.NORTH);
+        listPanel.add(itemListPane, BorderLayout.CENTER);
+
+        frame.add(listPanel, BorderLayout.SOUTH);
+
+        // Action Listeners
+
+        fileOptionNew.addActionListener(e -> clearWorkspace());
+        fileOptionOpen.addActionListener(e -> openFile());
+        fileOptionSearchForUpdate.addActionListener(e -> updater.checkForUpdates());
+        fileOptionGlobalSettings.addActionListener(e -> GlobalSettingsDialog.showGlobalSettingsDialog(this, this.frame));
+        fileOptionSave.addActionListener(e -> saveFile(currentOpenFile));
+        fileOptionSaveAs.addActionListener(e -> saveFileAs());
+
+        addHotkeys(itemList);
+
+        // Show Frame
+        frame.setVisible(true);
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                if (closeCurrentOpenFile()) {
+                    frame.dispose();
+                    System.exit(0);
+                }
+            }
+        });
+        itemList.requestFocusInWindow();
+
+        updater = new Updater(frame);
+        updater.checkForUpdates();
+    }
 
 	/**
 	 * Adds all hotkeys to the current {@link UserInterface#frame}. Most Hotkeys
@@ -606,10 +643,13 @@ public class UserInterface {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				UserInterface ui = new UserInterface();
-				ui.setHasUnsavedChanges(false);
-				if (file != null && file.exists())
-					ui.openFile(file);
+                ui.initializeAsync(() -> {
+                    ui.setHasUnsavedChanges(false);
+                    if (file != null && file.exists())
+                        ui.openFile(file);
+                });
 			} catch (Exception e) {
+                e.printStackTrace();
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, e.getMessage(), "An error occurred", JOptionPane.ERROR_MESSAGE);
 				// Exit, because if the setup fails, the process shouldn't continue (but it

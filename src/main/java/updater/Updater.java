@@ -66,8 +66,9 @@ public class Updater {
 	}
 
 	private void clearOldJarFiles() {
-		for (File tempJar : Objects
-				.requireNonNull(new File(JSONHandler.getApplicationDataPath()).listFiles((dir, name) -> name.matches(REGEX_TEMPORARY_JAR_FILE)))) {
+        File[] temporaryJarFiles = new File(JSONHandler.getApplicationDataPath()).listFiles((dir, name) -> name.matches(REGEX_TEMPORARY_JAR_FILE));
+        if (temporaryJarFiles == null) return;
+		for (File tempJar : temporaryJarFiles) {
 			if (!tempJar.delete())
 				tempJar.deleteOnExit();
 		}
