@@ -1,4 +1,4 @@
-/* Licensed under MIT 2025. */
+/* Licensed under MIT 2025-2026. */
 package updater;
 
 import ui.ErrorHandler;
@@ -17,7 +17,6 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeoutException;
 
@@ -66,8 +65,10 @@ public class Updater {
 	}
 
 	private void clearOldJarFiles() {
-		for (File tempJar : Objects
-				.requireNonNull(new File(JSONHandler.getApplicationDataPath()).listFiles((dir, name) -> name.matches(REGEX_TEMPORARY_JAR_FILE)))) {
+		File[] temporaryJarFiles = new File(JSONHandler.getApplicationDataPath()).listFiles((dir, name) -> name.matches(REGEX_TEMPORARY_JAR_FILE));
+		if (temporaryJarFiles == null)
+			return;
+		for (File tempJar : temporaryJarFiles) {
 			if (!tempJar.delete())
 				tempJar.deleteOnExit();
 		}

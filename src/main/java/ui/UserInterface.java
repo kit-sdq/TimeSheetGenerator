@@ -1,4 +1,4 @@
-/* Licensed under MIT 2024-2025. */
+/* Licensed under MIT 2024-2026. */
 package ui;
 
 import lombok.Getter;
@@ -9,6 +9,7 @@ import ui.fileexplorer.FileChooserType;
 import ui.json.JSONHandler;
 import ui.json.Month;
 import ui.json.UISettings;
+import updater.LocalVersionFetcher;
 import updater.Updater;
 
 import javax.swing.*;
@@ -43,8 +44,9 @@ public class UserInterface {
 	public static final int MAX_ENTRIES = 22;
 
 	private static final String APP_NAME = "Timesheet Generator";
+	private static final String VERSION_FORMAT = " v%s";
 
-	private static final String TITLE = "%s: %s";
+	private static final String TITLE = "%s%s: %s";
 
 	@Getter
 	private File currentOpenFile;
@@ -58,16 +60,51 @@ public class UserInterface {
 	private MonthlySettingsBar monthSettingsBar;
 	private ActionBar buttonActionBar;
 
-	private final Updater updater;
+	private Updater updater;
 
-	public UserInterface() {
-		initialize();
-		updater = new Updater(frame);
-		updater.checkForUpdates();
+	private void initializeAsync(Runnable onCompleted) {
+		// Main Frame
+		frame = new JFrame();
+		setTitle(null);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		frame.setSize(500, 250);
+		frame.setLocationRelativeTo(null);
+		frame.setLayout(new BorderLayout());
+		frame.setResizable(false);
+		// JSONHandler needs the frame to exist to display error messages
+		ErrorHandler.setParentComponent(frame);
+
+		JProgressBar loadingBar = new JProgressBar();
+		loadingBar.setBorder(BorderFactory.createEmptyBorder(0, 20, 30, 20));
+
+		JLabel loadingText = new JLabel("Loading...", SwingConstants.CENTER);
+		loadingText.setFont(loadingText.getFont().deriveFont(20f));
+
+		frame.add(loadingText, BorderLayout.CENTER);
+		frame.add(loadingBar, BorderLayout.SOUTH);
+		frame.setVisible(true);
+
+		SwingWorker<Void, Void> asyncInitializer = new SwingWorker<>() {
+			@Override
+			protected Void doInBackground() {
+				// Heavy startup work here
+				JSONHandler.initialize(loadingBar);
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				initializeAfterDataLoad();
+				onCompleted.run();
+			}
+		};
+		asyncInitializer.execute();
 	}
 
-	private void initialize() {
-		// Main Frame
+	private void initializeAfterDataLoad() {
+		// Dispose of the loading screen and make the correct loading screen.
+		frame.setVisible(false);
+		frame.dispose();
 		frame = new DragDropJFrame(this);
 		setTitle(null);
 		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE); // terminates when no saved changes
@@ -76,10 +113,6 @@ public class UserInterface {
 		frame.setLayout(new BorderLayout());
 		frame.setResizable(false);
 		ErrorHandler.setParentComponent(frame);
-
-		// Initialize JSONHandler. It needs the frame to exist to display error messages
-		JSONHandler.initialize();
-
 		// Menu Bar
 		JMenuBar menuBar = new JMenuBar();
 
@@ -178,6 +211,9 @@ public class UserInterface {
 			}
 		});
 		itemList.requestFocusInWindow();
+
+		updater = new Updater(frame);
+		updater.checkForUpdates();
 	}
 
 	/**
@@ -217,25 +253,25 @@ public class UserInterface {
 		});
 
 		// Remove selected entry with backspace key
-        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
-        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
-        var deleteAction = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                removeSelectedListEntry();
-            }
-        };
-        itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
-        itemList.getActionMap().put("removeListEntryDelete", deleteAction);
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "removeListEntryBackspace");
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "removeListEntryDelete");
+		var deleteAction = new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removeSelectedListEntry();
+			}
+		};
+		itemList.getActionMap().put("removeListEntryBackspace", deleteAction);
+		itemList.getActionMap().put("removeListEntryDelete", deleteAction);
 
-        // Edit selected entry with enter key
-        itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "editEntryOnEnter");
-        itemList.getActionMap().put("editEntryOnEnter", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                editSelectedListEntry();
-            }
-        });
+		// Edit selected entry with enter key
+		itemList.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "editEntryOnEnter");
+		itemList.getActionMap().put("editEntryOnEnter", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				editSelectedListEntry();
+			}
+		});
 
 		// Ctrl + D to duplicate the selected entry
 		addHotkey(KeyEvent.VK_D, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx(), "duplicateEntryAction", this::duplicateSelectedListEntry);
@@ -434,11 +470,14 @@ public class UserInterface {
 	}
 
 	private void setTitle(String title) {
+		String version = LocalVersionFetcher.getProgramVersion();
+		String formattedVersion = version.equals(LocalVersionFetcher.NULL_VERSION) ? "" : VERSION_FORMAT.formatted(version);
+
 		if (title == null || title.isBlank()) {
-			frame.setTitle(APP_NAME);
+			frame.setTitle(APP_NAME + formattedVersion);
 			return;
 		}
-		frame.setTitle(TITLE.formatted(APP_NAME, title));
+		frame.setTitle(TITLE.formatted(APP_NAME, formattedVersion, title));
 	}
 
 	private void updateTitle() {
@@ -599,9 +638,11 @@ public class UserInterface {
 			try {
 				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 				UserInterface ui = new UserInterface();
-				ui.setHasUnsavedChanges(false);
-				if (file != null && file.exists())
-					ui.openFile(file);
+				ui.initializeAsync(() -> {
+					ui.setHasUnsavedChanges(false);
+					if (file != null && file.exists())
+						ui.openFile(file);
+				});
 			} catch (Exception e) {
 				JFrame frame = new JFrame();
 				JOptionPane.showMessageDialog(frame, e.getMessage(), "An error occurred", JOptionPane.ERROR_MESSAGE);
