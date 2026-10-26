@@ -61,8 +61,8 @@ public class PresetCollection {
 	/**
 	 * Merges two {@link PresetCollection}, intended for merging the local
 	 * collection with the online collection. Presets are uniquely identified by
-	 * their {@code Preset.getPresetId()}; so if two presets collide, the preset from the
-	 * API (second parameter) will be preferred in the merge.<br/>
+	 * their {@code Preset.getPresetId()}; so if two presets collide, the preset
+	 * from the API (second parameter) will be preferred in the merge.<br/>
 	 * This way, we cleanly merge the preset collections while recognizing that the
 	 * second collection will be more recent.
 	 * <p>
