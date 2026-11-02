@@ -53,7 +53,7 @@ Editing the global settings:<br/>
 
 ## Command Line Execution
 
-Run TimeSheetGenerator (requires Java 21 or higher):
+Run TimeSheetGenerator (requires Java 25 or higher):
 
 `$ java -jar TimeSheetGenerator.jar [--help] [--version] [--gui] [--file <global.json> <month.json> <output.tex>]`
 

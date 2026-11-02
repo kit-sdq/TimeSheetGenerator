@@ -5,6 +5,9 @@ on:
     # Publish `v1.2.3` tags as releases.
     tags:
       - v*
+  # Build with the release JDK on PRs, so JDK updates that break the release fail early
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   release:
@@ -24,6 +27,7 @@ jobs:
         run: mvn -U -B package
 
       - name: Create Changelog
+        if: startsWith(github.ref, 'refs/tags/v')
         shell: bash
         run: |
           DIFF=$(git log $(git tag --sort=-creatordate | sed '2q;d')..HEAD --oneline)
